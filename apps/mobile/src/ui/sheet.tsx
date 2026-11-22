@@ -58,11 +58,19 @@ export type SheetProps = {
 	testID?: string | undefined;
 };
 
-type SheetHeaderProps = { title: string | undefined; closeLabel: string | undefined; onClose: () => void };
+type SheetHeaderProps = {
+	title: string | undefined;
+	closeLabel: string | undefined;
+	onClose: () => void;
+	onHeight: (height: number) => void;
+};
 
-function SheetHeader({ title, closeLabel, onClose }: SheetHeaderProps) {
+function SheetHeader({ title, closeLabel, onClose, onHeight }: SheetHeaderProps) {
 	return (
-		<View className="min-h-14 flex-row items-center gap-2 ps-4 pe-2 pt-4">
+		<View
+			onLayout={(event) => onHeight(event.nativeEvent.layout.height)}
+			className="min-h-14 flex-row items-center gap-2 ps-4 pe-2 pt-4"
+		>
 			<View className="flex-1">
 				{title ? (
 					<Typography.Heading type="h6" numberOfLines={2}>
@@ -98,6 +106,7 @@ export function Sheet({
 	const ref = useRef<TrueSheet>(null);
 	const scrollRef = useRef<ComponentRef<typeof ScrollView>>(null);
 	const [footerHeight, setFooterHeight] = useState(0);
+	const [headerHeight, setHeaderHeight] = useState(0);
 	const detentIndex = useRef(-1);
 	const wantsOpen = useRef(false);
 	const presented = useRef(false);
@@ -167,7 +176,10 @@ export function Sheet({
 			{footer}
 		</View>
 	) : undefined;
-	const bottom = footer ? (scroll ? space[4] : footerHeight + space[4]) : insets.bottom + space[4];
+	// A scrolling sheet's content is laid out at the sheet's full height, header included, so the header's height is
+	// added under it: without it the last lines of a long sheet stay under the screen's edge.
+	const headerSpace = hasHeader && scroll ? headerHeight : 0;
+	const bottom = (footer ? (scroll ? space[4] : footerHeight + space[4]) : insets.bottom + space[4]) + headerSpace;
 	const contentStyle = {
 		gap: space[3],
 		paddingTop: hasHeader ? space[2] : space[6],
@@ -193,7 +205,13 @@ export function Sheet({
 			accessibilityOptions={title ? { paneTitle: title } : {}}
 			insetAdjustment="never"
 			{...(scroll ? { scrollableRef: scrollRef, scrollableOptions: { contentInsetAdjustment: "footer" } } : {})}
-			{...(hasHeader ? { header: <SheetHeader title={title} closeLabel={closeLabel} onClose={requestClose} /> } : {})}
+			{...(hasHeader
+				? {
+						header: (
+							<SheetHeader title={title} closeLabel={closeLabel} onClose={requestClose} onHeight={setHeaderHeight} />
+						),
+					}
+				: {})}
 			{...(footerView
 				? {
 						footer: footerView,

@@ -450,6 +450,7 @@ const toTokens = (response: AuthSession.TokenResponse, previousRefreshToken?: st
 const scopedStoragePrefixes = [
 	"rezumi:application-notes:",
 	"rezumi:career-draft:",
+	"rezumi:job-search:",
 	"rezumi:onboarding:",
 	"rezumi:profile-pending:",
 ];

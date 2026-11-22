@@ -1,5 +1,5 @@
 // @vitest-environment happy-dom
-import type { JobsSearch } from "./search";
+import type { JobsSearch } from "@rezumi/career/jobs";
 import type { JobListingCard, JobSearchResult, JobSearchStatus } from "@rezumi/schema/jobs/search";
 import type { ReactNode } from "react";
 import { cleanup, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
@@ -95,8 +95,8 @@ vi.mock("@tanstack/react-router", async (importOriginal) => ({
 	),
 }));
 
+import { jobsSearchSchema } from "@rezumi/career/jobs";
 import { JobsPage } from "./jobs-page";
-import { jobsSearchSchema } from "./search";
 
 const quota = { used: 1, max: 15, resetsAt: "2026-11-21T00:00:00.000Z" };
 const status = (overrides: Partial<JobSearchStatus> = {}): JobSearchStatus => ({

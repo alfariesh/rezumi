@@ -305,7 +305,7 @@ export function SelectSheet<T extends string>({
 	);
 }
 
-export { Switch, type SwitchProps } from "./switch";
+export { Switch } from "./switch";
 
 export type SegmentedProps<T extends string> = {
 	value: T;

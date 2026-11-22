@@ -13,6 +13,7 @@ import { HomeSection, LoadError, RowTile } from "./section";
 import { client, orpc } from "@/api/client";
 import { getServer, useSession } from "@/auth/session";
 import { withUndo } from "@/features/career/undo";
+import { arrangementLabel, salaryLabel } from "@/features/jobs/format";
 import { Button, Chip, EmptyState, Icon, Skeleton, Text, Typography, showToast } from "@/ui";
 
 const PAGE = 5;
@@ -212,12 +213,20 @@ type RoleCardProps = {
 };
 
 function RoleCard({ row, found, tracked, pending, onTrack, onUndo, onDismiss }: RoleCardProps) {
-	const { t } = useLingui();
+	const { t, i18n } = useLingui();
 	const [logoFailed, setLogoFailed] = useState(false);
 	const company = companyOf(row);
 	const logo = row.listing?.company.logoUrl;
 	const posting = row.listing?.postingUrl ?? row.url;
 	const unknownLabels = { salary: t`Salary not listed`, office: t`Office days not stated` };
+	// How it's worked and the listed pay, as the web's New roles shows them.
+	const listing = row.listing;
+	const facts = listing
+		? [
+				listing.workArrangement ? arrangementLabel(listing.workArrangement) : null,
+				salaryLabel(listing.salary, i18n.locale),
+			].filter((fact): fact is string => Boolean(fact))
+		: [];
 	const openPosting = () => {
 		if (!/^https?:\/\//i.test(posting)) return;
 		void openBrowserAsync(posting).catch(() => showToast({ title: t`Couldn't open the posting. Try again.` }));
@@ -252,8 +261,13 @@ function RoleCard({ row, found, tracked, pending, onTrack, onUndo, onDismiss }: 
 						{row.snippet}
 					</Typography>
 				) : null}
-				{row.matches.length + row.unknowns.length > 0 ? (
+				{facts.length + row.matches.length + row.unknowns.length > 0 ? (
 					<View className="flex-row flex-wrap gap-1.5">
+						{facts.map((fact) => (
+							<Chip key={fact} size="sm" variant="soft" color="default">
+								<Chip.Label>{fact}</Chip.Label>
+							</Chip>
+						))}
 						{row.matches.map((match) => (
 							<Chip key={match} size="sm" variant="soft" color="success">
 								<Chip.Label>{match}</Chip.Label>

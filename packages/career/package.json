@@ -4,7 +4,8 @@
 	"type": "module",
 	"private": true,
 	"exports": {
-		"./onboarding": "./src/onboarding.ts"
+		"./onboarding": "./src/onboarding.ts",
+		"./jobs": "./src/jobs.ts"
 	},
 	"scripts": {
 		"typecheck": "tsrs --noEmit",
@@ -14,7 +15,8 @@
 	},
 	"dependencies": {
 		"@rezumi/resume": "workspace:*",
-		"@rezumi/schema": "workspace:*"
+		"@rezumi/schema": "workspace:*",
+		"zod": "catalog:"
 	},
 	"devDependencies": {
 		"@rezumi/config": "workspace:*",

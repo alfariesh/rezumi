@@ -1,11 +1,20 @@
-import type { JobSearchCriteria, JobSearchDefaults, JobSearchRequest } from "@rezumi/schema/jobs/search";
+import type {
+	JobListingCard,
+	JobSearchCriteria,
+	JobSearchDefaults,
+	JobSearchRequest,
+} from "@rezumi/schema/jobs/search";
 import z from "zod";
 import { JOB_SENIORITIES } from "@rezumi/schema/jobs/listing";
 import { JOB_SEARCH_POSTED_WITHIN_DAYS, MAX_JOB_SEARCH_SALARY } from "@rezumi/schema/jobs/search";
 
 /**
- * The Jobs page's search as the address holds it: what was last searched, so a reload or the back button shows the
- * same results (a page opened again the same day doesn't count again). Nothing is searched until there is a query.
+ * Job search as the web's Jobs page and the app's Jobs screen hold it: the form's values (what the web keeps in its
+ * address), what they ask `jobs.search`, a saved search read back, and the provider's place and pay as they read on a
+ * listing. Words around them ("a year", "via LinkedIn") are each app's own translations.
+ *
+ * The web keeps the last search in the address, so a reload or the back button shows the same results (a page opened
+ * again the same day doesn't count again). Nothing is searched until there is a query.
  */
 
 const JOB_ARRANGEMENTS = ["any", "remote", "hybrid", "onsite"] as const;
@@ -183,4 +192,100 @@ export function sameSearch(a: Partial<JobSearchCriteria>, b: Partial<JobSearchCr
 			search.visaSponsorship ?? false,
 		]);
 	return key(a) === key(b);
+}
+
+/** The place as the posting gives it, else its parts. */
+export function placeLabel(listing: Pick<JobListingCard, "location">): string {
+	const { location } = listing;
+	return (
+		location.text.trim() ||
+		[location.city, location.region, location.country].filter((part): part is string => Boolean(part)).join(", ")
+	);
+}
+
+/** An amount of pay in its own currency, short for large ones ("£70K"); a code the runtime doesn't know is spelled out. */
+export function formatPay(value: number, currency: string, locale: string): string {
+	if (!currency) return new Intl.NumberFormat(locale, { maximumFractionDigits: 0 }).format(value);
+	try {
+		return new Intl.NumberFormat(locale, {
+			style: "currency",
+			currency,
+			notation: value >= 10_000 ? "compact" : "standard",
+			minimumFractionDigits: 0,
+			maximumFractionDigits: value >= 10_000 ? 1 : 0,
+		}).format(value);
+	} catch {
+		return `${currency} ${new Intl.NumberFormat(locale, { maximumFractionDigits: 0 }).format(value)}`;
+	}
+}
+
+export type PayRange = {
+	/** "£70K–£85K", or one amount. */
+	range: string;
+	/** What the amount is per, for the words around it. */
+	period: NonNullable<JobListingCard["salary"]>["period"];
+};
+
+/** The listed pay in its own currency, without words; null when the posting lists none. */
+export function payRange(salary: JobListingCard["salary"], locale: string): PayRange | null {
+	if (!salary || (salary.min === undefined && salary.max === undefined)) return null;
+	const { min, max, currency } = salary;
+	const range =
+		min !== undefined && max !== undefined && min !== max
+			? `${formatPay(min, currency, locale)}–${formatPay(max, currency, locale)}`
+			: formatPay((min ?? max) as number, currency, locale);
+	return { range, period: salary.period };
+}
+
+// A job alert's search in the schedule sheet (web and app): the sheet edits the role, city and country; every other
+// filter is kept as the search had it (they're chosen on the Jobs page).
+
+export type AlertFields = {
+	role: string;
+	city: string;
+	/** ISO country code; "" searches anywhere. */
+	country: string;
+	/** The rest of the search, saved unchanged. */
+	filters: Partial<JobSearchCriteria>;
+};
+
+/** A saved search as the sheet's fields. */
+export function alertFields(search: Partial<JobSearchCriteria>): AlertFields {
+	const { query, location, country, ...filters } = search;
+	return { role: query ?? "", city: location ?? "", country: country ?? "", filters };
+}
+
+type StartingAlert = {
+	/** The schedule being edited; an old one has a `query` but no `search`. */
+	existing: { search: JobSearchCriteria | null; query: string } | null;
+	/** A new alert from the Jobs screen: its current search. */
+	search: Partial<JobSearchCriteria> | undefined;
+	/** The role, place and country from Preferences (`jobs.defaults`), when loaded. */
+	defaults: JobSearchDefaults | undefined;
+	targetRoles: readonly string[];
+};
+
+/** Where a job alert starts: its own search, else the Jobs screen's, else Preferences, else the first target role. */
+export function startingAlertSearch({ existing, search, defaults, targetRoles }: StartingAlert) {
+	if (existing) return existing.search ?? { query: existing.query };
+	if (search) return search;
+	if (defaults)
+		return {
+			query: defaults.query,
+			...(defaults.location ? { location: defaults.location } : {}),
+			...(defaults.country ? { country: defaults.country } : {}),
+			remote: defaults.remote,
+		} satisfies Partial<JobSearchCriteria>;
+	return { query: targetRoles[0] ?? "" };
+}
+
+/** The search a job alert saves: the kept filters with the sheet's role, city and country. */
+export function alertSearch(fields: AlertFields): Partial<JobSearchCriteria> & { query: string } {
+	const city = fields.city.trim();
+	return {
+		...fields.filters,
+		query: fields.role.trim(),
+		...(city ? { location: city } : {}),
+		...(fields.country ? { country: fields.country } : {}),
+	};
 }

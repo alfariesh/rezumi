@@ -1,6 +1,6 @@
 import { beforeAll, describe, expect, it } from "vite-plus/test";
 import { i18n } from "@lingui/core";
-import { placeLabel, salaryLabel, sourceLabel } from "./format";
+import { salaryLabel, sourceLabel } from "./format";
 
 beforeAll(() => i18n.loadAndActivate({ locale: "en-US", messages: {} }));
 
@@ -24,14 +24,5 @@ describe("sourceLabel", () => {
 		expect(sourceLabel({ source: "greenhouse" })).toBe("via the company's careers site");
 		expect(sourceLabel({ source: "linkedin" })).toBe("via LinkedIn");
 		expect(sourceLabel({})).toBeNull();
-	});
-});
-
-describe("placeLabel", () => {
-	it("uses the posting's own place, else its parts", () => {
-		expect(placeLabel({ location: { text: "Berlin, Germany" } })).toBe("Berlin, Germany");
-		expect(placeLabel({ location: { text: "", city: "Austin", region: "TX", country: "United States" } })).toBe(
-			"Austin, TX, United States",
-		);
 	});
 });

@@ -23,3 +23,5 @@ maestro test -e RESUME_ID="$RESUME_ID" -e SHARE_SHEET_TEXT="Save to Files" apps/
 ```
 
 OS browser-consent text, native rich-text accessibility and sheet gestures may need selector adjustments after the first device run. No app-only test flags, authentication bypasses or production test seams were added.
+
+`jobs.yaml` (Phase 09): search → open the first listing → Track → it shows in Applications. Point the server's job search at the local treg stub (`TREG_BASE_URL=http://127.0.0.1:3999`, `TREG_API_KEY` any value; launch config `treg-stub-09` + `rezumi-mobile-09`), never at treg, and supply a role the account hasn't tracked: `maestro test -e QUERY="Data analyst" apps/mobile/e2e/jobs.yaml`. Passed on the iPhone 17 simulator (iOS 27.2) on 2026-11-22.

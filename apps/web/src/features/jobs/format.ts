@@ -1,6 +1,7 @@
 import type { JobSeniority, JobWorkArrangement } from "@rezumi/schema/jobs/listing";
 import type { JobListingCard, JobSearchCriteria } from "@rezumi/schema/jobs/search";
 import { t } from "@lingui/core/macro";
+import { formatPay, payRange } from "@rezumi/career/jobs";
 import { jobSourceName } from "@rezumi/schema/jobs/listing";
 
 /** How a listing reads on its card and in its detail: each in the person's language, the provider's data as given. */
@@ -32,39 +33,12 @@ export function sourceLabel(listing: Pick<JobListingCard, "source">): string | n
 	return name === "company-site" ? t`via the company's careers site` : t`via ${name}`;
 }
 
-/** The place as the posting gives it, else its parts. */
-export function placeLabel(listing: Pick<JobListingCard, "location">): string {
-	const { location } = listing;
-	return (
-		location.text.trim() ||
-		[location.city, location.region, location.country].filter((part): part is string => Boolean(part)).join(", ")
-	);
-}
-
-const amount = (value: number, currency: string, locale: string) => {
-	if (!currency) return new Intl.NumberFormat(locale, { maximumFractionDigits: 0 }).format(value);
-	try {
-		return new Intl.NumberFormat(locale, {
-			style: "currency",
-			currency,
-			notation: value >= 10_000 ? "compact" : "standard",
-			minimumFractionDigits: 0,
-			maximumFractionDigits: value >= 10_000 ? 1 : 0,
-		}).format(value);
-	} catch {
-		return `${currency} ${new Intl.NumberFormat(locale, { maximumFractionDigits: 0 }).format(value)}`;
-	}
-};
-
 /** The listed pay in its own currency ("£70K–£85K a year"); null when the posting lists none. */
 export function salaryLabel(salary: JobListingCard["salary"], locale: string): string | null {
-	if (!salary || (salary.min === undefined && salary.max === undefined)) return null;
-	const { min, max, currency } = salary;
-	const range =
-		min !== undefined && max !== undefined && min !== max
-			? `${amount(min, currency, locale)}–${amount(max, currency, locale)}`
-			: amount((min ?? max) as number, currency, locale);
-	switch (salary.period) {
+	const pay = payRange(salary, locale);
+	if (!pay) return null;
+	const { range } = pay;
+	switch (pay.period) {
 		case "year":
 			return t({ message: `${range} a year`, context: "Listed pay" });
 		case "month":
@@ -88,7 +62,7 @@ export function searchFilterLabels(search: Partial<JobSearchCriteria>, locale: s
 		);
 	if (search.seniority) labels.push(seniorityLabel(search.seniority));
 	if (search.salaryMin !== undefined) {
-		const pay = amount(search.salaryMin, search.salaryCurrency ?? "USD", locale);
+		const pay = formatPay(search.salaryMin, search.salaryCurrency ?? "USD", locale);
 		labels.push(
 			search.includeNoSalary === false
 				? t({ message: `Pay from ${pay} a year`, context: "Job search filter" })

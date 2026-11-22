@@ -1,0 +1,50 @@
+# Jobs (plans/mobile Phase 09): search, open a listing, track it, and find it in Applications.
+# Start signed in (run sign-in.yaml first), English UI, phone portrait, against a server whose job search points at
+# the local treg stub (TREG_BASE_URL=http://127.0.0.1:3999; tests/e2e/fixtures/treg-stub.ts): never a real provider.
+# Supply QUERY, a role the account hasn't tracked yet (the stub answers twelve made-up listings for any title).
+appId: app.rezumi
+---
+- launchApp
+- extendedWaitUntil:
+    visible:
+      id: "open-drawer"
+    timeout: 30000
+- tapOn:
+    id: "open-drawer"
+- tapOn:
+    id: "drawer-applications"
+# The list view still draws the legacy switch (no ids) until Phase 10.
+- tapOn: "Jobs"
+- extendedWaitUntil:
+    visible:
+      id: "jobs-query"
+    timeout: 10000
+- tapOn:
+    id: "jobs-query"
+- eraseText
+- inputText: ${QUERY}
+- tapOn:
+    id: "jobs-search"
+- extendedWaitUntil:
+    visible: "Get job alerts"
+    timeout: 20000
+# The first card (its label reads "<role>, <facts>, Posted …"): the role itself, at the first fictional company.
+- tapOn: "${QUERY}, .*Posted.*"
+- extendedWaitUntil:
+    visible:
+      id: "job-track"
+    timeout: 10000
+- assertVisible:
+    id: "job-original"
+- tapOn:
+    id: "job-track"
+- extendedWaitUntil:
+    visible:
+      id: "job-tracked"
+    timeout: 10000
+- tapOn: "Close"
+- tapOn:
+    id: "applications-view-list"
+- extendedWaitUntil:
+    visible: ".*${QUERY}.*"
+    timeout: 10000

@@ -1,330 +1,302 @@
+// One schedule in a sheet (the web's career/schedule-sheet.tsx): a job alert repeating a job search, an interview
+// briefing, or a follow-up reminder. Home mounts it while open; it opens itself, asks before dropping unsaved edits
+// and saves through career.saveSchedule. A job alert saves its whole `search`: the role, city and country from the
+// sheet and the other filters as the search had them.
 import type { Schedule } from "./hooks";
+import type { Draft, Kind, Lead } from "./schedule-fields";
 import type { RouterInput } from "@/api/client";
+import type { JobSearchCriteria } from "@rezumi/schema/jobs/search";
 import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react/macro";
-import DateTimePicker from "@react-native-community/datetimepicker";
+import { ORPCError } from "@orpc/client";
+import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
-import { Platform, View } from "react-native";
+import { View } from "react-native";
+import { alertFields, alertSearch, startingAlertSearch } from "@rezumi/career/jobs";
 import { careerScheduleInputSchema } from "@rezumi/schema/career";
 import { fromZonedDateTime } from "@rezumi/utils/timezone";
 import { client, useCareerAction, useCareerQueries, useCareerTime, useNow } from "./hooks";
+import { ScheduleBody } from "./schedule-body";
 import { collectInterviews, nextCareerRun, prepareRunAt, rollForward, toZoned } from "./scheduling";
-import { EditorSheet, LoadState, SwitchRow } from "./shared";
+import { orpc } from "@/api/client";
 import { useFlags } from "@/api/flags";
 import { useSession } from "@/auth/session";
-import { AIProviderSetupSheet, useHasAIProvider } from "@/features/ai/providers";
+import { useHasAIProvider } from "@/features/ai/provider-state";
 import { useApplications } from "@/features/applications/queries";
-import { Banner, Button, SelectSheet, Sheet, Text, TextField, useTheme } from "@/ui-legacy";
+import { Button, ConfirmDialog, Sheet, showToast } from "@/ui";
 
 type Input = RouterInput["career"]["saveSchedule"];
+type Applications = NonNullable<ReturnType<typeof useApplications>["data"]>;
+
+const KINDS: readonly Kind[] = ["discovery", "prepare", "follow-up"];
+
+/** The name a schedule goes by on Home and in toasts. */
 export const scheduleTitle = (kind: string) =>
-	kind === "prepare"
-		? t`Interview preparation`
-		: kind === "follow-up"
-			? t`Follow-up reminder`
-			: t`Opportunity discovery`;
+	kind === "prepare" ? t`Interview preparation` : kind === "follow-up" ? t`Follow-up reminder` : t`Job alert`;
+
 type ScheduleSheetProps = {
 	schedule: Schedule | null;
-	kind: Input["kind"];
+	kind: Kind;
 	onClose: () => void;
 	onDelete: (id: string) => void;
+	/** New job alert from the Jobs screen: the search to repeat. */
+	search?: JobSearchCriteria | undefined;
 };
-export function ScheduleSheet(props: ScheduleSheetProps) {
-	const { t } = useLingui();
-	const account = useCareerTime();
-	const career = useCareerQueries();
-	const applications = useApplications();
-	const ai = useHasAIProvider();
-	const session = useSession();
-	const flags = useFlags();
-	const queries = [account.profile, career.profile, applications, flags];
-	const unavailable = queries.find((query) => query.isError || query.isPending);
-	return unavailable ? (
-		<Sheet open onClose={props.onClose} title={t`New schedule`} detents={[0.9]}>
-			<LoadState query={unavailable} />
-		</Sheet>
-	) : account.profile.data && career.profile.data && applications.data && flags.data ? (
-		<ScheduleForm
-			{...props}
-			key={session.server}
-			timezone={account.timeZone}
-			locale={account.locale}
-			profile={career.profile.data}
-			applications={applications.data}
-			// The server searches without setup now (treg); nothing to check first.
-			search
-			available={flags.data.careerSchedulingEnabled ?? false}
-			smtp={flags.data.smtpEnabled}
-			verified={account.profile.data.emailVerified}
-			ai={ai}
-		/>
-	) : null;
+
+/** How many job alerts the plan keeps on, when saving was refused for that; never a way to buy more (K6). */
+function jobAlertLimit(error: unknown): number | null {
+	if (!(error instanceof ORPCError) || error.code !== "PLAN_LIMIT_REACHED") return null;
+	const data = (error.data ?? {}) as { limit?: unknown; max?: unknown };
+	return data.limit === "jobAlerts" ? (typeof data.max === "number" ? data.max : 0) : null;
 }
 
-type FormProps = ScheduleSheetProps & {
-	timezone: string;
-	locale: string;
-	profile: NonNullable<ReturnType<typeof useCareerQueries>["profile"]["data"]>;
-	applications: NonNullable<ReturnType<typeof useApplications>["data"]>;
-	search: boolean;
-	available: boolean;
-	smtp: boolean;
-	verified: boolean;
-	ai: ReturnType<typeof useHasAIProvider>;
-};
-function ScheduleForm({
-	schedule,
-	kind: initialKind,
-	onClose,
-	onDelete,
-	timezone,
-	locale,
-	profile,
-	applications,
-	search,
-	available,
-	smtp,
-	verified,
-	ai,
-}: FormProps) {
-	const { t } = useLingui();
-	const { space } = useTheme();
-	const now = useNow();
-	const upcoming = collectInterviews(applications, now);
-	const open = applications.filter((application) => application.status !== "closed");
-	const [initial] = useState(() => {
-		const at = schedule
-			? schedule.intervalDays
-				? rollForward(new Date(schedule.nextRunAt), schedule.intervalDays, timezone)
-				: new Date(schedule.nextRunAt)
-			: nextCareerRun(new Date(), 1, timezone);
-		return {
-			kind: (schedule?.kind as Input["kind"]) ?? initialKind,
-			query: schedule?.query || [...profile.targetRoles, ...profile.locations].join(" · "),
-			every: String(schedule?.intervalDays ?? 1),
-			...toZoned(at, timezone),
-			time: schedule ? toZoned(at, timezone).time : "08:00",
-			interviewId: schedule?.interviewId ?? upcoming[0]?.interview.id ?? "",
-			applicationId: schedule?.applicationId ?? open[0]?.id ?? "",
-			lead: (schedule?.lead as NonNullable<Input["lead"]>) ?? "24h",
-			aiProviderId: schedule?.aiProviderId ?? ai.defaultProvider?.id ?? "",
-			enabled: schedule?.enabled ?? true,
-			email: schedule?.email ?? false,
-		};
+/** Reads what the sheet needs; a new alert without a search also waits for the Preferences defaults. */
+function useScheduleData(props: ScheduleSheetProps) {
+	const session = useSession();
+	const time = useCareerTime();
+	const career = useCareerQueries();
+	const applications = useApplications();
+	const flags = useFlags();
+	const ai = useHasAIProvider();
+	const signedIn = session.status === "signed-in";
+	const needsDefaults = !props.schedule && !props.search;
+	const defaults = useQuery({
+		...orpc.jobs.defaults.queryOptions(),
+		enabled: signedIn && needsDefaults,
+		staleTime: Number.POSITIVE_INFINITY,
+		queryKey: [...orpc.jobs.defaults.key(), session.server],
 	});
-	const [draft, setDraft] = useState(initial);
-	const [picker, setPicker] = useState<"date" | "time" | null>(null);
-	const [setup, setSetup] = useState(false);
-	const [validation, setValidation] = useState<string>();
+	const quota = useQuery({
+		...orpc.jobs.quota.queryOptions(),
+		enabled: signedIn,
+		queryKey: [...orpc.jobs.quota.key(), session.server],
+	});
+	const queries = [time.profile, career.profile, applications, flags];
+	const failed = queries.find((query) => query.isError) ?? null;
+	const ready =
+		queries.every((query) => query.data !== undefined) && (!needsDefaults || !defaults.isPending || defaults.isError);
+	return { time, career, applications, flags, ai, defaults, quota, failed, ready };
+}
+type Data = ReturnType<typeof useScheduleData>;
+
+function initialDraft(props: ScheduleSheetProps, data: Data, applications: Applications, now: Date): Draft {
+	const { schedule } = props;
+	const zone = data.time.timeZone;
+	const at = schedule
+		? schedule.intervalDays
+			? rollForward(new Date(schedule.nextRunAt), schedule.intervalDays, zone, now)
+			: new Date(schedule.nextRunAt)
+		: nextCareerRun(now, 1, zone);
+	const search = startingAlertSearch({
+		existing: schedule,
+		search: props.search,
+		defaults: data.defaults.data,
+		targetRoles: data.career.profile.data?.targetRoles ?? [],
+	});
+	return {
+		kind: schedule ? (KINDS.find((kind) => kind === schedule.kind) ?? "discovery") : props.kind,
+		...alertFields(search),
+		every: String(schedule?.intervalDays ?? 1),
+		date: toZoned(at, zone).date,
+		time: schedule ? toZoned(at, zone).time : "08:00",
+		interviewId: schedule?.interviewId ?? collectInterviews(applications, now)[0]?.interview.id ?? "",
+		applicationId: schedule?.applicationId ?? applications.find((row) => row.status !== "closed")?.id ?? "",
+		lead: (schedule?.lead as Lead | null) ?? "24h",
+		aiProviderId: schedule?.aiProviderId ?? data.ai.defaultProvider?.id ?? "",
+		enabled: schedule?.enabled ?? true,
+		email: schedule?.email ?? false,
+	};
+}
+
+/** The draft, what follows from it (run time, errors, what blocks saving) and the save itself. */
+function useScheduleForm(props: ScheduleSheetProps) {
+	const { t } = useLingui();
+	const { schedule, onClose } = props;
+	const now = useNow();
+	const data = useScheduleData(props);
 	const action = useCareerAction();
-	const set = (patch: Partial<typeof draft>) => setDraft((current) => ({ ...current, ...patch }));
-	const interview = upcoming.find((row) => row.interview.id === draft.interviewId);
-	const at = fromZonedDateTime(draft.date, draft.time, timezone);
-	const runAt = draft.kind === "prepare" && interview ? prepareRunAt(interview.start, draft.lead, timezone) : at;
-	const provider = ai.usableProviders.find((row) => row.id === draft.aiProviderId) ?? ai.defaultProvider;
+	const [start, setStart] = useState<Draft | null>(null);
+	const [draft, setDraft] = useState<Draft | null>(null);
+	const [tried, setTried] = useState(false);
+	const [roleTouched, setRoleTouched] = useState(false);
+	const [problem, setProblem] = useState<{ limit: number } | "invalid" | null>(null);
+	const applications = data.applications.data;
+	if (!draft && data.ready && applications) {
+		const initial = initialDraft(props, data, applications, now);
+		setStart(initial);
+		setDraft(initial);
+	}
+
+	const { timeZone, locale } = data.time;
+	const upcoming = collectInterviews(applications ?? [], now);
+	const open = (applications ?? []).filter((row) => row.status !== "closed");
+	const interview = upcoming.find((row) => row.interview.id === draft?.interviewId);
+	const { ai } = data;
+	const provider = ai.usableProviders.find((row) => row.id === draft?.aiProviderId) ?? ai.defaultProvider;
+	const entered = draft ? fromZonedDateTime(draft.date, draft.time, timeZone) : null;
+	const runAt =
+		draft?.kind === "prepare" ? (interview ? prepareRunAt(interview.start, draft.lead, timeZone) : null) : entered;
+	const available = data.flags.data?.careerSchedulingEnabled ?? false;
+	const alertsUnavailable = draft?.kind === "discovery" && data.quota.data?.available === false;
+	const smtp = data.flags.data?.smtpEnabled ?? false;
+	const verified = data.time.profile.data?.emailVerified ?? false;
+	const roleError = draft?.kind === "discovery" && draft.role.trim().length < 2 ? t`Add a role to look for.` : null;
+	const whenError =
+		!draft || draft.kind === "prepare"
+			? null
+			: !entered
+				? t`This time does not exist in your timezone. Choose another time.`
+				: entered <= now
+					? t`Pick a time after now.`
+					: null;
 	const blocked =
+		!draft ||
 		(draft.enabled && !available) ||
-		(draft.kind === "prepare"
-			? !interview || !ai.hasAIProvider
-			: draft.kind === "follow-up"
-				? !open.some((row) => row.id === draft.applicationId)
-				: !search);
+		alertsUnavailable ||
+		(draft.kind === "prepare" && (!interview || !ai.hasAIProvider)) ||
+		(draft.kind === "follow-up" && !open.some((row) => row.id === draft.applicationId));
+
 	const save = () => {
-		if (draft.kind === "discovery" && draft.query.trim().length < 3)
-			return setValidation(t`Add a role or company to look for.`);
-		if (blocked) return;
-		if (!runAt) return setValidation(t`This date or time does not exist in your timezone. Choose another time.`);
-		if (draft.kind !== "prepare" && runAt <= now) return setValidation(t`Pick a time after now.`);
+		if (!draft || blocked) return;
+		setTried(true);
+		if (roleError || whenError || !runAt) return;
+		const discovery = draft.kind === "discovery";
+		const prepare = draft.kind === "prepare";
 		const input: Input = {
 			...(schedule ? { id: schedule.id } : {}),
 			kind: draft.kind,
-			query: draft.kind === "discovery" ? draft.query.trim() : "",
-			applicationId:
-				draft.kind === "prepare"
-					? (interview?.application.id ?? null)
-					: draft.kind === "follow-up"
-						? draft.applicationId
-						: null,
-			interviewId: draft.kind === "prepare" ? draft.interviewId : null,
-			lead: draft.kind === "prepare" ? draft.lead : null,
+			query: discovery ? draft.role.trim() : "",
+			search: discovery ? alertSearch(draft) : null,
+			applicationId: prepare
+				? (interview?.application.id ?? null)
+				: draft.kind === "follow-up"
+					? draft.applicationId
+					: null,
+			interviewId: prepare ? draft.interviewId : null,
+			lead: prepare ? draft.lead : null,
 			enabled: draft.enabled,
 			email: smtp && verified && draft.email,
-			timezone,
+			timezone: timeZone,
 			locale,
 			nextRunAt: runAt,
-			intervalDays: draft.kind === "discovery" ? Number(draft.every) : null,
-			aiProviderId: draft.kind === "prepare" ? (provider?.id ?? null) : null,
+			intervalDays: discovery ? Number(draft.every) : null,
+			aiProviderId: prepare ? (provider?.id ?? null) : null,
 		};
-		if (!careerScheduleInputSchema.safeParse(input).success) return setValidation(t`Check the fields and try again.`);
-		setValidation(undefined);
-		void action.run(() => client.career.saveSchedule(input), onClose);
+		if (!careerScheduleInputSchema.safeParse(input).success) return setProblem("invalid");
+		setProblem(null);
+		void action.run(
+			async () => {
+				try {
+					return await client.career.saveSchedule(input);
+				} catch (error) {
+					const limit = jobAlertLimit(error);
+					if (limit !== null) setProblem({ limit });
+					throw error;
+				}
+			},
+			() => {
+				showToast({ title: t`Schedule saved`, variant: "success" });
+				onClose();
+			},
+		);
 	};
+
+	const body = {
+		draft,
+		set: (patch: Partial<Draft>) => setDraft((current) => current && { ...current, ...patch }),
+		isNew: !schedule,
+		failed: data.failed,
+		timeZone,
+		locale,
+		now,
+		upcoming,
+		open,
+		interview,
+		runAt,
+		ai,
+		providerMissing:
+			schedule?.kind === "prepare" &&
+			ai.usableProviders.length > 0 &&
+			!ai.usableProviders.some((row) => row.id === schedule.aiProviderId)
+				? (ai.defaultProvider?.label ?? "")
+				: null,
+		available,
+		alertsUnavailable,
+		smtp,
+		verified,
+		email: data.time.profile.data?.email ?? "",
+		errors: { role: tried || roleTouched ? roleError : null, when: tried ? whenError : null },
+		onRoleBlur: () => setRoleTouched(true),
+		limit: problem && problem !== "invalid" ? problem.limit : null,
+		saveError: problem === "invalid" ? t`Check the fields and try again.` : problem ? null : (action.error ?? null),
+		onClose,
+	};
+	const dirty = !!draft && JSON.stringify(draft) !== JSON.stringify(start);
+	return { body, draft, dirty, blocked, pending: action.pending, save };
+}
+
+export function ScheduleSheet(props: ScheduleSheetProps) {
+	const { t } = useLingui();
+	const { schedule, onClose, onDelete } = props;
+	const form = useScheduleForm(props);
+	const [discarding, setDiscarding] = useState(false);
+	const kind = form.draft?.kind ?? props.kind;
+	const title =
+		kind === "discovery"
+			? schedule
+				? t`Edit job alert`
+				: t`New job alert`
+			: schedule
+				? t`Edit schedule`
+				: t`New schedule`;
+
 	return (
-		<EditorSheet
-			title={schedule ? t`Edit schedule` : t`New schedule`}
-			dirty={JSON.stringify(draft) !== JSON.stringify(initial)}
-			pending={action.pending}
-			onClose={onClose}
-		>
-			<View style={{ padding: space.s4, gap: space.s4 }}>
-				<SelectSheet
-					label={t`What should run`}
-					value={draft.kind}
-					onChange={(kind) => set({ kind })}
-					disabled={!!schedule || action.pending}
-					options={[
-						{ value: "discovery", label: t`Find roles` },
-						{ value: "prepare", label: t`Prepare` },
-						{ value: "follow-up", label: t`Remind me` },
-					]}
-				/>
-				{!available ? (
-					<Banner
-						tone="warn"
-						message={t`Scheduled work is not available on this server. Ask your server administrator to configure it.`}
-					/>
-				) : null}
-				<Text color="ink3">{t`Times are shown in ${timezone}. Change timezone in Settings → Preferences.`}</Text>
-				{draft.kind === "discovery" ? (
-					<>
-						<TextField
-							label={t`Look for`}
-							value={draft.query}
-							maxLength={500}
-							onChangeText={(query) => set({ query })}
-						/>
-						<SelectSheet
-							label={t`How often`}
-							value={draft.every}
-							onChange={(every) => set({ every })}
-							options={[
-								{ value: "1", label: t`Every day` },
-								{ value: "3", label: t`Every 3 days` },
-								{ value: "7", label: t`Every week` },
-							]}
-						/>
-						<Text color="ink3">{t`Uses web search set up in Settings. Results wait in Today. Applications and documents are never created for you.`}</Text>
-						{!search ? <Banner tone="warn" message={t`Set up web search in Settings to find roles.`} /> : null}
-					</>
-				) : draft.kind === "prepare" ? (
-					<>
-						<SelectSheet
-							label={t`Interview`}
-							value={draft.interviewId}
-							onChange={(interviewId) => set({ interviewId })}
-							options={upcoming.map((row) => ({
-								value: row.interview.id,
-								label: `${row.application.company} · ${new Intl.DateTimeFormat(locale, { timeZone: timezone, dateStyle: "short", timeStyle: "short" }).format(row.start)}`,
-							}))}
-						/>
-						{!interview ? <Banner tone="warn" message={t`Add an upcoming interview in Applications first.`} /> : null}
-						<SelectSheet
-							label={t`Prepare a briefing`}
-							value={draft.lead}
-							onChange={(lead) => set({ lead })}
-							options={[
-								{ value: "24h", label: t`24 hours before` },
-								{ value: "2h", label: t`2 hours before` },
-								{ value: "morning", label: t`Morning of · 08:00 local` },
-							]}
-						/>
-						{runAt ? (
-							<Text>
-								{runAt <= now
-									? t`The lead time has passed. Saving runs the briefing now.`
-									: t`Runs at ${new Intl.DateTimeFormat(locale, { timeZone: timezone, dateStyle: "medium", timeStyle: "short" }).format(runAt)}.`}
-							</Text>
-						) : null}
-						<Text color="ink3">{t`Morning of runs at 08:00, or two hours before interviews starting before 10:00.`}</Text>
-						{ai.isLoading ? (
-							<Text>{t`Loading AI connections…`}</Text>
-						) : ai.error ? (
-							<Button
-								variant="secondary"
-								label={t`Retry AI connections`}
-								onPress={() => {
-									void ai.retry();
-								}}
-							/>
-						) : null}
-						<SelectSheet
-							label={t`AI connection`}
-							value={provider?.id ?? null}
-							onChange={(aiProviderId) => set({ aiProviderId })}
-							options={ai.usableProviders.map((row) => ({ value: row.id, label: row.label }))}
-						/>
-						<Button variant="secondary" label={t`Connect AI provider`} onPress={() => setSetup(true)} />
-						<Text color="ink3">{t`Sends this application and your switched-on Profile to this connection. Your provider may charge. If it becomes unavailable, scheduled work can use your default usable connection.`}</Text>
-					</>
-				) : (
-					<>
-						<SelectSheet
-							label={t`Application`}
-							value={draft.applicationId}
-							onChange={(applicationId) => set({ applicationId })}
-							options={open.map((row) => ({ value: row.id, label: `${row.company} · ${row.role}` }))}
-						/>
-						{!open.length ? <Banner tone="warn" message={t`Add an application first.`} /> : null}
-					</>
-				)}
-				{draft.kind !== "prepare" ? (
-					<>
-						<TextField
-							label={draft.kind === "follow-up" ? t`Remind me on (YYYY-MM-DD)` : t`First run (YYYY-MM-DD)`}
-							value={draft.date}
-							onChangeText={(date) => set({ date })}
-							maxLength={10}
-						/>
-						<TextField
-							label={t`Time (HH:mm)`}
-							value={draft.time}
-							onChangeText={(time) => set({ time })}
-							maxLength={5}
-						/>
-						<Button variant="secondary" label={t`Choose date`} onPress={() => setPicker("date")} />
-						<Button variant="secondary" label={t`Choose time`} onPress={() => setPicker("time")} />
-						{picker ? (
-							<DateTimePicker
-								value={at ?? now}
-								mode={picker}
-								timeZoneName={timezone}
-								onDismiss={() => setPicker(null)}
-								onValueChange={(_event, date) => {
-									const value = toZoned(date, timezone);
-									set(picker === "date" ? { date: value.date } : { time: value.time });
-									if (Platform.OS === "android") setPicker(null);
-								}}
-							/>
-						) : null}
-					</>
-				) : null}
-				<SwitchRow
-					label={t`Turn this schedule on`}
-					value={draft.enabled}
-					onValueChange={(enabled) => set({ enabled })}
-				/>
-				<SwitchRow
-					label={t`Also email a copy`}
-					value={smtp && verified && draft.email}
-					disabled={!smtp || !verified}
-					onValueChange={(email) => set({ email })}
-				/>
-				<Text color="ink3">{t`Always appears in Today. Email requires a verified address and server mail setup. No push notifications are sent.`}</Text>
-				{validation || action.error ? <Banner tone="danger" message={validation ?? action.error ?? ""} /> : null}
-				<Button label={t`Save schedule`} loading={action.pending} disabled={blocked} onPress={save} />
-				{schedule ? (
-					<Button
-						variant="danger"
-						label={t`Delete schedule`}
-						disabled={action.pending}
-						onPress={() => {
-							onDelete(schedule.id);
-							onClose();
-						}}
-					/>
-				) : null}
-				<AIProviderSetupSheet open={setup} onClose={() => setSetup(false)} />
-			</View>
-		</EditorSheet>
+		<>
+			<Sheet
+				isOpen
+				onOpenChange={(next) => {
+					if (!next) onClose();
+				}}
+				title={title}
+				closeLabel={t`Close`}
+				canDismiss={!form.dirty && !form.pending}
+				onDismissAttempt={() => {
+					if (form.dirty) setDiscarding(true);
+				}}
+				footer={
+					form.draft ? (
+						<View className="flex-row flex-wrap items-center gap-2">
+							{schedule ? (
+								<Button
+									variant="danger-soft"
+									isDisabled={form.pending}
+									onPress={() => {
+										onDelete(schedule.id);
+										onClose();
+									}}
+								>
+									<Button.Label>{t`Delete`}</Button.Label>
+								</Button>
+							) : null}
+							<View className="flex-1" />
+							<Button variant="primary" isDisabled={form.blocked || form.pending} onPress={form.save}>
+								<Button.Label>{form.pending ? t`Saving…` : t`Save schedule`}</Button.Label>
+							</Button>
+						</View>
+					) : undefined
+				}
+			>
+				<ScheduleBody {...form.body} />
+			</Sheet>
+			<ConfirmDialog
+				isOpen={discarding}
+				onOpenChange={setDiscarding}
+				title={t`Discard changes?`}
+				confirmLabel={t`Discard`}
+				cancelLabel={t`Keep editing`}
+				destructive
+				onConfirm={onClose}
+			/>
+		</>
 	);
 }

@@ -1,4 +1,4 @@
-import type { JobsSearch } from "./search";
+import type { JobsSearch } from "@rezumi/career/jobs";
 import type { IconName } from "@rezumi/ui/components/icon";
 import type { Key } from "react";
 import { Sheet } from "@heroui-pro/react";
@@ -7,13 +7,13 @@ import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Trans } from "@lingui/react/macro";
 import { useId, useMemo, useState } from "react";
+import { currencyForCountry, PAY_CURRENCIES, sheetFilterCount, withoutFilters } from "@rezumi/career/jobs";
 import { JOB_SENIORITIES } from "@rezumi/schema/jobs/listing";
 import { Icon } from "@rezumi/ui/components/icon";
 import { CellSwitchRow } from "@rezumi/ui/components/switch";
 import { useBreakpoint } from "@rezumi/ui/hooks/use-breakpoint";
 import { countryName, SEARCH_REGION_CODES } from "@rezumi/utils/region";
 import { arrangementLabel, seniorityLabel } from "./format";
-import { currencyForCountry, PAY_CURRENCIES, sheetFilterCount, withoutFilters } from "./search";
 import { FlagIcon } from "@/components/flag-icon";
 import { CellSelectField } from "@/components/input/select-field";
 

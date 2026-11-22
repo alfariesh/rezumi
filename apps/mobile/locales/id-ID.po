@@ -246,6 +246,11 @@ msgstr "{0, plural, one {Membaca bagian # dari resume Anda…} other {Membaca en
 msgid "{0, plural, one {Started # minute ago} other {Started # minutes ago}}"
 msgstr "{0, plural, other {Dimulai # menit lalu}}"
 
+#. placeholder {0}: Math.floor(hours / 24)
+#: src/features/jobs/format.ts
+msgid "{0, plural, one {updated # day ago} other {updated # days ago}}"
+msgstr "{0, plural, other {diperbarui # hari lalu}}"
+
 #. placeholder {0}: fact.usedBy.savedItems
 #: src/features/profile/facts-labels.ts
 msgid "{0, plural, one {used in # saved item} other {used in # saved items}}"
@@ -313,6 +318,11 @@ msgstr "{0} kamu dapatkan saat pertama kali memakai Rezumi AI, berlaku {1} hari.
 #: src/features/onboarding/messages.ts
 msgid "{0} didn't answer in time. Try again in a moment."
 msgstr "{0} tidak menjawab tepat waktu. Coba lagi sebentar lagi."
+
+#. placeholder {0}: company.size
+#: src/features/jobs/listing-detail.tsx
+msgid "{0} employees"
+msgstr "{0} karyawan"
 
 #. placeholder {0}: creditCount(credits.nextExpiry.credits)
 #. placeholder {1}: formatDate(credits.nextExpiry.at)
@@ -475,6 +485,10 @@ msgstr "{count, plural, one {Entri #} other {Entri #}}"
 msgid "{count, plural, one {# interview} other {# interviews}}"
 msgstr "{count, plural, other {# wawancara}}"
 
+#: src/features/jobs/jobs-header.tsx
+msgid "{count, plural, one {# job} other {# jobs}}"
+msgstr "{count, plural, other {# lowongan}}"
+
 #: src/features/workspace/tabs/messages.tsx
 msgid "{count, plural, one {Apply # change} other {Apply # changes}}"
 msgstr "{count, plural, other {Terapkan # perubahan}}"
@@ -528,6 +542,10 @@ msgstr "{days, plural, =0 {· sejak hari ini} one {· selama # hari} other {· s
 msgid "{days, plural, one {In # day} other {In # days}}"
 msgstr "{days, plural, other {# hari lagi}}"
 
+#: src/features/jobs/format.ts
+msgid "{days, plural, one {Posted # day ago} other {Posted # days ago}}"
+msgstr "{days, plural, other {Diposting # hari lalu}}"
+
 #: src/features/workspace/tabs/debrief.tsx
 msgid "{done} of {count} done"
 msgstr "{done} dari {count} selesai"
@@ -576,6 +594,10 @@ msgstr "{hostname} butuh CNAME di root, yang tidak diizinkan banyak penyedia. Ji
 #: src/features/home/coming-up.tsx
 msgid "{hours, plural, one {In # hour} other {In # hours}}"
 msgstr "{hours, plural, other {# jam lagi}}"
+
+#: src/features/jobs/format.ts
+msgid "{hours, plural, one {updated # hour ago} other {updated # hours ago}}"
+msgstr "{hours, plural, other {diperbarui # jam lalu}}"
 
 #: src/features/workspace/shell.tsx
 msgid "{hours} h"
@@ -636,9 +658,19 @@ msgstr "{label}, {shown} belum dibaca"
 msgid "{left, plural, one {# left, expires on {expires}} other {# left, expires on {expires}}}"
 msgstr "{left, plural, other {Sisa #, kedaluwarsa pada {expires}}}"
 
+#. placeholder {0}: quota.max
+#. placeholder {1}: quota.max
+#: src/features/jobs/jobs-header.tsx
+msgid "{left, plural, one {# search left today (of {0})} other {# searches left today (of {1})}}"
+msgstr "{left, plural, other {Sisa # pencarian hari ini (dari {1})}}"
+
 #: src/features/entries/entry-fields.tsx
 msgid "{level} of 5"
 msgstr "{level} dari 5"
+
+#: src/features/career/schedule-body.tsx
+msgid "{max, plural, one {You can keep # job alert on. Pause or delete one to turn on another.} other {You can keep up to # job alerts on. Pause or delete one to turn on another.}}"
+msgstr "{max, plural, other {Kamu bisa menyalakan hingga # notifikasi lowongan. Jeda atau hapus satu untuk menyalakan yang lain.}}"
 
 #: src/features/workspace/tabs/debrief.tsx
 msgid "{minutes, plural, one {# minute in total} other {# minutes in total}}"
@@ -649,11 +681,19 @@ msgstr "{minutes, plural, other {total # menit}}"
 msgid "{minutes, plural, one {Starts in # minute} other {Starts in # minutes}}"
 msgstr "{minutes, plural, other {Dimulai dalam # menit}}"
 
+#: src/features/jobs/format.ts
+msgid "{minutes, plural, one {updated # min ago} other {updated # min ago}}"
+msgstr "{minutes, plural, other {diperbarui # menit lalu}}"
+
 #: src/features/application-detail/hooks.ts
 #: src/features/workspace/shell.tsx
 #: src/features/workspace/tabs/prepare.tsx
 msgid "{minutes} min"
 msgstr "{minutes} mnt"
+
+#: src/features/jobs/listing-fit.tsx
+msgid "{missing} missing"
+msgstr "{missing} belum ada"
 
 #: src/features/check/messages.ts
 msgid "{name} added to page 1"
@@ -663,6 +703,7 @@ msgstr "{name} ditambahkan ke halaman 1"
 msgid "{name} and custom styles aren't available, so the imported document uses {free} without the file's styles."
 msgstr "{name} dan gaya kustom tidak tersedia, jadi dokumen hasil impor memakai {free} tanpa gaya dari file."
 
+#: src/features/jobs/listing-fit.tsx
 #: src/features/workspace/hooks.ts
 msgid "{name} didn't respond. Nothing was changed; try again."
 msgstr "{name} tidak merespons. Tidak ada yang diubah; coba lagi."
@@ -725,6 +766,10 @@ msgstr "{others, plural, other {Disimpan ke Profil Anda. # CV lain ikut diperbar
 msgid "{pairingName} type"
 msgstr "huruf {pairingName}"
 
+#: src/features/jobs/listing-fit.tsx
+msgid "{partial} partly"
+msgstr "{partial} sebagian"
+
 #: src/features/check/issues-tab.tsx
 msgid "{passed} of {total}"
 msgstr "{passed} dari {total}"
@@ -737,6 +782,21 @@ msgstr "{passedRules} dari {totalRules} lulus cek."
 msgid "{pending, plural, one {# proposed edit on this page · nothing changes until you accept} other {# proposed edits on this page · nothing changes until you accept}}"
 msgstr "{pending, plural, one {# usulan edit di halaman ini · tidak ada yang berubah sebelum Anda menerima} other {# usulan edit di halaman ini · tidak ada yang berubah sebelum Anda menerima}}"
 
+#: src/features/jobs/format.ts
+msgctxt "Listed pay"
+msgid "{range} a month"
+msgstr "{range} per bulan"
+
+#: src/features/jobs/format.ts
+msgctxt "Listed pay"
+msgid "{range} a year"
+msgstr "{range} per tahun"
+
+#: src/features/jobs/format.ts
+msgctxt "Listed pay"
+msgid "{range} an hour"
+msgstr "{range} per jam"
+
 #: src/features/workspace/shell.tsx
 msgid "{role} · {company}"
 msgstr "{role} · {company}"
@@ -744,6 +804,10 @@ msgstr "{role} · {company}"
 #: src/features/design/gallery-filters.tsx
 msgid "{shown} of {listed} shown"
 msgstr "{shown} dari {listed} ditampilkan"
+
+#: src/features/jobs/listing-detail.tsx
+msgid "{skill} (in your Profile)"
+msgstr "{skill} (ada di Profil kamu)"
 
 #: src/features/assistant/messages.tsx
 msgid "{skipped, plural, one {# edit couldn't be placed: its text changed. Ask again to redo it.} other {# edits couldn't be placed: their text changed. Ask again to redo them.}}"
@@ -756,6 +820,10 @@ msgstr "{stories, plural, other {# cerita}}"
 #: src/features/workspace/tabs/messages.tsx
 msgid "{summary}. Opens in Career → Offers."
 msgstr "{summary}. Terbuka di Karier → Penawaran."
+
+#: src/features/jobs/listing-fit.tsx
+msgid "{supported} supported"
+msgstr "{supported} didukung"
 
 #: src/features/workspace/tabs/fit.tsx
 msgid "{supported} supported · {partial} partly · {missing} missing"
@@ -853,7 +921,7 @@ msgstr "Briefing 10 menit"
 msgid "2 files"
 msgstr "2 file"
 
-#: src/features/career/schedule-sheet.tsx
+#: src/features/career/schedule-body.tsx
 #: src/features/home/schedules.tsx
 msgid "2 hours before"
 msgstr "2 jam sebelumnya"
@@ -863,10 +931,15 @@ msgstr "2 jam sebelumnya"
 msgid "2–3 sentences reads best"
 msgstr "2–3 kalimat paling baik dibaca"
 
-#: src/features/career/schedule-sheet.tsx
+#: src/features/career/schedule-body.tsx
 #: src/features/home/schedules.tsx
 msgid "24 hours before"
 msgstr "24 jam sebelumnya"
+
+#: src/features/career/schedule-fields.tsx
+msgctxt "How often a job alert runs: every 3 days"
+msgid "3 days"
+msgstr "3 hari"
 
 #: src/features/onboarding/intro-screen.tsx
 msgid "3 new roles match you"
@@ -928,6 +1001,10 @@ msgstr "Celah setinggi penuh halaman ini membaginya menjadi dua kolom."
 #: src/features/ats-checker/messages.ts
 msgid "A gap is not a problem. Add a one-line explanation if you want to; many strong resumes simply do not."
 msgstr "Celah bukan masalah. Tambahkan penjelasan satu baris jika Anda mau; banyak resume yang kuat sama sekali tidak melakukannya."
+
+#: src/features/career/schedule-fields.tsx
+msgid "A job title works best, such as “Product designer”."
+msgstr "Nama posisi paling cocok, misalnya “Product designer”."
 
 #: src/features/check/messages.ts
 msgid "A link isn't a full address"
@@ -997,9 +1074,18 @@ msgstr "Rencana berwaktu, pembuka Anda, cerita yang perlu dibawa, dan pertanyaan
 msgid "A web address is written without https://."
 msgstr "Alamat web ditulis tanpa https://."
 
+#. placeholder {0}: company.name
+#: src/features/jobs/listing-detail.tsx
+msgid "About {0}"
+msgstr "Tentang {0}"
+
 #: src/features/workspace/tabs/practise.tsx
 msgid "About 90 seconds when spoken"
 msgstr "Sekitar 90 detik jika diucapkan"
+
+#: src/features/jobs/listing-detail.tsx
+msgid "About the job"
+msgstr "Tentang pekerjaan ini"
 
 #: src/features/career/offers.tsx
 msgid "Above your office-day limit."
@@ -1157,8 +1243,8 @@ msgid "Add a role"
 msgstr "Tambah posisi"
 
 #: src/features/career/schedule-sheet.tsx
-msgid "Add a role or company to look for."
-msgstr "Tambahkan posisi atau perusahaan yang dicari."
+msgid "Add a role to look for."
+msgstr "Isi posisi yang dicari."
 
 #: src/features/profile/preferences.tsx
 msgid "Add a role, then Return"
@@ -1206,9 +1292,9 @@ msgstr "Tambahkan @ dan domain, seperti name@example.com"
 msgid "Add an address."
 msgstr "Tambahkan alamat."
 
-#: src/features/career/schedule-sheet.tsx
-msgid "Add an application first."
-msgstr "Tambahkan lamaran pekerjaan terlebih dahulu."
+#: src/features/career/schedule-body.tsx
+msgid "Add an application first"
+msgstr "Tambahkan lamaran terlebih dahulu"
 
 #: src/features/check/messages.ts
 msgid "Add an email"
@@ -1218,13 +1304,13 @@ msgstr "Tambahkan email"
 msgid "Add an interview"
 msgstr "Tambah wawancara"
 
+#: src/features/career/schedule-body.tsx
+msgid "Add an interview in an application first"
+msgstr "Tambahkan wawancara di lamaran terlebih dahulu"
+
 #: src/features/workspace/tabs/prepare.tsx
 msgid "Add an interview to plan for it"
 msgstr "Tambahkan wawancara untuk merencanakannya"
-
-#: src/features/career/schedule-sheet.tsx
-msgid "Add an upcoming interview in Applications first."
-msgstr "Tambahkan wawancara mendatang dalam lamaran pekerjaan terlebih dahulu."
 
 #: src/features/onboarding/onboarding-screen.tsx
 msgid "Add any of these and we'll fill in your Profile. You check everything before it's saved."
@@ -1378,6 +1464,10 @@ msgstr "Tambahkan domain setelah @, seperti {name}@example.com"
 msgid "Add the domain ending, like {domain}.com"
 msgstr "Tambahkan akhiran domain, seperti {domain}.com"
 
+#: src/features/jobs/jobs-states.tsx
+msgid "Add the roles you want"
+msgstr "Tambahkan posisi yang kamu cari"
+
 #: src/features/share/custom-domain.tsx
 msgid "Add these records where you manage the domain, then check. Changes can take a few hours to reach everyone."
 msgstr "Tambahkan record ini di tempat Anda mengelola domain, lalu periksa. Perubahan bisa memerlukan beberapa jam untuk menjangkau semua orang."
@@ -1523,7 +1613,7 @@ msgstr "AI"
 msgid "AI & developer"
 msgstr "AI & pengembang"
 
-#: src/features/career/schedule-sheet.tsx
+#: src/features/career/schedule-body.tsx
 msgid "AI connection"
 msgstr "Koneksi AI"
 
@@ -1661,13 +1751,13 @@ msgstr "Download juga surat lamaran {0}"
 msgid "Also download the cover letter"
 msgstr "Download juga surat lamarannya"
 
-#: src/features/career/schedule-sheet.tsx
-msgid "Also email a copy"
-msgstr "Juga kirimkan salinannya melalui email"
+#: src/features/career/schedule-fields.tsx
+msgid "Also email {email}"
+msgstr "Kirim juga ke {email}"
 
-#: src/features/career/schedule-sheet.tsx
-msgid "Always appears in Today. Email requires a verified address and server mail setup. No push notifications are sent."
-msgstr "Selalu muncul di Hari ini. Email memerlukan alamat terverifikasi dan pengaturan email server. Tidak ada pemberitahuan push yang dikirim."
+#: src/features/career/schedule-fields.tsx
+msgid "Also filtered by: {list}"
+msgstr "Juga disaring: {list}"
 
 #: src/features/settings/locale-names.ts
 msgid "Amharic"
@@ -1738,14 +1828,24 @@ msgstr "Jawaban"
 msgid "Answers copied"
 msgstr "Jawaban disalin"
 
+#: src/features/jobs/filters-sheet.tsx
 #: src/features/onboarding/questions.tsx
 #: src/features/profile/preferences.tsx
 msgid "Any"
 msgstr "Apa saja"
 
+#: src/features/jobs/filters-sheet.tsx
+msgctxt "Job search filter: any work arrangement"
+msgid "Any"
+msgstr "Semua"
+
 #: src/features/design/type-group.tsx
 msgid "Any font, with its weights and sizes"
 msgstr "Font apa pun, dengan ketebalan dan ukurannya"
+
+#: src/features/jobs/filters-sheet.tsx
+msgid "Any level"
+msgstr "Semua level"
 
 #: src/features/share/web-page.tsx
 msgid "Anyone with the link will be able to view your resume."
@@ -1755,9 +1855,16 @@ msgstr "Siapa pun yang memiliki tautan tersebut akan dapat melihat resume Anda."
 msgid "Anything to remember about this job"
 msgstr "Apa pun yang perlu diingat tentang pekerjaan ini"
 
+#: src/features/career/schedule-fields.tsx
+#: src/features/jobs/filters-sheet.tsx
+#: src/features/jobs/recent-searches.tsx
 #: src/features/profile/search-regions-field.tsx
 msgid "Anywhere"
 msgstr "Dimanapun"
+
+#: src/features/jobs/filters-sheet.tsx
+msgid "Anywhere in the country"
+msgstr "Di mana saja di negara ini"
 
 #: src/features/billing/plan-alert.ts
 msgid "API and MCP access isn't available"
@@ -1827,7 +1934,7 @@ msgstr "Muncul di halaman setelah memiliki organisasi."
 #: app/_layout.tsx
 #: src/features/application-detail/detail-screen.tsx
 #: src/features/applications-board/calendar-screen.tsx
-#: src/features/career/schedule-sheet.tsx
+#: src/features/career/schedule-body.tsx
 #: src/features/check/application-picker.tsx
 #: src/features/letters/write.tsx
 #: src/shell/workspace-chrome.tsx
@@ -1855,6 +1962,7 @@ msgstr "ringkasan lamaran"
 msgid "Application updated"
 msgstr "Lamaran diperbarui"
 
+#: src/features/applications-board/views-row.tsx
 #: src/features/applications-board/views.tsx
 msgid "Application views"
 msgstr "Tampilan lamaran"
@@ -1863,6 +1971,7 @@ msgstr "Tampilan lamaran"
 #: app/(tabs)/applications/_layout.tsx
 #: src/features/applications-board/views.tsx
 #: src/features/assistant/coach-screen.tsx
+#: src/features/jobs/jobs-screen.tsx
 #: src/features/search/search-screen.tsx
 #: src/shell/app-tabs.tsx
 msgid "Applications"
@@ -2128,6 +2237,10 @@ msgstr "Kembali ke lamaran"
 msgid "Back to current"
 msgstr "Kembali ke versi saat ini"
 
+#: src/features/jobs/filters-sheet.tsx
+msgid "Back to filters"
+msgstr "Kembali ke filter"
+
 #: src/features/history/history-panel.tsx
 #: src/features/letters/share.tsx
 msgid "Back to now"
@@ -2226,6 +2339,7 @@ msgstr "Bengali"
 msgid "BI analyst"
 msgstr "BI analyst"
 
+#: src/features/applications-board/views-row.tsx
 #: src/features/applications-board/views.tsx
 msgid "Board"
 msgstr "Papan"
@@ -2351,6 +2465,7 @@ msgstr "Bisnis"
 msgid "by <0>Salman Alfariesh</0>"
 msgstr "oleh <0>Salman Alfariesh</0>"
 
+#: src/features/applications-board/views-row.tsx
 #: src/features/applications-board/views.tsx
 msgid "Calendar"
 msgstr "Kalender"
@@ -2473,6 +2588,10 @@ msgstr "Mengubah judul bagian dan kata tanggal saja, bukan konten Anda."
 msgid "Changes to “{name}” were saved on another device. Your edits are still on this device. Choose which version to keep."
 msgstr "Perubahan pada “{name}” disimpan di perangkat lain. Hasil edit Anda masih ada di perangkat ini. Pilih versi mana yang akan disimpan."
 
+#: src/features/jobs/search-bar.tsx
+msgid "Changes when the jobs were posted"
+msgstr "Mengubah rentang tanggal posting"
+
 #: src/features/design/preset-names.ts
 msgid "Charts and dashboards"
 msgstr "Grafik & dasbor"
@@ -2494,6 +2613,7 @@ msgstr "Periksa PDF dengan pemeriksa ATS"
 msgid "Check a sample file"
 msgstr "Periksa file sampel"
 
+#: src/features/jobs/listing-fit.tsx
 #: src/features/share/custom-domain.tsx
 #: src/features/workspace/tabs/fit.tsx
 msgid "Check again"
@@ -2507,10 +2627,15 @@ msgstr "Periksa file lain"
 msgid "Check DNS"
 msgstr "Periksa DNS"
 
+#: src/features/jobs/listing-fit.tsx
+msgid "Check each requirement against the facts and stories in your Profile. Gaps show as missing evidence, never missing ability."
+msgstr "Periksa setiap persyaratan dengan fakta dan cerita di Profil Anda. Celah ditandai sebagai bukti yang belum ada, bukan kemampuan yang kurang."
+
 #: src/features/workspace/tabs/apply.tsx
 msgid "Check every claim, date and result against your experience."
 msgstr "Periksa setiap klaim, tanggal, dan hasil terhadap pengalaman Anda."
 
+#: src/features/jobs/listing-fit.tsx
 #: src/features/workspace/tabs/fit.tsx
 #: src/features/workspace/tabs/saved.tsx
 msgid "Check fit"
@@ -2712,10 +2837,6 @@ msgstr "Pilih file lain"
 msgid "Choose any of the fonts in Design instead."
 msgstr "Pilih salah satu font di Desain sebagai gantinya."
 
-#: src/features/career/schedule-sheet.tsx
-msgid "Choose date"
-msgstr "Pilih tanggal"
-
 #: src/features/entries/photo-field.tsx
 #: src/features/settings/profile.tsx
 msgid "Choose from library"
@@ -2724,10 +2845,6 @@ msgstr "Pilih dari perpustakaan"
 #: src/features/entries/custom-fields.tsx
 msgid "Choose icon"
 msgstr "Pilih ikon"
-
-#: src/features/career/schedule-sheet.tsx
-msgid "Choose time"
-msgstr "Pilih waktu"
 
 #: src/features/applications/list-screen.tsx
 msgid "Choose up to 200 applications per bulk action."
@@ -2740,6 +2857,14 @@ msgstr "Lingkaran"
 #: src/features/onboarding/questions.tsx
 msgid "Cities or countries. Leave it empty for anywhere."
 msgstr "Kota atau negara. Kosongkan bila di mana saja."
+
+#: src/features/jobs/filters-sheet.tsx
+msgid "City"
+msgstr "Kota"
+
+#: src/features/career/schedule-fields.tsx
+msgid "City (optional)"
+msgstr "Kota (opsional)"
 
 #: src/features/entries/basics-form.tsx
 msgid "City, country"
@@ -2757,9 +2882,12 @@ msgstr "Klasik"
 msgid "Clean"
 msgstr "Bersih"
 
+#. Removes every recent job search
+#. Removes every recent job search
 #: src/features/application-detail/sheets.tsx
 #: src/features/check/posting.tsx
 #: src/features/entries/dates-field.tsx
+#: src/features/jobs/recent-searches.tsx
 msgid "Clear"
 msgstr "Bersihkan"
 
@@ -2769,6 +2897,8 @@ msgstr "Hapus tanggal"
 
 #: src/features/applications-board/board-screen.tsx
 #: src/features/applications/list-screen.tsx
+#: src/features/jobs/filters-sheet.tsx
+#: src/features/jobs/jobs-states.tsx
 msgid "Clear filters"
 msgstr "Hapus filter"
 
@@ -2800,6 +2930,8 @@ msgid "Clears its entries; the section stays. You can undo."
 msgstr "Menghapus entri-entrinya; bagian itu tetap ada. Anda dapat membatalkan."
 
 #: src/features/auth/welcome-screen.tsx
+#: src/features/career/schedule-fields.tsx
+#: src/features/career/schedule-sheet.tsx
 #: src/features/check/application-picker.tsx
 #: src/features/check/check-page.tsx
 #: src/features/check/issue-stepper.tsx
@@ -2821,6 +2953,9 @@ msgstr "Menghapus entri-entrinya; bagian itu tetap ada. Anda dapat membatalkan."
 #: src/features/entries/photo-field.tsx
 #: src/features/entries/rich-text-toolbar.tsx
 #: src/features/history/version-options.tsx
+#: src/features/jobs/filters-sheet.tsx
+#: src/features/jobs/listing-detail.tsx
+#: src/features/jobs/recent-searches.tsx
 #: src/features/letters/design.tsx
 #: src/features/letters/share.tsx
 #: src/features/letters/write.tsx
@@ -3010,15 +3145,19 @@ msgid "Connect {hostname}"
 msgstr "Sambungkan {hostname}"
 
 #: src/features/applications/add-sheet.tsx
-#: src/features/career/schedule-sheet.tsx
 msgid "Connect AI provider"
 msgstr "Hubungkan penyedia AI"
 
 #: src/features/assistant/provider.tsx
+#: src/features/jobs/listing-fit.tsx
 #: src/features/workspace/parts.tsx
 #: src/features/workspace/tabs/practise.tsx
 msgid "Connect an AI provider"
 msgstr "Hubungkan penyedia AI"
+
+#: src/features/career/schedule-body.tsx
+msgid "Connect an AI provider in Settings"
+msgstr "Hubungkan penyedia AI di Pengaturan"
 
 #: src/features/workspace/tabs/prepare.tsx
 msgid "Connect an AI provider in Settings to refresh it automatically."
@@ -3300,6 +3439,10 @@ msgstr "Tidak dapat menghapus percakapan. Coba lagi."
 msgid "Couldn't delete the interview. Try again."
 msgstr "Tidak dapat menghapus wawancara. Coba lagi."
 
+#: src/features/jobs/jobs-screen.tsx
+msgid "Couldn't delete this job alert. Try again."
+msgstr "Notifikasi lowongan ini belum bisa dihapus. Coba lagi."
+
 #: src/features/home/home-screen.tsx
 msgid "Couldn't delete this schedule. Try again."
 msgstr "Tidak dapat menghapus jadwal ini. Coba lagi."
@@ -3408,6 +3551,7 @@ msgid "Couldn't load this version's page."
 msgstr "Tidak dapat memuat halaman versi ini."
 
 #: src/features/application-detail/sheets.tsx
+#: src/features/career/schedule-body.tsx
 #: src/features/career/shared.tsx
 msgid "Couldn't load this. Check your connection and try again."
 msgstr "Tidak dapat memuat ini. Periksa koneksi Anda dan coba lagi."
@@ -3490,6 +3634,7 @@ msgid "Couldn't open the file."
 msgstr "File tidak bisa dibuka."
 
 #: src/features/home/new-roles.tsx
+#: src/features/jobs/listing-detail.tsx
 msgid "Couldn't open the posting. Try again."
 msgstr "Tidak dapat membuka lowongan pekerjaan. Coba lagi."
 
@@ -3791,6 +3936,11 @@ msgstr "Hitung kata"
 msgid "Counted separately from the parse score. Coverage does not predict anything."
 msgstr "Dihitung terpisah dari skor pembacaan. Cakupan tidak memprediksi apa pun."
 
+#: src/features/career/schedule-fields.tsx
+#: src/features/jobs/filters-sheet.tsx
+msgid "Country"
+msgstr "Negara"
+
 #: src/features/applications-board/insights-screen.tsx
 msgid "Counts every application that reached each stage, including ones now closed."
 msgstr "Menghitung setiap lamaran pekerjaan yang mencapai setiap tahap, termasuk yang sekarang sudah ditutup."
@@ -3898,6 +4048,7 @@ msgstr "Kreatif"
 msgid "Credits are used soonest-expiring first. They can't be moved to another account or exchanged for money. Your own AI connection never uses credits."
 msgstr "Kredit yang paling cepat kedaluwarsa dipakai lebih dulu. Kredit tidak bisa dipindah ke akun lain atau diuangkan. Koneksi AI milikmu sendiri tidak pernah memakai kredit."
 
+#: src/features/jobs/filters-sheet.tsx
 #: src/features/profile/preferences.tsx
 msgid "Currency"
 msgstr "Mata uang"
@@ -3947,6 +4098,11 @@ msgstr "Gaya kustom tidak termasuk dalam paketmu"
 #: src/features/settings/locale-names.ts
 msgid "Czech"
 msgstr "Ceko"
+
+#: src/features/career/schedule-fields.tsx
+msgctxt "How often a job alert runs"
+msgid "Daily"
+msgstr "Harian"
 
 #: src/features/home/schedules.tsx
 msgid "Daily at {clock} · next {day}"
@@ -4089,6 +4245,7 @@ msgstr "Default"
 msgid "Degree"
 msgstr "Gelar"
 
+#: src/features/career/schedule-sheet.tsx
 #: src/features/documents/document-item.tsx
 #: src/features/history/version-options.tsx
 #: src/features/letters/share.tsx
@@ -4169,10 +4326,6 @@ msgstr "Hapus halaman"
 #: src/features/ai/provider-editor.tsx
 msgid "Delete provider"
 msgstr "Hapus penyedia"
-
-#: src/features/career/schedule-sheet.tsx
-msgid "Delete schedule"
-msgstr "Hapus jadwal"
 
 #: src/features/write/section-menu.tsx
 msgid "Delete section"
@@ -4306,6 +4459,7 @@ msgstr "Berbeda dari Profil Anda"
 msgid "Direction"
 msgstr "Arah"
 
+#: src/features/career/schedule-sheet.tsx
 #: src/features/letters/write.tsx
 #: src/features/profile/stories.tsx
 #: src/shell/unsaved-changes.ts
@@ -4316,6 +4470,7 @@ msgstr "Buang"
 msgid "Discard changes"
 msgstr "Buang perubahan"
 
+#: src/features/career/schedule-sheet.tsx
 #: src/ui-legacy/overlays.tsx
 msgid "Discard changes?"
 msgstr "Buang perubahan?"
@@ -4599,6 +4754,10 @@ msgstr "Setiap persyaratan dalam lowongan diperiksa terhadap fakta dan cerita di
 msgid "Each resume decides whether to show it."
 msgstr "Tiap CV memilih apakah menampilkannya."
 
+#: src/features/career/schedule-fields.tsx
+msgid "Each run looks for jobs that appeared since the last one. New ones wait in Home for your review; applications and documents are never created for you."
+msgstr "Setiap kali berjalan, Rezumi mencari lowongan yang muncul sejak pengecekan sebelumnya. Lowongan baru menunggu di Beranda untuk kamu tinjau; lamaran dan dokumen tidak pernah dibuat otomatis."
+
 #: src/features/assistant/coach-screen.tsx
 msgid "earlier messages in this chat"
 msgstr "pesan sebelumnya di chat ini"
@@ -4636,6 +4795,10 @@ msgstr "Sunting entri"
 #: src/features/applications-board/time-grid.tsx
 msgid "Edit interview"
 msgstr "Sunting wawancara"
+
+#: src/features/career/schedule-sheet.tsx
+msgid "Edit job alert"
+msgstr "Ubah notifikasi lowongan"
 
 #: src/features/entries/custom-fields.tsx
 msgid "Edit link"
@@ -4831,6 +4994,11 @@ msgstr "Entri"
 msgid "Entry deleted"
 msgstr "Entri dihapus"
 
+#: src/features/jobs/format.ts
+msgctxt "Job seniority"
+msgid "Entry level"
+msgstr "Pemula"
+
 #: src/features/write/entry-sheet.tsx
 msgid "Entry options"
 msgstr "Opsi masuk"
@@ -4843,17 +5011,9 @@ msgstr "Ekuitas"
 msgid "Every {days} days at {clock} · next {day}"
 msgstr "Setiap {days} hari pukul {clock} · berikutnya {day}"
 
-#: src/features/career/schedule-sheet.tsx
-msgid "Every 3 days"
-msgstr "Setiap 3 hari"
-
 #: src/features/check/issues-tab.tsx
 msgid "Every check passes."
 msgstr "Setiap pemeriksaan lolos."
-
-#: src/features/career/schedule-sheet.tsx
-msgid "Every day"
-msgstr "Setiap hari"
 
 #: src/features/letters/share.tsx
 msgid "Every editing session adds a version automatically. Named versions are kept until you delete them. Restoring saves the current state first."
@@ -4883,13 +5043,14 @@ msgstr "Semua template"
 msgid "Every term the posting stresses is already there."
 msgstr "Setiap istilah yang ditekankan dalam lowongan pekerjaan sudah ada."
 
-#: src/features/career/schedule-sheet.tsx
-msgid "Every week"
-msgstr "Setiap minggu"
-
 #: src/features/workspace/tabs/saved.tsx
 msgid "Everything the coach wrote for {company}, newest first."
 msgstr "Semua yang ditulis pelatih untuk {company}, yang terbaru terlebih dahulu."
+
+#: src/features/jobs/format.ts
+msgctxt "Job seniority"
+msgid "Executive"
+msgstr "Eksekutif"
 
 #: src/features/letters/page.tsx
 #: src/preview/page-parts.tsx
@@ -5044,14 +5205,33 @@ msgstr "Diisi dari Profilmu"
 msgid "Filter by tag"
 msgstr "Filter berdasarkan tag"
 
+#: src/features/jobs/filters-sheet.tsx
+#: src/features/jobs/search-bar.tsx
+msgid "Filters"
+msgstr "Filter"
+
+#. The job search filters button with the place searched
+#: src/features/jobs/search-bar.tsx
+msgid "Filters · {place}"
+msgstr "Filter · {place}"
+
+#. The job search filters button: the place searched and how many other filters are set
+#: src/features/jobs/search-bar.tsx
+msgid "Filters · {place} ({filters})"
+msgstr "Filter · {place} ({filters})"
+
+#: src/features/jobs/search-bar.tsx
+msgid "Filters ({filters})"
+msgstr "Filter ({filters})"
+
 #. Template gallery filter: finance, banking, law and consulting jobs
 #: src/features/design/preset-names.ts
 msgid "Finance"
 msgstr "Keuangan"
 
-#: src/features/career/schedule-sheet.tsx
-msgid "Find roles"
-msgstr "Cari posisi"
+#: src/features/jobs/jobs-states.tsx
+msgid "Find jobs that fit"
+msgstr "Temukan lowongan yang cocok"
 
 #: src/features/assistant/assistant-screen.tsx
 msgid "Find weak bullets"
@@ -5077,9 +5257,9 @@ msgstr "Penawaran pertama"
 msgid "First resume"
 msgstr "CV pertama"
 
-#: src/features/career/schedule-sheet.tsx
-msgid "First run (YYYY-MM-DD)"
-msgstr "Jalankan pertama kali (YYYY-MM-DD)"
+#: src/features/career/schedule-fields.tsx
+msgid "First run"
+msgstr "Pertama dijalankan"
 
 #: src/features/letters/page.tsx
 #: src/features/write/picture-screen.tsx
@@ -5292,6 +5472,11 @@ msgstr "Gratis"
 msgid "Free to start. You can add a photo, username and more later."
 msgstr "Gratis untuk mulai. Foto, username, dan lainnya bisa ditambah nanti."
 
+#. A recent job search that opens again today without counting
+#: src/features/jobs/recent-searches.tsx
+msgid "Free today"
+msgstr "Gratis hari ini"
+
 #: src/features/design/page-group.tsx
 #: src/features/letters/design.tsx
 msgid "Free-form"
@@ -5353,6 +5538,10 @@ msgstr "Dari login GitHub Anda."
 msgid "From your message"
 msgstr "Dari pesan Anda"
 
+#: src/features/jobs/jobs-states.tsx
+msgid "From your preferences:"
+msgstr "Dari preferensimu:"
+
 #: src/features/write/add-section.tsx
 msgid "From your Profile"
 msgstr "Dari Profil Anda"
@@ -5399,6 +5588,10 @@ msgstr "Dapatkan masukan"
 #: src/features/workspace/tabs/practise.tsx
 msgid "Get feedback sends the question, your answer, this posting and your stories to {providerName}."
 msgstr "Dapatkan masukan mengirim pertanyaan, jawaban Anda, lowongan ini, dan cerita Anda ke {providerName}."
+
+#: src/features/jobs/jobs-header.tsx
+msgid "Get job alerts"
+msgstr "Simpan sebagai notifikasi"
 
 #: src/features/home/new-roles.tsx
 msgid "Get new jobs for your search here every morning"
@@ -5552,6 +5745,11 @@ msgstr "Hex"
 msgid "Hidden"
 msgstr "Tersembunyi"
 
+#. placeholder {0}: listing.title
+#: src/features/jobs/use-listing-actions.ts
+msgid "Hidden {0}. It won't show in your results again."
+msgstr "{0} disembunyikan. Lowongan ini tidak akan muncul lagi di hasilmu."
+
 #: src/features/home/new-roles.tsx
 msgid "Hidden from New roles"
 msgstr "Disembunyikan dari Posisi baru"
@@ -5611,6 +5809,10 @@ msgstr "Sembunyikan yang dibaca"
 #: src/features/check/messages.ts
 msgid "Hide the photo"
 msgstr "Sembunyikan fotonya"
+
+#: src/features/jobs/listing-card.tsx
+msgid "Hide this job"
+msgstr "Sembunyikan lowongan ini"
 
 #: src/features/check/writing-tab.tsx
 msgid "High"
@@ -5674,7 +5876,7 @@ msgstr "Seberapa jauh lamaran pekerjaan didapat"
 msgid "How many office days are expected?"
 msgstr "Berapa hari kerja yang diharapkan?"
 
-#: src/features/career/schedule-sheet.tsx
+#: src/features/career/schedule-fields.tsx
 msgid "How often"
 msgstr "Seberapa sering"
 
@@ -5697,6 +5899,10 @@ msgstr "Sertifikat HTTPS"
 #: src/features/settings/locale-names.ts
 msgid "Hungarian"
 msgstr "Hungaria"
+
+#: src/features/jobs/format.ts
+msgid "Hybrid"
+msgstr "Hybrid"
 
 #: src/features/design/typography-screen.tsx
 msgid "Hyphenation"
@@ -5854,6 +6060,10 @@ msgstr "Dipakai"
 msgid "In your Profile"
 msgstr "Di Profil Anda"
 
+#: src/features/jobs/filters-sheet.tsx
+msgid "Include jobs that don't list pay"
+msgstr "Sertakan lowongan tanpa info gaji"
+
 #: app/account/membership.tsx
 msgid "Included"
 msgstr "Termasuk"
@@ -5915,6 +6125,7 @@ msgstr "Tinta biru"
 msgid "Inline"
 msgstr "sebaris"
 
+#: src/features/applications-board/views-row.tsx
 #: src/features/applications-board/views.tsx
 msgid "Insights"
 msgstr "Insight"
@@ -5929,7 +6140,7 @@ msgstr "Hanya antarmuka. Setiap resume menetapkan bahasanya sendiri dalam Desain
 
 #: src/features/applications-board/calendar-screen.tsx
 #: src/features/applications/stages.ts
-#: src/features/career/schedule-sheet.tsx
+#: src/features/career/schedule-body.tsx
 #: src/features/home/coming-up.tsx
 #: src/features/onboarding/intro-screen.tsx
 msgid "Interview"
@@ -6064,6 +6275,11 @@ msgstr "Italia"
 msgid "Italic"
 msgstr "Miring"
 
+#. placeholder {0}: props.providerMissing
+#: src/features/career/schedule-body.tsx
+msgid "Its connection was switched off or removed, so it runs on {0} until you choose another."
+msgstr "Koneksinya dinonaktifkan atau dihapus, jadi ini berjalan di {0} sampai Anda memilih yang lain."
+
 #: src/features/assistant/threads.tsx
 msgid "Its messages and attachments are deleted. Edits you accepted stay in the document."
 msgstr "Pesan dan lampirannya dihapus. Pengeditan yang Anda terima tetap ada di dokumen."
@@ -6092,13 +6308,39 @@ msgstr "JavaScript"
 msgid "Job"
 msgstr "Pekerjaan"
 
+#: src/features/career/schedule-sheet.tsx
 #: src/features/home/needs-you.tsx
 msgid "Job alert"
 msgstr "Notifikasi lowongan"
 
+#: src/features/career/schedule-fields.tsx
+msgctxt "Short schedule kind in a segmented choice"
+msgid "Job alert"
+msgstr "Notifikasi"
+
+#: src/features/jobs/jobs-screen.tsx
+msgid "Job alert deleted"
+msgstr "Notifikasi lowongan dihapus"
+
+#: src/features/jobs/jobs-header.tsx
+msgid "Job alert on"
+msgstr "Notifikasi aktif"
+
+#: src/features/jobs/jobs-header.tsx
+msgid "Job alert paused"
+msgstr "Notifikasi dijeda"
+
+#: src/features/career/schedule-fields.tsx
+msgid "Job alerts aren't available on this server yet."
+msgstr "Notifikasi lowongan belum tersedia di server ini."
+
 #: src/features/application-detail/sheets.tsx
 msgid "Job description"
 msgstr "Deskripsi pekerjaan"
+
+#: src/features/jobs/listing-detail.tsx
+msgid "Job details"
+msgstr "Detail lowongan"
 
 #: src/features/check/check-pane.tsx
 msgid "Job match"
@@ -6120,9 +6362,17 @@ msgstr "Tautan lowongan kerja"
 msgid "Job search couldn't be reached. Try again or paste a posting link."
 msgstr "Pencarian pekerjaan tidak dapat dihubungi. Coba lagi atau tempelkan tautan lowongan."
 
+#: src/features/jobs/jobs-states.tsx
+msgid "Job search isn't available here yet"
+msgstr "Pencarian lowongan belum tersedia di sini"
+
 #: src/features/applications/error.ts
 msgid "Job search isn't configured on this server. Paste a posting link instead."
 msgstr "Pencarian pekerjaan tidak dikonfigurasi di server ini. Tempelkan tautan lowongan sebagai gantinya."
+
+#: src/features/jobs/jobs-states.tsx
+msgid "Job search needs a connection. Your recent results show here once you've searched."
+msgstr "Pencarian lowongan butuh koneksi. Hasil terakhirmu tampil di sini setelah kamu mencari."
 
 #: src/features/applications-board/insights-screen.tsx
 msgid "Job search pipeline"
@@ -6132,10 +6382,26 @@ msgstr "Alur pencarian kerja"
 msgid "Jobs"
 msgstr "Pekerjaan"
 
+#: src/features/applications-board/views-row.tsx
+#: src/features/applications-board/views.tsx
+#: src/features/jobs/jobs-screen.tsx
+msgctxt "Job listings to search"
+msgid "Jobs"
+msgstr "Lowongan"
+
+#: src/features/jobs/search-problem.tsx
+msgid "Jobs couldn't be loaded. Try again in a moment."
+msgstr "Lowongan belum bisa dimuat. Coba lagi sebentar lagi."
+
 #: src/features/letters/share.tsx
 #: src/features/share/download.tsx
 msgid "JSON"
 msgstr "JSON"
+
+#: src/features/jobs/format.ts
+msgctxt "Job seniority"
+msgid "Junior"
+msgstr "Junior"
 
 #: src/features/settings/locale-names.ts
 msgid "Kannada"
@@ -6154,6 +6420,7 @@ msgstr "Cukup satu alamat, agar perangkat lunak tidak perlu menebak mana yang ha
 msgid "Keep both"
 msgstr "Pertahankan keduanya"
 
+#: src/features/career/schedule-sheet.tsx
 #: src/features/profile/stories.tsx
 #: src/shell/unsaved-changes.ts
 #: src/ui-legacy/overlays.tsx
@@ -6317,14 +6584,34 @@ msgstr "{title} lebih besar"
 msgid "Larger text"
 msgstr "Teks lebih besar"
 
+#: src/features/jobs/format.ts
+msgctxt "Job search filter: posted within"
+msgid "Last 2 weeks"
+msgstr "2 minggu terakhir"
+
+#: src/features/jobs/format.ts
+msgctxt "Job search filter: posted within"
+msgid "Last 30 days"
+msgstr "30 hari terakhir"
+
 #: src/features/share/custom-domain.tsx
 msgid "Last checked {lastChecked} ago"
 msgstr "Terakhir diperiksa {lastChecked} lalu"
+
+#: src/features/jobs/format.ts
+msgctxt "Job search filter: posted within"
+msgid "Last day"
+msgstr "1 hari terakhir"
 
 #: src/features/documents/document-menu-panels.tsx
 #: src/features/documents/library-toolbar.tsx
 msgid "Last edited"
 msgstr "Terakhir diedit"
+
+#: src/features/jobs/format.ts
+msgctxt "Job search filter: posted within"
+msgid "Last week"
+msgstr "1 minggu terakhir"
 
 #: app/account/preferences.tsx
 msgid "Later"
@@ -6353,6 +6640,11 @@ msgstr "Tata teks secara horizontal. Teks yang diputar sering hilang atau salah 
 #: src/features/design/layout-screen.tsx
 msgid "Layout"
 msgstr "Tata Letak"
+
+#: src/features/jobs/format.ts
+msgctxt "Job seniority"
+msgid "Lead"
+msgstr "Lead"
 
 #: src/features/assistant/assistant-screen.tsx
 msgid "Leads with why you fit"
@@ -6464,6 +6756,7 @@ msgstr "Surat"
 
 #: src/features/entries/entry-fields.tsx
 #: src/features/entries/fields.ts
+#: src/features/jobs/filters-sheet.tsx
 msgid "Level"
 msgstr "Tingkat"
 
@@ -6596,6 +6889,7 @@ msgstr "Link profil LinkedIn"
 msgid "Linking…"
 msgstr "Menghubungkan…"
 
+#: src/features/applications-board/views-row.tsx
 #: src/features/applications-board/views.tsx
 #: src/features/documents/library-toolbar.tsx
 msgid "List"
@@ -6604,6 +6898,10 @@ msgstr "List"
 #: src/features/ats-checker/messages.ts
 msgid "List the tools and technologies you use. Recruiters search skills more than any other field."
 msgstr "Cantumkan alat dan teknologi yang Anda gunakan. Perekrut mencari kolom keahlian lebih dari kolom lainnya."
+
+#: src/features/jobs/listing-detail.tsx
+msgid "Listings come from job data providers and may change. The original posting is the one to apply through."
+msgstr "Lowongan berasal dari penyedia data lowongan dan bisa berubah. Lamar lewat posting aslinya."
 
 #: src/features/settings/locale-names.ts
 msgid "Lithuanian"
@@ -6621,6 +6919,11 @@ msgstr "Langsung · perbarui saat Anda mengedit"
 msgid "Live at {url}"
 msgstr "Tersedia di {url}"
 
+#: src/features/jobs/jobs-states.tsx
+msgid "Load more"
+msgstr "Muat lagi"
+
+#: src/features/career/schedule-body.tsx
 #: src/features/check/check-pane.tsx
 #: src/features/design/design-pane.tsx
 #: src/features/design/sub-screen.tsx
@@ -6638,7 +6941,7 @@ msgstr "Tersedia di {url}"
 msgid "Loading"
 msgstr "Memuat"
 
-#: src/features/career/schedule-sheet.tsx
+#: src/features/career/schedule-body.tsx
 msgid "Loading AI connections…"
 msgstr "Memuat koneksi AI…"
 
@@ -6655,14 +6958,26 @@ msgstr "Memuat lamaran…"
 msgid "Loading conversations…"
 msgstr "Memuat percakapan…"
 
+#: src/features/jobs/jobs-states.tsx
+msgid "Loading jobs"
+msgstr "Memuat lowongan"
+
 #: src/features/ai/provider-editor.tsx
 msgid "Loading model suggestions… You can also enter any model ID."
 msgstr "Memuat saran model… Anda juga dapat memasukkan ID model apa pun."
+
+#: src/features/jobs/jobs-states.tsx
+msgid "Loading more…"
+msgstr "Memuat lagi…"
 
 #: src/features/ai/provider-editor.tsx
 #: src/features/ai/provider-list.tsx
 msgid "Loading providers…"
 msgstr "Memuat penyedia…"
+
+#: src/features/jobs/recent-searches.tsx
+msgid "Loading recent job searches"
+msgstr "Memuat pencarian lowongan terakhir"
 
 #: src/preview/page.tsx
 msgid "Loading resume…"
@@ -6675,6 +6990,10 @@ msgstr "Memuat resume…"
 #: src/features/workspace/shell.tsx
 msgid "Loading saved version…"
 msgstr "Memuat versi tersimpan…"
+
+#: src/features/jobs/listing-detail.tsx
+msgid "Loading the description"
+msgstr "Memuat deskripsi"
 
 #: src/features/workspace/shell.tsx
 msgid "Loading workspace…"
@@ -6740,10 +7059,6 @@ msgstr "Tekan lama wawancara untuk menyeretnya, atau tahan tepi bawahnya untuk m
 #: src/features/ats-checker/messages.ts
 msgid "Long stretches are set in capitals."
 msgstr "Bentangan teks yang panjang ditulis dengan huruf kapital."
-
-#: src/features/career/schedule-sheet.tsx
-msgid "Look for"
-msgstr "Cari"
 
 #: src/features/letters/share.tsx
 #: src/features/share/download.tsx
@@ -6812,6 +7127,10 @@ msgstr "Dikelola oleh server Anda"
 #: src/features/ats-checker/messages.ts
 msgid "Many bullets start with the same phrase."
 msgstr "Banyak poin dimulai dengan frasa yang sama."
+
+#: src/features/jobs/filters-sheet.tsx
+msgid "Many postings don't list pay, especially outside the US, and few say whether they sponsor a visa."
+msgstr "Banyak lowongan tidak mencantumkan gaji, terutama di luar AS, dan sedikit yang menyebut apakah mereka mensponsori visa."
 
 #: src/features/design/preset-names.ts
 msgid "Maps and places"
@@ -6898,6 +7217,10 @@ msgstr "Cocokkan CV"
 msgid "Match this posting"
 msgstr "Cocokkan lowongan pekerjaan ini"
 
+#: src/features/jobs/listing-card.tsx
+msgid "Matches {matched} of {total} skills"
+msgstr "Cocok: {matched} dari {total} skill"
+
 #: src/features/career/offers.tsx
 msgid "Matches a preferred location."
 msgstr "Cocok dengan lokasi pilihan."
@@ -6944,6 +7267,11 @@ msgstr "Kirim pesan ke asisten"
 msgid "Messages"
 msgstr "Pesan"
 
+#: src/features/jobs/format.ts
+msgctxt "Job seniority"
+msgid "Mid level"
+msgstr "Menengah"
+
 #: src/features/profile/preferences.tsx
 msgid "Minimum base salary"
 msgstr "Gaji pokok minimum"
@@ -6951,6 +7279,14 @@ msgstr "Gaji pokok minimum"
 #: src/features/career/offers.tsx
 msgid "Minimum salary cannot be compared in these terms."
 msgstr "Gaji minimum tidak dapat dibandingkan dalam hal ini."
+
+#: src/features/jobs/filters-sheet.tsx
+msgid "Minimum yearly pay"
+msgstr "Gaji tahunan minimum"
+
+#: src/features/jobs/listing-fit.tsx
+msgid "Missing"
+msgstr "Belum ada"
 
 #: app/account/index.tsx
 msgid "MIT License"
@@ -6985,6 +7321,11 @@ msgstr "Lebih detailnya"
 msgid "More download formats"
 msgstr "Lebih banyak format unduhan"
 
+#. placeholder {0}: listing.title
+#: src/features/jobs/listing-card.tsx
+msgid "More for {0}"
+msgstr "Lainnya untuk {0}"
+
 #: src/features/entries/entry-fields.tsx
 msgid "More options"
 msgstr "Opsi lainnya"
@@ -7009,15 +7350,12 @@ msgstr "Lebih dari satu alamat email muncul."
 msgid "More ways to sign in"
 msgstr "Cara masuk lainnya"
 
+#: src/features/career/schedule-body.tsx
 #: src/features/home/schedules.tsx
 msgid "Morning of"
 msgstr "Pagi harinya"
 
-#: src/features/career/schedule-sheet.tsx
-msgid "Morning of · 08:00 local"
-msgstr "Pagi hari yang sama · 08:00 waktu setempat"
-
-#: src/features/career/schedule-sheet.tsx
+#: src/features/career/schedule-body.tsx
 msgid "Morning of runs at 08:00, or two hours before interviews starting before 10:00."
 msgstr "Dijalankan pukul 08:00 pada hari wawancara, atau dua jam sebelumnya jika wawancara dimulai sebelum 10:00."
 
@@ -7310,6 +7648,10 @@ msgstr "Surat lamaran baru"
 msgid "New document"
 msgstr "Dokumen baru"
 
+#: src/features/career/schedule-sheet.tsx
+msgid "New job alert"
+msgstr "Notifikasi lowongan baru"
+
 #: src/features/documents/new-choices.tsx
 msgid "New letter"
 msgstr "Surat baru"
@@ -7340,6 +7682,14 @@ msgstr "Posisi baru dari pencarian Anda"
 #: src/features/career/schedule-sheet.tsx
 msgid "New schedule"
 msgstr "Jadwal baru"
+
+#: src/features/jobs/search-problem.tsx
+msgid "New searches are limited right now. Results you already opened stay available."
+msgstr "Pencarian baru sedang dibatasi. Hasil yang sudah kamu buka tetap bisa dilihat."
+
+#: src/features/jobs/jobs-header.tsx
+msgid "New searches are limited right now. These are results saved earlier; try again tomorrow."
+msgstr "Pencarian baru sedang dibatasi. Ini hasil yang tersimpan sebelumnya; coba lagi besok."
 
 #: src/features/write/entry-actions.tsx
 msgid "New section"
@@ -7450,6 +7800,7 @@ msgstr "Belum ada pembicaraan tentang dokumen ini."
 msgid "No corrections"
 msgstr "Tidak ada koreksi"
 
+#: src/features/jobs/filters-sheet.tsx
 #: src/features/profile/search-regions-field.tsx
 msgid "No country matches."
 msgstr "Tidak ada negara yang ditemukan."
@@ -7529,6 +7880,10 @@ msgstr "Tidak ada ikon yang cocok dengan “{0}”."
 #: src/features/documents/new-copy.tsx
 msgid "No job yet"
 msgstr "Belum ada pekerjaan"
+
+#: src/features/jobs/jobs-states.tsx
+msgid "No jobs match yet."
+msgstr "Belum ada lowongan yang cocok."
 
 #: src/features/settings/api-keys.tsx
 msgid "No keys yet."
@@ -7619,9 +7974,18 @@ msgstr "Tidak ada server Rezumi yang menjawab di alamat ini. Periksa ejaannya, a
 msgid "No room for another cover letter"
 msgstr "Tidak ada ruang untuk surat lamaran baru"
 
+#: src/features/career/schedule-body.tsx
+msgid "No room for another job alert"
+msgstr "Tidak bisa menambah notifikasi lowongan lagi"
+
 #: src/features/billing/plan-alert.ts
 msgid "No room for another resume"
 msgstr "Tidak ada ruang untuk CV baru"
+
+#. placeholder {0}: quota.max
+#: src/features/jobs/jobs-header.tsx
+msgid "No searches left today (of {0})"
+msgstr "Tidak ada sisa pencarian hari ini (dari {0})"
 
 #: src/features/ats-checker/messages.ts
 msgid "No skills section was found."
@@ -7823,6 +8187,10 @@ msgstr "Tidak ada tanda yang menunjukkan peran ini masih berlangsung."
 msgid "Nothing matches “{query}”"
 msgstr "Tidak ada yang cocok dengan “{query}”"
 
+#: src/features/career/schedule-fields.tsx
+msgid "Nothing matches “{query}”."
+msgstr "Tidak ada yang cocok dengan “{query}”."
+
 #: src/features/documents/library-states.tsx
 msgid "Nothing matches these filters"
 msgstr "Tidak ada yang cocok dengan filter ini"
@@ -7925,6 +8293,10 @@ msgstr "Penawaran"
 msgid "Offers"
 msgstr "Penawaran"
 
+#: src/features/jobs/filters-sheet.tsx
+msgid "Offers visa sponsorship"
+msgstr "Menawarkan sponsor visa"
+
 #: src/features/onboarding/questions.tsx
 #: src/features/profile/preferences.tsx
 msgid "Office days a week, at most"
@@ -7963,6 +8335,10 @@ msgstr "Aktif"
 #: src/features/write/picture-screen.tsx
 msgid "On the page"
 msgstr "Di halaman"
+
+#: src/features/jobs/format.ts
+msgid "On-site"
+msgstr "Di kantor"
 
 #: src/features/share/link.tsx
 msgid "On. Anyone with the link can see your web page."
@@ -8174,6 +8550,10 @@ msgstr "Membuka CV…"
 msgid "Opens in Career → Offers."
 msgstr "Terbuka di Karier → Penawaran."
 
+#: src/features/jobs/listing-detail.tsx
+msgid "Opens in the browser"
+msgstr "Membuka di browser"
+
 #: src/features/documents/document-item.tsx
 msgid "Opens Restore and Delete forever"
 msgstr "Membuka Pulihkan dan Hapus permanen"
@@ -8186,9 +8566,9 @@ msgstr "Membuka dokumen. Tekan lama untuk pilihan."
 msgid "Opens the fact's source and history"
 msgstr "Membuka sumber dan riwayat fakta"
 
-#: src/features/career/schedule-sheet.tsx
-msgid "Opportunity discovery"
-msgstr "Pencarian peluang"
+#: src/features/jobs/listing-card.tsx
+msgid "Opens the job"
+msgstr "Membuka lowongan"
 
 #: src/features/ai/provider-editor.tsx
 msgid "Optional for local Ollama"
@@ -8366,6 +8746,10 @@ msgstr "Paragraf"
 msgid "paragraph {n}"
 msgstr "paragraf {n}"
 
+#: src/features/jobs/listing-fit.tsx
+msgid "Partly"
+msgstr "Sebagian"
+
 #: src/features/workspace/parts.tsx
 msgid "Partly supported"
 msgstr "Didukung sebagian"
@@ -8451,6 +8835,20 @@ msgstr "Postingan pekerjaan yang ditempel"
 #: src/features/home/schedules.tsx
 msgid "Paused · {line}"
 msgstr "Dijeda · {line}"
+
+#: src/features/career/schedule-fields.tsx
+msgid "Paused schedules keep their settings."
+msgstr "Jadwal yang dijeda tetap menyimpan pengaturannya."
+
+#: src/features/jobs/format.ts
+msgctxt "Job search filter"
+msgid "Pay from {pay} a year"
+msgstr "Gaji mulai {pay} per tahun"
+
+#: src/features/jobs/format.ts
+msgctxt "Job search filter"
+msgid "Pay from {pay} a year, or not listed"
+msgstr "Gaji mulai {pay} per tahun, atau tidak dicantumkan"
 
 #: src/features/profile/preferences.tsx
 msgid "Pay period"
@@ -8551,6 +8949,10 @@ msgstr "Foto & kamera"
 #: src/features/entries/dates-field.tsx
 msgid "Pick {label}"
 msgstr "Pilih {label}"
+
+#: src/features/career/schedule-fields.tsx
+msgid "Pick a day"
+msgstr "Pilih hari"
 
 #: src/features/profile/facts.tsx
 msgid "Pick a fact"
@@ -8661,6 +9063,41 @@ msgstr "Portugis (Portugal)"
 msgid "Position"
 msgstr "Posisi"
 
+#: src/features/jobs/filters-sheet.tsx
+msgid "Posted"
+msgstr "Diposting"
+
+#: src/features/jobs/format.ts
+msgctxt "Job listing"
+msgid "Posted {date}"
+msgstr "Diposting {date}"
+
+#: src/features/jobs/format.ts
+msgid "Posted in the last 2 weeks"
+msgstr "Diposting 2 minggu terakhir"
+
+#: src/features/jobs/format.ts
+msgid "Posted in the last 30 days"
+msgstr "Diposting 30 hari terakhir"
+
+#: src/features/jobs/format.ts
+msgid "Posted in the last day"
+msgstr "Diposting 24 jam terakhir"
+
+#: src/features/jobs/format.ts
+msgid "Posted in the last week"
+msgstr "Diposting seminggu terakhir"
+
+#: src/features/jobs/format.ts
+msgctxt "Job listing"
+msgid "Posted today"
+msgstr "Diposting hari ini"
+
+#: src/features/jobs/format.ts
+msgctxt "Job listing"
+msgid "Posted yesterday"
+msgstr "Diposting kemarin"
+
 #: src/features/workspace/tabs/saved.tsx
 msgid "posting"
 msgstr "lowongan"
@@ -8733,13 +9170,13 @@ msgstr "Preferensi"
 msgid "Preferences"
 msgstr "Preferensi"
 
-#: src/features/career/schedule-sheet.tsx
+#: src/features/career/schedule-fields.tsx
 #: src/features/workspace/parts.tsx
 #: src/shell/workspace-chrome.tsx
 msgid "Prepare"
 msgstr "Persiapan"
 
-#: src/features/career/schedule-sheet.tsx
+#: src/features/career/schedule-body.tsx
 msgid "Prepare a briefing"
 msgstr "Siapkan briefing"
 
@@ -9169,6 +9606,14 @@ msgstr "Aktivitas terbaru"
 msgid "Recent documents"
 msgstr "Dokumen terbaru"
 
+#: src/features/jobs/recent-searches.tsx
+msgid "Recent job searches"
+msgstr "Pencarian lowongan terakhir"
+
+#: src/features/jobs/recent-searches.tsx
+msgid "Recent searches"
+msgstr "Pencarian terakhir"
+
 #: src/features/letters/write.tsx
 msgid "Recipient"
 msgstr "Penerima"
@@ -9285,13 +9730,13 @@ msgstr "Ingat ini untuk coaching berikutnya?"
 msgid "Remembered: “{text}”"
 msgstr "Diingat: “{text}”"
 
-#: src/features/career/schedule-sheet.tsx
+#: src/features/career/schedule-fields.tsx
 msgid "Remind me"
 msgstr "Ingatkan saya"
 
-#: src/features/career/schedule-sheet.tsx
-msgid "Remind me on (YYYY-MM-DD)"
-msgstr "Ingatkan saya pada (YYYY-MM-DD)"
+#: src/features/career/schedule-fields.tsx
+msgid "Remind me on"
+msgstr "Ingatkan saya pada"
 
 #: src/features/application-detail/interview-sheet.tsx
 #: src/features/application-detail/sheets.tsx
@@ -9307,10 +9752,21 @@ msgid "Reminders"
 msgstr "Pengingat"
 
 #: src/features/career/offers.tsx
+#: src/features/jobs/format.ts
 #: src/features/onboarding/questions.tsx
 #: src/features/profile/preferences.tsx
 msgid "Remote"
 msgstr "Jarak jauh"
+
+#: src/features/jobs/format.ts
+msgctxt "Job search filter"
+msgid "Remote anywhere"
+msgstr "Remote dari mana saja"
+
+#: src/features/jobs/format.ts
+msgctxt "Job search filter"
+msgid "Remote in this country"
+msgstr "Remote di negara ini"
 
 #: src/features/design/uploaded-fonts.tsx
 #: src/features/share/custom-domain.tsx
@@ -9324,6 +9780,11 @@ msgstr "Menghapus"
 #: src/features/onboarding/source-fields.tsx
 msgid "Remove {0}"
 msgstr "Hapus {0}"
+
+#. placeholder {0}: search.criteria.query
+#: src/features/jobs/recent-searches.tsx
+msgid "Remove {0} from recent searches"
+msgstr "Hapus {0} dari pencarian terakhir"
 
 #: src/features/assistant/messages.tsx
 #: src/features/profile/search-regions-field.tsx
@@ -9491,6 +9952,7 @@ msgstr "Memerlukan kata sandi"
 msgid "Requirements"
 msgstr "Persyaratan"
 
+#: src/features/jobs/listing-fit.tsx
 #: src/features/workspace/tabs/fit.tsx
 msgid "Requirements and your evidence"
 msgstr "Persyaratan dan bukti Anda"
@@ -9643,6 +10105,7 @@ msgstr "Mengambil {0} menggunakan {1}. Waktu pengambilan tidak menentukan kesega
 #: src/features/assistant/chat-view.tsx
 #: src/features/assistant/coach-screen.tsx
 #: src/features/assistant/provider.tsx
+#: src/features/career/schedule-body.tsx
 #: src/features/career/shared.tsx
 #: src/features/check/application-picker.tsx
 #: src/features/check/check-page.tsx
@@ -9678,7 +10141,7 @@ msgstr "Mengambil {0} menggunakan {1}. Waktu pengambilan tidak menentukan kesega
 msgid "Retry"
 msgstr "Mencoba kembali"
 
-#: src/features/career/schedule-sheet.tsx
+#: src/features/career/schedule-body.tsx
 msgid "Retry AI connections"
 msgstr "koneksi Mencoba kembali AI"
 
@@ -9825,6 +10288,7 @@ msgstr "Benar"
 #: src/features/application-detail/interview-sheet.tsx
 #: src/features/application-detail/sections.tsx
 #: src/features/applications/list-screen.tsx
+#: src/features/career/schedule-fields.tsx
 #: src/features/check/save-posting-sheet.tsx
 msgid "Role"
 msgstr "Posisi"
@@ -9841,6 +10305,10 @@ msgstr "Peran {0}"
 #: src/features/applications/add-sheet.tsx
 msgid "Role / title"
 msgstr "Peran / jabatan"
+
+#: src/features/jobs/search-bar.tsx
+msgid "Role or keywords"
+msgstr "Posisi atau kata kunci"
 
 #: src/features/applications-board/views.tsx
 msgid "Role, company or contact"
@@ -9883,8 +10351,8 @@ msgstr "Garis"
 msgid "Run again"
 msgstr "Jalankan lagi"
 
-#. placeholder {0}: new Intl.DateTimeFormat(locale, { timeZone: timezone, dateStyle: "medium", timeStyle: "short" }).format(runAt)
-#: src/features/career/schedule-sheet.tsx
+#. placeholder {0}: when(runAt)
+#: src/features/career/schedule-body.tsx
 msgid "Runs at {0}."
 msgstr "Berjalan pada {0}."
 
@@ -9934,6 +10402,7 @@ msgstr "Simpan"
 #: src/features/applications/add-sheet.tsx
 #: src/features/applications/list-screen.tsx
 #: src/features/documents/new-choices.tsx
+#: src/features/jobs/jobs-states.tsx
 msgid "Save a job"
 msgstr "Simpan pekerjaan"
 
@@ -10123,6 +10592,7 @@ msgid "Saving the job. Wait for confirmation before making another change."
 msgstr "Menyimpan pekerjaan. Tunggu konfirmasi sebelum melakukan perubahan lainnya."
 
 #: src/features/auth/reset-password-screen.tsx
+#: src/features/career/schedule-sheet.tsx
 #: src/features/onboarding/onboarding-screen.tsx
 #: src/features/profile/preferences.tsx
 #: src/features/profile/save-note.tsx
@@ -10148,6 +10618,10 @@ msgid "Schedule interview"
 msgstr "Jadwalkan wawancara"
 
 #: src/features/career/schedule-sheet.tsx
+msgid "Schedule saved"
+msgstr "Jadwal disimpan"
+
+#: src/features/career/schedule-body.tsx
 msgid "Scheduled work is not available on this server. Ask your server administrator to configure it."
 msgstr "Pekerjaan terjadwal tidak tersedia di server ini. Minta administrator server Anda untuk mengonfigurasinya."
 
@@ -10185,7 +10659,18 @@ msgstr "Wawancara penyaringan"
 msgid "Search"
 msgstr "Cari"
 
+#: src/features/jobs/filters-sheet.tsx
+#: src/features/jobs/search-bar.tsx
+msgctxt "Button that runs a job search"
+msgid "Search"
+msgstr "Cari"
+
+#: src/features/jobs/search-problem.tsx
+msgid "Search again"
+msgstr "Cari lagi"
+
 #: src/features/applications-board/views.tsx
+#: src/features/career/schedule-body.tsx
 #: src/features/letters/write.tsx
 msgid "Search applications"
 msgstr "Cari lamaran kerja"
@@ -10194,6 +10679,12 @@ msgstr "Cari lamaran kerja"
 msgid "Search commands"
 msgstr "Perintah pencarian"
 
+#: src/features/career/schedule-body.tsx
+msgid "Search connections"
+msgstr "Cari koneksi"
+
+#: src/features/career/schedule-fields.tsx
+#: src/features/jobs/filters-sheet.tsx
 #: src/features/profile/search-regions-field.tsx
 msgid "Search countries"
 msgstr "Cari negara"
@@ -10205,6 +10696,10 @@ msgstr "Pencarian mencakup dokumen, lamaran pekerjaan, percakapan dan tindakan a
 #: src/features/documents/library-states.tsx
 msgid "Search covers titles, tags and linked applications."
 msgstr "Pencarian mencakup judul, tag, dan lamaran pekerjaan yang tertaut."
+
+#: src/features/jobs/jobs-states.tsx
+msgid "Search current openings from company careers sites and job boards, then track the ones you like."
+msgstr "Cari lowongan terbaru dari situs karier perusahaan dan papan lowongan, lalu lacak yang kamu suka."
 
 #: src/features/documents/library-toolbar.tsx
 msgid "Search documents"
@@ -10234,6 +10729,10 @@ msgstr "Cari…"
 msgid "Search icons"
 msgstr "Ikon pencarian"
 
+#: src/features/career/schedule-body.tsx
+msgid "Search interviews"
+msgstr "Cari wawancara"
+
 #: app/account/preferences.tsx
 #: src/features/design/page-group.tsx
 msgid "Search languages"
@@ -10246,6 +10745,10 @@ msgstr "Kata pencarian dikirim ke layanan pencarian web Anda."
 #: src/features/assistant/tool-approvals.tsx
 msgid "Search the web"
 msgstr "Cari di web"
+
+#: src/features/career/schedule-fields.tsx
+msgid "Search times"
+msgstr "Cari waktu"
 
 #: app/account/preferences.tsx
 msgid "Search timezones"
@@ -10361,13 +10864,18 @@ msgstr "Mengirim PDF ke penyedia AI-mu alih-alih membaca lapisan teksnya. File W
 msgid "Sends this application (posting, notes, interview details) and your Profile, if switched on, to {name}."
 msgstr "Mengirim lamaran ini (lowongan, catatan, detail wawancara) dan Profilmu, bila dinyalakan, ke {name}."
 
-#: src/features/career/schedule-sheet.tsx
-msgid "Sends this application and your switched-on Profile to this connection. Your provider may charge. If it becomes unavailable, scheduled work can use your default usable connection."
-msgstr "Mengirim lamaran ini dan Profilmu yang dinyalakan ke koneksi ini. Penyediamu mungkin mengenakan biaya. Bila tidak tersedia, pekerjaan terjadwal bisa memakai koneksi bawaanmu yang bisa dipakai."
+#: src/features/career/schedule-body.tsx
+msgid "Sends this application's posting, notes and documents, plus your Profile (details, career, and the facts and stories that are switched on), to this connection. Your provider may charge for it."
+msgstr "Mengirim lowongan, catatan, dan dokumen lamaran ini, serta Profil Anda (data diri, karier, serta fakta dan cerita yang diaktifkan), ke koneksi ini. Penyedia Anda mungkin mengenakan biaya."
 
 #: src/features/workspace/parts.tsx
 msgid "Sends this application's posting, notes and documents, plus your Profile if switched on, to {label}."
 msgstr "Mengirim lowongan, catatan, dan dokumen lamaran ini, ditambah Profilmu bila dinyalakan, ke {label}."
+
+#. placeholder {0}: connection.defaultProvider?.label ?? ""
+#: src/features/jobs/listing-fit.tsx
+msgid "Sends this job's posting and your Profile (details, and the facts and stories that are switched on) to {0}."
+msgstr "Mengirim posting lowongan ini dan Profil Anda (detail, serta fakta dan cerita yang aktif) ke {0}."
 
 #: src/features/workspace/coach-sheet.tsx
 msgid "Sends your message, earlier messages, this application (posting, notes, documents sent) and your Profile, if switched on, to {label}."
@@ -10383,6 +10891,11 @@ msgstr "Kirimkan teks resume Anda hanya ke {0} · {1}, dengan kunci Anda."
 #: src/features/check/writing-tab.tsx
 msgid "Sends your resume's text only to {0}."
 msgstr "Kirimkan teks resume Anda hanya ke {0}."
+
+#: src/features/jobs/format.ts
+msgctxt "Job seniority"
+msgid "Senior"
+msgstr "Senior"
 
 #: src/features/history/format.ts
 #: src/features/letters/share.tsx
@@ -10440,10 +10953,6 @@ msgstr "Siapkan penyedia"
 #: src/features/documents/new-choices.tsx
 msgid "Set up AI provider"
 msgstr "Siapkan penyedia AI"
-
-#: src/features/career/schedule-sheet.tsx
-msgid "Set up web search in Settings to find roles."
-msgstr "Siapkan penelusuran web di Pengaturan untuk menemukan peran."
 
 #: src/features/share/custom-domain.tsx
 msgid "Setting up HTTPS. This usually takes a few minutes, and this screen updates by itself."
@@ -10832,6 +11341,7 @@ msgid "Skill"
 msgstr "Keahlian"
 
 #: src/features/entries/fields.ts
+#: src/features/jobs/listing-detail.tsx
 #: src/features/onboarding/intro-screen.tsx
 msgid "Skills"
 msgstr "Keahlian"
@@ -11110,6 +11620,11 @@ msgstr "Sudah dimulai"
 msgid "Starts from your Profile. Change anything for this resume."
 msgstr "Dimulai dari Profil Anda. Ubah apa saja khusus untuk CV ini."
 
+#. placeholder {0}: draft.lead === "24h" ? 24 : 2
+#: src/features/career/schedule-body.tsx
+msgid "Starts in under {0} hours, so the briefing runs now."
+msgstr "Dimulai kurang dari {0} jam lagi, jadi briefing berjalan sekarang."
+
 #: src/features/workspace/tabs/prepare.tsx
 msgid "Starts now"
 msgstr "Dimulai sekarang"
@@ -11273,6 +11788,7 @@ msgstr "Ringkasan"
 msgid "Support"
 msgstr "Mendukung"
 
+#: src/features/jobs/listing-fit.tsx
 #: src/features/workspace/parts.tsx
 #: src/features/workspace/tabs/debrief.tsx
 msgid "Supported"
@@ -11359,6 +11875,10 @@ msgstr "Tag mengelompokkan dokumen di pustaka; pilih salah satu di atas daftar u
 #: src/features/documents/library-menu.tsx
 msgid "Tags…"
 msgstr "Tag…"
+
+#: src/features/jobs/listing-detail.tsx
+msgid "Tailor resume"
+msgstr "Sesuaikan CV"
 
 #: src/features/assistant/assistant-screen.tsx
 msgid "Tailor to the {company} posting"
@@ -11559,6 +12079,11 @@ msgstr "Thai"
 msgid "That code didn't work. Check it and try again."
 msgstr "Kode itu tidak berhasil. Periksa lalu coba lagi."
 
+#: src/features/jobs/recent-searches.tsx
+#: src/features/jobs/use-listing-actions.ts
+msgid "That didn't save. Try again."
+msgstr "Belum tersimpan. Coba lagi."
+
 #: src/features/auth/errors.ts
 msgid "That email and password don't match. Try again, or reset your password."
 msgstr "Email dan kata sandi tidak cocok. Coba lagi, atau atur ulang kata sandimu."
@@ -11659,9 +12184,17 @@ msgstr "Coach menyimpan fakta yang Anda sebutkan, dan memberi tahu Anda. Anda bi
 msgid "The connection couldn't be loaded or saved. Try again."
 msgstr "Koneksi tidak dapat dimuat atau disimpan. Coba lagi."
 
+#: src/features/jobs/filters-sheet.tsx
+msgid "The currency of the minimum pay."
+msgstr "Mata uang gaji minimum."
+
 #: src/features/letters/share.tsx
 msgid "The current state will be saved as “Before restore” first."
 msgstr "Status saat ini akan disimpan sebagai “Sebelum memulihkan” terlebih dahulu."
+
+#: src/features/jobs/listing-detail.tsx
+msgid "The description couldn't be loaded."
+msgstr "Deskripsi belum bisa dimuat."
 
 #: src/features/share/custom-domain.tsx
 msgid "The domain changed while it was being checked. Check it again."
@@ -11711,10 +12244,6 @@ msgstr "Wawancara disimpan. Untuk mendapatkan pengingat, izinkan notifikasi di s
 msgid "The key is encrypted on the server and never shown again. Saving tests the connection."
 msgstr "Kuncinya dienkripsi di server dan tidak pernah ditampilkan lagi. Menyimpan menguji koneksi."
 
-#: src/features/career/schedule-sheet.tsx
-msgid "The lead time has passed. Saving runs the briefing now."
-msgstr "Waktu tunggu telah berlalu. Menyimpan menjalankan pengarahan sekarang."
-
 #: src/features/letters/share.tsx
 msgid "The letter as it is"
 msgstr "Surat apa adanya"
@@ -11738,6 +12267,10 @@ msgstr "Salurannya berubah sejak Anda memintanya, jadi tidak diganti."
 #: src/features/workspace/tabs/saved.tsx
 msgid "the message"
 msgstr "pesan"
+
+#: src/features/career/schedule-body.tsx
+msgid "The morning of the interview has passed, so the briefing runs now."
+msgstr "Pagi hari wawancara sudah lewat, jadi briefing berjalan sekarang."
 
 #: src/features/ats-checker/messages.ts
 msgid "The order the text is stored in disagrees badly with the order it reads in."
@@ -11768,6 +12301,10 @@ msgstr "Lowongan meminta “{0}”. Kalau itu benar untuk saya, masukkan ke CV s
 #: src/features/ai/provider-list.tsx
 msgid "The provider didn't answer. Check the key, the model and the base URL."
 msgstr "Penyedia tidak menjawab. Periksa kunci, model dan basis URL."
+
+#: src/features/jobs/listing-detail.tsx
+msgid "The provider has no description for this job. The original posting has the details."
+msgstr "Penyedia tidak punya deskripsi untuk lowongan ini. Detailnya ada di posting asli."
 
 #: src/features/application-detail/sheets.tsx
 msgid "The reason is kept for Insights. Linked documents aren't touched."
@@ -11876,6 +12413,10 @@ msgstr "Tidak ada paragraf ringkasan."
 msgid "There's no GitHub account with that username."
 msgstr "Tidak ada akun GitHub dengan username itu."
 
+#: src/features/jobs/jobs-header.tsx
+msgid "These are results saved earlier. Fresh ones couldn't be loaded just now."
+msgstr "Ini hasil yang tersimpan sebelumnya. Hasil terbaru belum bisa dimuat saat ini."
+
 #: src/features/workspace/tabs/apply.tsx
 msgid "These are the answers saved when you applied."
 msgstr "Ini adalah jawaban yang disimpan saat Anda melamar."
@@ -11945,10 +12486,6 @@ msgstr "File surat lamaran ini tidak valid."
 #: src/features/entries/dates-field.tsx
 msgid "This date hasn't been saved. Use a month and year, like Mar 2022, or just a year. The last valid date is kept."
 msgstr "Tanggal ini belum tersimpan. Pakai bulan dan tahun, seperti Mar 2022, atau tahun saja. Tanggal valid terakhir dipertahankan."
-
-#: src/features/career/schedule-sheet.tsx
-msgid "This date or time does not exist in your timezone. Choose another time."
-msgstr "Tanggal atau waktu ini tidak ada di zona waktu Anda. Pilih waktu lain."
 
 #: src/features/assistant/threads.tsx
 msgid "This document"
@@ -12098,6 +12635,10 @@ msgstr "Ini bukan ukuran halaman resume yang umum."
 msgid "This isn't available for your account."
 msgstr "Ini tidak tersedia untuk akun Anda."
 
+#: src/features/jobs/use-listing-actions.ts
+msgid "This job couldn't be tracked. Try again."
+msgstr "Lowongan ini belum bisa dilacak. Coba lagi."
+
 #: src/features/onboarding/read-file.ts
 msgid "This JSON isn't a resume Rezumi can read."
 msgstr "JSON ini bukan CV yang bisa dibaca Rezumi."
@@ -12142,6 +12683,14 @@ msgstr "Tautan ini sudah kedaluwarsa"
 #: src/linking/open.ts
 msgid "This link opens {server}. Sign in there to continue. Your current server is {current}."
 msgstr "Tautan ini membuka {server}. Masuk ke sana untuk melanjutkan. Server Anda saat ini adalah {current}."
+
+#: src/features/jobs/search-problem.tsx
+msgid "This list can't be continued. Search again to see more jobs."
+msgstr "Daftar ini tidak bisa dilanjutkan. Cari lagi untuk melihat lowongan lain."
+
+#: src/features/jobs/listing-detail.tsx
+msgid "This listing isn't available anymore. The original posting may still have the details."
+msgstr "Lowongan ini sudah tidak tersedia. Detailnya mungkin masih ada di posting aslinya."
 
 #: src/features/ats-checker/checker.tsx
 msgid "This measures how faithfully software can extract this file's text. It does not predict whether an application will be rejected, and no tool can."
@@ -12281,6 +12830,7 @@ msgid "This time does not exist in the selected timezone. Choose another time."
 msgstr "Waktu ini tidak ada di zona waktu yang dipilih. Pilih waktu lain."
 
 #: src/features/applications-board/time-grid.tsx
+#: src/features/career/schedule-sheet.tsx
 msgid "This time does not exist in your timezone. Choose another time."
 msgstr "Waktu ini tidak ada di zona waktu Anda. Pilih waktu lain."
 
@@ -12318,12 +12868,9 @@ msgid "Time · {0}"
 msgstr "Waktu · {0}"
 
 #: src/features/applications-board/reschedule-sheet.tsx
+#: src/features/career/schedule-fields.tsx
 msgid "Time · {timeZone}"
 msgstr "Waktu · {timeZone}"
-
-#: src/features/career/schedule-sheet.tsx
-msgid "Time (HH:mm)"
-msgstr "Waktu (HH:mm)"
 
 #: src/features/workspace/tabs/prepare.tsx
 msgid "Time, link, who, what you sent"
@@ -12336,10 +12883,6 @@ msgstr "Garis waktu"
 #: src/features/profile/preferences.tsx
 msgid "Times are shown in {timeZone}."
 msgstr "Waktu ditampilkan dalam {timeZone}."
-
-#: src/features/career/schedule-sheet.tsx
-msgid "Times are shown in {timezone}. Change timezone in Settings → Preferences."
-msgstr "Waktu ditampilkan dalam {timezone}. Ubah zona waktu di Pengaturan → Preferensi."
 
 #: app/account/preferences.tsx
 msgid "Timezone"
@@ -12418,6 +12961,10 @@ msgstr "Terlalu banyak file dalam waktu singkat. Tunggu sebentar, lalu coba lagi
 msgid "Too many requests. Try again later."
 msgstr "Terlalu banyak permintaan. Coba lagi nanti."
 
+#: src/features/jobs/search-problem.tsx
+msgid "Too many searches in a short time. Wait a minute, then try again."
+msgstr "Terlalu banyak pencarian dalam waktu singkat. Tunggu sebentar, lalu coba lagi."
+
 #: src/features/onboarding/messages.ts
 msgid "Too many tries in a short time. Wait a minute, then try again."
 msgstr "Terlalu banyak percobaan dalam waktu singkat. Tunggu sebentar, lalu coba lagi."
@@ -12451,6 +12998,11 @@ msgstr "Logo tools di keahlian"
 msgid "Totals aren't added up. Bonus and equity depend on conditions; equity value is uncertain. Read original offer documents."
 msgstr "Total tidak dijumlahkan. Bonus dan ekuitas bergantung pada kondisi; nilai ekuitas tidak pasti. Baca dokumen penawaran asli."
 
+#. Save a job listing to the person's applications
+#: src/features/jobs/listing-detail.tsx
+msgid "Track"
+msgstr "Lacak"
+
 #: src/features/documents/new-choices.tsx
 msgid "Track an application from a link or the posting's text."
 msgstr "Lacak lamaran dari tautan atau teks lowongan."
@@ -12462,6 +13014,23 @@ msgstr "Pantau setiap lamaran"
 #: src/features/home/new-roles.tsx
 msgid "Track in Applications"
 msgstr "Lacak di Lamaran"
+
+#: src/features/jobs/listing-fit.tsx
+msgid "Track this job to add evidence and questions in its workspace. The check goes with it."
+msgstr "Lacak lowongan ini untuk menambah bukti dan pertanyaan di workspace-nya. Hasil pemeriksaan ikut terbawa."
+
+#. A job listing saved to the person's applications
+#. A job listing saved to the person's applications
+#: src/features/jobs/listing-card.tsx
+#: src/features/jobs/listing-detail.tsx
+msgid "Tracked"
+msgstr "Dilacak"
+
+#. placeholder {0}: listing.title
+#. placeholder {1}: listing.company.name
+#: src/features/jobs/use-listing-actions.ts
+msgid "Tracking {0} at {1}"
+msgstr "Melacak {0} di {1}"
 
 #: src/features/design/preset-names.ts
 msgid "Traditional"
@@ -12515,6 +13084,10 @@ msgstr "Hal benar tentang pekerjaanmu. Coach dan dokumenmu hanya memakai fakta y
 msgid "Try {suggestion}"
 msgstr "Coba {suggestion}"
 
+#: src/features/jobs/jobs-states.tsx
+msgid "Try a longer posting window, fewer filters or other words. For local job boards, save jobs with the browser extension."
+msgstr "Coba rentang tanggal posting yang lebih panjang, kurangi filter, atau pakai kata lain. Untuk papan lowongan lokal, simpan lowongan dengan browser extension."
+
 #: app/_layout.tsx
 #: app/(auth)/server.tsx
 #: app/account/account.tsx
@@ -12525,6 +13098,8 @@ msgstr "Coba {suggestion}"
 #: src/features/documents/library-states.tsx
 #: src/features/entries/improve.tsx
 #: src/features/entries/photo-field.tsx
+#: src/features/jobs/listing-detail.tsx
+#: src/features/jobs/search-problem.tsx
 #: src/features/letters/write.tsx
 #: src/features/onboarding/onboarding-screen.tsx
 #: src/features/profile/states.tsx
@@ -12591,7 +13166,7 @@ msgstr "Matikan untuk CV yang hanya berisi teks."
 msgid "Turn on the link to choose an address."
 msgstr "Aktifkan tautan untuk memilih alamat."
 
-#: src/features/career/schedule-sheet.tsx
+#: src/features/career/schedule-fields.tsx
 msgid "Turn this schedule on"
 msgstr "Aktifkan jadwal ini"
 
@@ -12772,6 +13347,11 @@ msgstr "Diperbarui di {0} CV"
 #: src/features/profile/save-note.tsx
 msgid "Updated in 1 resume"
 msgstr "Diperbarui di 1 CV"
+
+#: src/features/jobs/format.ts
+msgctxt "Job search results"
+msgid "updated just now"
+msgstr "baru saja diperbarui"
 
 #: src/features/ats-checker/checker.tsx
 msgid "Upload a PDF and see the text an applicant tracking system extracts: what's missing, what's out of order, and how to fix it. Free, no account needed."
@@ -13044,6 +13624,11 @@ msgstr "Dipakai untuk memeriksa posisi dan penawaran. Masing-masing berupa angka
 msgid "Username"
 msgstr "Nama Pengguna"
 
+#. A recent job search that counts toward today's searches when opened
+#: src/features/jobs/recent-searches.tsx
+msgid "Uses 1 search"
+msgstr "Pakai 1 pencarian"
+
 #: src/features/assistant/assistant-screen.tsx
 msgid "Uses facts from your resume"
 msgstr "Menggunakan fakta dari resume Anda"
@@ -13051,10 +13636,6 @@ msgstr "Menggunakan fakta dari resume Anda"
 #: src/features/assistant/assistant-screen.tsx
 msgid "Uses the linked application"
 msgstr "Menggunakan lamaran pekerjaan tertaut"
-
-#: src/features/career/schedule-sheet.tsx
-msgid "Uses web search set up in Settings. Results wait in Today. Applications and documents are never created for you."
-msgstr "Menggunakan penelusuran web yang disiapkan di Pengaturan. Hasil menunggu di Hari ini. lamaran pekerjaan dan dokumen tidak pernah dibuat untuk Anda."
 
 #: src/features/share/web-page.tsx
 msgid "Uses your resume's template and Design, and fits any screen. Change them in Design."
@@ -13087,6 +13668,10 @@ msgstr "Verifikasi"
 #: src/features/auth/errors.ts
 msgid "Verify your email first. We sent you a link; open it on this phone, then sign in."
 msgstr "Verifikasi emailmu dulu. Kami sudah mengirim tautan; buka di ponsel ini, lalu masuk."
+
+#: src/features/career/schedule-fields.tsx
+msgid "Verify your email in Settings first"
+msgstr "Verifikasi email Anda di Pengaturan terlebih dahulu"
 
 #: src/features/letters/share.tsx
 msgid "Version"
@@ -13134,6 +13719,14 @@ msgstr "Hanya sedikit kata yang berhasil dipulihkan untuk sebuah resume."
 msgid "Very little text was recovered for this many pages."
 msgstr "Hanya sedikit teks yang berhasil dipulihkan untuk sebanyak ini halaman."
 
+#: src/features/jobs/format.ts
+msgid "via {name}"
+msgstr "lewat {name}"
+
+#: src/features/jobs/format.ts
+msgid "via the company's careers site"
+msgstr "lewat situs karier perusahaan"
+
 #: src/features/application-detail/interview-sheet.tsx
 msgid "Video link, office address, or phone number"
 msgstr "Tautan video, alamat kantor, atau nomor telepon"
@@ -13145,6 +13738,10 @@ msgstr "Vietnam"
 #: src/features/applications-board/calendar-screen.tsx
 msgid "View application"
 msgstr "Lihat lamaran kerja"
+
+#: src/features/jobs/listing-detail.tsx
+msgid "View original"
+msgstr "Lihat posting asli"
 
 #: src/features/application-detail/detail-screen.tsx
 msgid "View posting"
@@ -13172,6 +13769,11 @@ msgstr "penayangan · 30 hari"
 #: src/features/ai/report-content.tsx
 msgid "Violence or abuse"
 msgstr "Kekerasan atau pelecehan"
+
+#: src/features/jobs/format.ts
+#: src/features/jobs/listing-card.tsx
+msgid "Visa sponsorship"
+msgstr "Sponsor visa"
 
 #: src/features/share/link.tsx
 msgid "Visitors"
@@ -13274,6 +13876,11 @@ msgstr "Situs Web"
 msgid "Week"
 msgstr "Minggu"
 
+#: src/features/career/schedule-fields.tsx
+msgctxt "How often a job alert runs"
+msgid "Weekly"
+msgstr "Mingguan"
+
 #: src/features/home/schedules.tsx
 msgid "Weekly at {clock} · next {day}"
 msgstr "Setiap minggu pukul {clock} · berikutnya {day}"
@@ -13350,13 +13957,17 @@ msgstr "Posisi apa yang Anda incar?"
 msgid "What should change?"
 msgstr "Apa yang harus diubah?"
 
-#: src/features/career/schedule-sheet.tsx
+#: src/features/career/schedule-fields.tsx
 msgid "What should run"
 msgstr "Apa yang dijalankan"
 
 #: src/features/assistant/assistant-screen.tsx
 msgid "What should we work on?"
 msgstr "Apa yang harus kita kerjakan?"
+
+#: src/features/jobs/listing-detail.tsx
+msgid "What they ask for"
+msgstr "Yang dicari"
 
 #: src/features/application-detail/interview-sheet.tsx
 msgid "What they asked you to prepare"
@@ -13519,6 +14130,10 @@ msgstr "Impor Word, Perbaiki, asisten, draf surat, pelatihan dan pembuatan konte
 msgid "Words run together when the text is extracted."
 msgstr "Kata-kata menyatu ketika teksnya diekstrak."
 
+#: src/features/jobs/filters-sheet.tsx
+msgid "Work arrangement"
+msgstr "Cara kerja"
+
 #: src/features/workspace/tabs/prepare.tsx
 msgid "Works without AI or new research"
 msgstr "Berfungsi tanpa AI atau riset baru"
@@ -13527,9 +14142,18 @@ msgstr "Berfungsi tanpa AI atau riset baru"
 msgid "Worth asking"
 msgstr "Layak ditanyakan"
 
+#. placeholder {0}: fit.ask.person
+#: src/features/jobs/listing-fit.tsx
+msgid "Worth asking {0}:"
+msgstr "Layak ditanyakan ke {0}:"
+
 #: src/features/workspace/tabs/fit.tsx
 msgid "Worth asking {person}"
 msgstr "Layak ditanyakan {person}"
+
+#: src/features/jobs/listing-fit.tsx
+msgid "Worth asking:"
+msgstr "Layak ditanyakan:"
 
 #: app/builder/[id]/_layout.tsx
 #: app/letter/[id]/_layout.tsx
@@ -13638,6 +14262,10 @@ msgstr "Anda dapat menyimpan hingga 30 pertanyaan lamaran."
 msgid "You can start now. Publishing your portfolio, job alerts and payments wait until your email is confirmed. No email? Check spam, or send it again."
 msgstr "Kamu bisa mulai sekarang. Menerbitkan portofolio, notifikasi lowongan, dan pembayaran menunggu sampai emailmu terkonfirmasi. Tidak ada email? Cek folder spam, atau kirim ulang."
 
+#: src/features/jobs/jobs-states.tsx
+msgid "You can still save jobs from a link, from pasted text, or with the browser extension."
+msgstr "Kamu tetap bisa menyimpan lowongan dari link, teks yang ditempel, atau browser extension."
+
 #: src/auth/messages.ts
 msgid "You canceled the sign-in before it finished."
 msgstr "Anda membatalkan proses masuk sebelum selesai."
@@ -13679,9 +14307,17 @@ msgstr "Anda sendiri yang mengirim di situs pemberi kerja. Menandainya sudah mel
 msgid "You will be signed out of {server}. Any edits not yet synced from this device will be lost."
 msgstr "Anda akan keluar dari {server}. Pengeditan apa pun yang belum disinkronkan dari perangkat ini akan hilang."
 
+#: src/features/career/schedule-fields.tsx
+msgid "You'll always see it in Today. Email depends on your server's mail setup."
+msgstr "Anda akan selalu melihatnya di Hari ini. Email bergantung pada pengaturan email server Anda."
+
 #: src/features/workspace/shell.tsx
 msgid "You're looking at a saved version. It can't be edited."
 msgstr "Anda sedang melihat versi tersimpan. Versi ini tidak dapat diedit."
+
+#: src/features/jobs/jobs-states.tsx
+msgid "You're offline"
+msgstr "Kamu sedang offline"
 
 #: src/features/auth/errors.ts
 msgid "You're offline, or the server didn't answer. Check your connection and try again."
@@ -13722,6 +14358,10 @@ msgstr "Anda sedang luring. Berbagi memerlukan koneksi."
 msgid "You're offline. The last PDF check stays here; connect to refresh it."
 msgstr "Anda sedang luring. Cek PDF terakhir tetap di sini; sambungkan untuk menyegarkannya."
 
+#: src/features/jobs/jobs-header.tsx
+msgid "You're offline. These are the results you saw last; search again when you're back online."
+msgstr "Kamu sedang offline. Ini hasil terakhir yang kamu lihat; cari lagi saat kembali online."
+
 #: src/features/documents/queries.ts
 #: src/features/documents/use-import.ts
 #: src/features/documents/use-start-document.ts
@@ -13731,6 +14371,10 @@ msgstr "Anda sedang luring. Coba lagi saat Anda tersambung kembali."
 #: src/features/home/needs-you.tsx
 msgid "You're up to date. New roles, reminders and finished briefings appear here."
 msgstr "Semua sudah terbaca. Lowongan baru, pengingat, dan briefing yang selesai muncul di sini."
+
+#: src/features/jobs/search-problem.tsx
+msgid "You've reached today's search limit. Results you already opened stay available. Try again tomorrow."
+msgstr "Batas pencarian hari ini tercapai. Hasil yang sudah kamu buka tetap bisa dilihat. Coba lagi besok."
 
 #: src/features/onboarding/messages.ts
 msgid "You've used this as often as you can today. Try again tomorrow."
@@ -13749,6 +14393,7 @@ msgstr "Akun Anda"
 msgid "your AI connection"
 msgstr "koneksi AI Anda"
 
+#: src/features/jobs/listing-fit.tsx
 #: src/features/workspace/hooks.ts
 msgid "Your AI connection"
 msgstr "Koneksi AI Anda"
@@ -13838,6 +14483,10 @@ msgstr "Email, telepon, lokasi, dan detail tajuk lainnya, serta nomor telepon re
 #: src/features/profile/facts.tsx
 msgid "Your facts · {0}"
 msgstr "Faktamu · {0}"
+
+#: src/features/jobs/listing-fit.tsx
+msgid "Your fit"
+msgstr "Kecocokan Anda"
 
 #: src/features/workspace/tabs/prepare.tsx
 msgid "Your focus"
@@ -13979,6 +14628,10 @@ msgstr "Bagian ini belum bisa disimpan ke Profil apa adanya. Periksa lalu coba l
 msgid "Your Profile changed elsewhere"
 msgstr "Profilmu berubah di tempat lain"
 
+#: src/features/jobs/listing-fit.tsx
+msgid "Your Profile changed since this check. Checking again uses AI again."
+msgstr "Profil Anda berubah sejak pemeriksaan ini. Memeriksa lagi memakai AI lagi."
+
 #: src/features/write/profile-link.tsx
 msgid "Your Profile changed somewhere else. Try again."
 msgstr "Profil Anda diubah di tempat lain. Coba lagi."
@@ -13986,6 +14639,14 @@ msgstr "Profil Anda diubah di tempat lain. Coba lagi."
 #: src/features/assistant/coach-screen.tsx
 msgid "Your Profile couldn't load. Try again or switch Profile off before sending."
 msgstr "Profilmu tidak bisa dimuat. Coba lagi atau matikan Profil sebelum mengirim."
+
+#: src/features/jobs/listing-detail.tsx
+msgid "Your Profile doesn't mention these skills yet. Add the ones you have to your Profile, and matches show here."
+msgstr "Profil Anda belum menyebut skill ini. Tambahkan yang Anda kuasai ke Profil, dan kecocokannya muncul di sini."
+
+#: src/features/jobs/listing-detail.tsx
+msgid "Your Profile mentions {matched} of the {total} main skills this job names. A word match, without AI: check your fit for a closer look."
+msgstr "Profil Anda menyebut {matched} dari {total} skill utama lowongan ini. Ini pencocokan kata tanpa AI: periksa kecocokan untuk melihat lebih dalam."
 
 #: src/features/onboarding/onboarding-screen.tsx
 msgid "Your Profile was changed somewhere else. Check what's new, then save again."

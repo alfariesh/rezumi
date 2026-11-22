@@ -246,6 +246,11 @@ msgstr "{0, plural, one {De #-passage van uw cv lezen...} other {#-lijstitems en
 msgid "{0, plural, one {Started # minute ago} other {Started # minutes ago}}"
 msgstr "{0, plural, one {# minuut geleden begonnen} other {# minuten geleden begonnen}}"
 
+#. placeholder {0}: Math.floor(hours / 24)
+#: src/features/jobs/format.ts
+msgid "{0, plural, one {updated # day ago} other {updated # days ago}}"
+msgstr ""
+
 #. placeholder {0}: fact.usedBy.savedItems
 #: src/features/profile/facts-labels.ts
 msgid "{0, plural, one {used in # saved item} other {used in # saved items}}"
@@ -312,6 +317,11 @@ msgstr ""
 #. placeholder {0}: sourceLabel(id)
 #: src/features/onboarding/messages.ts
 msgid "{0} didn't answer in time. Try again in a moment."
+msgstr ""
+
+#. placeholder {0}: company.size
+#: src/features/jobs/listing-detail.tsx
+msgid "{0} employees"
 msgstr ""
 
 #. placeholder {0}: creditCount(credits.nextExpiry.credits)
@@ -475,6 +485,10 @@ msgstr "{count, plural, one {#-invoer} other {#-invoer}}"
 msgid "{count, plural, one {# interview} other {# interviews}}"
 msgstr ""
 
+#: src/features/jobs/jobs-header.tsx
+msgid "{count, plural, one {# job} other {# jobs}}"
+msgstr ""
+
 #: src/features/workspace/tabs/messages.tsx
 msgid "{count, plural, one {Apply # change} other {Apply # changes}}"
 msgstr "{count, plural, one {# wijziging toepassen} other {# wijzigingen toepassen}}"
@@ -528,6 +542,10 @@ msgstr "{days, plural, =0 {· sinds vandaag} one {· sinds # dag} other {· sind
 msgid "{days, plural, one {In # day} other {In # days}}"
 msgstr ""
 
+#: src/features/jobs/format.ts
+msgid "{days, plural, one {Posted # day ago} other {Posted # days ago}}"
+msgstr ""
+
 #: src/features/workspace/tabs/debrief.tsx
 msgid "{done} of {count} done"
 msgstr "{done} van {count} klaar"
@@ -575,6 +593,10 @@ msgstr ""
 
 #: src/features/home/coming-up.tsx
 msgid "{hours, plural, one {In # hour} other {In # hours}}"
+msgstr ""
+
+#: src/features/jobs/format.ts
+msgid "{hours, plural, one {updated # hour ago} other {updated # hours ago}}"
 msgstr ""
 
 #: src/features/workspace/shell.tsx
@@ -636,8 +658,18 @@ msgstr ""
 msgid "{left, plural, one {# left, expires on {expires}} other {# left, expires on {expires}}}"
 msgstr ""
 
+#. placeholder {0}: quota.max
+#. placeholder {1}: quota.max
+#: src/features/jobs/jobs-header.tsx
+msgid "{left, plural, one {# search left today (of {0})} other {# searches left today (of {1})}}"
+msgstr ""
+
 #: src/features/entries/entry-fields.tsx
 msgid "{level} of 5"
+msgstr ""
+
+#: src/features/career/schedule-body.tsx
+msgid "{max, plural, one {You can keep # job alert on. Pause or delete one to turn on another.} other {You can keep up to # job alerts on. Pause or delete one to turn on another.}}"
 msgstr ""
 
 #: src/features/workspace/tabs/debrief.tsx
@@ -649,11 +681,19 @@ msgstr "{minutes, plural, one {# minuut in totaal} other {# minuten in totaal}}"
 msgid "{minutes, plural, one {Starts in # minute} other {Starts in # minutes}}"
 msgstr "{minutes, plural, one {Begint over # minuut} other {Begint over # minuten}}"
 
+#: src/features/jobs/format.ts
+msgid "{minutes, plural, one {updated # min ago} other {updated # min ago}}"
+msgstr ""
+
 #: src/features/application-detail/hooks.ts
 #: src/features/workspace/shell.tsx
 #: src/features/workspace/tabs/prepare.tsx
 msgid "{minutes} min"
 msgstr "{minutes} min"
+
+#: src/features/jobs/listing-fit.tsx
+msgid "{missing} missing"
+msgstr ""
 
 #: src/features/check/messages.ts
 msgid "{name} added to page 1"
@@ -663,6 +703,7 @@ msgstr "{name} toegevoegd aan pagina 1"
 msgid "{name} and custom styles aren't available, so the imported document uses {free} without the file's styles."
 msgstr ""
 
+#: src/features/jobs/listing-fit.tsx
 #: src/features/workspace/hooks.ts
 msgid "{name} didn't respond. Nothing was changed; try again."
 msgstr "{name} reageerde niet. Er is niets gewijzigd; probeer het opnieuw."
@@ -725,6 +766,10 @@ msgstr ""
 msgid "{pairingName} type"
 msgstr ""
 
+#: src/features/jobs/listing-fit.tsx
+msgid "{partial} partly"
+msgstr ""
+
 #: src/features/check/issues-tab.tsx
 msgid "{passed} of {total}"
 msgstr "{passed} van {total}"
@@ -737,12 +782,31 @@ msgstr "{passedRules}- of {totalRules}-controles zijn geslaagd."
 msgid "{pending, plural, one {# proposed edit on this page · nothing changes until you accept} other {# proposed edits on this page · nothing changes until you accept}}"
 msgstr "{pending, plural, one {# voorgestelde wijziging op deze pagina · er verandert niets totdat je deze accepteert} other {# voorgestelde wijzigingen op deze pagina · er verandert niets totdat je deze accepteert}}"
 
+#: src/features/jobs/format.ts
+msgctxt "Listed pay"
+msgid "{range} a month"
+msgstr ""
+
+#: src/features/jobs/format.ts
+msgctxt "Listed pay"
+msgid "{range} a year"
+msgstr ""
+
+#: src/features/jobs/format.ts
+msgctxt "Listed pay"
+msgid "{range} an hour"
+msgstr ""
+
 #: src/features/workspace/shell.tsx
 msgid "{role} · {company}"
 msgstr "{role} · {company}"
 
 #: src/features/design/gallery-filters.tsx
 msgid "{shown} of {listed} shown"
+msgstr ""
+
+#: src/features/jobs/listing-detail.tsx
+msgid "{skill} (in your Profile)"
 msgstr ""
 
 #: src/features/assistant/messages.tsx
@@ -756,6 +820,10 @@ msgstr "{stories, plural, one {# verhaal} other {# verhalen}}"
 #: src/features/workspace/tabs/messages.tsx
 msgid "{summary}. Opens in Career → Offers."
 msgstr "{summary}. Opent in Loopbaan → Aanbiedingen."
+
+#: src/features/jobs/listing-fit.tsx
+msgid "{supported} supported"
+msgstr ""
 
 #: src/features/workspace/tabs/fit.tsx
 msgid "{supported} supported · {partial} partly · {missing} missing"
@@ -853,7 +921,7 @@ msgstr "Briefing van 10 minuten"
 msgid "2 files"
 msgstr "2 bestanden"
 
-#: src/features/career/schedule-sheet.tsx
+#: src/features/career/schedule-body.tsx
 #: src/features/home/schedules.tsx
 msgid "2 hours before"
 msgstr "2 uur van tevoren"
@@ -863,10 +931,15 @@ msgstr "2 uur van tevoren"
 msgid "2–3 sentences reads best"
 msgstr "2-3 zinnen lezen het beste"
 
-#: src/features/career/schedule-sheet.tsx
+#: src/features/career/schedule-body.tsx
 #: src/features/home/schedules.tsx
 msgid "24 hours before"
 msgstr "24 uur van tevoren"
+
+#: src/features/career/schedule-fields.tsx
+msgctxt "How often a job alert runs: every 3 days"
+msgid "3 days"
+msgstr ""
 
 #: src/features/onboarding/intro-screen.tsx
 msgid "3 new roles match you"
@@ -928,6 +1001,10 @@ msgstr "Een gat over de volledige hoogte splitst deze pagina in twee kolommen."
 #: src/features/ats-checker/messages.ts
 msgid "A gap is not a problem. Add a one-line explanation if you want to; many strong resumes simply do not."
 msgstr "Een gat is geen probleem. Voeg desgewenst een korte uitleg toe; veel sterke cv's doen dit gewoon niet."
+
+#: src/features/career/schedule-fields.tsx
+msgid "A job title works best, such as “Product designer”."
+msgstr ""
 
 #: src/features/check/messages.ts
 msgid "A link isn't a full address"
@@ -997,9 +1074,18 @@ msgstr "Een getimed plan, uw opening, de verhalen om mee te nemen en vragen om t
 msgid "A web address is written without https://."
 msgstr "Een webadres is geschreven zonder https://."
 
+#. placeholder {0}: company.name
+#: src/features/jobs/listing-detail.tsx
+msgid "About {0}"
+msgstr ""
+
 #: src/features/workspace/tabs/practise.tsx
 msgid "About 90 seconds when spoken"
 msgstr "Ongeveer 90 seconden hardop"
+
+#: src/features/jobs/listing-detail.tsx
+msgid "About the job"
+msgstr ""
 
 #: src/features/career/offers.tsx
 msgid "Above your office-day limit."
@@ -1157,8 +1243,8 @@ msgid "Add a role"
 msgstr ""
 
 #: src/features/career/schedule-sheet.tsx
-msgid "Add a role or company to look for."
-msgstr "Voeg een functie of bedrijf toe om naar te zoeken."
+msgid "Add a role to look for."
+msgstr ""
 
 #: src/features/profile/preferences.tsx
 msgid "Add a role, then Return"
@@ -1206,9 +1292,9 @@ msgstr "Voeg een @ en het domein toe, zoals name@example.com"
 msgid "Add an address."
 msgstr "Voeg een adres toe."
 
-#: src/features/career/schedule-sheet.tsx
-msgid "Add an application first."
-msgstr "Voeg eerst een sollicitatie toe."
+#: src/features/career/schedule-body.tsx
+msgid "Add an application first"
+msgstr "Voeg eerst een sollicitatie toe"
 
 #: src/features/check/messages.ts
 msgid "Add an email"
@@ -1218,13 +1304,13 @@ msgstr "Voeg een e-mailadres toe"
 msgid "Add an interview"
 msgstr "Gesprek toevoegen"
 
+#: src/features/career/schedule-body.tsx
+msgid "Add an interview in an application first"
+msgstr "Voeg eerst een gesprek toe aan een sollicitatie"
+
 #: src/features/workspace/tabs/prepare.tsx
 msgid "Add an interview to plan for it"
 msgstr "Voeg een gesprek toe om het voor te bereiden"
-
-#: src/features/career/schedule-sheet.tsx
-msgid "Add an upcoming interview in Applications first."
-msgstr "Voeg eerst een aankomend sollicitatiegesprek toe aan sollicitaties."
 
 #: src/features/onboarding/onboarding-screen.tsx
 msgid "Add any of these and we'll fill in your Profile. You check everything before it's saved."
@@ -1378,6 +1464,10 @@ msgstr "Voeg het domein toe na de @, zoals {name}@example.com"
 msgid "Add the domain ending, like {domain}.com"
 msgstr "Voeg de domeinextensie toe, zoals {domain}.com"
 
+#: src/features/jobs/jobs-states.tsx
+msgid "Add the roles you want"
+msgstr ""
+
 #: src/features/share/custom-domain.tsx
 msgid "Add these records where you manage the domain, then check. Changes can take a few hours to reach everyone."
 msgstr "Voeg deze records toe waar je het domein beheert en controleer daarna. Het kan een paar uur duren voordat wijzigingen overal zichtbaar zijn."
@@ -1523,7 +1613,7 @@ msgstr ""
 msgid "AI & developer"
 msgstr "AI en ontwikkelaar"
 
-#: src/features/career/schedule-sheet.tsx
+#: src/features/career/schedule-body.tsx
 msgid "AI connection"
 msgstr "AI-verbinding"
 
@@ -1661,13 +1751,13 @@ msgstr "Download ook de {0} motivatiebrief"
 msgid "Also download the cover letter"
 msgstr "Download ook de sollicitatiebrief"
 
-#: src/features/career/schedule-sheet.tsx
-msgid "Also email a copy"
-msgstr "Stuur ook een kopie per e-mail"
+#: src/features/career/schedule-fields.tsx
+msgid "Also email {email}"
+msgstr ""
 
-#: src/features/career/schedule-sheet.tsx
-msgid "Always appears in Today. Email requires a verified address and server mail setup. No push notifications are sent."
-msgstr "Verschijnt altijd in Vandaag. Voor e-mail zijn een geverifieerd adres en een servermailconfiguratie vereist. Er worden geen pushmeldingen verzonden."
+#: src/features/career/schedule-fields.tsx
+msgid "Also filtered by: {list}"
+msgstr ""
 
 #: src/features/settings/locale-names.ts
 msgid "Amharic"
@@ -1738,13 +1828,23 @@ msgstr "Antwoorden"
 msgid "Answers copied"
 msgstr "Antwoorden gekopieerd"
 
+#: src/features/jobs/filters-sheet.tsx
 #: src/features/onboarding/questions.tsx
 #: src/features/profile/preferences.tsx
 msgid "Any"
 msgstr "Maakt niet uit"
 
+#: src/features/jobs/filters-sheet.tsx
+msgctxt "Job search filter: any work arrangement"
+msgid "Any"
+msgstr ""
+
 #: src/features/design/type-group.tsx
 msgid "Any font, with its weights and sizes"
+msgstr ""
+
+#: src/features/jobs/filters-sheet.tsx
+msgid "Any level"
 msgstr ""
 
 #: src/features/share/web-page.tsx
@@ -1755,9 +1855,16 @@ msgstr "Iedereen met de link kan uw cv bekijken."
 msgid "Anything to remember about this job"
 msgstr "Alles om te onthouden over deze baan"
 
+#: src/features/career/schedule-fields.tsx
+#: src/features/jobs/filters-sheet.tsx
+#: src/features/jobs/recent-searches.tsx
 #: src/features/profile/search-regions-field.tsx
 msgid "Anywhere"
 msgstr "Overal"
+
+#: src/features/jobs/filters-sheet.tsx
+msgid "Anywhere in the country"
+msgstr ""
 
 #: src/features/billing/plan-alert.ts
 msgid "API and MCP access isn't available"
@@ -1827,7 +1934,7 @@ msgstr "Verschijnt op de pagina zodra deze een organisatie heeft."
 #: app/_layout.tsx
 #: src/features/application-detail/detail-screen.tsx
 #: src/features/applications-board/calendar-screen.tsx
-#: src/features/career/schedule-sheet.tsx
+#: src/features/career/schedule-body.tsx
 #: src/features/check/application-picker.tsx
 #: src/features/letters/write.tsx
 #: src/shell/workspace-chrome.tsx
@@ -1855,6 +1962,7 @@ msgstr "samenvattingen van sollicitaties"
 msgid "Application updated"
 msgstr "Sollicitatie bijgewerkt"
 
+#: src/features/applications-board/views-row.tsx
 #: src/features/applications-board/views.tsx
 msgid "Application views"
 msgstr "Sollicitatieweergaven"
@@ -1863,6 +1971,7 @@ msgstr "Sollicitatieweergaven"
 #: app/(tabs)/applications/_layout.tsx
 #: src/features/applications-board/views.tsx
 #: src/features/assistant/coach-screen.tsx
+#: src/features/jobs/jobs-screen.tsx
 #: src/features/search/search-screen.tsx
 #: src/shell/app-tabs.tsx
 msgid "Applications"
@@ -2128,6 +2237,10 @@ msgstr "Terug naar sollicitaties"
 msgid "Back to current"
 msgstr "Terug naar huidige versie"
 
+#: src/features/jobs/filters-sheet.tsx
+msgid "Back to filters"
+msgstr ""
+
 #: src/features/history/history-panel.tsx
 #: src/features/letters/share.tsx
 msgid "Back to now"
@@ -2226,6 +2339,7 @@ msgstr "Bengaals"
 msgid "BI analyst"
 msgstr ""
 
+#: src/features/applications-board/views-row.tsx
 #: src/features/applications-board/views.tsx
 msgid "Board"
 msgstr "Bord"
@@ -2351,6 +2465,7 @@ msgstr ""
 msgid "by <0>Salman Alfariesh</0>"
 msgstr "door <0>Salman Alfariesh</0>"
 
+#: src/features/applications-board/views-row.tsx
 #: src/features/applications-board/views.tsx
 msgid "Calendar"
 msgstr "Kalender"
@@ -2473,6 +2588,10 @@ msgstr "Wijzigt alleen sectietitels en datumwoorden, niet uw inhoud."
 msgid "Changes to “{name}” were saved on another device. Your edits are still on this device. Choose which version to keep."
 msgstr "Wijzigingen in “{name}” zijn op een ander apparaat opgeslagen. Je bewerkingen staan ​​nog steeds op dit apparaat. Kies welke versie je wilt behouden."
 
+#: src/features/jobs/search-bar.tsx
+msgid "Changes when the jobs were posted"
+msgstr ""
+
 #: src/features/design/preset-names.ts
 msgid "Charts and dashboards"
 msgstr ""
@@ -2494,6 +2613,7 @@ msgstr "Controleer een PDF met de ATS-checker"
 msgid "Check a sample file"
 msgstr "Controleer een voorbeeldbestand"
 
+#: src/features/jobs/listing-fit.tsx
 #: src/features/share/custom-domain.tsx
 #: src/features/workspace/tabs/fit.tsx
 msgid "Check again"
@@ -2507,10 +2627,15 @@ msgstr "Controleer een ander bestand"
 msgid "Check DNS"
 msgstr "DNS controleren"
 
+#: src/features/jobs/listing-fit.tsx
+msgid "Check each requirement against the facts and stories in your Profile. Gaps show as missing evidence, never missing ability."
+msgstr ""
+
 #: src/features/workspace/tabs/apply.tsx
 msgid "Check every claim, date and result against your experience."
 msgstr "Controleer elke bewering, datum en elk resultaat aan de hand van uw ervaring."
 
+#: src/features/jobs/listing-fit.tsx
 #: src/features/workspace/tabs/fit.tsx
 #: src/features/workspace/tabs/saved.tsx
 msgid "Check fit"
@@ -2712,10 +2837,6 @@ msgstr "Kies een ander bestand"
 msgid "Choose any of the fonts in Design instead."
 msgstr ""
 
-#: src/features/career/schedule-sheet.tsx
-msgid "Choose date"
-msgstr "Kies datum"
-
 #: src/features/entries/photo-field.tsx
 #: src/features/settings/profile.tsx
 msgid "Choose from library"
@@ -2724,10 +2845,6 @@ msgstr "Keuze uit bibliotheek"
 #: src/features/entries/custom-fields.tsx
 msgid "Choose icon"
 msgstr ""
-
-#: src/features/career/schedule-sheet.tsx
-msgid "Choose time"
-msgstr "Kies tijd"
 
 #: src/features/applications/list-screen.tsx
 msgid "Choose up to 200 applications per bulk action."
@@ -2739,6 +2856,14 @@ msgstr "Cirkel"
 
 #: src/features/onboarding/questions.tsx
 msgid "Cities or countries. Leave it empty for anywhere."
+msgstr ""
+
+#: src/features/jobs/filters-sheet.tsx
+msgid "City"
+msgstr ""
+
+#: src/features/career/schedule-fields.tsx
+msgid "City (optional)"
 msgstr ""
 
 #: src/features/entries/basics-form.tsx
@@ -2757,9 +2882,12 @@ msgstr "Klassiek"
 msgid "Clean"
 msgstr "Strak"
 
+#. Removes every recent job search
+#. Removes every recent job search
 #: src/features/application-detail/sheets.tsx
 #: src/features/check/posting.tsx
 #: src/features/entries/dates-field.tsx
+#: src/features/jobs/recent-searches.tsx
 msgid "Clear"
 msgstr "Wissen"
 
@@ -2769,6 +2897,8 @@ msgstr "Duidelijke datum"
 
 #: src/features/applications-board/board-screen.tsx
 #: src/features/applications/list-screen.tsx
+#: src/features/jobs/filters-sheet.tsx
+#: src/features/jobs/jobs-states.tsx
 msgid "Clear filters"
 msgstr "Filters wissen"
 
@@ -2800,6 +2930,8 @@ msgid "Clears its entries; the section stays. You can undo."
 msgstr "Wist zijn invoer; het gedeelte blijft. Je kunt het ongedaan maken."
 
 #: src/features/auth/welcome-screen.tsx
+#: src/features/career/schedule-fields.tsx
+#: src/features/career/schedule-sheet.tsx
 #: src/features/check/application-picker.tsx
 #: src/features/check/check-page.tsx
 #: src/features/check/issue-stepper.tsx
@@ -2821,6 +2953,9 @@ msgstr "Wist zijn invoer; het gedeelte blijft. Je kunt het ongedaan maken."
 #: src/features/entries/photo-field.tsx
 #: src/features/entries/rich-text-toolbar.tsx
 #: src/features/history/version-options.tsx
+#: src/features/jobs/filters-sheet.tsx
+#: src/features/jobs/listing-detail.tsx
+#: src/features/jobs/recent-searches.tsx
 #: src/features/letters/design.tsx
 #: src/features/letters/share.tsx
 #: src/features/letters/write.tsx
@@ -3010,15 +3145,19 @@ msgid "Connect {hostname}"
 msgstr ""
 
 #: src/features/applications/add-sheet.tsx
-#: src/features/career/schedule-sheet.tsx
 msgid "Connect AI provider"
 msgstr "Sluit de AI-provider aan"
 
 #: src/features/assistant/provider.tsx
+#: src/features/jobs/listing-fit.tsx
 #: src/features/workspace/parts.tsx
 #: src/features/workspace/tabs/practise.tsx
 msgid "Connect an AI provider"
 msgstr "Sluit een AI-provider aan"
+
+#: src/features/career/schedule-body.tsx
+msgid "Connect an AI provider in Settings"
+msgstr "Verbind een AI-aanbieder in Instellingen"
 
 #: src/features/workspace/tabs/prepare.tsx
 msgid "Connect an AI provider in Settings to refresh it automatically."
@@ -3300,6 +3439,10 @@ msgstr "Kan het gesprek niet verwijderen. Probeer het opnieuw."
 msgid "Couldn't delete the interview. Try again."
 msgstr "Kan het sollicitatiegesprek niet verwijderen. Probeer het opnieuw."
 
+#: src/features/jobs/jobs-screen.tsx
+msgid "Couldn't delete this job alert. Try again."
+msgstr ""
+
 #: src/features/home/home-screen.tsx
 msgid "Couldn't delete this schedule. Try again."
 msgstr "Kan deze planning niet verwijderen. Probeer het opnieuw."
@@ -3408,6 +3551,7 @@ msgid "Couldn't load this version's page."
 msgstr "Kan de pagina van deze versie niet laden."
 
 #: src/features/application-detail/sheets.tsx
+#: src/features/career/schedule-body.tsx
 #: src/features/career/shared.tsx
 msgid "Couldn't load this. Check your connection and try again."
 msgstr "Kan dit niet laden. Controleer je verbinding en probeer het opnieuw."
@@ -3490,6 +3634,7 @@ msgid "Couldn't open the file."
 msgstr ""
 
 #: src/features/home/new-roles.tsx
+#: src/features/jobs/listing-detail.tsx
 msgid "Couldn't open the posting. Try again."
 msgstr "Kan de vacature niet openen. Probeer het opnieuw."
 
@@ -3791,6 +3936,11 @@ msgstr "Woorden tellen"
 msgid "Counted separately from the parse score. Coverage does not predict anything."
 msgstr "Wordt los van de parseerscore geteld. Dekking voorspelt niets."
 
+#: src/features/career/schedule-fields.tsx
+#: src/features/jobs/filters-sheet.tsx
+msgid "Country"
+msgstr ""
+
 #: src/features/applications-board/insights-screen.tsx
 msgid "Counts every application that reached each stage, including ones now closed."
 msgstr "Telt elke sollicitatie die elke fase heeft bereikt, inclusief de sollicitaties die nu zijn gesloten."
@@ -3898,6 +4048,7 @@ msgstr ""
 msgid "Credits are used soonest-expiring first. They can't be moved to another account or exchanged for money. Your own AI connection never uses credits."
 msgstr ""
 
+#: src/features/jobs/filters-sheet.tsx
 #: src/features/profile/preferences.tsx
 msgid "Currency"
 msgstr "Valuta"
@@ -3947,6 +4098,11 @@ msgstr ""
 #: src/features/settings/locale-names.ts
 msgid "Czech"
 msgstr "Tsjechisch"
+
+#: src/features/career/schedule-fields.tsx
+msgctxt "How often a job alert runs"
+msgid "Daily"
+msgstr ""
 
 #: src/features/home/schedules.tsx
 msgid "Daily at {clock} · next {day}"
@@ -4089,6 +4245,7 @@ msgstr "Standaard"
 msgid "Degree"
 msgstr "Diploma"
 
+#: src/features/career/schedule-sheet.tsx
 #: src/features/documents/document-item.tsx
 #: src/features/history/version-options.tsx
 #: src/features/letters/share.tsx
@@ -4169,10 +4326,6 @@ msgstr "Pagina verwijderen"
 #: src/features/ai/provider-editor.tsx
 msgid "Delete provider"
 msgstr "Verwijder provider"
-
-#: src/features/career/schedule-sheet.tsx
-msgid "Delete schedule"
-msgstr "Schema verwijderen"
 
 #: src/features/write/section-menu.tsx
 msgid "Delete section"
@@ -4306,6 +4459,7 @@ msgstr ""
 msgid "Direction"
 msgstr "Richting"
 
+#: src/features/career/schedule-sheet.tsx
 #: src/features/letters/write.tsx
 #: src/features/profile/stories.tsx
 #: src/shell/unsaved-changes.ts
@@ -4316,6 +4470,7 @@ msgstr "Verwerpen"
 msgid "Discard changes"
 msgstr "Wijzigingen negeren"
 
+#: src/features/career/schedule-sheet.tsx
 #: src/ui-legacy/overlays.tsx
 msgid "Discard changes?"
 msgstr "Wijzigingen verwerpen?"
@@ -4599,6 +4754,10 @@ msgstr ""
 msgid "Each resume decides whether to show it."
 msgstr ""
 
+#: src/features/career/schedule-fields.tsx
+msgid "Each run looks for jobs that appeared since the last one. New ones wait in Home for your review; applications and documents are never created for you."
+msgstr ""
+
 #: src/features/assistant/coach-screen.tsx
 msgid "earlier messages in this chat"
 msgstr "eerdere berichten in deze chat"
@@ -4636,6 +4795,10 @@ msgstr "Invoer bewerken"
 #: src/features/applications-board/time-grid.tsx
 msgid "Edit interview"
 msgstr "Interview bewerken"
+
+#: src/features/career/schedule-sheet.tsx
+msgid "Edit job alert"
+msgstr ""
 
 #: src/features/entries/custom-fields.tsx
 msgid "Edit link"
@@ -4831,6 +4994,11 @@ msgstr "Item"
 msgid "Entry deleted"
 msgstr "Invoer verwijderd"
 
+#: src/features/jobs/format.ts
+msgctxt "Job seniority"
+msgid "Entry level"
+msgstr ""
+
 #: src/features/write/entry-sheet.tsx
 msgid "Entry options"
 msgstr "Instapmogelijkheden"
@@ -4843,17 +5011,9 @@ msgstr "Aandelen"
 msgid "Every {days} days at {clock} · next {day}"
 msgstr ""
 
-#: src/features/career/schedule-sheet.tsx
-msgid "Every 3 days"
-msgstr "Elke 3 dagen"
-
 #: src/features/check/issues-tab.tsx
 msgid "Every check passes."
 msgstr "Elke controle gaat voorbij."
-
-#: src/features/career/schedule-sheet.tsx
-msgid "Every day"
-msgstr "Elke dag"
 
 #: src/features/letters/share.tsx
 msgid "Every editing session adds a version automatically. Named versions are kept until you delete them. Restoring saves the current state first."
@@ -4883,13 +5043,14 @@ msgstr ""
 msgid "Every term the posting stresses is already there."
 msgstr "Elke term die in de vacature wordt benadrukt, is er al."
 
-#: src/features/career/schedule-sheet.tsx
-msgid "Every week"
-msgstr "Elke week"
-
 #: src/features/workspace/tabs/saved.tsx
 msgid "Everything the coach wrote for {company}, newest first."
 msgstr "Alles wat de coach heeft geschreven voor {company}, de nieuwste eerst."
+
+#: src/features/jobs/format.ts
+msgctxt "Job seniority"
+msgid "Executive"
+msgstr ""
 
 #: src/features/letters/page.tsx
 #: src/preview/page-parts.tsx
@@ -5044,14 +5205,33 @@ msgstr ""
 msgid "Filter by tag"
 msgstr "Filter op tag"
 
+#: src/features/jobs/filters-sheet.tsx
+#: src/features/jobs/search-bar.tsx
+msgid "Filters"
+msgstr ""
+
+#. The job search filters button with the place searched
+#: src/features/jobs/search-bar.tsx
+msgid "Filters · {place}"
+msgstr ""
+
+#. The job search filters button: the place searched and how many other filters are set
+#: src/features/jobs/search-bar.tsx
+msgid "Filters · {place} ({filters})"
+msgstr ""
+
+#: src/features/jobs/search-bar.tsx
+msgid "Filters ({filters})"
+msgstr ""
+
 #. Template gallery filter: finance, banking, law and consulting jobs
 #: src/features/design/preset-names.ts
 msgid "Finance"
 msgstr ""
 
-#: src/features/career/schedule-sheet.tsx
-msgid "Find roles"
-msgstr "Functies zoeken"
+#: src/features/jobs/jobs-states.tsx
+msgid "Find jobs that fit"
+msgstr ""
 
 #: src/features/assistant/assistant-screen.tsx
 msgid "Find weak bullets"
@@ -5077,9 +5257,9 @@ msgstr "Eerste aanbieding"
 msgid "First resume"
 msgstr ""
 
-#: src/features/career/schedule-sheet.tsx
-msgid "First run (YYYY-MM-DD)"
-msgstr "Eerste run (YYYY-MM-DD)"
+#: src/features/career/schedule-fields.tsx
+msgid "First run"
+msgstr "Eerste uitvoering"
 
 #: src/features/letters/page.tsx
 #: src/features/write/picture-screen.tsx
@@ -5292,6 +5472,11 @@ msgstr ""
 msgid "Free to start. You can add a photo, username and more later."
 msgstr ""
 
+#. A recent job search that opens again today without counting
+#: src/features/jobs/recent-searches.tsx
+msgid "Free today"
+msgstr ""
+
 #: src/features/design/page-group.tsx
 #: src/features/letters/design.tsx
 msgid "Free-form"
@@ -5353,6 +5538,10 @@ msgstr ""
 msgid "From your message"
 msgstr "Uit uw bericht"
 
+#: src/features/jobs/jobs-states.tsx
+msgid "From your preferences:"
+msgstr ""
+
 #: src/features/write/add-section.tsx
 msgid "From your Profile"
 msgstr ""
@@ -5399,6 +5588,10 @@ msgstr "Feedback krijgen"
 #: src/features/workspace/tabs/practise.tsx
 msgid "Get feedback sends the question, your answer, this posting and your stories to {providerName}."
 msgstr "Feedback krijgen stuurt de vraag, uw antwoord, deze vacature en uw verhalen naar {providerName}."
+
+#: src/features/jobs/jobs-header.tsx
+msgid "Get job alerts"
+msgstr ""
 
 #: src/features/home/new-roles.tsx
 msgid "Get new jobs for your search here every morning"
@@ -5552,6 +5745,11 @@ msgstr "Hex"
 msgid "Hidden"
 msgstr "Verborgen"
 
+#. placeholder {0}: listing.title
+#: src/features/jobs/use-listing-actions.ts
+msgid "Hidden {0}. It won't show in your results again."
+msgstr ""
+
 #: src/features/home/new-roles.tsx
 msgid "Hidden from New roles"
 msgstr "Verborgen uit Nieuwe functies"
@@ -5611,6 +5809,10 @@ msgstr "Gelezen items verbergen"
 #: src/features/check/messages.ts
 msgid "Hide the photo"
 msgstr "Verberg de foto"
+
+#: src/features/jobs/listing-card.tsx
+msgid "Hide this job"
+msgstr ""
 
 #: src/features/check/writing-tab.tsx
 msgid "High"
@@ -5674,7 +5876,7 @@ msgstr "Hoe ver sollicitaties komen"
 msgid "How many office days are expected?"
 msgstr "Hoeveel kantoordagen worden verwacht?"
 
-#: src/features/career/schedule-sheet.tsx
+#: src/features/career/schedule-fields.tsx
 msgid "How often"
 msgstr "Hoe vaak"
 
@@ -5697,6 +5899,10 @@ msgstr ""
 #: src/features/settings/locale-names.ts
 msgid "Hungarian"
 msgstr "Hongaars"
+
+#: src/features/jobs/format.ts
+msgid "Hybrid"
+msgstr ""
 
 #: src/features/design/typography-screen.tsx
 msgid "Hyphenation"
@@ -5854,6 +6060,10 @@ msgstr ""
 msgid "In your Profile"
 msgstr ""
 
+#: src/features/jobs/filters-sheet.tsx
+msgid "Include jobs that don't list pay"
+msgstr ""
+
 #: app/account/membership.tsx
 msgid "Included"
 msgstr ""
@@ -5915,6 +6125,7 @@ msgstr "Inkt blauw"
 msgid "Inline"
 msgstr "Doorlopend"
 
+#: src/features/applications-board/views-row.tsx
 #: src/features/applications-board/views.tsx
 msgid "Insights"
 msgstr "Inzichten"
@@ -5929,7 +6140,7 @@ msgstr "Alleen interface. Elk cv bepaalt zijn eigen taal in Design."
 
 #: src/features/applications-board/calendar-screen.tsx
 #: src/features/applications/stages.ts
-#: src/features/career/schedule-sheet.tsx
+#: src/features/career/schedule-body.tsx
 #: src/features/home/coming-up.tsx
 #: src/features/onboarding/intro-screen.tsx
 msgid "Interview"
@@ -6064,6 +6275,11 @@ msgstr "Italiaans"
 msgid "Italic"
 msgstr "Cursief"
 
+#. placeholder {0}: props.providerMissing
+#: src/features/career/schedule-body.tsx
+msgid "Its connection was switched off or removed, so it runs on {0} until you choose another."
+msgstr "De verbinding is uitgeschakeld of verwijderd, dus het draait op {0} totdat u een andere kiest."
+
 #: src/features/assistant/threads.tsx
 msgid "Its messages and attachments are deleted. Edits you accepted stay in the document."
 msgstr "De berichten en bijlagen worden verwijderd. Bewerkingen die u heeft geaccepteerd, blijven in het document staan."
@@ -6092,13 +6308,39 @@ msgstr "JavaScript"
 msgid "Job"
 msgstr "Functie"
 
+#: src/features/career/schedule-sheet.tsx
 #: src/features/home/needs-you.tsx
 msgid "Job alert"
+msgstr ""
+
+#: src/features/career/schedule-fields.tsx
+msgctxt "Short schedule kind in a segmented choice"
+msgid "Job alert"
+msgstr ""
+
+#: src/features/jobs/jobs-screen.tsx
+msgid "Job alert deleted"
+msgstr ""
+
+#: src/features/jobs/jobs-header.tsx
+msgid "Job alert on"
+msgstr ""
+
+#: src/features/jobs/jobs-header.tsx
+msgid "Job alert paused"
+msgstr ""
+
+#: src/features/career/schedule-fields.tsx
+msgid "Job alerts aren't available on this server yet."
 msgstr ""
 
 #: src/features/application-detail/sheets.tsx
 msgid "Job description"
 msgstr "Functieomschrijving"
+
+#: src/features/jobs/listing-detail.tsx
+msgid "Job details"
+msgstr ""
 
 #: src/features/check/check-pane.tsx
 msgid "Job match"
@@ -6120,9 +6362,17 @@ msgstr "Link naar vacature"
 msgid "Job search couldn't be reached. Try again or paste a posting link."
 msgstr "Zoeken naar een baan is niet bereikbaar. Probeer het opnieuw of plak een link naar een vacature."
 
+#: src/features/jobs/jobs-states.tsx
+msgid "Job search isn't available here yet"
+msgstr ""
+
 #: src/features/applications/error.ts
 msgid "Job search isn't configured on this server. Paste a posting link instead."
 msgstr "Zoeken naar vacatures is niet geconfigureerd op deze server. Plak in plaats daarvan een link naar een vacature."
+
+#: src/features/jobs/jobs-states.tsx
+msgid "Job search needs a connection. Your recent results show here once you've searched."
+msgstr ""
 
 #: src/features/applications-board/insights-screen.tsx
 msgid "Job search pipeline"
@@ -6132,10 +6382,26 @@ msgstr "Sollicitatiepijplijn"
 msgid "Jobs"
 msgstr "Banen"
 
+#: src/features/applications-board/views-row.tsx
+#: src/features/applications-board/views.tsx
+#: src/features/jobs/jobs-screen.tsx
+msgctxt "Job listings to search"
+msgid "Jobs"
+msgstr ""
+
+#: src/features/jobs/search-problem.tsx
+msgid "Jobs couldn't be loaded. Try again in a moment."
+msgstr ""
+
 #: src/features/letters/share.tsx
 #: src/features/share/download.tsx
 msgid "JSON"
 msgstr "JSON"
+
+#: src/features/jobs/format.ts
+msgctxt "Job seniority"
+msgid "Junior"
+msgstr ""
 
 #: src/features/settings/locale-names.ts
 msgid "Kannada"
@@ -6154,6 +6420,7 @@ msgstr "Houd het bij één adres, zodat software niet hoeft te raden welk adres 
 msgid "Keep both"
 msgstr "Bewaar beide"
 
+#: src/features/career/schedule-sheet.tsx
 #: src/features/profile/stories.tsx
 #: src/shell/unsaved-changes.ts
 #: src/ui-legacy/overlays.tsx
@@ -6317,14 +6584,34 @@ msgstr ""
 msgid "Larger text"
 msgstr "Grotere tekst"
 
+#: src/features/jobs/format.ts
+msgctxt "Job search filter: posted within"
+msgid "Last 2 weeks"
+msgstr ""
+
+#: src/features/jobs/format.ts
+msgctxt "Job search filter: posted within"
+msgid "Last 30 days"
+msgstr ""
+
 #: src/features/share/custom-domain.tsx
 msgid "Last checked {lastChecked} ago"
 msgstr "Laatst gecontroleerd {lastChecked} geleden"
+
+#: src/features/jobs/format.ts
+msgctxt "Job search filter: posted within"
+msgid "Last day"
+msgstr ""
 
 #: src/features/documents/document-menu-panels.tsx
 #: src/features/documents/library-toolbar.tsx
 msgid "Last edited"
 msgstr "Laatst bewerkt"
+
+#: src/features/jobs/format.ts
+msgctxt "Job search filter: posted within"
+msgid "Last week"
+msgstr ""
 
 #: app/account/preferences.tsx
 msgid "Later"
@@ -6353,6 +6640,11 @@ msgstr "Zet de tekst horizontaal. Gedraaide tekstdelen worden vaak weggelaten of
 #: src/features/design/layout-screen.tsx
 msgid "Layout"
 msgstr "Opmaak"
+
+#: src/features/jobs/format.ts
+msgctxt "Job seniority"
+msgid "Lead"
+msgstr ""
 
 #: src/features/assistant/assistant-screen.tsx
 msgid "Leads with why you fit"
@@ -6464,6 +6756,7 @@ msgstr "Brieven"
 
 #: src/features/entries/entry-fields.tsx
 #: src/features/entries/fields.ts
+#: src/features/jobs/filters-sheet.tsx
 msgid "Level"
 msgstr "Niveau"
 
@@ -6596,6 +6889,7 @@ msgstr ""
 msgid "Linking…"
 msgstr "Koppelen…"
 
+#: src/features/applications-board/views-row.tsx
 #: src/features/applications-board/views.tsx
 #: src/features/documents/library-toolbar.tsx
 msgid "List"
@@ -6604,6 +6898,10 @@ msgstr "Lijst"
 #: src/features/ats-checker/messages.ts
 msgid "List the tools and technologies you use. Recruiters search skills more than any other field."
 msgstr "Vermeld de tools en technologieën die je gebruikt. Recruiters zoeken vaker op vaardigheden dan op enig ander veld."
+
+#: src/features/jobs/listing-detail.tsx
+msgid "Listings come from job data providers and may change. The original posting is the one to apply through."
+msgstr ""
 
 #: src/features/settings/locale-names.ts
 msgid "Lithuanian"
@@ -6621,6 +6919,11 @@ msgstr "Live · updates terwijl u bewerkt"
 msgid "Live at {url}"
 msgstr "Beschikbaar op {url}"
 
+#: src/features/jobs/jobs-states.tsx
+msgid "Load more"
+msgstr ""
+
+#: src/features/career/schedule-body.tsx
 #: src/features/check/check-pane.tsx
 #: src/features/design/design-pane.tsx
 #: src/features/design/sub-screen.tsx
@@ -6638,7 +6941,7 @@ msgstr "Beschikbaar op {url}"
 msgid "Loading"
 msgstr "Laden"
 
-#: src/features/career/schedule-sheet.tsx
+#: src/features/career/schedule-body.tsx
 msgid "Loading AI connections…"
 msgstr "AI-verbindingen laden…"
 
@@ -6655,14 +6958,26 @@ msgstr "Sollicitaties laden…"
 msgid "Loading conversations…"
 msgstr "Gesprekken laden…"
 
+#: src/features/jobs/jobs-states.tsx
+msgid "Loading jobs"
+msgstr ""
+
 #: src/features/ai/provider-editor.tsx
 msgid "Loading model suggestions… You can also enter any model ID."
 msgstr "Modelsuggesties laden… U kunt ook elke model-ID invoeren."
+
+#: src/features/jobs/jobs-states.tsx
+msgid "Loading more…"
+msgstr ""
 
 #: src/features/ai/provider-editor.tsx
 #: src/features/ai/provider-list.tsx
 msgid "Loading providers…"
 msgstr "Aanbieders laden…"
+
+#: src/features/jobs/recent-searches.tsx
+msgid "Loading recent job searches"
+msgstr ""
 
 #: src/preview/page.tsx
 msgid "Loading resume…"
@@ -6675,6 +6990,10 @@ msgstr "Het laden van cv's…"
 #: src/features/workspace/shell.tsx
 msgid "Loading saved version…"
 msgstr "Opgeslagen versie laden…"
+
+#: src/features/jobs/listing-detail.tsx
+msgid "Loading the description"
+msgstr ""
 
 #: src/features/workspace/shell.tsx
 msgid "Loading workspace…"
@@ -6740,10 +7059,6 @@ msgstr ""
 #: src/features/ats-checker/messages.ts
 msgid "Long stretches are set in capitals."
 msgstr "Lange stukken staan in hoofdletters."
-
-#: src/features/career/schedule-sheet.tsx
-msgid "Look for"
-msgstr "Zoeken naar"
 
 #: src/features/letters/share.tsx
 #: src/features/share/download.tsx
@@ -6812,6 +7127,10 @@ msgstr "Beheerd door uw server"
 #: src/features/ats-checker/messages.ts
 msgid "Many bullets start with the same phrase."
 msgstr "Veel opsommingstekens beginnen met dezelfde zin."
+
+#: src/features/jobs/filters-sheet.tsx
+msgid "Many postings don't list pay, especially outside the US, and few say whether they sponsor a visa."
+msgstr ""
 
 #: src/features/design/preset-names.ts
 msgid "Maps and places"
@@ -6898,6 +7217,10 @@ msgstr "Het cv afstemmen"
 msgid "Match this posting"
 msgstr "Passend bij deze vacature"
 
+#: src/features/jobs/listing-card.tsx
+msgid "Matches {matched} of {total} skills"
+msgstr ""
+
 #: src/features/career/offers.tsx
 msgid "Matches a preferred location."
 msgstr "Komt overeen met een voorkeurslocatie."
@@ -6944,6 +7267,11 @@ msgstr "Stuur een bericht naar de assistent"
 msgid "Messages"
 msgstr "Berichten"
 
+#: src/features/jobs/format.ts
+msgctxt "Job seniority"
+msgid "Mid level"
+msgstr ""
+
 #: src/features/profile/preferences.tsx
 msgid "Minimum base salary"
 msgstr "Minimaal basissalaris"
@@ -6951,6 +7279,14 @@ msgstr "Minimaal basissalaris"
 #: src/features/career/offers.tsx
 msgid "Minimum salary cannot be compared in these terms."
 msgstr "Het minimumsalaris is in deze termen niet te vergelijken."
+
+#: src/features/jobs/filters-sheet.tsx
+msgid "Minimum yearly pay"
+msgstr ""
+
+#: src/features/jobs/listing-fit.tsx
+msgid "Missing"
+msgstr ""
 
 #: app/account/index.tsx
 msgid "MIT License"
@@ -6985,6 +7321,11 @@ msgstr "Meer details"
 msgid "More download formats"
 msgstr "Meer downloadformaten"
 
+#. placeholder {0}: listing.title
+#: src/features/jobs/listing-card.tsx
+msgid "More for {0}"
+msgstr ""
+
 #: src/features/entries/entry-fields.tsx
 msgid "More options"
 msgstr "Meer opties"
@@ -7009,15 +7350,12 @@ msgstr "Er komt meer dan één e-mailadres voor."
 msgid "More ways to sign in"
 msgstr ""
 
+#: src/features/career/schedule-body.tsx
 #: src/features/home/schedules.tsx
 msgid "Morning of"
 msgstr "Ochtend van de dag zelf"
 
-#: src/features/career/schedule-sheet.tsx
-msgid "Morning of · 08:00 local"
-msgstr "Die ochtend · 08:00 lokale tijd"
-
-#: src/features/career/schedule-sheet.tsx
+#: src/features/career/schedule-body.tsx
 msgid "Morning of runs at 08:00, or two hours before interviews starting before 10:00."
 msgstr "Die ochtend wordt uitgevoerd om 08:00, of twee uur voor gesprekken die vóór 10:00 beginnen."
 
@@ -7310,6 +7648,10 @@ msgstr ""
 msgid "New document"
 msgstr "Nieuw document"
 
+#: src/features/career/schedule-sheet.tsx
+msgid "New job alert"
+msgstr ""
+
 #: src/features/documents/new-choices.tsx
 msgid "New letter"
 msgstr ""
@@ -7340,6 +7682,14 @@ msgstr "Nieuwe functies uit uw zoekopdracht"
 #: src/features/career/schedule-sheet.tsx
 msgid "New schedule"
 msgstr "Nieuwe planning"
+
+#: src/features/jobs/search-problem.tsx
+msgid "New searches are limited right now. Results you already opened stay available."
+msgstr ""
+
+#: src/features/jobs/jobs-header.tsx
+msgid "New searches are limited right now. These are results saved earlier; try again tomorrow."
+msgstr ""
 
 #: src/features/write/entry-actions.tsx
 msgid "New section"
@@ -7450,6 +7800,7 @@ msgstr "Nog geen gesprekken over dit document."
 msgid "No corrections"
 msgstr "Geen correcties"
 
+#: src/features/jobs/filters-sheet.tsx
 #: src/features/profile/search-regions-field.tsx
 msgid "No country matches."
 msgstr "Geen landen gevonden."
@@ -7529,6 +7880,10 @@ msgstr ""
 #: src/features/documents/new-copy.tsx
 msgid "No job yet"
 msgstr "Nog geen baan"
+
+#: src/features/jobs/jobs-states.tsx
+msgid "No jobs match yet."
+msgstr ""
 
 #: src/features/settings/api-keys.tsx
 msgid "No keys yet."
@@ -7619,8 +7974,17 @@ msgstr "Geen Rezumi-server heeft op dit adres gereageerd. Controleer de spelling
 msgid "No room for another cover letter"
 msgstr ""
 
+#: src/features/career/schedule-body.tsx
+msgid "No room for another job alert"
+msgstr ""
+
 #: src/features/billing/plan-alert.ts
 msgid "No room for another resume"
+msgstr ""
+
+#. placeholder {0}: quota.max
+#: src/features/jobs/jobs-header.tsx
+msgid "No searches left today (of {0})"
 msgstr ""
 
 #: src/features/ats-checker/messages.ts
@@ -7823,6 +8187,10 @@ msgstr "Niets markeert een functie als lopend."
 msgid "Nothing matches “{query}”"
 msgstr ""
 
+#: src/features/career/schedule-fields.tsx
+msgid "Nothing matches “{query}”."
+msgstr ""
+
 #: src/features/documents/library-states.tsx
 msgid "Nothing matches these filters"
 msgstr "Niets komt overeen met deze filters"
@@ -7925,6 +8293,10 @@ msgstr "Aanbod"
 msgid "Offers"
 msgstr "Aanbiedingen"
 
+#: src/features/jobs/filters-sheet.tsx
+msgid "Offers visa sponsorship"
+msgstr ""
+
 #: src/features/onboarding/questions.tsx
 #: src/features/profile/preferences.tsx
 msgid "Office days a week, at most"
@@ -7962,6 +8334,10 @@ msgstr ""
 #: src/features/design/template-card.tsx
 #: src/features/write/picture-screen.tsx
 msgid "On the page"
+msgstr ""
+
+#: src/features/jobs/format.ts
+msgid "On-site"
 msgstr ""
 
 #: src/features/share/link.tsx
@@ -8174,6 +8550,10 @@ msgstr "Het cv openen…"
 msgid "Opens in Career → Offers."
 msgstr "Opent in Loopbaan → Aanbiedingen."
 
+#: src/features/jobs/listing-detail.tsx
+msgid "Opens in the browser"
+msgstr ""
+
 #: src/features/documents/document-item.tsx
 msgid "Opens Restore and Delete forever"
 msgstr ""
@@ -8186,9 +8566,9 @@ msgstr ""
 msgid "Opens the fact's source and history"
 msgstr ""
 
-#: src/features/career/schedule-sheet.tsx
-msgid "Opportunity discovery"
-msgstr "Kansen ontdekken"
+#: src/features/jobs/listing-card.tsx
+msgid "Opens the job"
+msgstr ""
 
 #: src/features/ai/provider-editor.tsx
 msgid "Optional for local Ollama"
@@ -8366,6 +8746,10 @@ msgstr "Alinea"
 msgid "paragraph {n}"
 msgstr "paragraaf {n}"
 
+#: src/features/jobs/listing-fit.tsx
+msgid "Partly"
+msgstr ""
+
 #: src/features/workspace/parts.tsx
 msgid "Partly supported"
 msgstr "Deels onderbouwd"
@@ -8451,6 +8835,20 @@ msgstr "Geplakte vacature"
 #: src/features/home/schedules.tsx
 msgid "Paused · {line}"
 msgstr "Gepauzeerd · {line}"
+
+#: src/features/career/schedule-fields.tsx
+msgid "Paused schedules keep their settings."
+msgstr "Gepauzeerde planningen behouden hun instellingen."
+
+#: src/features/jobs/format.ts
+msgctxt "Job search filter"
+msgid "Pay from {pay} a year"
+msgstr ""
+
+#: src/features/jobs/format.ts
+msgctxt "Job search filter"
+msgid "Pay from {pay} a year, or not listed"
+msgstr ""
 
 #: src/features/profile/preferences.tsx
 msgid "Pay period"
@@ -8551,6 +8949,10 @@ msgstr ""
 #: src/features/entries/dates-field.tsx
 msgid "Pick {label}"
 msgstr "Kies {label}"
+
+#: src/features/career/schedule-fields.tsx
+msgid "Pick a day"
+msgstr ""
 
 #: src/features/profile/facts.tsx
 msgid "Pick a fact"
@@ -8661,6 +9063,41 @@ msgstr "Portugees (Portugal)"
 msgid "Position"
 msgstr "Positie"
 
+#: src/features/jobs/filters-sheet.tsx
+msgid "Posted"
+msgstr ""
+
+#: src/features/jobs/format.ts
+msgctxt "Job listing"
+msgid "Posted {date}"
+msgstr ""
+
+#: src/features/jobs/format.ts
+msgid "Posted in the last 2 weeks"
+msgstr ""
+
+#: src/features/jobs/format.ts
+msgid "Posted in the last 30 days"
+msgstr ""
+
+#: src/features/jobs/format.ts
+msgid "Posted in the last day"
+msgstr ""
+
+#: src/features/jobs/format.ts
+msgid "Posted in the last week"
+msgstr ""
+
+#: src/features/jobs/format.ts
+msgctxt "Job listing"
+msgid "Posted today"
+msgstr ""
+
+#: src/features/jobs/format.ts
+msgctxt "Job listing"
+msgid "Posted yesterday"
+msgstr ""
+
 #: src/features/workspace/tabs/saved.tsx
 msgid "posting"
 msgstr "vacature"
@@ -8733,13 +9170,13 @@ msgstr "Voorkeur"
 msgid "Preferences"
 msgstr "Voorkeuren"
 
-#: src/features/career/schedule-sheet.tsx
+#: src/features/career/schedule-fields.tsx
 #: src/features/workspace/parts.tsx
 #: src/shell/workspace-chrome.tsx
 msgid "Prepare"
 msgstr "Voorbereiden"
 
-#: src/features/career/schedule-sheet.tsx
+#: src/features/career/schedule-body.tsx
 msgid "Prepare a briefing"
 msgstr "Briefing voorbereiden"
 
@@ -9169,6 +9606,14 @@ msgstr ""
 msgid "Recent documents"
 msgstr ""
 
+#: src/features/jobs/recent-searches.tsx
+msgid "Recent job searches"
+msgstr ""
+
+#: src/features/jobs/recent-searches.tsx
+msgid "Recent searches"
+msgstr ""
+
 #: src/features/letters/write.tsx
 msgid "Recipient"
 msgstr "Ontvanger"
@@ -9285,13 +9730,13 @@ msgstr "Dit onthouden voor toekomstige coaching?"
 msgid "Remembered: “{text}”"
 msgstr "Onthouden: “{text}”"
 
-#: src/features/career/schedule-sheet.tsx
+#: src/features/career/schedule-fields.tsx
 msgid "Remind me"
 msgstr "Herinner me"
 
-#: src/features/career/schedule-sheet.tsx
-msgid "Remind me on (YYYY-MM-DD)"
-msgstr "Herinner mij aan (YYYY-MM-DD)"
+#: src/features/career/schedule-fields.tsx
+msgid "Remind me on"
+msgstr "Herinner me op"
 
 #: src/features/application-detail/interview-sheet.tsx
 #: src/features/application-detail/sheets.tsx
@@ -9307,10 +9752,21 @@ msgid "Reminders"
 msgstr "Herinneringen"
 
 #: src/features/career/offers.tsx
+#: src/features/jobs/format.ts
 #: src/features/onboarding/questions.tsx
 #: src/features/profile/preferences.tsx
 msgid "Remote"
 msgstr "Op afstand"
+
+#: src/features/jobs/format.ts
+msgctxt "Job search filter"
+msgid "Remote anywhere"
+msgstr ""
+
+#: src/features/jobs/format.ts
+msgctxt "Job search filter"
+msgid "Remote in this country"
+msgstr ""
 
 #: src/features/design/uploaded-fonts.tsx
 #: src/features/share/custom-domain.tsx
@@ -9324,6 +9780,11 @@ msgstr "Verwijderen"
 #: src/features/onboarding/source-fields.tsx
 msgid "Remove {0}"
 msgstr "Verwijder {0}"
+
+#. placeholder {0}: search.criteria.query
+#: src/features/jobs/recent-searches.tsx
+msgid "Remove {0} from recent searches"
+msgstr ""
 
 #: src/features/assistant/messages.tsx
 #: src/features/profile/search-regions-field.tsx
@@ -9491,6 +9952,7 @@ msgstr "Een wachtwoord vereisen"
 msgid "Requirements"
 msgstr "Eisen"
 
+#: src/features/jobs/listing-fit.tsx
 #: src/features/workspace/tabs/fit.tsx
 msgid "Requirements and your evidence"
 msgstr "Eisen en uw bewijs"
@@ -9643,6 +10105,7 @@ msgstr "{0} opgehaald met {1}. De ophaaltijd bepaalt niet de versheid van de oor
 #: src/features/assistant/chat-view.tsx
 #: src/features/assistant/coach-screen.tsx
 #: src/features/assistant/provider.tsx
+#: src/features/career/schedule-body.tsx
 #: src/features/career/shared.tsx
 #: src/features/check/application-picker.tsx
 #: src/features/check/check-page.tsx
@@ -9678,7 +10141,7 @@ msgstr "{0} opgehaald met {1}. De ophaaltijd bepaalt niet de versheid van de oor
 msgid "Retry"
 msgstr "Opnieuw proberen"
 
-#: src/features/career/schedule-sheet.tsx
+#: src/features/career/schedule-body.tsx
 msgid "Retry AI connections"
 msgstr "Opnieuw proberen AI-verbindingen"
 
@@ -9825,6 +10288,7 @@ msgstr "Rechts"
 #: src/features/application-detail/interview-sheet.tsx
 #: src/features/application-detail/sections.tsx
 #: src/features/applications/list-screen.tsx
+#: src/features/career/schedule-fields.tsx
 #: src/features/check/save-posting-sheet.tsx
 msgid "Role"
 msgstr "Functie"
@@ -9841,6 +10305,10 @@ msgstr "Rol {0}"
 #: src/features/applications/add-sheet.tsx
 msgid "Role / title"
 msgstr "Rol / titel"
+
+#: src/features/jobs/search-bar.tsx
+msgid "Role or keywords"
+msgstr ""
 
 #: src/features/applications-board/views.tsx
 msgid "Role, company or contact"
@@ -9883,8 +10351,8 @@ msgstr ""
 msgid "Run again"
 msgstr "Opnieuw uitvoeren"
 
-#. placeholder {0}: new Intl.DateTimeFormat(locale, { timeZone: timezone, dateStyle: "medium", timeStyle: "short" }).format(runAt)
-#: src/features/career/schedule-sheet.tsx
+#. placeholder {0}: when(runAt)
+#: src/features/career/schedule-body.tsx
 msgid "Runs at {0}."
 msgstr "Draait op {0}."
 
@@ -9934,6 +10402,7 @@ msgstr "Opslaan"
 #: src/features/applications/add-sheet.tsx
 #: src/features/applications/list-screen.tsx
 #: src/features/documents/new-choices.tsx
+#: src/features/jobs/jobs-states.tsx
 msgid "Save a job"
 msgstr "Bewaar een baan"
 
@@ -10123,6 +10592,7 @@ msgid "Saving the job. Wait for confirmation before making another change."
 msgstr "De baan opslaan. Wacht op bevestiging voordat u nog een wijziging aanbrengt."
 
 #: src/features/auth/reset-password-screen.tsx
+#: src/features/career/schedule-sheet.tsx
 #: src/features/onboarding/onboarding-screen.tsx
 #: src/features/profile/preferences.tsx
 #: src/features/profile/save-note.tsx
@@ -10148,6 +10618,10 @@ msgid "Schedule interview"
 msgstr "Interview plannen"
 
 #: src/features/career/schedule-sheet.tsx
+msgid "Schedule saved"
+msgstr "Planning opgeslagen"
+
+#: src/features/career/schedule-body.tsx
 msgid "Scheduled work is not available on this server. Ask your server administrator to configure it."
 msgstr "Gepland werk is niet beschikbaar op deze server. Vraag uw serverbeheerder om het te configureren."
 
@@ -10185,7 +10659,18 @@ msgstr "Eerste selectiegesprek"
 msgid "Search"
 msgstr "Zoekopdracht"
 
+#: src/features/jobs/filters-sheet.tsx
+#: src/features/jobs/search-bar.tsx
+msgctxt "Button that runs a job search"
+msgid "Search"
+msgstr ""
+
+#: src/features/jobs/search-problem.tsx
+msgid "Search again"
+msgstr ""
+
 #: src/features/applications-board/views.tsx
+#: src/features/career/schedule-body.tsx
 #: src/features/letters/write.tsx
 msgid "Search applications"
 msgstr "Zoek sollicitaties"
@@ -10194,6 +10679,12 @@ msgstr "Zoek sollicitaties"
 msgid "Search commands"
 msgstr "Zoekopdrachten"
 
+#: src/features/career/schedule-body.tsx
+msgid "Search connections"
+msgstr ""
+
+#: src/features/career/schedule-fields.tsx
+#: src/features/jobs/filters-sheet.tsx
 #: src/features/profile/search-regions-field.tsx
 msgid "Search countries"
 msgstr ""
@@ -10205,6 +10696,10 @@ msgstr "Zoeken omvat documenten, sollicitaties, gesprekken en acties van assiste
 #: src/features/documents/library-states.tsx
 msgid "Search covers titles, tags and linked applications."
 msgstr "Zoeken omvat titels, tags en gekoppelde sollicitaties."
+
+#: src/features/jobs/jobs-states.tsx
+msgid "Search current openings from company careers sites and job boards, then track the ones you like."
+msgstr ""
 
 #: src/features/documents/library-toolbar.tsx
 msgid "Search documents"
@@ -10234,6 +10729,10 @@ msgstr "Zoeken naar…"
 msgid "Search icons"
 msgstr "Zoek iconen"
 
+#: src/features/career/schedule-body.tsx
+msgid "Search interviews"
+msgstr ""
+
 #: app/account/preferences.tsx
 #: src/features/design/page-group.tsx
 msgid "Search languages"
@@ -10245,6 +10744,10 @@ msgstr "Zoektermen gaan naar uw webzoekdienst."
 
 #: src/features/assistant/tool-approvals.tsx
 msgid "Search the web"
+msgstr ""
+
+#: src/features/career/schedule-fields.tsx
+msgid "Search times"
 msgstr ""
 
 #: app/account/preferences.tsx
@@ -10361,12 +10864,17 @@ msgstr ""
 msgid "Sends this application (posting, notes, interview details) and your Profile, if switched on, to {name}."
 msgstr ""
 
-#: src/features/career/schedule-sheet.tsx
-msgid "Sends this application and your switched-on Profile to this connection. Your provider may charge. If it becomes unavailable, scheduled work can use your default usable connection."
+#: src/features/career/schedule-body.tsx
+msgid "Sends this application's posting, notes and documents, plus your Profile (details, career, and the facts and stories that are switched on), to this connection. Your provider may charge for it."
 msgstr ""
 
 #: src/features/workspace/parts.tsx
 msgid "Sends this application's posting, notes and documents, plus your Profile if switched on, to {label}."
+msgstr ""
+
+#. placeholder {0}: connection.defaultProvider?.label ?? ""
+#: src/features/jobs/listing-fit.tsx
+msgid "Sends this job's posting and your Profile (details, and the facts and stories that are switched on) to {0}."
 msgstr ""
 
 #: src/features/workspace/coach-sheet.tsx
@@ -10382,6 +10890,11 @@ msgstr "Stuurt de tekst van uw cv alleen naar {0} · {1}, met uw sleutel."
 #. placeholder {0}: provider.label
 #: src/features/check/writing-tab.tsx
 msgid "Sends your resume's text only to {0}."
+msgstr ""
+
+#: src/features/jobs/format.ts
+msgctxt "Job seniority"
+msgid "Senior"
 msgstr ""
 
 #: src/features/history/format.ts
@@ -10440,10 +10953,6 @@ msgstr "Stel een aanbieder in"
 #: src/features/documents/new-choices.tsx
 msgid "Set up AI provider"
 msgstr "Stel de AI-provider in"
-
-#: src/features/career/schedule-sheet.tsx
-msgid "Set up web search in Settings to find roles."
-msgstr "Stel een zoekopdracht op internet in Instellingen in om rollen te vinden."
 
 #: src/features/share/custom-domain.tsx
 msgid "Setting up HTTPS. This usually takes a few minutes, and this screen updates by itself."
@@ -10832,6 +11341,7 @@ msgid "Skill"
 msgstr "Vaardigheid"
 
 #: src/features/entries/fields.ts
+#: src/features/jobs/listing-detail.tsx
 #: src/features/onboarding/intro-screen.tsx
 msgid "Skills"
 msgstr "Vaardigheden"
@@ -11110,6 +11620,11 @@ msgstr "Begonnen"
 msgid "Starts from your Profile. Change anything for this resume."
 msgstr ""
 
+#. placeholder {0}: draft.lead === "24h" ? 24 : 2
+#: src/features/career/schedule-body.tsx
+msgid "Starts in under {0} hours, so the briefing runs now."
+msgstr "Begint over minder dan {0} uur, dus de briefing draait nu."
+
 #: src/features/workspace/tabs/prepare.tsx
 msgid "Starts now"
 msgstr "Begint nu"
@@ -11273,6 +11788,7 @@ msgstr "Overzicht"
 msgid "Support"
 msgstr "Steun"
 
+#: src/features/jobs/listing-fit.tsx
 #: src/features/workspace/parts.tsx
 #: src/features/workspace/tabs/debrief.tsx
 msgid "Supported"
@@ -11359,6 +11875,10 @@ msgstr ""
 #: src/features/documents/library-menu.tsx
 msgid "Tags…"
 msgstr "Labels…"
+
+#: src/features/jobs/listing-detail.tsx
+msgid "Tailor resume"
+msgstr ""
 
 #: src/features/assistant/assistant-screen.tsx
 msgid "Tailor to the {company} posting"
@@ -11559,6 +12079,11 @@ msgstr "Thais"
 msgid "That code didn't work. Check it and try again."
 msgstr ""
 
+#: src/features/jobs/recent-searches.tsx
+#: src/features/jobs/use-listing-actions.ts
+msgid "That didn't save. Try again."
+msgstr ""
+
 #: src/features/auth/errors.ts
 msgid "That email and password don't match. Try again, or reset your password."
 msgstr ""
@@ -11659,9 +12184,17 @@ msgstr "De coach slaat feiten op die u noemt, en laat het u weten. U kunt het on
 msgid "The connection couldn't be loaded or saved. Try again."
 msgstr "De verbinding kan niet worden geladen of opgeslagen. Probeer het opnieuw."
 
+#: src/features/jobs/filters-sheet.tsx
+msgid "The currency of the minimum pay."
+msgstr ""
+
 #: src/features/letters/share.tsx
 msgid "The current state will be saved as “Before restore” first."
 msgstr "De huidige status wordt eerst opgeslagen als “Vóór herstel”."
+
+#: src/features/jobs/listing-detail.tsx
+msgid "The description couldn't be loaded."
+msgstr ""
 
 #: src/features/share/custom-domain.tsx
 msgid "The domain changed while it was being checked. Check it again."
@@ -11711,10 +12244,6 @@ msgstr "Het interview wordt opgeslagen. Als je een herinnering wilt ontvangen, m
 msgid "The key is encrypted on the server and never shown again. Saving tests the connection."
 msgstr "De sleutel wordt gecodeerd op de server en nooit meer getoond. Opslaan test de verbinding."
 
-#: src/features/career/schedule-sheet.tsx
-msgid "The lead time has passed. Saving runs the briefing now."
-msgstr "De doorlooptijd is verstreken. Saving voert nu de briefing uit."
-
 #: src/features/letters/share.tsx
 msgid "The letter as it is"
 msgstr "De brief zoals hij is"
@@ -11738,6 +12267,10 @@ msgstr "De lijn is gewijzigd sinds je het vroeg, dus deze is niet vervangen."
 #: src/features/workspace/tabs/saved.tsx
 msgid "the message"
 msgstr "het bericht"
+
+#: src/features/career/schedule-body.tsx
+msgid "The morning of the interview has passed, so the briefing runs now."
+msgstr "De ochtend van het gesprek is voorbij, dus de briefing draait nu."
 
 #: src/features/ats-checker/messages.ts
 msgid "The order the text is stored in disagrees badly with the order it reads in."
@@ -11768,6 +12301,10 @@ msgstr ""
 #: src/features/ai/provider-list.tsx
 msgid "The provider didn't answer. Check the key, the model and the base URL."
 msgstr "De aanbieder antwoordde niet. Controleer de sleutel, het model en de basis URL."
+
+#: src/features/jobs/listing-detail.tsx
+msgid "The provider has no description for this job. The original posting has the details."
+msgstr ""
 
 #: src/features/application-detail/sheets.tsx
 msgid "The reason is kept for Insights. Linked documents aren't touched."
@@ -11876,6 +12413,10 @@ msgstr "Er is geen samenvattende alinea."
 msgid "There's no GitHub account with that username."
 msgstr ""
 
+#: src/features/jobs/jobs-header.tsx
+msgid "These are results saved earlier. Fresh ones couldn't be loaded just now."
+msgstr ""
+
 #: src/features/workspace/tabs/apply.tsx
 msgid "These are the answers saved when you applied."
 msgstr "Dit zijn de antwoorden die zijn opgeslagen toen u solliciteerde."
@@ -11945,10 +12486,6 @@ msgstr "Dit sollicitatiebriefbestand is niet geldig."
 #: src/features/entries/dates-field.tsx
 msgid "This date hasn't been saved. Use a month and year, like Mar 2022, or just a year. The last valid date is kept."
 msgstr ""
-
-#: src/features/career/schedule-sheet.tsx
-msgid "This date or time does not exist in your timezone. Choose another time."
-msgstr "Deze datum of tijd bestaat niet in je tijdzone. Kies een ander tijdstip."
 
 #: src/features/assistant/threads.tsx
 msgid "This document"
@@ -12098,6 +12635,10 @@ msgstr "Dit is geen gebruikelijk paginaformaat voor een cv."
 msgid "This isn't available for your account."
 msgstr ""
 
+#: src/features/jobs/use-listing-actions.ts
+msgid "This job couldn't be tracked. Try again."
+msgstr ""
+
 #: src/features/onboarding/read-file.ts
 msgid "This JSON isn't a resume Rezumi can read."
 msgstr ""
@@ -12142,6 +12683,14 @@ msgstr ""
 #: src/linking/open.ts
 msgid "This link opens {server}. Sign in there to continue. Your current server is {current}."
 msgstr "Deze link opent {server}. Meld je daar aan om door te gaan. Je huidige server is {current}."
+
+#: src/features/jobs/search-problem.tsx
+msgid "This list can't be continued. Search again to see more jobs."
+msgstr ""
+
+#: src/features/jobs/listing-detail.tsx
+msgid "This listing isn't available anymore. The original posting may still have the details."
+msgstr ""
 
 #: src/features/ats-checker/checker.tsx
 msgid "This measures how faithfully software can extract this file's text. It does not predict whether an application will be rejected, and no tool can."
@@ -12281,6 +12830,7 @@ msgid "This time does not exist in the selected timezone. Choose another time."
 msgstr "Dit tijdstip bestaat niet in de gekozen tijdzone. Kies een ander tijdstip."
 
 #: src/features/applications-board/time-grid.tsx
+#: src/features/career/schedule-sheet.tsx
 msgid "This time does not exist in your timezone. Choose another time."
 msgstr "Dit tijdstip bestaat niet in uw tijdzone. Kies een ander tijdstip."
 
@@ -12318,12 +12868,9 @@ msgid "Time · {0}"
 msgstr "Tijd · {0}"
 
 #: src/features/applications-board/reschedule-sheet.tsx
+#: src/features/career/schedule-fields.tsx
 msgid "Time · {timeZone}"
 msgstr "Tijd · {timeZone}"
-
-#: src/features/career/schedule-sheet.tsx
-msgid "Time (HH:mm)"
-msgstr "Tijd (HH:mm)"
 
 #: src/features/workspace/tabs/prepare.tsx
 msgid "Time, link, who, what you sent"
@@ -12336,10 +12883,6 @@ msgstr "Tijdlijn"
 #: src/features/profile/preferences.tsx
 msgid "Times are shown in {timeZone}."
 msgstr "Tijden worden getoond in {timeZone}."
-
-#: src/features/career/schedule-sheet.tsx
-msgid "Times are shown in {timezone}. Change timezone in Settings → Preferences."
-msgstr "De tijden worden weergegeven in {timezone}. Wijzig de tijdzone in Instellingen → Voorkeuren."
 
 #: app/account/preferences.tsx
 msgid "Timezone"
@@ -12418,6 +12961,10 @@ msgstr ""
 msgid "Too many requests. Try again later."
 msgstr "Te veel verzoeken. Probeer het later opnieuw."
 
+#: src/features/jobs/search-problem.tsx
+msgid "Too many searches in a short time. Wait a minute, then try again."
+msgstr ""
+
 #: src/features/onboarding/messages.ts
 msgid "Too many tries in a short time. Wait a minute, then try again."
 msgstr ""
@@ -12451,6 +12998,11 @@ msgstr ""
 msgid "Totals aren't added up. Bonus and equity depend on conditions; equity value is uncertain. Read original offer documents."
 msgstr "Bedragen worden niet opgeteld. Bonus en aandelen zijn afhankelijk van voorwaarden; de aandelenwaarde is onzeker. Lees de oorspronkelijke aanbiedingsdocumenten."
 
+#. Save a job listing to the person's applications
+#: src/features/jobs/listing-detail.tsx
+msgid "Track"
+msgstr ""
+
 #: src/features/documents/new-choices.tsx
 msgid "Track an application from a link or the posting's text."
 msgstr ""
@@ -12462,6 +13014,23 @@ msgstr ""
 #: src/features/home/new-roles.tsx
 msgid "Track in Applications"
 msgstr "Volgen in Sollicitaties"
+
+#: src/features/jobs/listing-fit.tsx
+msgid "Track this job to add evidence and questions in its workspace. The check goes with it."
+msgstr ""
+
+#. A job listing saved to the person's applications
+#. A job listing saved to the person's applications
+#: src/features/jobs/listing-card.tsx
+#: src/features/jobs/listing-detail.tsx
+msgid "Tracked"
+msgstr ""
+
+#. placeholder {0}: listing.title
+#. placeholder {1}: listing.company.name
+#: src/features/jobs/use-listing-actions.ts
+msgid "Tracking {0} at {1}"
+msgstr ""
 
 #: src/features/design/preset-names.ts
 msgid "Traditional"
@@ -12515,6 +13084,10 @@ msgstr ""
 msgid "Try {suggestion}"
 msgstr "Probeer {suggestion}"
 
+#: src/features/jobs/jobs-states.tsx
+msgid "Try a longer posting window, fewer filters or other words. For local job boards, save jobs with the browser extension."
+msgstr ""
+
 #: app/_layout.tsx
 #: app/(auth)/server.tsx
 #: app/account/account.tsx
@@ -12525,6 +13098,8 @@ msgstr "Probeer {suggestion}"
 #: src/features/documents/library-states.tsx
 #: src/features/entries/improve.tsx
 #: src/features/entries/photo-field.tsx
+#: src/features/jobs/listing-detail.tsx
+#: src/features/jobs/search-problem.tsx
 #: src/features/letters/write.tsx
 #: src/features/onboarding/onboarding-screen.tsx
 #: src/features/profile/states.tsx
@@ -12591,7 +13166,7 @@ msgstr ""
 msgid "Turn on the link to choose an address."
 msgstr "Schakel de link in om een ​​adres te kiezen."
 
-#: src/features/career/schedule-sheet.tsx
+#: src/features/career/schedule-fields.tsx
 msgid "Turn this schedule on"
 msgstr "Deze planning aanzetten"
 
@@ -12771,6 +13346,11 @@ msgstr ""
 
 #: src/features/profile/save-note.tsx
 msgid "Updated in 1 resume"
+msgstr ""
+
+#: src/features/jobs/format.ts
+msgctxt "Job search results"
+msgid "updated just now"
 msgstr ""
 
 #: src/features/ats-checker/checker.tsx
@@ -13044,6 +13624,11 @@ msgstr "Gebruikt om functies en aanbiedingen te toetsen. Elk is een getal, zodat
 msgid "Username"
 msgstr "Gebruikersnaam"
 
+#. A recent job search that counts toward today's searches when opened
+#: src/features/jobs/recent-searches.tsx
+msgid "Uses 1 search"
+msgstr ""
+
 #: src/features/assistant/assistant-screen.tsx
 msgid "Uses facts from your resume"
 msgstr "Maakt gebruik van feiten uit uw cv"
@@ -13051,10 +13636,6 @@ msgstr "Maakt gebruik van feiten uit uw cv"
 #: src/features/assistant/assistant-screen.tsx
 msgid "Uses the linked application"
 msgstr "Maakt gebruik van de gekoppelde sollicitatie"
-
-#: src/features/career/schedule-sheet.tsx
-msgid "Uses web search set up in Settings. Results wait in Today. Applications and documents are never created for you."
-msgstr "Maakt gebruik van internetzoekopdrachten die zijn ingesteld in Instellingen. Resultaten wachten over Vandaag. sollicitaties en documenten worden nooit voor je gemaakt."
 
 #: src/features/share/web-page.tsx
 msgid "Uses your resume's template and Design, and fits any screen. Change them in Design."
@@ -13087,6 +13668,10 @@ msgstr "Verifiëren"
 #: src/features/auth/errors.ts
 msgid "Verify your email first. We sent you a link; open it on this phone, then sign in."
 msgstr ""
+
+#: src/features/career/schedule-fields.tsx
+msgid "Verify your email in Settings first"
+msgstr "Verifieer eerst uw e-mailadres in Instellingen"
 
 #: src/features/letters/share.tsx
 msgid "Version"
@@ -13134,6 +13719,14 @@ msgstr "Er zijn erg weinig woorden teruggevonden voor een cv."
 msgid "Very little text was recovered for this many pages."
 msgstr "Er is erg weinig tekst teruggevonden voor zoveel pagina's."
 
+#: src/features/jobs/format.ts
+msgid "via {name}"
+msgstr ""
+
+#: src/features/jobs/format.ts
+msgid "via the company's careers site"
+msgstr ""
+
 #: src/features/application-detail/interview-sheet.tsx
 msgid "Video link, office address, or phone number"
 msgstr "Videolink, kantooradres of telefoonnummer"
@@ -13145,6 +13738,10 @@ msgstr "Vietnamees"
 #: src/features/applications-board/calendar-screen.tsx
 msgid "View application"
 msgstr "Bekijk sollicitatie"
+
+#: src/features/jobs/listing-detail.tsx
+msgid "View original"
+msgstr ""
 
 #: src/features/application-detail/detail-screen.tsx
 msgid "View posting"
@@ -13172,6 +13769,11 @@ msgstr "bekeken · 30 dagen"
 #: src/features/ai/report-content.tsx
 msgid "Violence or abuse"
 msgstr "Geweld of misbruik"
+
+#: src/features/jobs/format.ts
+#: src/features/jobs/listing-card.tsx
+msgid "Visa sponsorship"
+msgstr ""
 
 #: src/features/share/link.tsx
 msgid "Visitors"
@@ -13274,6 +13876,11 @@ msgstr "Website"
 msgid "Week"
 msgstr ""
 
+#: src/features/career/schedule-fields.tsx
+msgctxt "How often a job alert runs"
+msgid "Weekly"
+msgstr ""
+
 #: src/features/home/schedules.tsx
 msgid "Weekly at {clock} · next {day}"
 msgstr ""
@@ -13350,13 +13957,17 @@ msgstr ""
 msgid "What should change?"
 msgstr "Wat moet er veranderen?"
 
-#: src/features/career/schedule-sheet.tsx
+#: src/features/career/schedule-fields.tsx
 msgid "What should run"
 msgstr "Wat moet er draaien"
 
 #: src/features/assistant/assistant-screen.tsx
 msgid "What should we work on?"
 msgstr "Waar moeten we aan werken?"
+
+#: src/features/jobs/listing-detail.tsx
+msgid "What they ask for"
+msgstr ""
 
 #: src/features/application-detail/interview-sheet.tsx
 msgid "What they asked you to prepare"
@@ -13519,6 +14130,10 @@ msgstr "Voor Word-import, Verbeteren, de assistent, briefconcepten, coaching en 
 msgid "Words run together when the text is extracted."
 msgstr "Woorden lopen in elkaar over wanneer de tekst wordt geëxtraheerd."
 
+#: src/features/jobs/filters-sheet.tsx
+msgid "Work arrangement"
+msgstr ""
+
 #: src/features/workspace/tabs/prepare.tsx
 msgid "Works without AI or new research"
 msgstr "Werkt zonder AI of nieuw onderzoek"
@@ -13527,9 +14142,18 @@ msgstr "Werkt zonder AI of nieuw onderzoek"
 msgid "Worth asking"
 msgstr "Het vragen waard"
 
+#. placeholder {0}: fit.ask.person
+#: src/features/jobs/listing-fit.tsx
+msgid "Worth asking {0}:"
+msgstr ""
+
 #: src/features/workspace/tabs/fit.tsx
 msgid "Worth asking {person}"
 msgstr "Het vragen waard {person}"
+
+#: src/features/jobs/listing-fit.tsx
+msgid "Worth asking:"
+msgstr ""
 
 #: app/builder/[id]/_layout.tsx
 #: app/letter/[id]/_layout.tsx
@@ -13638,6 +14262,10 @@ msgstr "U kunt maximaal 30 sollicitatievragen bewaren."
 msgid "You can start now. Publishing your portfolio, job alerts and payments wait until your email is confirmed. No email? Check spam, or send it again."
 msgstr ""
 
+#: src/features/jobs/jobs-states.tsx
+msgid "You can still save jobs from a link, from pasted text, or with the browser extension."
+msgstr ""
+
 #: src/auth/messages.ts
 msgid "You canceled the sign-in before it finished."
 msgstr "Je hebt het inloggen geannuleerd voordat het klaar was."
@@ -13679,9 +14307,17 @@ msgstr "U dient zelf in op de site van de werkgever. Als gesolliciteerd markeren
 msgid "You will be signed out of {server}. Any edits not yet synced from this device will be lost."
 msgstr "Je wordt afgemeld bij {server}. Alle bewerkingen die nog niet vanaf dit apparaat zijn gesynchroniseerd, gaan verloren."
 
+#: src/features/career/schedule-fields.tsx
+msgid "You'll always see it in Today. Email depends on your server's mail setup."
+msgstr "U ziet het altijd in Vandaag. E-mail hangt af van de mailinstellingen van uw server."
+
 #: src/features/workspace/shell.tsx
 msgid "You're looking at a saved version. It can't be edited."
 msgstr "U bekijkt een opgeslagen versie. Deze kan niet worden bewerkt."
+
+#: src/features/jobs/jobs-states.tsx
+msgid "You're offline"
+msgstr ""
 
 #: src/features/auth/errors.ts
 msgid "You're offline, or the server didn't answer. Check your connection and try again."
@@ -13722,6 +14358,10 @@ msgstr "Je bent offline. Delen heeft een verbinding nodig."
 msgid "You're offline. The last PDF check stays here; connect to refresh it."
 msgstr "Je bent offline. De laatste PDF controle blijft hier; maak verbinding om het te vernieuwen."
 
+#: src/features/jobs/jobs-header.tsx
+msgid "You're offline. These are the results you saw last; search again when you're back online."
+msgstr ""
+
 #: src/features/documents/queries.ts
 #: src/features/documents/use-import.ts
 #: src/features/documents/use-start-document.ts
@@ -13730,6 +14370,10 @@ msgstr "Je bent offline. Probeer het opnieuw wanneer je opnieuw verbinding maakt
 
 #: src/features/home/needs-you.tsx
 msgid "You're up to date. New roles, reminders and finished briefings appear here."
+msgstr ""
+
+#: src/features/jobs/search-problem.tsx
+msgid "You've reached today's search limit. Results you already opened stay available. Try again tomorrow."
 msgstr ""
 
 #: src/features/onboarding/messages.ts
@@ -13749,6 +14393,7 @@ msgstr ""
 msgid "your AI connection"
 msgstr "uw AI-verbinding"
 
+#: src/features/jobs/listing-fit.tsx
 #: src/features/workspace/hooks.ts
 msgid "Your AI connection"
 msgstr "Uw AI-verbinding"
@@ -13837,6 +14482,10 @@ msgstr "Je e-mailadres, telefoonnummer, locatie en andere koptekstgegevens, en d
 #. placeholder {0}: visible.length
 #: src/features/profile/facts.tsx
 msgid "Your facts · {0}"
+msgstr ""
+
+#: src/features/jobs/listing-fit.tsx
+msgid "Your fit"
 msgstr ""
 
 #: src/features/workspace/tabs/prepare.tsx
@@ -13979,12 +14628,24 @@ msgstr ""
 msgid "Your Profile changed elsewhere"
 msgstr ""
 
+#: src/features/jobs/listing-fit.tsx
+msgid "Your Profile changed since this check. Checking again uses AI again."
+msgstr ""
+
 #: src/features/write/profile-link.tsx
 msgid "Your Profile changed somewhere else. Try again."
 msgstr ""
 
 #: src/features/assistant/coach-screen.tsx
 msgid "Your Profile couldn't load. Try again or switch Profile off before sending."
+msgstr ""
+
+#: src/features/jobs/listing-detail.tsx
+msgid "Your Profile doesn't mention these skills yet. Add the ones you have to your Profile, and matches show here."
+msgstr ""
+
+#: src/features/jobs/listing-detail.tsx
+msgid "Your Profile mentions {matched} of the {total} main skills this job names. A word match, without AI: check your fit for a closer look."
 msgstr ""
 
 #: src/features/onboarding/onboarding-screen.tsx

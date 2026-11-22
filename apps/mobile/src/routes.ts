@@ -23,8 +23,8 @@ export type AppTab = "home" | "documents" | "applications" | "portfolio" | "prof
 export const PROFILE_TABS = ["details", "career", "facts", "stories", "preferences"] as const;
 export type ProfileTab = (typeof PROFILE_TABS)[number];
 export type ApplicationTab = WorkspaceTab;
-/** The Applications tab's views; List is the tab's index. */
-export type ApplicationsView = "list" | "board" | "calendar" | "insights";
+/** The Applications tab's views; List is the tab's index. Jobs searches current listings (Phase 09). */
+export type ApplicationsView = "list" | "board" | "calendar" | "insights" | "jobs";
 
 const segment = (value: string) => encodeURIComponent(value);
 
@@ -71,6 +71,8 @@ export const routes = {
 	/** The first run of a new account: sources, two questions, review, first resume. */
 	onboarding: () => "/onboarding" as const,
 	new: () => "/new" as const,
+	/** New → Copy a resume for a job, with the application picked (Jobs' Tailor resume). */
+	newCopyForJob: (applicationId: string) => `/new?step=copy&applicationId=${segment(applicationId)}` as const,
 	search: () => "/search" as const,
 	/** Coach full screen. `offers`: saved offer ids picked in Offers → Plan what to ask. */
 	coach: (offers?: readonly string[]) =>

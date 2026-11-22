@@ -1,8 +1,7 @@
-import type { SwitchProps } from "@/ui-legacy";
 import type { ReactNode } from "react";
 import { useLingui } from "@lingui/react/macro";
-import { Pressable, View } from "react-native";
-import { Banner, Button, Skeleton, Switch, Text, useTheme } from "@/ui-legacy";
+import { View } from "react-native";
+import { Banner, Button, Skeleton, useTheme } from "@/ui-legacy";
 
 type LoadStateProps = { query: { isError: boolean; isPending: boolean; refetch: () => unknown } };
 export function LoadState({ query }: LoadStateProps) {
@@ -30,30 +29,3 @@ export function Actions({ children }: ActionsProps) {
 		<View style={{ flexDirection: "row", flexWrap: "wrap", alignItems: "center", gap: space.s2 }}>{children}</View>
 	);
 }
-
-export function SwitchRow(props: SwitchProps) {
-	const { colors, size, space } = useTheme();
-	return (
-		<Pressable
-			accessibilityRole="switch"
-			accessibilityLabel={props.label}
-			accessibilityState={{ checked: props.value, disabled: !!props.disabled }}
-			disabled={props.disabled}
-			onPress={() => props.onValueChange(!props.value)}
-			style={({ pressed }) => ({
-				minHeight: size.hit,
-				flexDirection: "row",
-				alignItems: "center",
-				gap: space.s3,
-				backgroundColor: pressed ? colors.press : undefined,
-			})}
-		>
-			<Text style={{ flex: 1 }}>{props.label}</Text>
-			<View pointerEvents="none" accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
-				<Switch {...props} />
-			</View>
-		</Pressable>
-	);
-}
-
-export { EditorSheet } from "@/ui-legacy";

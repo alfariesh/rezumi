@@ -43,6 +43,9 @@ export function creditActionOf(operation: string, input: unknown): CreditAction 
 			return "cover-letter";
 		case "profile.sources.website":
 			return "profile-website";
+		// A listing's fit check is the workspace's Fit check, run before tracking.
+		case "jobs.checkFit":
+			return CAREER_TASK_CREDIT_ACTIONS.fit;
 		case "career.generate": {
 			const task = field(field(input, "task"), "task");
 			return typeof task === "string" && task in CAREER_TASK_CREDIT_ACTIONS
