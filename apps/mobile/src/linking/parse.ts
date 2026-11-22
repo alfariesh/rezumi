@@ -94,7 +94,7 @@ function dashboardHref(rest: readonly string[], path: string): AppHref | null {
 		case "profile":
 			return routes.profile(profileTab(second));
 		case "jobs":
-			return routes.applications();
+			return rest.length === 1 ? routes.applications("jobs") : null;
 		case "coach":
 			return rest.length <= 2 ? routes.coach() : null;
 		case "career":
@@ -104,7 +104,7 @@ function dashboardHref(rest: readonly string[], path: string): AppHref | null {
 			return null;
 		case "applications":
 			if (!second) return routes.applications();
-			if (rest.length === 2 && second === "jobs") return routes.applications();
+			if (rest.length === 2 && second === "jobs") return routes.applications("jobs");
 			if (rest.length === 2 && second === "offers") return routes.offers();
 			if (rest.length === 2) return routes.application(second);
 			if (rest.length === 3 && third && workspaceTabs.has(third))

@@ -26,11 +26,19 @@ export type PlanProblem =
 	  }
 	| { kind: "feature"; feature: PlanFeature };
 
-/** The plan problem behind a server error (PLAN_LIMIT_REACHED or PLAN_FEATURE_REQUIRED), else null. */
+/**
+ * The plan problem behind a server error (a document PLAN_LIMIT_REACHED or PLAN_FEATURE_REQUIRED), else null. A
+ * refusal that names no limit is read as the document limits always were: the resumes.
+ */
 export function getPlanProblem(error: unknown): PlanProblem | null {
 	if (!(error instanceof ORPCError)) return null;
 	const data = (error.data ?? {}) as Record<string, unknown>;
-	if (error.code === "PLAN_LIMIT_REACHED") {
+	// Only the document limits are explained here; the screens that meet the others (today's job searches, job
+	// alerts) say so in place, so the client's alert stays out of their way.
+	if (
+		error.code === "PLAN_LIMIT_REACHED" &&
+		[undefined, "activeResumes", "activeCoverLetters"].includes(data.limit as string | undefined)
+	) {
 		const requested = (data.requested ?? {}) as { resumes?: unknown; coverLetters?: unknown };
 		return {
 			kind: "limit",

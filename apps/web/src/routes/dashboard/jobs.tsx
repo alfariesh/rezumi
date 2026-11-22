@@ -1,5 +1,5 @@
 import { createFileRoute, redirect } from "@tanstack/react-router";
-import { jobsSearchSchema } from "@/features/jobs/search";
+import { jobsSearchSchema } from "@rezumi/career/jobs";
 
 // Jobs moved into Applications (2026-11-20); links, emails and guides with the old address keep working.
 export const Route = createFileRoute("/dashboard/jobs")({

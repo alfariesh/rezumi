@@ -1,4 +1,4 @@
-import type { JobsSearch } from "./search";
+import type { JobsSearch } from "@rezumi/career/jobs";
 import type { JobListingCard, JobListingMatch, JobSearchResult } from "@rezumi/schema/jobs/search";
 import type { ReactNode } from "react";
 import { Button, buttonVariants, Skeleton } from "@heroui/react";
@@ -9,13 +9,20 @@ import { ORPCError } from "@orpc/client";
 import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
+import {
+	activeFilterCount,
+	fromCriteria,
+	sameSearch,
+	startingSearch,
+	toSearchRequest,
+	withoutFilters,
+} from "@rezumi/career/jobs";
 import { Icon } from "@rezumi/ui/components/icon";
 import { useBreakpoint } from "@rezumi/ui/hooks/use-breakpoint";
 import { cn } from "@rezumi/utils/style";
 import { JobListingItem } from "./listing-card";
 import { JobListingSheet, ListingDetail } from "./listing-sheet";
 import { RecentSearchesButton, RecentSearchesWidget, useRecentSearches } from "./recent-searches";
-import { activeFilterCount, fromCriteria, sameSearch, startingSearch, toSearchRequest, withoutFilters } from "./search";
 import { JobsSearchBar } from "./search-bar";
 import { useListingActions } from "./use-listing-actions";
 import { EmptyBlock } from "@/components/layout/empty-block";

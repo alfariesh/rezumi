@@ -1,8 +1,8 @@
-import type { JobsSearch } from "@/features/jobs/search";
+import type { JobsSearch } from "@rezumi/career/jobs";
 import { createFileRoute, stripSearchParams } from "@tanstack/react-router";
+import { JOBS_SEARCH_DEFAULTS, jobsSearchSchema } from "@rezumi/career/jobs";
 import { ApplicationsSection } from "@/features/applications/components/applications-section";
 import { JobsPage } from "@/features/jobs/jobs-page";
-import { JOBS_SEARCH_DEFAULTS, jobsSearchSchema } from "@/features/jobs/search";
 import { orpc } from "@/libs/orpc/client";
 
 export const Route = createFileRoute("/dashboard/applications/jobs")({

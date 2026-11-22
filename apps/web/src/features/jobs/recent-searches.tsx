@@ -1,4 +1,4 @@
-import type { JobsSearch } from "./search";
+import type { JobsSearch } from "@rezumi/career/jobs";
 import type { JobSearchRecent } from "@rezumi/schema/jobs/search";
 import { Widget } from "@heroui-pro/react";
 import { Button, Chip, Popover, Skeleton } from "@heroui/react";
@@ -7,11 +7,11 @@ import { useLingui } from "@lingui/react";
 import { Trans } from "@lingui/react/macro";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useId, useState } from "react";
+import { fromCriteria } from "@rezumi/career/jobs";
 import { Icon } from "@rezumi/ui/components/icon";
 import { IconButton } from "@rezumi/ui/components/icon-button";
 import { countryName } from "@rezumi/utils/region";
 import { searchFilterLabels } from "./format";
-import { fromCriteria } from "./search";
 import { WidgetAction, WidgetHeading } from "@/components/layout/widget-heading";
 import { toastError } from "@/libs/error-message";
 import { orpc } from "@/libs/orpc/client";

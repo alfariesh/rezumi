@@ -40,6 +40,7 @@ export async function authorizeAiRequest(
 		!(path[0] === "applications" && path[1] === "ai") &&
 		operation !== "coverLetters.draft" &&
 		operation !== "profile.sources.website" &&
+		operation !== "jobs.checkFit" &&
 		operation !== "career.generate" &&
 		operation !== "career.voice.speak" &&
 		operation !== "career.voice.transcribe"

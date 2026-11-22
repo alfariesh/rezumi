@@ -1,12 +1,19 @@
 import { describe, expect, it } from "vite-plus/test";
 import {
 	activeFilterCount,
+	alertFields,
+	alertSearch,
+	startingAlertSearch,
+	formatPay,
+	payRange,
+	placeLabel,
 	fromCriteria,
 	jobsSearchSchema,
 	startingSearch,
 	toSearchRequest,
 	withoutFilters,
-} from "./search";
+	sameSearch,
+} from "./jobs";
 
 const search = (input: Record<string, unknown> = {}) => jobsSearchSchema.parse({ q: "data analyst", ...input });
 
@@ -105,5 +112,102 @@ describe("fromCriteria", () => {
 				request,
 			);
 		}
+	});
+});
+
+describe("sameSearch", () => {
+	it("matches a job alert with the same role in any case, place and filters", () => {
+		const request = toSearchRequest(search({ country: "GB", arrangement: "remote" }));
+		expect(sameSearch({ ...request, query: " Data Analyst " }, request)).toBe(true);
+		expect(sameSearch({ ...request, country: "DE" }, request)).toBe(false);
+		expect(sameSearch({ query: "data analyst" }, toSearchRequest(search()))).toBe(true);
+	});
+});
+
+describe("payRange", () => {
+	it("shows the listed range in its own currency, with what it's per", () => {
+		expect(payRange({ min: 70_000, max: 85_000, currency: "GBP", period: "year" }, "en-GB")).toEqual({
+			range: "£70k–£85k",
+			period: "year",
+		});
+		expect(payRange({ min: 25, currency: "USD", period: "hour" }, "en-US")).toEqual({ range: "$25", period: "hour" });
+		expect(payRange({ max: 4_000, currency: "EUR", period: "month" }, "en-US")?.range).toBe("€4,000");
+	});
+
+	it("shows nothing for a listing without pay", () => {
+		expect(payRange(undefined, "en-US")).toBeNull();
+		expect(payRange({ currency: "USD", period: "year" }, "en-US")).toBeNull();
+	});
+
+	it("spells out a currency the runtime doesn't know", () => {
+		expect(formatPay(500, "", "en-US")).toBe("500");
+		expect(formatPay(500, "XYZ1", "en-US")).toBe("XYZ1 500");
+	});
+});
+
+describe("placeLabel", () => {
+	it("uses the posting's own place, else its parts", () => {
+		expect(placeLabel({ location: { text: "Berlin, Germany" } })).toBe("Berlin, Germany");
+		expect(placeLabel({ location: { text: "", city: "Austin", region: "TX", country: "United States" } })).toBe(
+			"Austin, TX, United States",
+		);
+	});
+});
+
+describe("job alerts", () => {
+	const defaults = { query: "Nurse", location: "Leeds", country: "GB", remote: "any" as const, suggestions: [] };
+
+	it("start from the alert's own search, else the Jobs page's, else Preferences, else the first role", () => {
+		const saved = {
+			query: "Designer",
+			country: "DE",
+			postedWithinDays: 7 as const,
+			includeNoSalary: true,
+			remote: "any" as const,
+		};
+		expect(
+			startingAlertSearch({ existing: { search: saved, query: "x" }, search: undefined, defaults, targetRoles: [] }),
+		).toBe(saved);
+		expect(
+			startingAlertSearch({
+				existing: { search: null, query: "Old role" },
+				search: undefined,
+				defaults,
+				targetRoles: [],
+			}),
+		).toEqual({ query: "Old role" });
+		expect(startingAlertSearch({ existing: null, search: { query: "Analyst" }, defaults, targetRoles: [] })).toEqual({
+			query: "Analyst",
+		});
+		expect(startingAlertSearch({ existing: null, search: undefined, defaults, targetRoles: [] })).toEqual({
+			query: "Nurse",
+			location: "Leeds",
+			country: "GB",
+			remote: "any",
+		});
+		expect(
+			startingAlertSearch({ existing: null, search: undefined, defaults: undefined, targetRoles: ["Chef"] }),
+		).toEqual({ query: "Chef" });
+	});
+
+	it("keep the other filters when the role, city and country change", () => {
+		const fields = alertFields({
+			query: "Designer",
+			location: "Berlin",
+			country: "DE",
+			seniority: "senior",
+			visaSponsorship: true,
+		});
+		expect(fields).toEqual({
+			role: "Designer",
+			city: "Berlin",
+			country: "DE",
+			filters: { seniority: "senior", visaSponsorship: true },
+		});
+		expect(alertSearch({ ...fields, role: " Product designer ", city: "  ", country: "" })).toEqual({
+			query: "Product designer",
+			seniority: "senior",
+			visaSponsorship: true,
+		});
 	});
 });

@@ -55,6 +55,7 @@ export function ApplicationsViewFrame({ current, children, search, actions }: Ap
 						{ value: "board", label: t`Board` },
 						{ value: "calendar", label: t`Calendar` },
 						{ value: "insights", label: t`Insights` },
+						{ value: "jobs", label: t({ message: "Jobs", context: "Job listings to search" }) },
 					]}
 					onChange={(view) => {
 						if (view !== current) router.replace(routes.applications(view));

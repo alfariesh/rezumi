@@ -12,6 +12,7 @@ import { Trans } from "@lingui/react/macro";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useRouteContext } from "@tanstack/react-router";
 import { useId, useState } from "react";
+import { alertFields, alertSearch, startingAlertSearch } from "@rezumi/career/jobs";
 import { Icon } from "@rezumi/ui/components/icon";
 import { SwitchRow } from "@rezumi/ui/components/switch";
 import { toast } from "@rezumi/ui/components/toast";
@@ -169,20 +170,14 @@ export function ScheduleSheet({ schedule, onScheduleChange, onDelete, search }: 
 				? rollForward(new Date(existing.nextRunAt), existing.intervalDays, timeZone, now)
 				: new Date(existing.nextRunAt)
 			: fromZoned(toZoned(new Date(now.getTime() + 86_400_000), timeZone).date, "08:00", timeZone);
-		const fromPreferences: Partial<JobSearchCriteria> | undefined = defaults.data && {
-			query: defaults.data.query,
-			...(defaults.data.location ? { location: defaults.data.location } : {}),
-			...(defaults.data.country ? { country: defaults.data.country } : {}),
-			remote: defaults.data.remote,
-		};
-		const { query, location, country, ...filters }: Partial<JobSearchCriteria> = existing
-			? (existing.search ?? { query: existing.query })
-			: (search ?? fromPreferences ?? { query: profile.targetRoles[0] ?? "" });
+		const { role, city, country, filters } = alertFields(
+			startingAlertSearch({ existing, search, defaults: defaults.data, targetRoles: profile.targetRoles }),
+		);
 		const initial: Draft = {
 			kind: existing ? (existing.kind as Kind) : (KINDS.find((item) => item === kind) ?? "discovery"),
-			role: query ?? "",
-			city: location ?? "",
-			country: country ?? "",
+			role,
+			city,
+			country,
 			filters,
 			every: String(existing?.intervalDays ?? 1),
 			...toZoned(at, timeZone),
@@ -231,7 +226,6 @@ export function ScheduleSheet({ schedule, onScheduleChange, onDelete, search }: 
 		if (!form || !draft) return;
 		setForm({ ...form, submitted: true });
 		if (errors.query || errors.when || blocked || alertsUnavailable) return;
-		const city = draft.city.trim();
 		save.mutate(
 			{
 				...(form.existing ? { id: form.existing.id } : {}),
@@ -243,15 +237,7 @@ export function ScheduleSheet({ schedule, onScheduleChange, onDelete, search }: 
 							? draft.applicationId || null
 							: null,
 				query: draft.kind === "discovery" ? draft.role.trim() : "",
-				search:
-					draft.kind === "discovery"
-						? {
-								...draft.filters,
-								query: draft.role.trim(),
-								...(city ? { location: city } : {}),
-								...(draft.country ? { country: draft.country } : {}),
-							}
-						: null,
+				search: draft.kind === "discovery" ? alertSearch(draft) : null,
 				interviewId: draft.kind === "prepare" ? draft.interviewId || null : null,
 				lead: draft.kind === "prepare" ? draft.lead : null,
 				enabled: draft.enabled,

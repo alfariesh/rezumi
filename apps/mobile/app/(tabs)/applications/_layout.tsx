@@ -12,6 +12,7 @@ export default function ApplicationsLayout() {
 	const back = useTabRootBack(routes.applications(), t`Applications`);
 	return (
 		<Stack screenOptions={useTabStackOptions()}>
+			<Stack.Screen name="jobs" options={{ headerShown: false, title: t`Applications`, animation: "fade" }} />
 			<Stack.Screen
 				name="offers"
 				options={(props) => ({ title: t`Offers`, headerLargeTitle: false, ...back(props) })}
