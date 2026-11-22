@@ -13,11 +13,11 @@ import { useBreakpoint } from "@rezumi/ui/hooks/use-breakpoint";
 import { cn } from "@rezumi/utils/style";
 import { DocumentMenuContent } from "./document-actions";
 import { documentHref, NewChip, RenameInput, useOpenDocument } from "./document-card";
-import { daysLeftInTrash } from "./filter";
+import { daysLeftInTrash, documentKey } from "./filter";
 import { useNewDocumentsStore } from "./new-documents";
 import { formatRelativeTime } from "@/libs/locale";
 
-export const documentKey = (document: DocumentSummary) => `${document.type}:${document.id}`;
+export { documentKey };
 
 // The URL sort has one direction per key: names A to Z, dates newest first.
 const SORT_COLUMNS = { name: "name", edited: "edited", created: "created" } as const;

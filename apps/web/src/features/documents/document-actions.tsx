@@ -10,6 +10,7 @@ import { useCopyToClipboard } from "usehooks-ts";
 import { publicResumeUrl } from "@rezumi/resume/sharing";
 import { Icon } from "@rezumi/ui/components/icon";
 import { toast } from "@rezumi/ui/components/toast";
+import { changedTags, sharedTags } from "./filter";
 import { useNewDocumentsStore } from "./new-documents";
 import { ChipInput } from "@/components/input/chip-input";
 import { useDialogStore } from "@/dialogs/store";
@@ -332,10 +333,6 @@ export function DocumentMenuContent({
 
 type TagsDialogProps = { documents: DocumentSummary[] | null; onClose: () => void };
 
-/** The tags every one of these documents has. */
-const sharedTags = (documents: readonly DocumentSummary[]) =>
-	documents[0]?.tags.filter((tag) => documents.every((document) => document.tags.includes(tag))) ?? [];
-
 /**
  * Tags… for one document from its menu, or for a selection: a tag added goes on each document and a tag removed
  * comes off each, leaving their other tags alone. Locked documents keep theirs.
@@ -357,8 +354,6 @@ export function TagsDialog({ documents: requested, onClose }: TagsDialogProps) {
 	const save = async () => {
 		if (!documents) return;
 		const next = tags ?? shared;
-		const removed = shared.filter((tag) => !next.includes(tag));
-		const added = next.filter((tag) => !shared.includes(tag));
 		const results = await Promise.allSettled(
 			documents
 				.filter((document) => !document.isLocked)
@@ -366,10 +361,7 @@ export function TagsDialog({ documents: requested, onClose }: TagsDialogProps) {
 					setDocumentTags.mutateAsync({
 						type: document.type,
 						id: document.id,
-						tags: [
-							...document.tags.filter((tag) => !removed.includes(tag)),
-							...added.filter((tag) => !document.tags.includes(tag)),
-						],
+						tags: changedTags(document, shared, next),
 					}),
 				),
 		);

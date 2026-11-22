@@ -1,12 +1,13 @@
-import type { GroupProps } from "./style-groups";
+// Typography's uploaded fonts: the document's families with Remove, and Upload font (TTF or OTF, the paid plan's
+// `customFonts`). Android shows Upload locked without the feature and explains; iOS leaves it out then. Fonts already
+// added always show and draw.
+import type { DesignProps } from "./types";
 import type { UploadContext } from "@/features/entries/upload";
 import type { CustomFontFace } from "@rezumi/schema/resume/data";
 import { useLingui } from "@lingui/react/macro";
 import { useMutation } from "@tanstack/react-query";
 import { getDocumentAsync } from "expo-document-picker";
 import { File } from "expo-file-system";
-import { useState } from "react";
-import { View } from "react-native";
 import { MAX_DOCUMENT_FONT_FACES, MAX_UPLOADED_FONT_BYTES, uploadedFontFamilies } from "@rezumi/fonts/uploaded";
 import { addUploadedFontFace, removeUploadedFontFamily } from "@rezumi/resume/uploaded-fonts";
 import { rest } from "@/api/client";
@@ -14,7 +15,7 @@ import { useResumeStore } from "@/draft";
 import { nativeEnvironment } from "@/draft/native";
 import { canShowPlans, hasPlanFeature, showPlanAlert, usePlan } from "@/features/billing/plan";
 import { claimUpload, commitUpload } from "@/features/entries/upload";
-import { Button, ConfirmDialog, ListRow, Text, showToast, useTheme } from "@/ui-legacy";
+import { Button, ListRow, ListSection, Spinner, showToast } from "@/ui";
 
 const uploadContext: UploadContext = {
 	resumeId: () => useResumeStore.getState().document?.id,
@@ -49,20 +50,15 @@ async function uploadFont(uri: string): Promise<CustomFontFace> {
 	return { family, weight, italic: italic === true, url };
 }
 
-/**
- * Advanced → Typography's uploaded fonts: the document's families with Remove, and Upload font. Android shows Upload
- * locked without the plan's feature; iOS hides it then (the fonts already added still show and draw).
- */
-export function UploadedFonts({ data, write, disabled }: Pick<GroupProps, "data" | "write" | "disabled">) {
+export function UploadedFonts({ data, write, disabled }: DesignProps) {
 	const { t } = useLingui();
-	const { space } = useTheme();
 	const planLocked = !hasPlanFeature(usePlan(), "customFonts");
-	const [removing, setRemoving] = useState<string | null>(null);
 	const faces = data.metadata.typography.customFonts ?? [];
 	const families = uploadedFontFamilies(faces);
 	const full = faces.length >= MAX_DOCUMENT_FONT_FACES;
+	const hideUpload = planLocked && !canShowPlans();
 
-	const describeProblem = (error: unknown) => {
+	const describe = (error: unknown) => {
 		const problem = error instanceof FontUploadError ? error.problem : undefined;
 		if (problem === "unsupported-format")
 			return t`Upload a single TTF or OTF file. Web fonts (WOFF, WOFF2) and font collections (TTC) can't be used.`;
@@ -78,8 +74,7 @@ export function UploadedFonts({ data, write, disabled }: Pick<GroupProps, "data"
 			const owner = await claimUpload(uploadContext);
 			if (!owner) return;
 			const picked = await getDocumentAsync({ type: ["font/ttf", "font/otf", "*/*"], copyToCacheDirectory: true });
-			if (picked.canceled) return;
-			const asset = picked.assets[0];
+			const asset = picked.canceled ? undefined : picked.assets[0];
 			if (!asset) return;
 			if ((asset.size ?? new File(asset.uri).size) > MAX_UPLOADED_FONT_BYTES)
 				throw new Error(t`Choose a font file smaller than 8 MB.`);
@@ -88,75 +83,68 @@ export function UploadedFonts({ data, write, disabled }: Pick<GroupProps, "data"
 			const added = await commitUpload(owner, uploadContext, () =>
 				write("typography.fonts", (draft) => addUploadedFontFace(draft.metadata.typography, face), true),
 			);
-			if (added) showToast({ message: t`${face.family} is ready. Choose it under Font family.` });
+			if (added) showToast({ title: t`${face.family} is ready. Choose it under Font family.`, variant: "success" });
 		},
 		onError: (error) => {
 			if (error instanceof FontUploadError && error.code === "PLAN_FEATURE_REQUIRED")
 				return showPlanAlert({ kind: "feature", feature: "customFonts" });
-			showToast({
-				message: error instanceof FontUploadError ? describeProblem(error) : error.message || describeProblem(error),
-			});
+			const message = error instanceof FontUploadError ? describe(error) : error.message || describe(error);
+			showToast({ title: message, variant: "danger" });
 		},
 	});
 
-	if (planLocked && !canShowPlans() && families.length === 0) return null;
+	// Reversible: the draft's Undo brings the family back (its files stay on the server).
+	const remove = (family: string) => {
+		write("typography.fonts", (draft) => removeUploadedFontFamily(draft.metadata.typography, family), true);
+		showToast({
+			title: t`${family} removed. Text set in it moves to the default font.`,
+			undo: { label: t`Undo`, onUndo: () => useResumeStore.getState().undo() },
+		});
+	};
+
+	if (hideUpload && families.length === 0) return null;
 
 	return (
-		<View style={{ gap: space.s3 }}>
-			<Text variant="label" color="ink2">
-				{t`Your fonts`}
-			</Text>
-			{families.map((family) => {
-				const familyFaces = faces
-					.filter((face) => face.family === family)
-					.toSorted((a, b) => Number(a.weight) - Number(b.weight) || Number(a.italic) - Number(b.italic));
-				return (
+		<>
+			<ListSection
+				title={t`Your fonts`}
+				footer={
+					hideUpload
+						? undefined
+						: planLocked
+							? t`Your own fonts aren't in your plan. Fonts already added keep working on the page.`
+							: t`Upload TTF or OTF files you have the right to use, one file per weight or style. Anyone who opens a shared link to this document can download them.`
+				}
+			>
+				{families.map((family) => (
 					<ListRow
 						key={family}
+						icon="text-aa"
 						title={family}
-						subtitle={familyFaces.map((face) => (face.italic ? t`${face.weight} italic` : face.weight)).join(" · ")}
-						leading="text-aa"
+						description={faces
+							.filter((face) => face.family === family)
+							.toSorted((a, b) => Number(a.weight) - Number(b.weight) || Number(a.italic) - Number(b.italic))
+							.map((face) => (face.italic ? t`${face.weight} italic` : face.weight))
+							.join(" · ")}
 						trailing={
-							<Button label={t`Remove`} variant="ghost" disabled={disabled} onPress={() => setRemoving(family)} />
+							<Button size="sm" variant="ghost" isDisabled={disabled} onPress={() => remove(family)}>
+								<Button.Label>{t`Remove`}</Button.Label>
+							</Button>
 						}
 					/>
-				);
-			})}
-			{planLocked && !canShowPlans() ? null : (
-				<>
-					<Text variant="caption" color="ink3">
-						{planLocked
-							? t`Your own fonts aren't in your plan. Fonts already added keep working on the page.`
-							: t`Upload TTF or OTF files you have the right to use, one file per weight or style. Anyone who opens a shared link to this document can download them.`}
-					</Text>
-					<View style={{ alignSelf: "flex-start" }}>
-						<Button
-							label={full ? t`Font limit reached` : t`Upload font`}
-							icon={planLocked ? "lock" : "upload-simple"}
-							variant="secondary"
-							loading={upload.isPending}
-							disabled={disabled || full || upload.isPending}
-							onPress={() =>
-								planLocked ? showPlanAlert({ kind: "feature", feature: "customFonts" }) : upload.mutate()
-							}
-						/>
-					</View>
-				</>
-			)}
-			<ConfirmDialog
-				open={removing !== null}
-				title={t`Remove ${removing ?? ""}?`}
-				message={t`Text set in it moves to the default font. You can upload the font again later.`}
-				confirmLabel={t`Remove font`}
-				destructive
-				onCancel={() => setRemoving(null)}
-				onConfirm={() => {
-					const family = removing;
-					setRemoving(null);
-					if (family)
-						write("typography.fonts", (draft) => removeUploadedFontFamily(draft.metadata.typography, family), true);
-				}}
-			/>
-		</View>
+				))}
+				{hideUpload ? null : (
+					<ListRow
+						key="upload"
+						icon={planLocked ? "lock" : "upload-simple"}
+						title={full ? t`Font limit reached` : t`Upload font`}
+						isDisabled={disabled || full || upload.isPending}
+						chevron={false}
+						trailing={upload.isPending ? <Spinner size="sm" /> : undefined}
+						onPress={() => (planLocked ? showPlanAlert({ kind: "feature", feature: "customFonts" }) : upload.mutate())}
+					/>
+				)}
+			</ListSection>
+		</>
 	);
 }

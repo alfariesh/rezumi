@@ -5,12 +5,11 @@ import { Trans } from "@lingui/react/macro";
 import { ORPCError } from "@orpc/client";
 import { useMutation } from "@tanstack/react-query";
 import { useRef } from "react";
-import { MAX_DOCUMENT_FONT_FACES, uploadedFontFamilies, uploadedFontWeights } from "@rezumi/fonts/uploaded";
+import { MAX_DOCUMENT_FONT_FACES, uploadedFontFamilies } from "@rezumi/fonts/uploaded";
 import { addUploadedFontFace, removeUploadedFontFamily } from "@rezumi/resume/uploaded-fonts";
 import { Icon } from "@rezumi/ui/components/icon";
 import { IconButton } from "@rezumi/ui/components/icon-button";
 import { toast } from "@rezumi/ui/components/toast";
-import { getNextWeights } from "@/components/typography/get-next-weights";
 import { usePlanFeature } from "@/features/billing/plan";
 import { openPlanDialog, openPlanDialogForError } from "@/features/billing/plan-dialog";
 import { useIsResumeLocked, useUpdateResumeData } from "@/features/resume/builder/draft";
@@ -144,9 +143,4 @@ export function UploadedFonts({ faces = [] }: UploadedFontsProps) {
 			</Button>
 		</div>
 	);
-}
-
-/** The weights to give text when it switches to `family`: an uploaded family's own, else the catalog's. */
-export function nextFontWeights(faces: CustomFontFace[] | undefined, family: string, heading: boolean) {
-	return getNextWeights(family, heading, uploadedFontWeights(faces, family));
 }

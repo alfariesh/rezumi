@@ -11,6 +11,7 @@ import { useNavigate } from "@tanstack/react-router";
 import { lazy, Suspense, useEffect, useId, useRef, useState } from "react";
 import { isFileDropItem } from "react-aria-components";
 import { useIsClient } from "usehooks-ts";
+import { groupPdfFindings } from "@rezumi/resume/check";
 import { Icon } from "@rezumi/ui/components/icon";
 import { cn } from "@rezumi/utils/style";
 import { PdfPasswordRequiredError, PdfTooLargeError, PdfUnreadableError } from "./extract-client";
@@ -319,34 +320,24 @@ type Row = { key: string; title: string; count: string; tone: "danger" | "warn" 
 
 /** One row per category with something to fix, worst first, plus the posting's terms when one was pasted. */
 function issueRows(report: PdfAtsReport): Row[] {
-	const byCategory = new Map<PdfCategory, PdfAtsReport["findings"]>();
-	for (const finding of [...report.findings, ...report.tips])
-		byCategory.set(finding.category, [...(byCategory.get(finding.category) ?? []), finding]);
-
-	const rows: Row[] = [...byCategory.entries()]
-		.map(([category, findings]) => ({
-			key: category,
-			title: getPdfCategoryLabel(category),
-			count: String(findings.length),
-			tone: findings.some((finding) => finding.severity === "blocker")
-				? ("danger" as const)
-				: findings.every((finding) => finding.severity === "tip")
-					? ("accent" as const)
-					: ("warn" as const),
-			body: (
-				<ul className="grid gap-2">
-					{findings.map((finding) => {
-						const message = getPdfFindingMessage(finding.code);
-						return (
-							<li key={finding.code}>
-								<b className="font-medium text-foreground">{message.title}</b> {message.action}
-							</li>
-						);
-					})}
-				</ul>
-			),
-		}))
-		.sort((a, b) => (a.tone === b.tone ? 0 : a.tone === "danger" ? -1 : 1));
+	const rows: Row[] = groupPdfFindings(report).map(({ category, findings, tone }) => ({
+		key: category,
+		title: getPdfCategoryLabel(category),
+		count: String(findings.length),
+		tone: tone === "warning" ? "warn" : tone,
+		body: (
+			<ul className="grid gap-2">
+				{findings.map((finding) => {
+					const message = getPdfFindingMessage(finding.code);
+					return (
+						<li key={finding.code}>
+							<b className="font-medium text-foreground">{message.title}</b> {message.action}
+						</li>
+					);
+				})}
+			</ul>
+		),
+	}));
 
 	if (report.jd)
 		rows.push({

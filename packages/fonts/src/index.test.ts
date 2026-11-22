@@ -1,5 +1,11 @@
 import { describe, expect, it, vi } from "vite-plus/test";
-import { getFont, getPdfFallbackFontFamilies, resolveBoldFontWeight, resolveLegacyFontAlias } from "./index";
+import {
+	getFont,
+	getNextWeights,
+	getPdfFallbackFontFamilies,
+	resolveBoldFontWeight,
+	resolveLegacyFontAlias,
+} from "./index";
 
 it("keeps catalog sources independent of the server mirror environment", async () => {
 	vi.stubEnv("WEB_FONT_BASE_URL", "https://fonts.example.com/cm");
@@ -67,5 +73,19 @@ describe("resolveBoldFontWeight (#3310)", () => {
 		// CJK fallback stacks widen fontFamily to string[] (#2986); the
 		// user-chosen primary family decides the bold weight.
 		expect(resolveBoldFontWeight(["Open Sans", "Noto Sans"], ["400", "600"])).toBe("700");
+	});
+});
+
+describe("getNextWeights", () => {
+	it("selects regular and bold body weights, and one heading weight for a new family", () => {
+		expect(getNextWeights("Source Sans 3")).toEqual(["400", "700"]);
+		expect(getNextWeights("Source Sans 3", true)).toEqual(["600"]);
+	});
+
+	it("fills in from the family's own weights and knows nothing of unknown families", () => {
+		expect(getNextWeights("Anything", false, ["300", "500"])).toEqual(["300", "500"]);
+		expect(getNextWeights("Anything", false, ["400", "900"])).toEqual(["400", "900"]);
+		expect(getNextWeights("Anything", true, ["300", "500"])).toEqual(["500"]);
+		expect(getNextWeights("Not a real family")).toBeNull();
 	});
 });

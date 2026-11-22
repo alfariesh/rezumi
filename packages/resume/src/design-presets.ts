@@ -1,11 +1,12 @@
 // The Design panel's presets and colour helpers, shared by the web and the app. Pure: no React, no Lingui.
 import type { ResumeData } from "@rezumi/schema/resume/data";
 import type { DateFormat } from "@rezumi/schema/resume/dates";
-import type { Template } from "@rezumi/schema/templates";
+import type { CareerField, Template } from "@rezumi/schema/templates";
 import type { WritableDraft } from "immer";
 import { defaultResumeData } from "@rezumi/schema/resume/default";
-import { templateLayouts, templateLineup } from "@rezumi/schema/templates";
+import { templateCareerFields, templateLayouts, templateLineup } from "@rezumi/schema/templates";
 import { contrastOnWhite } from "@rezumi/utils/color";
+import { buildMarkdown } from "./markdown";
 
 type Data = ResumeData | WritableDraft<ResumeData>;
 /** The design a resume and a letter share. */
@@ -269,3 +270,32 @@ export function matchesFilter(id: Template, filter: TemplateFilter) {
 	if (filter === "ats") return layout.atsSafe;
 	return true;
 }
+
+/** Whether a template suits a field of work (`templateCareerFields`); "all" keeps every template. */
+export const suitsCareerField = (id: Template, field: CareerField | "all") =>
+	field === "all" || (templateCareerFields[id] as readonly CareerField[]).includes(field);
+
+/**
+ * A template's sample PDF and its previews, as server paths (`pnpm --filter @rezumi/tooling templates:previews`). Each
+ * sample has an English and an Indonesian version: Indonesian shows the Indonesian one, every other language English.
+ */
+export const templateSample = (id: Template, locale: string) => {
+	const folder = locale.split("-")[0] === "id" ? "id/" : "";
+	return {
+		pdf: `/templates/pdf/${folder}${id}.pdf`,
+		/** 600×848 JPEG: builder and letter cards. */
+		image: `/templates/jpg/${folder}${id}.jpg`,
+		/** 596×843 and 300×424 WebP: the gallery and the homepage. */
+		thumbnail: `/templates/thumb/${folder}${id}.webp`,
+		smallThumbnail: `/templates/thumb/${folder}${id}-small.webp`,
+	};
+};
+
+/**
+ * Whether a template preview drawn from this resume shows more than a template's sample would: visible content beyond
+ * the account details a new resume inherits, or a visible picture. Galleries show the sample image otherwise.
+ */
+export const hasTemplatePreviewContent = (data: ResumeData) =>
+	Boolean(
+		buildMarkdown({ ...data, basics: defaultResumeData.basics }).trim() || (!data.picture.hidden && data.picture.url),
+	);

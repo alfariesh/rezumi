@@ -1,41 +1,61 @@
+// A document's first page on white paper: a resume's real page, drawn once per edit through the thumbnail queue and
+// kept on the device (thumbnail-store), or drawn live from an unsynced draft open on this device; a letter's page
+// as lines, like the web (letters have no thumbnail render). Only visible cards draw.
 import type { DocumentSummary } from "./filter";
-import { useLingui } from "@lingui/react/macro";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Image } from "expo-image";
 import { useState } from "react";
 import { PixelRatio, View } from "react-native";
-import { stripHtml } from "@rezumi/utils/string";
 import { readStoredThumbnail, storeThumbnail } from "./thumbnail-store";
 import { orpc } from "@/api/client";
 import { useSession } from "@/auth/session";
-import { useLetterStore, useResumeStore } from "@/draft/runtime";
+import { useResumeStore } from "@/draft/runtime";
 import { A4_WIDTH_PT, enqueueThumbnail, renderFirstPage, thumbnailPixelWidth } from "@/preview/thumbnail-queue";
 import { usePreview } from "@/preview/usePreview";
-import { Icon, Text, useTheme } from "@/ui-legacy";
+import { Icon, cx } from "@/ui";
 
-type ThumbnailProps = { document: DocumentSummary; visible: boolean; compact?: boolean };
+type ThumbnailProps = {
+	document: DocumentSummary;
+	/** Draws only while the card is on screen; off screen it keeps the last image. */
+	visible: boolean;
+	/** The small page beside a list row; otherwise the page fills its card's width. */
+	compact?: boolean | undefined;
+};
 
-const letterText = (content: string) => stripHtml(content.replace(/<\/p>|<br\s*\/?>/gi, "\n")).slice(0, 2000);
+const fill = { width: "100%", height: "100%" } as const;
 
 export function Thumbnail({ document, visible, compact = false }: ThumbnailProps) {
-	const { t } = useLingui();
-	const { colors, space, radius, size } = useTheme();
+	// Decorative: the card around it carries the document's name.
+	return (
+		<View
+			accessibilityElementsHidden
+			importantForAccessibility="no-hide-descendants"
+			className={cx(
+				"overflow-hidden border border-border bg-paper",
+				compact ? "h-14 w-10 rounded-md" : "aspect-[210/297] w-full rounded-lg",
+			)}
+			testID={`thumbnail-${document.id}`}
+		>
+			{document.type === "letter" ? (
+				<LetterLines compact={compact} />
+			) : (
+				<ResumePage document={document} visible={visible} compact={compact} />
+			)}
+		</View>
+	);
+}
+
+type ResumePageProps = { document: DocumentSummary; visible: boolean; compact: boolean };
+
+function ResumePage({ document, visible, compact }: ResumePageProps) {
 	const session = useSession();
 	const queryClient = useQueryClient();
 	const [width, setWidth] = useState(0);
 	const signedIn = visible && session.status === "signed-in";
 	const { server } = session;
-	const draftText = useLetterStore((state) => (state.document?.id === document.id ? state.data?.content : undefined));
-	const letter = useQuery({
-		queryKey: ["letter-thumbnail", server, document.id, document.updatedAt.getTime()],
-		queryFn: ({ signal }) => orpc.coverLetters.getById.call({ id: document.id }, { signal }),
-		select: ({ content }) => letterText(content ?? ""),
-		enabled: signedIn && document.type === "letter",
-		staleTime: Number.POSITIVE_INFINITY,
-	});
 	const draftData = useResumeStore((state) => (state.document?.id === document.id ? state.data : undefined));
 	const pixelWidth = thumbnailPixelWidth(width);
-	const resume = useQuery({
+	const stored = useQuery({
 		queryKey: ["resume-thumbnail", server, document.id, document.updatedAt.getTime(), pixelWidth],
 		queryFn: ({ queryKey, signal }) => {
 			// The same edit at the same width is the same image: a refetch keeps it.
@@ -46,7 +66,7 @@ export function Thumbnail({ document, visible, compact = false }: ThumbnailProps
 				return renderFirstPage(data, pixelWidth, (uri) => storeThumbnail(server, document, pixelWidth, uri));
 			}, signal);
 		},
-		enabled: signedIn && document.type === "resume" && pixelWidth > 0 && !draftData,
+		enabled: signedIn && pixelWidth > 0 && !draftData,
 		staleTime: Number.POSITIVE_INFINITY,
 	});
 	// An unsynced draft open on this device is drawn live instead: it is newer than anything stored.
@@ -54,34 +74,33 @@ export function Thumbnail({ document, visible, compact = false }: ThumbnailProps
 		pages: [0],
 		scale: Math.max(0.1, (width / A4_WIDTH_PT) * PixelRatio.get()),
 	});
-	const firstPage = draftData ? preview.result?.pages[0]?.uri : resume.data;
+	const page = draftData ? preview.result?.pages[0]?.uri : stored.data;
 	return (
-		<View
-			onLayout={(event) => setWidth(event.nativeEvent.layout.width)}
-			style={{
-				backgroundColor: colors.paper,
-				borderColor: colors.paperLine,
-				borderWidth: 1,
-				borderRadius: radius.rSm,
-				padding: document.type === "resume" ? 0 : compact ? space.s1 : space.s4,
-				overflow: "hidden",
-				...(compact ? { width: size.hit, height: size.row } : { width: "100%", aspectRatio: 210 / 297 }),
-			}}
-		>
-			{document.type === "letter" ? (
-				// A miniature of the page: it scales with the card, not with the text-size setting.
-				<Text variant="callout" color="paperInk" numberOfLines={compact ? 2 : 12} maxFontSizeMultiplier={1}>
-					{(draftText === undefined ? (letter.data ?? "") : letterText(draftText)) ||
-						(letter.isError ? t`Couldn't load letter` : letter.isPending ? t`Loading letter…` : t`Empty letter`)}
-				</Text>
-			) : firstPage ? (
-				<Image source={{ uri: firstPage }} contentFit="contain" style={{ width: "100%", height: "100%" }} />
+		<View className="flex-1" onLayout={(event) => setWidth(event.nativeEvent.layout.width)}>
+			{page ? (
+				<Image source={{ uri: page }} contentFit="contain" style={fill} />
 			) : (
-				<View style={{ flex: 1, alignItems: "center", justifyContent: "center", gap: space.s2 }}>
-					<Icon name="file-text" color={colors.paperInk} size={size.icon.bar} />
-					{!compact && <Text variant="caption" color="paperInk">{t`Resume preview`}</Text>}
+				<View className="flex-1 items-center justify-center">
+					<Icon name="file-text" size={compact ? 16 : 24} tone="muted" />
 				</View>
 			)}
+		</View>
+	);
+}
+
+type LetterLinesProps = { compact: boolean };
+
+/** A letter's page drawn from lines: sender, date, then paragraphs. The paper is white in both themes. */
+function LetterLines({ compact }: LetterLinesProps) {
+	const lines = compact ? 4 : 7;
+	return (
+		<View className={cx("flex-1", compact ? "gap-1 p-1.5" : "gap-1.5 p-[14%]")}>
+			<View className="h-1.5 w-2/5 rounded-sm bg-black/20" />
+			{compact ? null : <View className="mb-3 h-1 w-3/5 rounded-sm bg-black/10" />}
+			<View className="h-1 w-1/3 rounded-sm bg-black/15" />
+			{Array.from({ length: lines }, (_, index) => (
+				<View key={index} className={cx("h-1 rounded-sm bg-black/10", index % 3 === 2 ? "w-4/5" : "w-full")} />
+			))}
 		</View>
 	);
 }

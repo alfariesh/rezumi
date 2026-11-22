@@ -8,6 +8,10 @@ import {
 	Button,
 	Checkbox,
 	ChipInput,
+	ColorField,
+	NumberStepper,
+	PickerSheet,
+	ValueSlider,
 	ControlField,
 	Description,
 	FieldError,
@@ -221,8 +225,73 @@ export function FieldsGallery() {
 	const [summary, setSummary] = useState("");
 	const [volume, setVolume] = useState(40);
 	const [roles, setRoles] = useState(["Product designer"]);
+	const [margin, setMargin] = useState(18);
+	const [textSize, setTextSize] = useState(10);
+	const [language, setLanguage] = useState<string | null>("en-US");
+	const [picking, setPicking] = useState(false);
+	const [color, setColor] = useState("rgb(26, 115, 232)");
 	return (
 		<View className="gap-8">
+			<GallerySection title="ColorField" note="A color typed as text with a swatch; checked when the field is left.">
+				<ColorField
+					label="Border color"
+					value={color}
+					invalidLabel="Enter a color like #1a73e8"
+					onChange={(text) => {
+						const valid = text === "" || /^(#[0-9a-f]{6}|rgb\(.+\))$/i.test(text);
+						if (valid) setColor(text);
+						return valid;
+					}}
+				/>
+			</GallerySection>
+
+			<GallerySection title="NumberStepper" note="A typed number with − and + (margins, gaps); clamps to its range.">
+				<NumberStepper
+					label="Top margin"
+					value={margin}
+					unit="pt"
+					min={0}
+					max={72}
+					step={2}
+					onChange={setMargin}
+					decreaseLabel="Decrease top margin"
+					increaseLabel="Increase top margin"
+				/>
+			</GallerySection>
+
+			<GallerySection title="ValueSlider" note="A labelled slider that saves once, on release (text size, density).">
+				<ValueSlider
+					label="Text size"
+					valueLabel={(value) => `${value} pt`}
+					value={textSize}
+					minValue={8}
+					maxValue={14}
+					step={0.5}
+					onCommit={setTextSize}
+				/>
+			</GallerySection>
+
+			<GallerySection title="PickerSheet" note="A long list of options in a sheet with search (the resume's language).">
+				<Button variant="secondary" onPress={() => setPicking(true)}>
+					{`Language: ${language ?? "none"}`}
+				</Button>
+				<PickerSheet
+					isOpen={picking}
+					onOpenChange={setPicking}
+					title="Language"
+					closeLabel="Close"
+					searchLabel="Search languages"
+					emptyLabel={(query) => `No language matches “${query}”.`}
+					options={[
+						{ value: "en-US", label: "English", detail: "United States" },
+						{ value: "id-ID", label: "Bahasa Indonesia" },
+						{ value: "de-DE", label: "Deutsch" },
+					]}
+					value={language}
+					onPick={setLanguage}
+				/>
+			</GallerySection>
+
 			<GallerySection
 				title="ChipInput"
 				note="Short values one at a time (roles, places): return, a comma or leaving the field adds; each tag removes."

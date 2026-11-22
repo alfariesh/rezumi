@@ -4,7 +4,7 @@ import { useLingui } from "@lingui/react/macro";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import PageScreen from "./page";
 import { ResumeConflictSheet, useResumeDraftOwner, useResumeStore } from "@/draft";
-import { DocumentMenu } from "@/features/document-menu";
+import { DocumentMenu } from "@/features/documents/document-menu";
 import { routes } from "@/routes";
 import { BuilderChrome, DraftChrome } from "@/shell/builder-chrome";
 import { IconButton } from "@/ui";

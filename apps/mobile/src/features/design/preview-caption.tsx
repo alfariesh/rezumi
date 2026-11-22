@@ -2,31 +2,22 @@ import { useLingui } from "@lingui/react/macro";
 import { Pressable } from "react-native";
 import { templateName } from "@rezumi/resume/design-presets";
 import { applyTemplate, usePreviewTemplate } from "./draft";
-import { Text, useTheme } from "@/ui-legacy";
+import { Text } from "@/ui";
 
-/** "Previewing X · tap to apply" over the top of the page while a template is held in Design. */
+/** "Previewing X · tap to apply" over the top of the page while a template is tried in the gallery. */
 export function TemplatePreviewCaption() {
 	const { t } = useLingui();
-	const { colors, radius, space, size } = useTheme();
 	const template = usePreviewTemplate();
 	if (!template) return null;
 	return (
 		<Pressable
 			accessibilityRole="button"
 			accessibilityLiveRegion="polite"
+			accessibilityHint={t`Applies the template you are trying.`}
 			onPress={() => applyTemplate(template)}
-			style={{
-				position: "absolute",
-				top: space.s3,
-				alignSelf: "center",
-				minHeight: size.hit - space.s2,
-				justifyContent: "center",
-				paddingHorizontal: space.s4,
-				borderRadius: radius.rLg,
-				backgroundColor: colors.ink,
-			}}
+			className="absolute top-3 min-h-11 justify-center self-center rounded-full bg-foreground px-4 shadow-overlay active:opacity-80"
 		>
-			<Text variant="callout" color="bg">
+			<Text weight="medium" className="text-background">
 				{t`Previewing ${templateName(template)} · tap to apply`}
 			</Text>
 		</Pressable>

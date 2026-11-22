@@ -6,9 +6,7 @@ import { create } from "zustand";
 import { templateName } from "@rezumi/resume/design-presets";
 import { readOnlyDraft, writeTo } from "./write";
 import { useResumeStore } from "@/draft";
-import { showToast } from "@/ui-legacy";
-
-export type { DesignWrite } from "./write";
+import { showToast } from "@/ui";
 
 /** The builder layout owns the draft; Design only subscribes. */
 export function useDesignDraft(id: string) {
@@ -24,7 +22,7 @@ const usePreviewStore = create<{ template: Template | null }>(() => ({ template:
 export const usePreviewTemplate = () => usePreviewStore((state) => state.template);
 export const setPreviewTemplate = (template: Template | null) => usePreviewStore.setState({ template });
 
-/** Clears the preview when Design unmounts, so no page keeps showing it. */
+/** Clears the preview when the screen that set it (the template gallery) unmounts, so no page keeps showing it. */
 export function useClearPreviewOnLeave() {
 	useEffect(() => () => setPreviewTemplate(null), []);
 }
@@ -40,7 +38,7 @@ export function applyTemplate(template: Template) {
 		},
 		{ newStep: true },
 	);
-	showToast({ message: t`Template changed to ${templateName(template)}`, action: { label: t`Undo`, onPress: undo } });
+	showToast({ title: t`Template changed to ${templateName(template)}`, undo: { label: t`Undo`, onUndo: undo } });
 }
 
 type PageDraft = Pick<ResumeDraftStore, "data" | "update" | "locked" | "undo">;

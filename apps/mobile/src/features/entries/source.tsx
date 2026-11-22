@@ -1,7 +1,8 @@
 import type { UpdateOptions } from "@/draft";
 import type { ResumeData } from "@rezumi/schema/resume/data";
-// What the entry forms edit (plans/mobile Phase 06): the Profile now, a resume's draft in Phase 07. The forms read and
-// write resume-shaped data through this source and never import a store, as on the web (`write/source.tsx`).
+// What the entry forms edit (plans/mobile Phase 06): the Profile (`features/profile/source.ts`) or a resume's draft
+// (`features/write/source.ts`). The forms read and write resume-shaped data through this source and never import a
+// store, as on the web (`write/source.tsx`).
 import type { DateFormat } from "@rezumi/schema/resume/dates";
 import type { WritableDraft } from "immer";
 import type { ReactNode } from "react";
@@ -37,6 +38,11 @@ export function useWriteSource(): WriteSource {
 	const source = use(SourceContext);
 	if (!source) throw new Error("Entry forms need a WriteSourceProvider");
 	return source;
+}
+
+/** The source when there is one (the rich-text field also edits letters, which have none). */
+export function useOptionalWriteSource(): WriteSource | null {
+	return use(SourceContext);
 }
 
 /** Reads from the source's data. */

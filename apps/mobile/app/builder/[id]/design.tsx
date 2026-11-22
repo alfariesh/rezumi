@@ -1,14 +1,8 @@
-import { useLingui } from "@lingui/react/macro";
-import { Stack, useLocalSearchParams } from "expo-router";
+import { useLocalSearchParams } from "expo-router";
 import { DesignPane } from "@/features/design/design-pane";
 
+/** The Design pane: content only; the editor chrome draws the bars. */
 export default function DesignScreen() {
-	const { t } = useLingui();
 	const { id } = useLocalSearchParams<{ id: string }>();
-	return (
-		<>
-			<Stack.Screen options={{ title: t`Design`, headerTransparent: false }} />
-			<DesignPane id={id} />
-		</>
-	);
+	return <DesignPane id={id} />;
 }

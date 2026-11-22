@@ -183,6 +183,30 @@ export function sortFontWeights<T extends string>(fontWeights: T[]): T[] {
 }
 
 /**
+ * The weights to switch to with a new family: body text gets a regular and a bold weight, a heading one weight (600
+ * when the family has it). `available` overrides the catalog's weights (an uploaded family's). Null when unknown.
+ */
+export function getNextWeights(
+	fontFamily: string,
+	single = false,
+	available?: readonly FontWeight[] | null,
+): FontWeight[] | null {
+	const familyWeights = available ?? getFont(fontFamily)?.weights;
+	if (!Array.isArray(familyWeights) || familyWeights.length === 0) return null;
+	const unique = [...new Set(familyWeights)] as FontWeight[];
+	if (single) return [unique.includes("600") ? "600" : (unique.at(-1) ?? "400")];
+
+	const weights = (["400", "700"] as const).filter((weight) => unique.includes(weight)) as FontWeight[];
+	// Without both, fill in with the lightest (when none was found), then the heaviest.
+	while (weights.length < 2) {
+		const candidate = weights.length === 0 ? unique[0] : unique.at(-1);
+		if (candidate === undefined || weights.includes(candidate)) break;
+		weights.push(candidate);
+	}
+	return weights.length > 0 ? weights : null;
+}
+
+/**
  * Resolves the font weight used for bold text (`<strong>`, rich-text bold
  * and the template `bold` styles).
  *

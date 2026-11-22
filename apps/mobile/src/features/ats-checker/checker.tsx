@@ -3,7 +3,7 @@
 // imports the same file and opens Check.
 import type { AtsResult } from "./check";
 import type { IconName, ThemeColor } from "@/ui";
-import type { PdfAtsReport, PdfCategory } from "@rezumi/resume/ats-pdf";
+import type { PdfAtsReport } from "@rezumi/resume/ats-pdf";
 import type { DocumentPickerAsset } from "expo-document-picker";
 import type { ReactNode } from "react";
 import { plural } from "@lingui/core/macro";
@@ -15,6 +15,7 @@ import { useEffect, useEffectEvent, useRef, useState } from "react";
 import { Pressable, ScrollView, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Svg, { Circle } from "react-native-svg";
+import { groupPdfFindings } from "@rezumi/resume/check";
 import { AtsCheckError, MAX_IMPORT_BYTES, runAtsCheck } from "./check";
 import { getPdfCategoryLabel, getPdfFindingMessage } from "./messages";
 import { OriginalPage } from "./original-page";
@@ -302,37 +303,26 @@ type Row = {
 	findings: PdfAtsReport["findings"];
 };
 
-/** One row per category with something to fix, worst first; the web's `issueRows`. */
+/** One row per category with something to fix, worst first (`groupPdfFindings`, shared with the web). */
 function issueRows(report: PdfAtsReport): Row[] {
-	const byCategory = new Map<PdfCategory, PdfAtsReport["findings"]>();
-	for (const finding of [...report.findings, ...report.tips])
-		byCategory.set(finding.category, [...(byCategory.get(finding.category) ?? []), finding]);
-	const rank = { danger: 0, warning: 1, accent: 2 };
-	return [...byCategory.entries()]
-		.map(([category, findings]) => {
-			const tone: Tone = findings.some((finding) => finding.severity === "blocker")
-				? "danger"
-				: findings.every((finding) => finding.severity === "tip")
-					? "accent"
-					: "warning";
-			const icon: IconName =
-				category === "content"
-					? "pencil-simple"
-					: tone === "danger"
-						? "warning-circle"
-						: tone === "warning"
-							? "warning"
-							: "info";
-			return {
-				key: category,
-				title: getPdfCategoryLabel(category),
-				count: String(findings.length),
-				tone,
-				icon,
-				findings,
-			};
-		})
-		.sort((a, b) => rank[a.tone] - rank[b.tone]);
+	return groupPdfFindings(report).map(({ category, findings, tone }) => {
+		const icon: IconName =
+			category === "content"
+				? "pencil-simple"
+				: tone === "danger"
+					? "warning-circle"
+					: tone === "warning"
+						? "warning"
+						: "info";
+		return {
+			key: category,
+			title: getPdfCategoryLabel(category),
+			count: String(findings.length),
+			tone,
+			icon,
+			findings,
+		};
+	});
 }
 
 type ResultProps = {

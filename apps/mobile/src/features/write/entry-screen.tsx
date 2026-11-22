@@ -1,151 +1,130 @@
+// One resume entry and the summary, full screen, on the Phase 06 entry editor pointed at the resume: the Profile
+// marker above the fields, and the entry's options (Save to Profile, hide, duplicate, move) under them.
 import type { WriteSection } from "@/features/entries/model";
 import type { ReactNode } from "react";
 import { useLingui } from "@lingui/react/macro";
-import { useRouter, Stack } from "expo-router";
-import { useMemo, useState } from "react";
+import { useRouter } from "expo-router";
+import { useState } from "react";
 import { View } from "react-native";
-import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
-import { EntryFields } from "./entry-fields";
-import { EntrySheet } from "./entry-sheet";
-import { consumeFocus, useEntry, useEntryWriter, useSectionTitle, useWriteData } from "./hooks";
-import { RichTextField, RichTextToolbar } from "./rich-text-field";
-import { useIsResumeLocked, useResumeStore } from "@/draft";
-import { DRAFT_HINTS } from "@/features/entries/fields";
-import { describeEntry, getSectionKind, getSectionType, getPrimaryField, isDraftEntry } from "@/features/entries/model";
-import { Banner, EmptyState, IconButton, Text, useTheme } from "@/ui-legacy";
-import { useKeyboardScrollSpace } from "@/ui/keyboard";
+import { profileSectionOf } from "@rezumi/resume/profile-link";
+import { MoveTargets, useEntryActions } from "./entry-actions";
+import { useWriteSection } from "./hooks";
+import { ProfileMarker, ResumeProfileProvider } from "./profile-link";
+import { resumeWriteSource } from "./source";
+import { ResumeGate } from "./states";
+import { EntryEditor, SummaryEditor } from "@/features/entries/entry-editor";
+import { useEntry, useSectionTitle } from "@/features/entries/hooks";
+import { WriteSourceProvider } from "@/features/entries/source";
+import { routes } from "@/routes";
+import { ListRow, ListSection, Sheet } from "@/ui";
 
-type EditorScreenProps = { title: string; backTitle?: string | undefined; right?: ReactNode; children: ReactNode };
+type ResumeScreenProps = { id: string; children: ReactNode };
 
-/** A full-screen editor: scrolls above the keyboard and docks the rich-text toolbar. */
-export function EditorScreen({ title, backTitle, right, children }: EditorScreenProps) {
-	const { colors, size, space } = useTheme();
-	const keyboardSpace = useKeyboardScrollSpace();
-	const ready = useResumeStore((state) => state.document !== null);
-	const locked = useIsResumeLocked();
-	const { t } = useLingui();
+/** A pushed Write screen: waits for the draft, then edits it with the Profile at hand. */
+export function ResumeScreen({ id, children }: ResumeScreenProps) {
 	return (
-		<View style={{ flex: 1, backgroundColor: colors.bg }}>
-			<Stack.Screen
-				options={{
-					title,
-					...(backTitle ? { headerBackTitle: backTitle } : {}),
-					...(right ? { headerRight: () => right } : {}),
-				}}
-			/>
-			{!ready ? (
-				<EmptyState icon="hourglass" title={t`Loading…`} />
-			) : (
-				<KeyboardAwareScrollView
-					extraKeyboardSpace={keyboardSpace}
-					keyboardShouldPersistTaps="handled"
-					bottomOffset={size.hit + space.s4}
-					contentContainerStyle={{ padding: space.s4, gap: space.s4, paddingBottom: size.hit * 2 }}
-				>
-					{locked ? <Banner tone="info" icon="lock" message={t`Locked. Unlock to edit.`} /> : null}
-					{children}
-				</KeyboardAwareScrollView>
-			)}
-			<RichTextToolbar />
-		</View>
+		<ResumeGate id={id}>
+			<WriteSourceProvider source={resumeWriteSource}>
+				<ResumeProfileProvider>{children}</ResumeProfileProvider>
+			</WriteSourceProvider>
+		</ResumeGate>
 	);
 }
 
-type EntryScreenProps = { resumeId: string; sectionId: string; entryId: string; focusField?: string | undefined };
+type EntryScreenProps = { id: string; sectionId: string; entryId: string; focusField?: string | undefined };
 
-/** One entry, full screen: its fields, saved as you type. Deleting is immediate, with Undo in the toast. */
-export function EntryScreen({ resumeId, sectionId, entryId, focusField }: EntryScreenProps) {
+export function EntryScreen({ id, sectionId, entryId, focusField }: EntryScreenProps) {
+	return (
+		<ResumeScreen id={id}>
+			<ResumeEntry id={id} sectionId={sectionId} entryId={entryId} focusField={focusField} />
+		</ResumeScreen>
+	);
+}
+
+function ResumeEntry({ id, sectionId, entryId, focusField }: EntryScreenProps) {
+	const section = useWriteSection(sectionId);
+	const linked = section ? profileSectionOf(section) : null;
+	return (
+		<EntryEditor
+			sectionId={sectionId}
+			entryId={entryId}
+			focusField={focusField}
+			top={
+				linked ? (
+					<View className="flex-row justify-end">
+						<ProfileMarker part={{ kind: "item", section: linked, id: entryId }} />
+					</View>
+				) : null
+			}
+			extra={section ? <EntryOptions id={id} section={section} entryId={entryId} /> : null}
+		/>
+	);
+}
+
+type EntryOptionsProps = { id: string; section: WriteSection; entryId: string };
+
+function EntryOptions({ id, section, entryId }: EntryOptionsProps) {
+	const { t } = useLingui();
 	const router = useRouter();
-	const { t, i18n } = useLingui();
-	const type = useWriteData((data) => getSectionType(data, sectionId) ?? null, null);
-	const section = useMemo<WriteSection | null>(
-		() => (type ? { id: sectionId, kind: getSectionKind(sectionId), type } : null),
-		[sectionId, type],
-	);
-	const sectionTitle = useSectionTitle(section);
-	const entry = useEntry(sectionId, entryId);
-	const write = useEntryWriter(sectionId, entryId);
-	const locked = useIsResumeLocked();
-	const locale = useWriteData((data) => data.metadata.page.locale, "en-US");
-	const dateFormat = useWriteData((data) => data.metadata.page.dateFormat ?? null, null);
-	const [autoFocus] = useState(() => consumeFocus(entryId));
-	const [options, setOptions] = useState(false);
-	const loaded = useResumeStore((state) => state.document !== null);
-
-	if (loaded && (!section || !entry))
-		return (
-			<EditorScreen title={t`Entry`}>
-				<EmptyState icon="info" title={t`This entry was deleted.`} action={{ label: t`Back`, onPress: router.back }} />
-			</EditorScreen>
-		);
-	if (!section || !entry) return <EditorScreen title={t`Entry`}>{null}</EditorScreen>;
-
-	const { title } = describeEntry(section.type, entry);
-	const primary = getPrimaryField(section.type);
-	const hint = isDraftEntry(section.type, entry) && primary ? DRAFT_HINTS[primary] : undefined;
-
+	const entry = useEntry(section.id, entryId);
+	const actions = useEntryActions(section, entryId);
+	const [moving, setMoving] = useState(false);
+	if (!entry) return null;
 	return (
-		<EditorScreen
-			title={title || t`Untitled`}
-			backTitle={sectionTitle}
-			right={locked ? null : <IconButton icon="dots-three" label={t`Entry options`} onPress={() => setOptions(true)} />}
-		>
-			{hint ? (
-				<Text variant="caption" color="ink3">
-					{i18n._(hint)}
-				</Text>
-			) : null}
-			<EntryFields
-				type={section.type}
-				entry={entry}
-				write={write}
-				page={{ locale, dateFormat: dateFormat ?? undefined }}
-				disabled={locked}
-				autoFocus={autoFocus}
-				focusField={focusField}
-			/>
-			<EntrySheet
-				resumeId={resumeId}
-				section={section}
-				entryId={entryId}
-				open={options}
-				onClose={() => setOptions(false)}
-				onGone={() => router.back()}
-			/>
-		</EditorScreen>
+		<>
+			<ListSection>
+				{actions.saveToProfile ? (
+					<ListRow title={t`Save to Profile`} icon="upload-simple" chevron={false} onPress={actions.saveToProfile} />
+				) : null}
+				<ListRow
+					title={entry.hidden ? t`Show on page` : t`Hide from page`}
+					icon={entry.hidden ? "eye" : "eye-slash"}
+					chevron={false}
+					onPress={actions.toggleHidden}
+					testID="entry-toggle-hidden"
+				/>
+				<ListRow
+					title={t`Duplicate`}
+					icon="copy"
+					chevron={false}
+					onPress={() => router.push(routes.entry(id, section.id, actions.duplicate(entry)))}
+				/>
+				<ListRow title={t`Move to…`} icon="arrow-right" onPress={() => setMoving(true)} />
+			</ListSection>
+			<Sheet isOpen={moving} onOpenChange={setMoving} title={t`Move to…`} closeLabel={t`Close`} detents={[0.7]}>
+				<MoveTargets
+					section={section}
+					onMove={(target) => {
+						setMoving(false);
+						actions.moveTo(target);
+						// The entry now lives in another section: back to the outline, where it shows.
+						router.back();
+					}}
+				/>
+			</Sheet>
+		</>
 	);
 }
 
-/** The summary: one rich text, with the guidance web gives, and Improve. */
-type SummaryScreenProps = { autoFocus?: boolean | undefined };
+/** The summary: one rich text with the web's guidance, Improve and its Profile marker. */
+type SummaryScreenProps = { id: string };
 
-export function SummaryScreen({ autoFocus }: SummaryScreenProps) {
-	const { t } = useLingui();
-	const content = useWriteData((data) => data.summary.content, "");
-	const title = useSectionTitle({ id: "summary", kind: "summary", type: "summary" });
-	const locked = useIsResumeLocked();
-	const update = useResumeStore((state) => state.update);
-	const loaded = useResumeStore((state) => state.document !== null);
-
+export function SummaryScreen({ id }: SummaryScreenProps) {
 	return (
-		<EditorScreen title={title}>
-			{loaded ? (
-				<RichTextField
-					label={t`Summary`}
-					value={content}
-					disabled={locked}
-					hint={t`2–3 sentences reads best`}
-					autoFocus={!locked && (autoFocus || !content)}
-					onChange={(html) =>
-						update(
-							(draft) => {
-								draft.summary.content = html;
-							},
-							{ coalesceKey: "summary.content" },
-						)
-					}
-				/>
-			) : null}
-		</EditorScreen>
+		<ResumeScreen id={id}>
+			<ResumeSummary />
+		</ResumeScreen>
+	);
+}
+
+function ResumeSummary() {
+	const { t } = useLingui();
+	const title = useSectionTitle({ id: "summary", kind: "summary", type: "summary" });
+	return (
+		<SummaryEditor
+			title={title}
+			hint={t`2–3 sentences reads best`}
+			labelAction={<ProfileMarker part={{ kind: "summary" }} />}
+		/>
 	);
 }

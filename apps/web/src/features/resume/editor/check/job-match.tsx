@@ -1,6 +1,6 @@
 import type { Key, Selection } from "@heroui/react";
-import type { JdTermMatch } from "@rezumi/resume/ats-pdf";
-import type { ResumeData, SkillItem } from "@rezumi/schema/resume/data";
+import type { JobMatchResult, MatchedTerm } from "@rezumi/resume/check";
+import type { ResumeData } from "@rezumi/schema/resume/data";
 import {
 	Avatar,
 	Button,
@@ -18,14 +18,20 @@ import { useLingui } from "@lingui/react";
 import { Plural, Trans } from "@lingui/react/macro";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
+import {
+	checkStateOf,
+	hideTerm as hideCheckTerm,
+	MAX_POSTING_CHARS,
+	matchPosting,
+	newSkill,
+} from "@rezumi/resume/check";
 import { buildMarkdown } from "@rezumi/resume/markdown";
 import { Icon } from "@rezumi/ui/components/icon";
 import { toast } from "@rezumi/ui/components/toast";
 import { formatList } from "@rezumi/utils/locale";
-import { generateId } from "@rezumi/utils/string";
 import { cn } from "@rezumi/utils/style";
 import { useEditorStore } from "../store";
-import { checkStateOf, editWithUndo } from "./actions";
+import { editWithUndo } from "./actions";
 import { CheckWidget } from "./check-widget";
 import { INPUT_WITH_ICON, WithInputIcon } from "@/components/input/input-icon";
 import { CellSelectField } from "@/components/input/select-field";
@@ -35,14 +41,6 @@ import { useCurrentBuilderResumeSelector, useIsResumeLocked, usePatchResume } fr
 import { toastError } from "@/libs/error-message";
 import { ENTER_CLASS } from "@/libs/motion";
 import { orpc } from "@/libs/orpc/client";
-
-/** Matches the applications feature's cap on a saved posting. */
-const MAX_POSTING_CHARS = 20_000;
-
-/** A posting term, with `label` as the posting writes it ("C#" rather than the matcher's "csharp"). */
-type MatchedTerm = JdTermMatch & { label: string };
-
-type JobMatchResult = { found: MatchedTerm[]; missing: MatchedTerm[]; total: number };
 
 export type JobMatch = {
 	/** The application the resume was made for, once the list has loaded. */
@@ -80,31 +78,12 @@ export function useJobMatch(data: ResumeData | undefined): JobMatch {
 	const hiddenTerms = data?.metadata.check?.hiddenTerms;
 	const resumeText = useMemo(() => (data ? buildMarkdown(data) : ""), [data]);
 
-	const result = useMemo(() => {
-		if (!engine || !posting) return null;
-		const hidden = new Set(hiddenTerms ?? []);
-		const terms = engine
-			.matchJobDescription({ jobDescription: posting, resumeText })
-			.terms.filter((term) => !hidden.has(term.term))
-			.map((term) => ({ ...term, label: termAsWritten(engine.surfaceFormsOf(term.term), posting) ?? term.term }));
-
-		return {
-			found: terms.filter((term) => term.resumeCount > 0),
-			missing: terms.filter((term) => term.resumeCount === 0),
-			total: terms.length,
-		};
-	}, [engine, posting, resumeText, hiddenTerms]);
+	const result = useMemo(
+		() => (engine && posting ? matchPosting(engine, { posting, resumeText, hiddenTerms }) : null),
+		[engine, posting, resumeText, hiddenTerms],
+	);
 
 	return { application: selectedApplication, posting, result, hiddenTerms: hiddenTerms ?? [] };
-}
-
-/** The first spelling of a term the posting uses, as it writes it ("Figma", not "figma"). */
-function termAsWritten(forms: readonly string[], posting: string): string | undefined {
-	for (const form of forms) {
-		const escaped = form.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-		const found = posting.match(new RegExp(escaped, "i"))?.[0];
-		if (found) return found;
-	}
 }
 
 type JobMatchTabProps = { match: JobMatch; data: ResumeData };
@@ -134,13 +113,7 @@ export function JobMatchTab({ match }: JobMatchTabProps) {
 	};
 
 	const hideTerm = (term: MatchedTerm) => {
-		editWithUndo(
-			(draft) => {
-				const state = checkStateOf(draft);
-				if (!state.hiddenTerms.includes(term.term)) state.hiddenTerms.push(term.term);
-			},
-			t`“${term.label}” hidden`,
-		);
+		editWithUndo((draft) => hideCheckTerm(draft, term.term), t`“${term.label}” hidden`);
 		setOpenTerm(null);
 	};
 
@@ -306,17 +279,6 @@ const firstKey = (keys: Selection): string | null => {
 	const [key] = keys;
 	return key === undefined ? null : String(key);
 };
-
-const newSkill = (name: string): SkillItem => ({
-	id: generateId(),
-	hidden: false,
-	icon: "",
-	iconColor: "",
-	name,
-	proficiency: "",
-	level: 0,
-	keywords: [],
-});
 
 function useLinkApplication() {
 	const resumeId = useCurrentBuilderResumeSelector((resume) => resume.id);

@@ -3,11 +3,12 @@ import { Chip } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Link } from "@tanstack/react-router";
+import { templateSample } from "@rezumi/resume/design-presets";
 import { templateLineup } from "@rezumi/schema/templates";
 import { Icon } from "@rezumi/ui/components/icon";
 import { freeTemplates } from "./plans";
 import { Container, SectionHeading, SectionTitle } from "./ui";
-import { templateSample, templates } from "@/dialogs/resume/template/data";
+import { templates } from "@/dialogs/resume/template/data";
 
 // The free ones first, then layouts Plus adds, filling the last row: the grid has 2, 3 or 6 columns, so the count
 // stays a multiple of 6 whatever the free lineup holds.

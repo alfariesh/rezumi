@@ -1,133 +1,119 @@
+// An entry's options from the outline: Save to Profile, Hide / Show, Duplicate, Move to… (a page inside the sheet)
+// and Delete with Undo.
 import type { WriteSection } from "@/features/entries/model";
 import { useLingui } from "@lingui/react/macro";
-import { useRouter } from "expo-router";
 import { useState } from "react";
-import { edit, useDeleteEntry, useEntry, useWriteData } from "./hooks";
-import { SECTION_TITLES } from "@/features/entries/fields";
-import {
-	createEntry,
-	getCompatibleMoveTargets,
-	getEntries,
-	getSectionObject,
-	moveItem,
-	NO_PAGES,
-	resolveSection,
-	selectPages,
-} from "@/features/entries/model";
-import { routes } from "@/routes";
-import { ListRow, Sheet } from "@/ui-legacy";
+import { MoveTargets, useEntryActions } from "./entry-actions";
+import { useEntry } from "@/features/entries/hooks";
+import { describeEntry } from "@/features/entries/model";
+import { ListRow, ListSection, Sheet } from "@/ui";
 
 type EntrySheetProps = {
-	resumeId: string;
-	section: WriteSection;
-	entryId: string;
-	open: boolean;
+	target: { section: WriteSection; entryId: string } | null;
 	onClose: () => void;
-	/** The entry left this screen (deleted or moved). */
-	onGone?: (() => void) | undefined;
+	/** Opens an entry full screen (the copy after Duplicate). */
+	onOpen: (sectionId: string, entryId: string) => void;
 };
 
-/** Entry options: Hide from page / Show on page, Duplicate, Move to… (section, page, new section, new page), Delete. */
-export function EntrySheet({ resumeId, section, entryId, open, onClose, onGone }: EntrySheetProps) {
-	const router = useRouter();
-	const { t, i18n } = useLingui();
-	const entry = useEntry(section.id, entryId);
-	const deleteEntry = useDeleteEntry();
+export function EntrySheet({ target, onClose, onOpen }: EntrySheetProps) {
+	const { t } = useLingui();
 	const [moving, setMoving] = useState(false);
-	const pages = useWriteData(selectPages, NO_PAGES);
-	const data = useWriteData((data) => data, null);
-	if (!entry || !data) return null;
-
-	const titleOf = (id: string) => {
-		const target = resolveSection(data, id);
-		if (!target) return id;
-		return getSectionObject(data, target)?.title.trim() || i18n._(SECTION_TITLES[target.type]);
-	};
-	const sourceTitle = titleOf(section.id);
-	const targets = getCompatibleMoveTargets(data, section.type, section.id);
-
-	const move = (target: Parameters<typeof moveItem>[3]) => {
-		edit((draft) => moveItem(draft, section, entryId, target));
+	const close = () => {
 		setMoving(false);
 		onClose();
-		onGone?.();
 	};
-
 	return (
 		<Sheet
-			open={open}
-			onClose={onClose}
+			isOpen={target !== null}
+			onOpenChange={(open) => !open && close()}
 			title={moving ? t`Move to…` : t`Entry options`}
-			detents={moving ? [0.7] : undefined}
+			closeLabel={t`Close`}
+			detents={moving ? [0.7] : ["auto"]}
+			testID="entry-sheet"
 		>
-			{moving ? (
-				<>
-					<ListRow title={t`Back`} leading="caret-left" onPress={() => setMoving(false)} />
-					{targets.map(({ pageIndex, sectionIds }) => [
-						...sectionIds.map((id) => (
-							<ListRow
-								key={id}
-								title={titleOf(id)}
-								subtitle={t`Page ${pageIndex + 1}`}
-								leading="file-text"
-								onPress={() => move({ type: "section", sectionId: id })}
-							/>
-						)),
-						<ListRow
-							key={`new-${pageIndex}`}
-							title={t`New section`}
-							subtitle={t`Page ${pageIndex + 1}`}
-							leading="plus"
-							onPress={() => move({ type: "new-section", pageIndex, title: sourceTitle })}
-						/>,
-					])}
-					{pages.length > 0 ? (
-						<ListRow
-							title={t`New page`}
-							leading="file-plus"
-							onPress={() => move({ type: "new-page", title: sourceTitle })}
-						/>
-					) : null}
-				</>
-			) : (
-				<>
-					<ListRow
-						title={entry.hidden ? t`Show on page` : t`Hide from page`}
-						leading={entry.hidden ? "eye" : "eye-slash"}
-						onPress={() => {
-							edit((draft) => {
-								const target = getEntries(draft, section).find((item) => item.id === entryId);
-								if (target) target.hidden = !target.hidden;
-							});
-							onClose();
-						}}
-					/>
-					<ListRow
-						title={t`Duplicate`}
-						leading="copy"
-						onPress={() => {
-							const copy = { ...structuredClone(entry), id: createEntry(section.type).id };
-							edit((draft) => {
-								const entries = getEntries(draft, section);
-								entries.splice(entries.findIndex((item) => item.id === entryId) + 1, 0, copy);
-							});
-							onClose();
-							router.push(routes.entry(resumeId, section.id, copy.id));
-						}}
-					/>
-					<ListRow title={t`Move to…`} leading="arrow-right" chevron onPress={() => setMoving(true)} />
-					<ListRow
-						title={t`Delete`}
-						leading="trash"
-						destructive
-						onPress={() => {
-							onClose();
-							onGone?.();
-							deleteEntry(section, entryId);
-						}}
-					/>
-				</>
-			)}
+			{target ? (
+				<EntryOptions
+					key={target.entryId}
+					section={target.section}
+					entryId={target.entryId}
+					moving={moving}
+					onMoving={setMoving}
+					onClose={close}
+					onOpen={onOpen}
+				/>
+			) : null}
 		</Sheet>
+	);
+}
+
+type EntryOptionsProps = {
+	section: WriteSection;
+	entryId: string;
+	moving: boolean;
+	onMoving: (moving: boolean) => void;
+	onClose: () => void;
+	onOpen: (sectionId: string, entryId: string) => void;
+};
+
+function EntryOptions({ section, entryId, moving, onMoving, onClose, onOpen }: EntryOptionsProps) {
+	const { t } = useLingui();
+	const entry = useEntry(section.id, entryId);
+	const actions = useEntryActions(section, entryId);
+	if (!entry) return null;
+	const act = (run: () => void) => () => {
+		onClose();
+		run();
+	};
+
+	if (moving)
+		return (
+			<>
+				<ListSection>
+					<ListRow
+						title={describeEntry(section.type, entry).title || t`Untitled`}
+						icon="caret-left"
+						chevron={false}
+						onPress={() => onMoving(false)}
+					/>
+				</ListSection>
+				<MoveTargets section={section} onMove={(to) => act(() => actions.moveTo(to))()} />
+			</>
+		);
+
+	return (
+		<>
+			<ListSection>
+				{actions.saveToProfile ? (
+					<ListRow
+						title={t`Save to Profile`}
+						icon="upload-simple"
+						chevron={false}
+						onPress={act(actions.saveToProfile)}
+					/>
+				) : null}
+				<ListRow
+					title={entry.hidden ? t`Show on page` : t`Hide from page`}
+					icon={entry.hidden ? "eye" : "eye-slash"}
+					chevron={false}
+					onPress={act(actions.toggleHidden)}
+				/>
+				<ListRow
+					title={t`Duplicate`}
+					icon="copy"
+					chevron={false}
+					onPress={act(() => onOpen(section.id, actions.duplicate(entry)))}
+				/>
+				<ListRow title={t`Move to…`} icon="arrow-right" onPress={() => onMoving(true)} />
+			</ListSection>
+			<ListSection>
+				<ListRow
+					title={t`Delete`}
+					icon="trash"
+					tone="danger"
+					onPress={act(actions.remove)}
+					testID="entry-sheet-delete"
+				/>
+			</ListSection>
+		</>
 	);
 }

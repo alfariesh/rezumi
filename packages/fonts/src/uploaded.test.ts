@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vite-plus/test";
-import { parseUploadedFontUrl, readFontFile, sanitizeFontFamily } from "./uploaded";
+import { nextFontWeights, parseUploadedFontUrl, readFontFile, sanitizeFontFamily } from "./uploaded";
 
 type FontOptions = {
 	signature?: number | string;
@@ -173,5 +173,17 @@ describe("parseUploadedFontUrl", () => {
 		["not a URL", "Brand Sans", undefined],
 	])("refuses %s", (_, source, origin) => {
 		expect(parseUploadedFontUrl(source, origin)).toBeNull();
+	});
+});
+
+describe("nextFontWeights", () => {
+	it("uses an uploaded family's own weights, and the catalog's otherwise", () => {
+		const faces = [
+			{ family: "House Sans", weight: "300", italic: false },
+			{ family: "House Sans", weight: "800", italic: false },
+		] as const;
+		expect(nextFontWeights([...faces], "House Sans", false)).toEqual(["300", "800"]);
+		expect(nextFontWeights([...faces], "House Sans", true)).toEqual(["800"]);
+		expect(nextFontWeights([...faces], "Source Sans 3", false)).toEqual(["400", "700"]);
 	});
 });

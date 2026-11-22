@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import { nativeEnvironment } from "./native";
-import { resume, letter, useResumeStore } from "./runtime";
+import { resume, letter } from "./runtime";
 import { useSession } from "@/auth/session";
 export { useResumeStore, useLetterStore, getDraftScope } from "./runtime";
 
@@ -53,8 +53,6 @@ function useDraftOwner(id: string, draft: typeof resume | typeof letter) {
 export const useResumeDraftOwner = (id: string) => useDraftOwner(id, resume);
 /** The letter equivalent of `useResumeDraftOwner`, called only by `app/letter/[id]/_layout.tsx`. */
 export const useLetterDraftOwner = (id: string) => useDraftOwner(id, letter);
-
-export const useIsResumeLocked = () => useResumeStore((state) => state.locked);
 
 // Native rich-text focus is separate from TextInput.State; wire these to every editor's onFocus/onBlur.
 export const resumeFieldFocus = { onFocus: resume.focus, onBlur: () => void resume.blur() };

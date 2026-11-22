@@ -7,7 +7,7 @@ import { useRef, useState } from "react";
 import { documentRef } from "./filter";
 import { client, orpc } from "@/api/client";
 import { getServer, useSession } from "@/auth/session";
-import { showToast } from "@/ui-legacy";
+import { showToast } from "@/ui";
 
 type BatchOptions = {
 	applies?: (document: DocumentSummary) => boolean;
@@ -32,13 +32,14 @@ export function documentError(error: unknown) {
 	return t`Couldn't complete this action. Try again.`;
 }
 
-export function useDocuments(trashed = false) {
+/** The library (or Trash); `enabled` false keeps a read the screen doesn't show yet from loading. */
+export function useDocuments(trashed = false, enabled = true) {
 	const session = useSession();
 	const options = orpc.documents.list.queryOptions({ input: { trashed } });
 	return useQuery({
 		...options,
 		queryKey: [...options.queryKey, session.server],
-		enabled: session.status === "signed-in",
+		enabled: enabled && session.status === "signed-in",
 	});
 }
 
@@ -64,7 +65,7 @@ export function useDocumentOperations() {
 	const [error, setError] = useState<string | null>(null);
 	const fail = (message: string) => {
 		setError(message);
-		showToast({ message });
+		showToast({ title: message, variant: "danger" });
 		return false;
 	};
 	const run = async (task: () => Promise<unknown>) => {
@@ -127,7 +128,7 @@ export function useDocumentOperations() {
 			partial.current = true;
 			setError(message);
 		}
-		if (notify) showToast({ message });
+		if (notify) showToast({ title: message, variant: completed === documents.length ? "default" : "warning" });
 		return done;
 	};
 	const trash = async (documents: readonly DocumentSummary[]) => {
@@ -142,16 +143,20 @@ export function useDocumentOperations() {
 		});
 		if (attempted)
 			showToast({
-				message:
-					done.length === documents.length
-						? plural(done.length, { one: "# document moved to Trash", other: "# documents moved to Trash" })
-						: t`Moved ${done.length} of ${documents.length} to Trash. Locked documents were skipped. Refresh and retry any failures.`,
-				action: done.length
+				title:
+					done.length === 1 && documents.length === 1
+						? t`“${documents[0]?.name ?? ""}” moved to Trash`
+						: done.length === documents.length
+							? plural(done.length, { one: "# document moved to Trash", other: "# documents moved to Trash" })
+							: t`Moved ${done.length} of ${documents.length} to Trash. Locked documents were skipped. Refresh and retry any failures.`,
+				undo: done.length
 					? {
 							label: t`Undo`,
-							onPress: () => {
+							onUndo: () => {
 								void idle.current.then(() =>
-									run(() => batch(done, (document) => client.documents.restore(documentRef(document)))),
+									run(() =>
+										batch(done, (document) => client.documents.restore(documentRef(document)), { notify: false }),
+									),
 								);
 							},
 						}

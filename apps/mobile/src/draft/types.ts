@@ -3,7 +3,7 @@ import type { RouterOutput } from "@/api/client";
 // check) is `@rezumi/resume/draft`; adapters.ts holds the API contracts and native.ts the device environment.
 import type { DraftStore } from "@rezumi/resume/draft";
 
-export type { ConflictChoice, DraftStore, SaveStatus, UpdateOptions } from "@rezumi/resume/draft";
+export type { ConflictChoice, DraftStore, UpdateOptions } from "@rezumi/resume/draft";
 
 export type ResumeDocument = RouterOutput["resume"]["getById"];
 export type LetterDocument = RouterOutput["coverLetters"]["getById"];

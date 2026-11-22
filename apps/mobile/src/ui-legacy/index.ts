@@ -5,7 +5,6 @@ export { Chip, ChipInput, Segmented, SelectSheet, Switch, TextArea, TextField, t
 export { Icon, type IconName } from "./icon";
 export { Avatar, Banner, Card, EmptyState, ListGroup, ListRow, Skeleton } from "./layout";
 export { ConfirmDialog, EditorSheet, Sheet, Toaster, dismissToast, showToast, toastLifetime } from "./overlays";
-export { SortableList } from "./sortable";
 export {
 	haptics,
 	listItemMotion,
@@ -14,7 +13,6 @@ export {
 	listLayout,
 	useFirstAppearance,
 	useReducedMotion,
-	workletEaseMove,
 } from "@/ui/motion";
 export { Screen, Text } from "./text";
 export { setThemePreference, useTheme, useThemePreference, type ThemePreference } from "./theme";

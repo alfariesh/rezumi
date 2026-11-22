@@ -8,8 +8,8 @@ import { useShareDocument } from "./document";
 import { DownloadTab } from "./download";
 import { Notice } from "./export-options";
 import { useSession } from "@/auth/session";
-import { DocumentMenu } from "@/features/document-menu";
-import { HistoryPanel } from "@/features/history/history";
+import { DocumentMenu } from "@/features/documents/document-menu";
+import { HistoryPanel } from "@/features/history/history-panel";
 import { Button, Screen, Segment, Skeleton } from "@/ui";
 
 type ExportScreenProps = { id: string; history?: boolean };
@@ -69,32 +69,25 @@ export function ExportScreen({ id, history = false }: ExportScreenProps) {
 	return (
 		<>
 			<Stack.Screen options={{ title: t`Download & history`, headerRight: () => <DocumentMenu id={id} /> }} />
-			{draft.document && tab === "history" ? (
-				// History scrolls itself, so it sits under the segment instead of inside a scroll view.
-				<Screen scroll={false} edges={["bottom"]}>
-					{segment}
-					{notices}
-					<View className="flex-1">
-						<HistoryPanel resume={draft.document} offline={offline} />
+			<Screen edges={["bottom"]}>
+				{segment}
+				{notices}
+				{draft.document && tab === "history" ? (
+					<HistoryPanel resume={draft.document} offline={offline} />
+				) : draft.document ? (
+					<DownloadTab key={id} resume={draft.document} offline={offline} />
+				) : (
+					<View className="gap-3">
+						<Skeleton variant="none" className="h-40 rounded-2xl" />
+						<Skeleton variant="none" className="h-14 rounded-xl" />
 					</View>
-				</Screen>
-			) : (
-				<Screen edges={["bottom"]}>
-					{segment}
-					{notices}
-					{draft.document ? (
-						<DownloadTab key={id} resume={draft.document} offline={offline} />
-					) : (
-						<View className="gap-3">
-							<Skeleton variant="none" className="h-40 rounded-2xl" />
-							<Skeleton variant="none" className="h-14 rounded-xl" />
-						</View>
-					)}
+				)}
+				{tab === "download" ? (
 					<Button variant="ghost" onPress={() => router.back()}>
 						<Button.Label>{t`Close`}</Button.Label>
 					</Button>
-				</Screen>
-			)}
+				) : null}
+			</Screen>
 		</>
 	);
 }

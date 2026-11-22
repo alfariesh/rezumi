@@ -5,11 +5,14 @@ import {
 	ACCENTS,
 	contrastOver,
 	fitToPages,
+	hasTemplatePreviewContent,
 	matchesFilter,
 	MIN_CONTRAST,
 	nextFitStep,
 	parseColorInput,
 	resetDesign,
+	suitsCareerField,
+	templateSample,
 	TEMPLATES,
 } from "./design-presets";
 
@@ -69,5 +72,40 @@ describe("reset design and template filters", () => {
 		const two = TEMPLATES.filter((id) => matchesFilter(id, "two"));
 		expect(one.length + two.length).toBe(TEMPLATES.length);
 		expect(TEMPLATES.filter((id) => matchesFilter(id, "all"))).toEqual(TEMPLATES);
+	});
+});
+
+describe("template gallery", () => {
+	it("filters by field of work, keeping every template for all fields", () => {
+		expect(TEMPLATES.filter((id) => suitsCareerField(id, "all"))).toHaveLength(TEMPLATES.length);
+		const academic = TEMPLATES.filter((id) => suitsCareerField(id, "academic"));
+		expect(academic).toContain("cendekia");
+		expect(academic).not.toContain("vector");
+	});
+
+	it("points Indonesian pages at the Indonesian samples and every other language at English", () => {
+		expect(templateSample("kirana", "id-ID").smallThumbnail).toBe("/templates/thumb/id/kirana-small.webp");
+		expect(templateSample("kirana", "en-US")).toEqual({
+			pdf: "/templates/pdf/kirana.pdf",
+			image: "/templates/jpg/kirana.jpg",
+			thumbnail: "/templates/thumb/kirana.webp",
+			smallThumbnail: "/templates/thumb/kirana-small.webp",
+		});
+	});
+});
+
+describe("template previews", () => {
+	it("draw from the resume only when it holds more than the inherited account details", () => {
+		const account = { ...defaultResumeData, basics: { ...defaultResumeData.basics, name: "Example User" } };
+		expect(hasTemplatePreviewContent(account)).toBe(false);
+		const hidden = produce(defaultResumeData, (draft) => {
+			draft.summary.content = "<p>Hidden summary</p>";
+			draft.summary.hidden = true;
+		});
+		expect(hasTemplatePreviewContent(hidden)).toBe(false);
+		expect(hasTemplatePreviewContent(produce(hidden, (draft) => void (draft.summary.hidden = false)))).toBe(true);
+		const picture = produce(defaultResumeData, (draft) => void (draft.picture.url = "https://example.com/photo.png"));
+		expect(hasTemplatePreviewContent(picture)).toBe(true);
+		expect(hasTemplatePreviewContent(produce(picture, (draft) => void (draft.picture.hidden = true)))).toBe(false);
 	});
 });

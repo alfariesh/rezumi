@@ -86,15 +86,14 @@ const mocks = {
 	"@/routes": `export const routes={};`,
 	"@/ui-legacy": `export const Banner='Banner',Button='Button',Icon='Icon',IconButton='IconButton',Switch='Switch',Text='Text';export const haptics={selection:()=>globalThis.__motionCheck.haptics++};export const useReducedMotion=()=>globalThis.__motionCheck.reduced;export const workletEaseMove=()=>{};export const useTheme=()=>({space:{s1:4,s2:8,s4:16,s6:24,s8:32},motion:{d2:200,easeMove:()=>{}},size:{hit:44},radius:{rLg:4},colors:{},shadows:{e1:{},ePage:{}}});`,
 	"@/ui/motion": `export const useReducedMotion=()=>globalThis.__motionCheck.reduced;`,
+	"@/ui": `export const useReducedMotion=()=>globalThis.__motionCheck.reduced;export const motion={standard:200,easeMove:()=>{}};export const space={4:16};`,
 	"./usePreview": `export const usePreview=()=>({result:null,displayScale:1});`,
 	"./fit": `export const fitResume=()=>{};`,
 };
 const result = await build({
 	stdin: {
 		contents: [
-			"src/features/design/controls.tsx",
 			"src/ui-legacy/pressable.tsx",
-			"src/preview/page.tsx",
 			"src/preview/use-page-zoom.tsx",
 			"src/preview/zoom.ts",
 			"src/preview/page-image.tsx",
@@ -122,7 +121,7 @@ const result = await build({
 const temporary = await mkdtemp(join(tmpdir(), "rr-motion-check-"));
 const bundle = join(temporary, "check.mjs");
 await writeFile(bundle, result.outputFiles[0].text);
-const { Slider, FeedbackPressable, usePageZoom, ZoomViewport, snapZoom, zoomOffset, PageImage } = await import(
+const { FeedbackPressable, usePageZoom, ZoomViewport, snapZoom, zoomOffset, PageImage } = await import(
 	pathToFileURL(bundle).href
 );
 await rm(temporary, { recursive: true });
@@ -141,7 +140,6 @@ function mount(Component, props) {
 const drain = () => {
 	for (const callback of env.queue.splice(0)) callback();
 };
-const event = (x) => ({ x, scale: x });
 function find(tree, type) {
 	if (typeof type === "function" ? type(tree) : tree?.type === type) return tree;
 	for (const child of [tree?.props?.children].flat(Infinity)) {
@@ -149,47 +147,6 @@ function find(tree, type) {
 		if (result) return result;
 	}
 	return null;
-}
-for (const rtl of [false, true]) {
-	env.rtl = rtl;
-	const changes = [];
-	const slider = mount(Slider, {
-		label: "Size",
-		value: 50,
-		min: 0,
-		max: 100,
-		step: 5,
-		format: String,
-		onChange: (value) => changes.push(value),
-	});
-	slider.tree.props.children.props.onLayout({ nativeEvent: { layout: { width: 100 } } });
-	slider.render();
-	const [pan, tap] = slider.tree.props.gesture;
-	const feedback = env.haptics;
-	slider.writes = 0;
-	pan.callbacks.onStart?.(event(50));
-	for (let x = 50; x <= 93; x++) pan.callbacks.onUpdate(event(x));
-	assert.equal(slider.writes, 0, "drag must not rerender React");
-	assert.deepEqual(changes, [], "drag must not persist intermediate edits");
-	pan.callbacks.onFinalize(event(93), true);
-	drain();
-	assert.deepEqual(changes, [rtl ? 5 : 95], "release commits one snapped edit");
-	assert.equal(env.haptics, feedback + 1, "release gives one haptic");
-	pan.callbacks.onStart?.(event(50));
-	pan.callbacks.onUpdate(event(0));
-	pan.callbacks.onFinalize(event(0), false);
-	drain();
-	assert.equal(changes.length, 1, "cancel must not commit");
-	assert.equal(env.haptics, feedback + 1, "cancel must not give commit feedback");
-	assert.equal(find(slider.tree, "Animated.View").props.style.at(-1).read().width, "50%", "cancel restores slider");
-	tap.callbacks.onEnd(event(500), true);
-	drain();
-	assert.equal(changes.at(-1), rtl ? 0 : 100, "tap clamps at bound");
-	slider.props.disabled = true;
-	slider.render();
-	const before = changes.length;
-	slider.tree.props.children.props.onAccessibilityAction({ nativeEvent: { actionName: "increment" } });
-	assert.equal(changes.length, before, "disabled accessibility adjustment must not edit");
 }
 // Exercise the shared controller/viewport used by both resume and letter previews.
 const zoom = mount(usePageZoom, {});

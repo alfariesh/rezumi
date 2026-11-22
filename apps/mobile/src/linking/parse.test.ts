@@ -21,7 +21,7 @@ describe("parseDeepLink: web pages to app screens", () => {
 		["/dashboard/documents?type=resume&q=design", "/documents"],
 		["/dashboard/resumes", "/documents"],
 		["/dashboard/cover-letters", "/documents"],
-		["/dashboard/trash", "/documents/trash"],
+		["/dashboard/trash", "/documents?segment=trash"],
 		["/builder/abc", "/builder/abc/write"],
 		["/builder/abc?mode=design", "/builder/abc/design"],
 		["/builder/letter/xyz", "/letter/xyz/write"],
