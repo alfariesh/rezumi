@@ -1,4 +1,4 @@
-import type { SourceAvailability, SourceId, SourceInputProblem, SourceInputs } from "./model";
+import type { SourceAvailability, SourceId, SourceInputProblem, SourceInputs } from "@rezumi/resume/profile-sources";
 import type { IconName } from "@rezumi/ui/components/icon";
 import type { ReactNode } from "react";
 import type { DropEvent } from "react-aria";
@@ -18,8 +18,8 @@ import { IMPORT_ACCEPT } from "@/features/resume/import/read-file";
 import { ENTER_CLASS } from "@/libs/motion";
 
 type SourceFieldsProps = {
-	inputs: SourceInputs;
-	onChange: (patch: Partial<SourceInputs>) => void;
+	inputs: SourceInputs<File>;
+	onChange: (patch: Partial<SourceInputs<File>>) => void;
 	availability: SourceAvailability;
 	/** Shown once the person tried to go on with something that can't run. */
 	problems: Partial<Record<SourceId, SourceInputProblem>>;

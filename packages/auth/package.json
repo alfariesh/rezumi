@@ -5,6 +5,7 @@
 	"private": true,
 	"exports": {
 		"./config": "./src/config.ts",
+		"./native-app": "./src/native-app.ts",
 		"./trusted-origins": "./src/trusted-origins.ts",
 		"./types": "./src/types.ts"
 	},
@@ -28,7 +29,8 @@
 		"better-auth": "catalog:",
 		"drizzle-orm": "catalog:",
 		"jose": "^6.2.13",
-		"react": "catalog:"
+		"react": "catalog:",
+		"zod": "catalog:"
 	},
 	"devDependencies": {
 		"@rezumi/config": "workspace:*",

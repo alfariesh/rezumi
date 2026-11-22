@@ -85,8 +85,6 @@ export const ENTRY_FIELDS: Record<CustomSectionType, readonly EntryField[]> = {
 	"cover-letter": [],
 };
 
-export { PRIMARY_FIELD } from "./model";
-
 /** Shown on a draft entry, keyed by its primary field. */
 export const DRAFT_HINTS: Record<string, MessageDescriptor> = {
 	company: msg`Appears on the page once it has a company.`,
@@ -132,7 +130,7 @@ export const ADD_LABELS: Record<CustomSectionType, MessageDescriptor> = {
 	"cover-letter": msg`Add cover letter`,
 };
 
-/** Icon names from the app's icon map (src/ui/icon.tsx), as web's Add section menu uses them. */
+/** Icon names from the app's icon map (src/ui-legacy/icon.tsx), as web's Add section menu uses them. */
 export const SECTION_ICONS = {
 	summary: "text-align-left",
 	experience: "briefcase",

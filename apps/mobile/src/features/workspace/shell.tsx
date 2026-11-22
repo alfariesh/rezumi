@@ -22,7 +22,7 @@ import { useApplication } from "@/features/applications/queries";
 import { getStageColor, getStageLabel } from "@/features/applications/stages";
 import { routes } from "@/routes";
 import { useWorkspaceChrome } from "@/shell/workspace-chrome";
-import { Banner, Button, EmptyState, Screen, Text, useTheme } from "@/ui";
+import { Banner, Button, EmptyState, Screen, Text, useTheme } from "@/ui-legacy";
 import { useKeyboardScrollSpace } from "@/ui/keyboard";
 
 export type WorkspaceSearch = { version?: string; speak?: boolean; story?: string };
@@ -36,7 +36,7 @@ export type WorkspaceTabProps = {
 	interview: InterviewTimelineEntry | undefined;
 	/** Practise: open with Speak selected. */
 	speak: boolean;
-	/** Practise: a story from Knowledge to practise. */
+	/** Practise: a story from the Profile to practise. */
 	story: string | undefined;
 	now: Date;
 	go: (tab: WorkspaceTab, search?: WorkspaceSearch) => void;
@@ -243,7 +243,7 @@ function Header({ application, onAskCoach }: HeaderProps) {
 						variant="secondary"
 						icon="scales"
 						label={t`Compare offers`}
-						onPress={() => router.push(routes.career("offers"))}
+						onPress={() => router.push(routes.offers())}
 					/>
 				) : null}
 			</View>

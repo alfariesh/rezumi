@@ -24,7 +24,7 @@ import { useInvalidateApplications } from "@/features/applications/queries";
 import { getStageLabel } from "@/features/applications/stages";
 import { formatMoney } from "@/features/career/offer-compare";
 import { withUndo } from "@/features/career/undo";
-import { Banner, Button, Icon, Skeleton, Text, TextArea, showToast, useTheme } from "@/ui";
+import { Banner, Button, Icon, Skeleton, Text, TextArea, showToast, useTheme } from "@/ui-legacy";
 
 type ReplyItem = SavedItem & { data: SavedData<"reply"> };
 

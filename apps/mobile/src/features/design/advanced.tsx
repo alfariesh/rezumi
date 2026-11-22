@@ -9,14 +9,14 @@ import { useEffect, useState } from "react";
 import { Pressable, TextInput, View } from "react-native";
 import { fontList, getFont, getFontDisplayName, sortFontWeights } from "@rezumi/fonts";
 import { uploadedFontFamilies, uploadedFontWeights } from "@rezumi/fonts/uploaded";
+import { DATE_FORMATS, parseColorInput, resetDesign, rgbaToHex } from "@rezumi/resume/design-presets";
 import { compileStylesheet, isFatalStylesheetDiagnostic } from "@rezumi/resume/stylesheet";
 import { icons as iconNames } from "@rezumi/schema/icons";
 import { Field, Stepper, SwitchRow } from "./controls";
-import { DATE_FORMATS, parseColorInput, resetDesign, rgbaToHex } from "./presets";
 import { UploadedFonts } from "./uploaded-fonts";
 import { useResumeStore } from "@/draft";
 import { canShowPlans, hasPlanFeature, showPlanAlert, usePlan } from "@/features/billing/plan";
-import { Button, Chip, Icon, ListRow, SelectSheet, Text, showToast, useTheme, type IconName } from "@/ui";
+import { Button, Chip, Icon, ListRow, SelectSheet, Text, showToast, useTheme, type IconName } from "@/ui-legacy";
 
 export type AdvancedId = "typography" | "colours" | "page" | "layout" | "styles";
 

@@ -1,0 +1,78 @@
+# Phone navigation: the drawer behind the screen (the avatar, or a swipe from the left edge), each section, a recent
+# document opened from Home, and back to Home.
+# Start signed in (run sign-in.yaml first), English UI, phone portrait, with at least one document.
+# The Portfolio section shows only for accounts with portfolios; it is checked when present.
+appId: app.rezumi
+---
+- launchApp
+- extendedWaitUntil:
+    visible:
+      id: "open-drawer"
+    timeout: 30000
+- assertVisible: "Home"
+- tapOn:
+    id: "open-drawer"
+- assertVisible:
+    id: "drawer-home"
+    selected: true
+- tapOn:
+    id: "drawer-documents"
+- assertVisible: "Documents"
+- tapOn:
+    id: "open-drawer"
+- assertVisible:
+    id: "drawer-documents"
+    selected: true
+- tapOn:
+    id: "drawer-applications"
+- assertVisible: "Applications"
+- tapOn:
+    id: "open-drawer"
+- runFlow:
+    when:
+      visible:
+        id: "drawer-portfolio"
+    commands:
+      - tapOn:
+          id: "drawer-portfolio"
+      - extendedWaitUntil:
+          visible: "Your portfolio is coming to the app"
+          timeout: 10000
+      - tapOn:
+          id: "open-drawer"
+- tapOn:
+    id: "drawer-profile"
+- extendedWaitUntil:
+    visible:
+      id: "profile-tab-details"
+    timeout: 10000
+# A swipe from the left edge opens the drawer on a section's top screen; the dimmed screen closes it.
+- swipe:
+    start: 1%, 50%
+    end: 75%, 50%
+- assertVisible:
+    id: "drawer-profile"
+    selected: true
+- tapOn:
+    id: "app-drawer-frame-close"
+- tapOn:
+    id: "open-drawer"
+- tapOn:
+    id: "drawer-home"
+- scrollUntilVisible:
+    element:
+      id: "home-recent-documents"
+    direction: DOWN
+- tapOn:
+    id: "recent-.*"
+    index: 0
+- extendedWaitUntil:
+    notVisible:
+      id: "open-drawer"
+    timeout: 15000
+# The builder's own Back (iOS has no system back button; Android's back gesture does the same).
+- tapOn: "Back to Documents"
+- extendedWaitUntil:
+    visible:
+      id: "open-drawer"
+    timeout: 15000

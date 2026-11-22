@@ -14,7 +14,7 @@ import { useFlags } from "@/api/flags";
 import { useSession } from "@/auth/session";
 import { AIProviderSetupSheet, useHasAIProvider } from "@/features/ai/providers";
 import { useApplications } from "@/features/applications/queries";
-import { Banner, Button, SelectSheet, Sheet, Text, TextField, useTheme } from "@/ui";
+import { Banner, Button, SelectSheet, Sheet, Text, TextField, useTheme } from "@/ui-legacy";
 
 type Input = RouterInput["career"]["saveSchedule"];
 export const scheduleTitle = (kind: string) =>
@@ -254,7 +254,7 @@ function ScheduleForm({
 							options={ai.usableProviders.map((row) => ({ value: row.id, label: row.label }))}
 						/>
 						<Button variant="secondary" label={t`Connect AI provider`} onPress={() => setSetup(true)} />
-						<Text color="ink3">{t`Sends this application and enabled Knowledge to this connection. Your provider may charge. If it becomes unavailable, scheduled work can use your default usable connection.`}</Text>
+						<Text color="ink3">{t`Sends this application and your switched-on Profile to this connection. Your provider may charge. If it becomes unavailable, scheduled work can use your default usable connection.`}</Text>
 					</>
 				) : (
 					<>

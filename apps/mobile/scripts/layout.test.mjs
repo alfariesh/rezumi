@@ -42,7 +42,7 @@ const mocks = {
 	"react-native": native,
 	"react-native-safe-area-context": safe,
 	"@lingui/react/macro": { useLingui: () => ({ t: tag }) },
-	"expo-router": { useRouter: () => router, usePathname: () => "/documents" },
+	"expo-router": { useRouter: () => router, usePathname: () => "/documents", useIsFocused: () => true },
 	"react-native-keyboard-controller": { KeyboardAwareScrollView: "ScrollView", useKeyboardState: () => false },
 	"react-native-reanimated": { useAnimatedReaction: (prepare, react) => effects.push(() => react(prepare(), null)) },
 	"react-native-worklets": { scheduleOnRN: (run, ...args) => run(...args) },
@@ -74,7 +74,7 @@ function load(path, extra = {}) {
 	);
 	return module.exports;
 }
-const tokens = load("ui/tokens.ts");
+const tokens = load("ui-legacy/tokens.ts");
 const theme = { ...tokens, colors: tokens.colors.light, shadows: tokens.shadows.light };
 const ui = {
 	Text: "Text",
@@ -84,17 +84,20 @@ const ui = {
 	haptics: { selection() {} },
 	useTheme: () => theme,
 };
-mocks["@/ui"] = ui;
+mocks["@/ui-legacy"] = ui;
 mocks["./theme"] = ui;
 // Gesture state has its own timing regression; layout fixtures do not pull.
 const pullRefresh = { usePullRefresh: () => ({ refreshing: false, onRefresh() {} }) };
-mocks["./use-pull-refresh"] = pullRefresh;
 mocks["@/ui/use-pull-refresh"] = pullRefresh;
 mocks["@/components/collection-header"] = { CollectionHeader: "CollectionHeader" };
+// The rebuilt tab chrome (Jest-tested in src/shell) only matters here as the old headers' outside-the-tabs default.
+mocks["@/shell/tab-chrome"] = { TabBarActions: "TabBarActions", useInTabs: () => false };
+mocks["@/ui"] = { size: { wide: 700 }, ...pullRefresh };
+// Bottom bars report their height so toasts clear them; layout fixtures do not show toasts.
+mocks["@/ui/toast"] = { setToastBarHeight() {} };
 const { useIsTablet: isTablet } = load("shell/use-is-tablet.ts");
 mocks["./use-is-tablet"] = { useIsTablet: isTablet };
 const keyboardLayout = load("ui/keyboard.tsx");
-mocks["./keyboard"] = keyboardLayout;
 mocks["@/ui/keyboard"] = keyboardLayout;
 const resizedKeyboard = keyboardLayout.KeyboardFrame({}).type;
 for (const height of [0, 300, 200]) {
@@ -110,24 +113,14 @@ for (const height of [0, 300, 200]) {
 }
 resizedKeyboard.current = false;
 keyboardHeight = 0;
-const { Screen } = load("ui/text.tsx");
+const { Screen } = load("ui-legacy/text.tsx");
 const { TopBar } = load("shell/top-bar.tsx");
-const { AppSidebar } = load("shell/app-tabs.tsx", { "react-native-reanimated": {} });
 const nodes = (tree) =>
 	!tree || typeof tree !== "object"
 		? []
 		: Array.isArray(tree)
 			? tree.flatMap(nodes)
 			: [tree, ...nodes(tree.props.children)];
-const expanded = (tree) =>
-	!tree || typeof tree !== "object"
-		? tree
-		: Array.isArray(tree)
-			? tree.map(expanded)
-			: typeof tree.type === "function"
-				? expanded(tree.type(tree.props))
-				: { ...tree, props: { ...tree.props, children: expanded(tree.props.children) } };
-
 // Navigation follows window width; content measurements account for cutouts and sidebars.
 for (const [width, right, expected] of [
 	[466, 84, false],
@@ -153,46 +146,6 @@ provider.type.current = provider.props.value;
 insets = { ...insets, left: 0, right: 0 };
 assert.equal(Screen({}).props.style.paddingRight, 0, "Pane must not consume window insets twice");
 assert.equal(windowInsets().right, 84, "Portalled sheets must retain original window cutout");
-const state = {
-	index: 0,
-	routes: ["documents", "applications", "create", "career", "settings"].map((name) => ({ name, key: name })),
-};
-const titles = { documents: "Documents", applications: "Applications", career: "Career", settings: "Settings" };
-const props = {
-	state,
-	insets,
-	descriptors: Object.fromEntries(state.routes.map(({ key }) => [key, { options: { title: titles[key] ?? key } }])),
-	emitter: { emit: () => ({ defaultPrevented: false }) },
-	navigateToTab: (key) => calls.push(key),
-};
-window = { width: 951, height: 669, fontScale: 1 };
-insets = { top: 0, left: 0, right: 84, bottom: 20 };
-props.insets = insets;
-const rail = expanded(AppSidebar(props));
-assert.ok(rail.props.style.width < tokens.size.sidebar / 2, "Opened Duo must retain most width for content");
-assert.ok(
-	nodes(rail).some((node) => node.type === "ScrollView"),
-	"Short windows must keep navigation reachable",
-);
-for (const label of ["Documents", "Applications", "Career", "Settings", "Trash", "New", "Account"]) {
-	const action = nodes(rail).find((node) => node.type === "Pressable" && node.props.accessibilityLabel === label);
-	assert.ok(action, `Missing rail action ${label}`);
-	assert.ok(action.props.style({ pressed: false }).minHeight >= 44);
-	assert.equal(action.props.accessibilityRole, ["New", "Account"].includes(label) ? "button" : "tab");
-	if (label !== "Documents") action.props.onPress();
-}
-assert.deepEqual(calls, ["applications", "career", "settings", "/documents/trash", "/new", "/settings/account"]);
-window = { ...window, width: 750 };
-insets = { ...insets, right: 0 };
-window = { ...window, width: 951, fontScale: 1.8 };
-assert.ok(AppSidebar(props).props.style.width > rail.props.style.width, "Enlarged labels need wider rail");
-window = { ...window, width: 750, fontScale: 1 };
-native.I18nManager.isRTL = true;
-window = { ...window, width: 951 };
-props.insets = { ...props.insets, right: 84 };
-assert.equal(AppSidebar(props).props.style.width, rail.props.style.width + 84);
-assert.equal(AppSidebar(props).props.style.paddingStart, 84 + tokens.space.s3);
-native.I18nManager.isRTL = false;
 window = { ...window, width: 750 };
 const modes = element("Modes", {});
 const topBar = () => TopBar({ backLabel: "Back", onBack() {}, title: "Long fictional resume title", center: modes });
@@ -205,8 +158,6 @@ assert.equal(
 assert.ok(nodes(topBar()).some((node) => node.type === "Modes"));
 window = { ...window, width: 1366 };
 insets = { ...insets, right: 0 };
-props.insets = insets;
-assert.equal(AppSidebar(props).props.style.width, tokens.size.sidebar, "Large tablets retain full sidebar");
 assert.ok(nodes(primary()).some((node) => node.type === "Modes"));
 window = { ...window, fontScale: 1.8 };
 assert.equal(
@@ -244,6 +195,7 @@ react.useState = (initial) => {
 		},
 	];
 };
+react.useRef = (initial) => react.useState({ current: initial })[0];
 react.useEffect = (effect, deps) => {
 	const index = cursor++;
 	const previous = hooks[index];
@@ -256,46 +208,6 @@ react.useEffect = (effect, deps) => {
 };
 native.ActivityIndicator = "ActivityIndicator";
 native.PixelRatio = { get: () => 2 };
-const rasterScales = [];
-const { OriginalPage } = load("features/ats-checker/original-page.tsx", {
-	"expo-image": { Image: "Image" },
-	"expo-file-system": {
-		File: class {
-			async arrayBuffer() {
-				return new ArrayBuffer(0);
-			}
-		},
-	},
-	"../../../modules/pdf-pages": {
-		pdfPages: {
-			open: async () => ({ id: "fictional", pages: [{ width: 595, height: 842 }] }),
-			close: async () => {},
-			rasterize: async (_id, _pages, scale) => {
-				rasterScales.push(scale);
-				return [{ index: 0, width: 595, height: 842, uri: "file://fictional.png" }];
-			},
-		},
-	},
-});
-const original = () => {
-	cursor = 0;
-	effects = [];
-	const tree = OriginalPage({ uri: "file://fictional.pdf" });
-	for (const effect of effects) effect();
-	return tree;
-};
-let page = original();
-assert.equal(rasterScales.length, 0, "Do not rasterize until container is measured");
-for (const width of [350, 620, 350]) {
-	page.props.onLayout({ nativeEvent: { layout: { width } } });
-	original();
-	await new Promise(setImmediate);
-	page = original();
-	assert.equal(nodes(page).find((node) => node.type === "Image").props.style.width, width);
-	assert.equal(rasterScales.at(-1), (width * 2) / 595);
-}
-hooks.at(-1).cleanup?.();
-hooks.length = 0;
 const version = { id: "version", kind: "created", createdAt: new Date(0) };
 const { HistoryPanel } = load("features/history/history.tsx", {
 	"@lingui/core/macro": { t: tag },
@@ -330,7 +242,7 @@ const render = (component, props = {}) => {
 };
 // Android activity recreation can leave event caches visible after the native keyboard has closed.
 react.Children = { count: (children) => (children == null ? 0 : Array.isArray(children) ? children.length : 1) };
-const { Bar: VisibilityBar } = load("shell/app-tabs.tsx", {
+const { Bar: VisibilityBar } = load("shell/editor-bar.tsx", {
 	"react-native-reanimated": {},
 	"react-native-keyboard-controller": { useKeyboardState: () => true },
 });
@@ -351,7 +263,7 @@ const { BuilderChrome } = load("shell/builder-chrome.tsx", {
 		Stack: builderStack,
 	},
 	"./app-banner": { AppStrip: "AppStrip" },
-	"./app-tabs": { Bar: "Bar", BarItem: "BarItem" },
+	"./editor-bar": { Bar: "Bar", BarItem: "BarItem" },
 	"./key-commands": { useKeyCommands() {} },
 	"./slot": { createSlot: () => ({ Provider: "SlotProvider", useFill() {} }) },
 	"./top-bar": { TopBar },
@@ -395,7 +307,6 @@ for (const width of [443, 852, 443, 852]) {
 	}
 }
 hooks.length = 0;
-react.useRef = (initial) => react.useState({ current: initial })[0];
 react.useCallback = (callback) => callback;
 // The first focus must allow Improve for an existing line without requiring another caret tap.
 const richText = load("features/write/rich-text.ts");
@@ -468,7 +379,7 @@ const animation = {
 const componentFixtures = {
 	"./button": ui,
 	"./icon": ui,
-	"./motion": ui,
+	"@/ui/motion": ui,
 	"./pressable": { FeedbackPressable: "Pressable" },
 	"./text": ui,
 	"expo-image": { Image: "Image" },
@@ -477,24 +388,8 @@ const componentFixtures = {
 	"../../assets/avatar-placeholder.webp": 1,
 };
 const { CollectionHeader } = load("components/collection-header.tsx");
-const { ListRow, EmptyState } = load("ui/layout.tsx", componentFixtures);
-const { Segmented } = load("ui/fields.tsx", {
-	...componentFixtures,
-	"./layout": { ListRow },
-	"./overlays": { Sheet: "Sheet" },
-	"./switch": { Switch: "Switch" },
-	"@rezumi/utils/string": { filterOptions: (options) => options },
-});
-const { BarItem } = load("shell/app-tabs.tsx", { "react-native-reanimated": animation });
-const { KnowledgeScreen } = load("features/career/knowledge.tsx", {
-	"./facts": { Facts: "Facts" },
-	"./stories": { Stories: "Stories" },
-	"./preferences": { Preferences: "Preferences" },
-	"./shared": { LoadState: "LoadState" },
-	"./hooks": { useCareerQueries: () => ({ profile: {} }) },
-	"@/auth/session": { useSession: () => ({ server: "fixture" }) },
-	"@/ui": { ...ui, Screen: "Screen", Segmented: "Segmented" },
-});
+const { ListRow, EmptyState } = load("ui-legacy/layout.tsx", componentFixtures);
+const { BarItem } = load("shell/editor-bar.tsx", { "react-native-reanimated": animation });
 native.FlatList = "FlatList";
 const documentQuery = { data: [], isError: false, refetch() {} };
 const { DocumentsLibrary } = load("features/documents/library.tsx", {
@@ -505,16 +400,16 @@ const { DocumentsLibrary } = load("features/documents/library.tsx", {
 	"./pending": { usePendingDocuments: () => [] },
 	"./queries": { useDocuments: () => documentQuery, useDocumentOperations: () => ({ busy: false }) },
 	"./thumbnail": { Thumbnail: "Thumbnail" },
-	"@/api/client": { client: {}, orpc: { documents: { counts: { queryOptions: () => ({ queryKey: [] }) } } } },
+	"@/api/client": { client: {} },
 	"@/auth/session": { useSession: () => ({ status: "signed-in", server: "fixture" }) },
 	"@/components/collection-header": { CollectionHeader: "CollectionHeader" },
-	"@tanstack/react-query": { useQuery: () => ({ data: { trash: 0 }, refetch() {} }) },
+	"@/features/home/queries": { useDocumentCounts: () => ({ data: { trash: 0 }, refetch() {} }) },
 	"expo-haptics": {},
 	"expo-router": { ...mocks["expo-router"], useFocusEffect() {} },
 	"@lingui/core/macro": { plural: (count, options) => options[count === 1 ? "one" : "other"].replace("#", count) },
 	"react-native-gesture-handler/ReanimatedSwipeable": {},
 	"react-native-reanimated": { ...animation, FlatList: "FlatList" },
-	"@/ui": {
+	"@/ui-legacy": {
 		...ui,
 		Screen: "Screen",
 		ListRow: "ListRow",
@@ -590,11 +485,6 @@ for (const fontScale of [1, 1.95, 3.12]) {
 	assert.equal(values.length, 1);
 	if (fontScale > 1.3) assert.equal(values[0].props.numberOfLines, undefined);
 	hooks.length = 0;
-	const knowledge = render(KnowledgeScreen);
-	const choice = nodes(knowledge).find((node) => node.type === "Segmented");
-	assert.ok(choice, "Three Knowledge choices must remain inline");
-	const segments = render(Segmented, choice.props);
-	assert.equal(segments.props.style.flexDirection, fontScale > 1.3 ? "column" : "row");
 	for (const label of ["Documents", "Applications", "Career", "Settings", "Podania o pracę", "தொழில் வாழ்க்கை"]) {
 		const item = render(BarItem, { label, icon: "file-text", focused: false, onPress() {} });
 		const text = nodes(item).find((node) => node.props.children?.includes(label));
@@ -702,7 +592,7 @@ const { IconPickerSheet } = load("features/write/pickers.tsx", {
 	"react-native-svg": { SvgXml: "SvgXml" },
 	"@rezumi/pdf/icons": { default: iconPaths, __esModule: true },
 	"@rezumi/schema/icons": { icons: resumeIcons },
-	"@/ui": { ...ui, Sheet: "Sheet", TextField: "TextField", ListRow: "ListRow" },
+	"@/ui-legacy": { ...ui, Sheet: "Sheet", TextField: "TextField", ListRow: "ListRow" },
 });
 hooks.length = 0;
 const selections = [];
@@ -758,14 +648,9 @@ assert.equal(render(ListRow, { title: "Status", value: "Saved" }).props.accessib
 assert.equal(render(ListRow, { title: "Open", onPress() {} }).props.accessible, true);
 
 // An unknown decorative icon crashes its entire screen, including rows accepting ReactNode leading content.
-const { Icon: NativeIcon } = load(
-	"ui/icon.tsx",
-	Object.fromEntries(
-		[
-			...readFileSync(new URL("../src/ui/icon.tsx", import.meta.url), "utf8").matchAll(
-				/import \{ (\w+) \} from "(phosphor-react-native\/src\/icons\/[^"]+)"/g,
-			),
-		].map(([, symbol, path]) => [path, { [symbol]: symbol }]),
+const appIconNames = new Set(
+	Object.keys(
+		JSON.parse(readFileSync(new URL("../../../packages/icons/src/generated/app-icons.json", import.meta.url))),
 	),
 );
 for (const directory of [new URL("../src/", import.meta.url), new URL("../app/", import.meta.url)]) {
@@ -773,7 +658,7 @@ for (const directory of [new URL("../src/", import.meta.url), new URL("../app/",
 		const source = readFileSync(new URL(path, directory), "utf8");
 		for (const pattern of [/\b(?:icon|leading)="([^"]+)"/g, /<Icon\b[^>]*\bname="([^"]+)"/g]) {
 			for (const [, name] of source.matchAll(pattern)) {
-				assert.ok(NativeIcon({ name }).type, `${path}: icon "${name}" must resolve before its screen renders`);
+				assert.ok(appIconNames.has(name), `${path}: icon "${name}" must resolve before its screen renders`);
 			}
 		}
 	}

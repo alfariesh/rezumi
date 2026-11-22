@@ -2,7 +2,7 @@
 // in the tab that made it.
 import type { SavedItem } from "../hooks";
 import type { WorkspaceTabProps } from "../shell";
-import type { IconName } from "@/ui";
+import type { IconName } from "@/ui-legacy";
 import type { SavedItemKind, WorkspaceTab } from "@rezumi/schema/career";
 import { plural, t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react/macro";
@@ -20,7 +20,7 @@ import { useUserTime } from "@/features/application-detail/hooks";
 import { formatMoney } from "@/features/career/offer-compare";
 import { withUndo } from "@/features/career/undo";
 import { routes } from "@/routes";
-import { Button, Chip, Icon, IconButton, Skeleton, Text, showToast, useTheme } from "@/ui";
+import { Button, Chip, Icon, IconButton, Skeleton, Text, showToast, useTheme } from "@/ui-legacy";
 
 const KINDS: { kind: SavedItemKind; icon: IconName; tab: WorkspaceTab | null }[] = [
 	{ kind: "fit", icon: "list-checks", tab: "fit" },
@@ -181,12 +181,7 @@ function SavedRow({ item, applicationId, expanded, onToggle, onOpen, onDelete }:
 			{tab ? (
 				<Button variant="secondary" size="sm" label={t`Open in ${tabName}`} onPress={() => onOpen(tab)} />
 			) : (
-				<Button
-					variant="secondary"
-					size="sm"
-					label={t`Open in Offers`}
-					onPress={() => router.push(routes.career("offers"))}
-				/>
+				<Button variant="secondary" size="sm" label={t`Open in Offers`} onPress={() => router.push(routes.offers())} />
 			)}
 		</Block>
 	);

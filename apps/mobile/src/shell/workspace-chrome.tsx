@@ -10,7 +10,7 @@ import { createSlot } from "./slot";
 import { TopBar } from "./top-bar";
 import { useIsTablet } from "./use-is-tablet";
 import { routes } from "@/routes";
-import { IconButton, Text, useTheme } from "@/ui";
+import { IconButton, Text, useTheme } from "@/ui-legacy";
 import { KeyboardFrame } from "@/ui/keyboard";
 
 /** What workspace tabs put into the application chrome with `useWorkspaceChrome`. */

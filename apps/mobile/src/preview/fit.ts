@@ -1,32 +1,28 @@
 import type { ResumeData } from "@rezumi/schema/resume/data";
 import { nativeEngine } from "@rezumi/forme-native";
 import { renderResumePdf } from "@rezumi/pdf/native";
+import {
+	applyDensity,
+	applyMargins,
+	applyTextSize,
+	matchDensity,
+	matchMargins,
+	nextFitStep,
+} from "@rezumi/resume/design-presets";
 import { configurePreviewResources, readPreviewImage } from "./resources";
 
-/** Port of web design/presets: density, margins, then half-point steps with a 9 pt floor. */
+/** One step of Fit to one page (density, then margins, then half-point text steps down to 9 pt); false when done. */
 export function tightenResume(data: ResumeData): boolean {
-	const { page, typography } = data.metadata;
-	if (typography.body.lineHeight !== 1.35 || page.gapY !== 4) {
-		if (typography.body.lineHeight === 1.65 && page.gapY === 8) {
-			typography.body.lineHeight = 1.5;
-			page.gapY = 6;
-		} else {
-			typography.body.lineHeight = 1.35;
-			page.gapY = 4;
-		}
-	} else if (page.marginX !== 10 || page.marginY !== 8) {
-		if (page.marginX === 19 && page.marginY === 16) {
-			page.marginX = 14;
-			page.marginY = 12;
-		} else {
-			page.marginX = 10;
-			page.marginY = 8;
-		}
-	} else if (typography.body.fontSize > 9) {
-		const ratio = typography.body.fontSize > 0 ? typography.heading.fontSize / typography.body.fontSize : 1.4;
-		typography.body.fontSize = Math.max(9, Math.round((typography.body.fontSize - 0.5) * 2) / 2);
-		typography.heading.fontSize = Math.round(typography.body.fontSize * ratio * 2) / 2;
-	} else return false;
+	const metadata = data.metadata;
+	const step = nextFitStep({
+		density: matchDensity(metadata),
+		margins: matchMargins(metadata),
+		size: metadata.typography.body.fontSize,
+	});
+	if (!step) return false;
+	if ("density" in step) applyDensity(metadata, step.density);
+	else if ("margins" in step) applyMargins(metadata, step.margins);
+	else applyTextSize(metadata, step.size);
 	return true;
 }
 

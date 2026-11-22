@@ -34,7 +34,19 @@ import { useHasAIProvider } from "@/features/ai/providers";
 import { useUserTime } from "@/features/application-detail/hooks";
 import { useInvalidateApplications } from "@/features/applications/queries";
 import { withUndo } from "@/features/career/undo";
-import { Banner, Button, Chip, IconButton, ListRow, Sheet, Skeleton, Text, TextArea, showToast, useTheme } from "@/ui";
+import {
+	Banner,
+	Button,
+	Chip,
+	IconButton,
+	ListRow,
+	Sheet,
+	Skeleton,
+	Text,
+	TextArea,
+	showToast,
+	useTheme,
+} from "@/ui-legacy";
 
 type Answer = CareerWorkspace["answers"][number];
 type CountUnit = "words" | "characters";
@@ -364,7 +376,7 @@ function AnswerCard({
 					value={text}
 					maxLength={6000}
 					editable={!disabled}
-					helper={t`Write your answer, or draft one from your Knowledge.`}
+					helper={t`Write your answer, or draft one from your Profile.`}
 					onChangeText={setText}
 					onBlur={answerSave.flush}
 				/>

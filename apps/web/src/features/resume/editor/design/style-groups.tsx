@@ -1,5 +1,5 @@
-import type { DensityId, FontPairingId, MarginId } from "./presets";
 import type { Color } from "@heroui/react";
+import type { DensityId, FontPairingId, MarginId } from "@rezumi/resume/design-presets";
 import type { IconDesign, IconStyle, ResumeData } from "@rezumi/schema/resume/data";
 import type { WritableDraft } from "immer";
 import { CellColorPicker, CellSlider, Segment } from "@heroui-pro/react";
@@ -7,11 +7,6 @@ import { Button, Chip, ColorArea, ColorField, ColorSlider, ColorSwatchPicker, pa
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { createContext, useContext, useState } from "react";
-import { iconDesignOf } from "@rezumi/schema/resume/data";
-import { Icon } from "@rezumi/ui/components/icon";
-import { CellSwitchRow } from "@rezumi/ui/components/switch";
-import { contrastOnWhite } from "@rezumi/utils/color";
-import { cn } from "@rezumi/utils/style";
 import {
 	ACCENTS,
 	applyDensity,
@@ -26,7 +21,12 @@ import {
 	matchMargins,
 	rgbaToHex,
 	TEXT_SIZE,
-} from "./presets";
+} from "@rezumi/resume/design-presets";
+import { iconDesignOf } from "@rezumi/schema/resume/data";
+import { Icon } from "@rezumi/ui/components/icon";
+import { CellSwitchRow } from "@rezumi/ui/components/switch";
+import { contrastOnWhite } from "@rezumi/utils/color";
+import { cn } from "@rezumi/utils/style";
 import { CellSelectField } from "@/components/input/select-field";
 import { hasPlanFeature, usePlan } from "@/features/billing/plan";
 import { openPlanDialog } from "@/features/billing/plan-dialog";

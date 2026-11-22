@@ -30,7 +30,7 @@ const stages = load("features/applications/stages.ts", {
 });
 const nextStep = load("features/applications/next-step.ts", {
 	"./stages": stages,
-	"@/ui": {},
+	"@/ui-legacy": {},
 	"@lingui/core/macro": { plural: (value, forms) => forms.other.replace("#", String(value)), t: String },
 });
 const list = load("features/applications/list.ts", {

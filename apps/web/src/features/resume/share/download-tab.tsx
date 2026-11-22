@@ -12,18 +12,14 @@ import { useState } from "react";
 import { Icon } from "@rezumi/ui/components/icon";
 import { toast } from "@rezumi/ui/components/toast";
 import { downloadWithAnchor } from "@rezumi/utils/file";
+import { getDefaultFileName, sanitizeFileName } from "@rezumi/utils/file-name";
 import { applicationsListQueryOptions } from "@/features/applications/queries";
 import { hasPlanFeature, usePlan } from "@/features/billing/plan";
 import { openPlanDialog } from "@/features/billing/plan-dialog";
 import { createLetterFile, letterFileName } from "@/features/letters/export";
 import { useCurrentResume } from "@/features/resume/builder/draft";
 import { useOpenIssueCount } from "@/features/resume/editor/check/use-check";
-import {
-	createExportFile,
-	getDefaultFileName,
-	preloadDocumentExport,
-	sanitizeFileName,
-} from "@/features/resume/export/use-resume-export";
+import { createExportFile, preloadDocumentExport } from "@/features/resume/export/use-resume-export";
 import { getReadableErrorMessage } from "@/libs/error-message";
 import { client } from "@/libs/orpc/client";
 

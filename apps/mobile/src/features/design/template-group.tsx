@@ -1,5 +1,5 @@
 import type { DesignWrite } from "./draft";
-import type { TemplateFilter } from "./presets";
+import type { TemplateFilter } from "@rezumi/resume/design-presets";
 import type { ResumeData } from "@rezumi/schema/resume/data";
 import type { Template } from "@rezumi/schema/templates";
 import { useLingui } from "@lingui/react/macro";
@@ -8,10 +8,10 @@ import { Image } from "expo-image";
 import { useEffect, useMemo, useState } from "react";
 import { I18nManager, Pressable, ScrollView, View } from "react-native";
 import { create } from "zustand";
+import { TEMPLATES, matchesFilter, templateName } from "@rezumi/resume/design-presets";
 import { templateLayouts } from "@rezumi/schema/templates";
 import { isRTL } from "@rezumi/utils/locale";
 import { Field, Slider } from "./controls";
-import { TEMPLATES, matchesFilter, templateName } from "./presets";
 import { useSession } from "@/auth/session";
 import { isLabelledTemplate, isLockedTemplate, listedTemplates, showPlanAlert, usePlan } from "@/features/billing/plan";
 import {
@@ -20,7 +20,7 @@ import {
 	templateThumbnailKey,
 } from "@/features/documents/thumbnail-store";
 import { enqueueThumbnail, renderFirstPage, thumbnailPixelWidth } from "@/preview/thumbnail-queue";
-import { Chip, Icon, Segmented, Text, haptics, useTheme } from "@/ui";
+import { Chip, Icon, Segmented, Text, haptics, useTheme } from "@/ui-legacy";
 
 type TemplateGroupProps = {
 	data: ResumeData;

@@ -2,7 +2,7 @@ import type { ProfileBasicsField, ProfileData, ProfilePart, ProfileSectionType }
 import type { ResumeData } from "@rezumi/schema/resume/data";
 import { emptyProfileData, PROFILE_BASICS_FIELDS, PROFILE_SECTION_TYPES } from "@rezumi/schema/profile/data";
 import { defaultResumeData } from "@rezumi/schema/resume/default";
-import { generateId } from "@rezumi/utils/string";
+import { generateId, stripHtml } from "@rezumi/utils/string";
 
 /**
  * How a resume and the account's Profile stay in step.
@@ -336,3 +336,8 @@ export function completeProfile(profile: ProfileData, data: ResumeData): Profile
 
 	return next ?? null;
 }
+
+/** Whether the Profile has a career to draw on (a summary or any entry), beyond the name and email it starts with. */
+export const profileHasCareer = (data: ProfileData) =>
+	Boolean(stripHtml(data.summary.content).trim()) ||
+	PROFILE_SECTION_TYPES.some((type) => data.sections[type].length > 0);

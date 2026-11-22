@@ -1,4 +1,4 @@
-import type { IconName } from "@/ui";
+import type { IconName } from "@/ui-legacy";
 import { useLingui } from "@lingui/react/macro";
 import { ORPCError } from "@orpc/client";
 import { useMutation } from "@tanstack/react-query";
@@ -6,7 +6,7 @@ import { useState } from "react";
 import { View } from "react-native";
 import { orpc } from "@/api/client";
 import { AIProviderSetupSheet, useHasAIProvider } from "@/features/ai/providers";
-import { Button, ListRow, Text, TextField, useTheme } from "@/ui";
+import { Button, ListRow, Text, TextField, useTheme } from "@/ui-legacy";
 
 type Action = "verb" | "result" | "shorter" | "custom";
 

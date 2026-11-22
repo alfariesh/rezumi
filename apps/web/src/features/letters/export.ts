@@ -1,8 +1,9 @@
 import type { ExportFormat } from "@/features/resume/export/use-resume-export";
 import type { CoverLetter } from "@rezumi/schema/cover-letter/data";
 import { createCoverLetterResumeData } from "@rezumi/resume/cover-letter";
+import { getDefaultFileName } from "@rezumi/utils/file-name";
 import { createLetterWordsForLocale, letterPageData } from "./compose";
-import { createExportFile, getDefaultFileName } from "@/features/resume/export/use-resume-export";
+import { createExportFile } from "@/features/resume/export/use-resume-export";
 import { client } from "@/libs/orpc/client";
 
 /** "First-Last-Cover-Letter", from the sender's name. */

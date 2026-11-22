@@ -1,3 +1,4 @@
+import type { TemplateFilter } from "@rezumi/resume/design-presets";
 import type { ResumeData } from "@rezumi/schema/resume/data";
 import type { CareerField, Template } from "@rezumi/schema/templates";
 import type { FocusEvent, KeyboardEvent } from "react";
@@ -7,14 +8,9 @@ import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Trans } from "@lingui/react/macro";
 import { useEffect, useState } from "react";
+import { matchesFilter, TEMPLATES } from "@rezumi/resume/design-presets";
 import { applyTemplatePreset, hasTemplatePreset } from "@rezumi/resume/template-preset";
-import {
-	careerFields,
-	templateCareerFields,
-	templateLayouts,
-	templateLineup,
-	templatePresets,
-} from "@rezumi/schema/templates";
+import { careerFields, templateCareerFields, templateLayouts, templatePresets } from "@rezumi/schema/templates";
 import { Icon } from "@rezumi/ui/components/icon";
 import { toast } from "@rezumi/ui/components/toast";
 import { isRTL } from "@rezumi/utils/locale";
@@ -27,19 +23,6 @@ import { careerFieldNames, templates } from "@/dialogs/resume/template/data";
 import { isLabelledTemplate, isLockedTemplate, usePlan } from "@/features/billing/plan";
 import { openPlanDialog } from "@/features/billing/plan-dialog";
 import { useResumeData, useResumeStore, useUpdateResumeData } from "@/features/resume/builder/draft";
-
-type Filter = "all" | "one" | "two" | "ats";
-
-// The lineup only: a resume on a former template keeps it, but it is no longer offered.
-const TEMPLATE_IDS: readonly Template[] = templateLineup;
-
-const matchesFilter = (id: Template, filter: Filter) => {
-	const layout = templateLayouts[id];
-	if (filter === "one") return layout.columns === 1;
-	if (filter === "two") return layout.columns === 2;
-	if (filter === "ats") return layout.atsSafe;
-	return true;
-};
 
 const suitsField = (id: Template, field: CareerField | "all") =>
 	field === "all" || (templateCareerFields[id] as readonly CareerField[]).includes(field);
@@ -79,7 +62,7 @@ export function TemplateGroup({ layout = "grid" }: TemplateGroupProps) {
 	const { i18n } = useLingui();
 	const data = useResumeData();
 	const plan = usePlan();
-	const [filter, setFilter] = useState<Filter>("all");
+	const [filter, setFilter] = useState<TemplateFilter>("all");
 	const [field, setField] = useState<CareerField | "all">("all");
 	// Leaving Design (by shortcut, say) never leaves a preview on the page.
 	useEffect(() => () => useEditorStore.setState({ previewTemplate: null }), []);
@@ -87,8 +70,8 @@ export function TemplateGroup({ layout = "grid" }: TemplateGroupProps) {
 
 	const current = data.metadata.template;
 	const content = thumbnailContent(data);
-	const shown = TEMPLATE_IDS.filter((id) => matchesFilter(id, filter) && suitsField(id, field));
-	const filters: { id: Filter; label: string }[] = [
+	const shown = TEMPLATES.filter((id) => matchesFilter(id, filter) && suitsField(id, field));
+	const filters: { id: TemplateFilter; label: string }[] = [
 		{ id: "all", label: t`All` },
 		{ id: "one", label: t`One column` },
 		{ id: "two", label: t`Two columns` },
@@ -127,7 +110,7 @@ export function TemplateGroup({ layout = "grid" }: TemplateGroupProps) {
 					selectedKeys={[filter]}
 					onSelectionChange={(keys) => {
 						const [key] = keys === "all" ? [] : [...keys];
-						if (key) setFilter(key as Filter);
+						if (key) setFilter(key as TemplateFilter);
 					}}
 				>
 					<TagGroup.List>
@@ -140,7 +123,7 @@ export function TemplateGroup({ layout = "grid" }: TemplateGroupProps) {
 				</TagGroup>
 				<span className="text-xs text-muted tabular-nums">
 					<Trans>
-						{shown.length} of {TEMPLATE_IDS.length} shown
+						{shown.length} of {TEMPLATES.length} shown
 					</Trans>
 				</span>
 			</div>

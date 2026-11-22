@@ -6,7 +6,7 @@ import type { AssistantDocument } from "./document";
 import type { EditStatus, ProposalHandlers } from "./messages";
 import type { ToolPart } from "./proposals";
 import type { SavedThread } from "./recovery";
-import type { IconName } from "@/ui";
+import type { IconName } from "@/ui-legacy";
 import type { LegendListRef } from "@legendapp/list/react-native";
 import type { Proposal } from "@rezumi/resume/proposals";
 import type { UIMessage } from "ai";
@@ -29,10 +29,9 @@ import { createRequestLane, recoverRun } from "./recovery";
 import { ToolApprovals } from "./tool-approvals";
 import { client, orpc, SessionChangedError } from "@/api/client";
 import { getAccountScope, useSession } from "@/auth/session";
-import { Button, Icon, Text, showToast, useTheme } from "@/ui";
-import { usePullRefresh } from "@/ui/use-pull-refresh";
+import { usePullRefresh } from "@/ui";
+import { Button, Icon, Text, showToast, useTheme } from "@/ui-legacy";
 
-export type { ChatAttachment, MessageContext } from "./chat";
 export type { AssistantDocument } from "./document";
 
 export type ChatViewProps = {
@@ -60,11 +59,11 @@ export type ChatViewProps = {
 	/** Sent once, as soon as it can be (a question asked from another screen). */
 	prompt?: string | null;
 	onPromptSent?: () => void;
-	/** Nothing can be sent (locked document, Knowledge still loading). */
+	/** Nothing can be sent (locked document, the Profile still loading). */
 	disabled?: boolean;
 	/** Error line: Switch model. */
 	onSwitchModel?: () => void;
-	/** After each reply, for example to refresh Knowledge. */
+	/** After each reply, for example to refresh the Profile. */
 	onFinish?: () => void;
 };
 

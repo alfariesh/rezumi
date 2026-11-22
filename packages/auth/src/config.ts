@@ -27,6 +27,7 @@ import { rateLimitConfig } from "@rezumi/utils/rate-limit";
 import { generateId, toUsername } from "@rezumi/utils/string";
 import { timezoneSchema } from "@rezumi/utils/timezone";
 import { isAllowedOAuthRedirectUri } from "@rezumi/utils/url-security.node";
+import { nativeApp } from "./native-app";
 import { createGithubProfileMapper, createProfileMapper, isUsernameReserved } from "./oauth-profile";
 import { authRateLimitStorage } from "./rate-limit";
 import { getTrustedOrigins } from "./trusted-origins";
@@ -510,11 +511,17 @@ const getAuthConfig = () => {
 			maxPasswordLength: 64,
 			requireEmailVerification: false,
 			disableSignUp: env.FLAG_DISABLE_SIGNUPS || env.FLAG_DISABLE_EMAIL_AUTH,
-			sendResetPassword: async ({ user, url }) => {
+			// Mail the page link itself, not Better Auth's `/api/auth/reset-password/:token` hop: universal and app
+			// links never open the app on a redirect inside the browser, and `/api/*` is outside the app's link paths.
+			// Web and app both ask for `/auth/reset-password`, and both send the token to `POST /reset-password`,
+			// which checks it.
+			sendResetPassword: async ({ user, token }) => {
+				const url = new URL("/auth/reset-password", authBaseUrl);
+				url.searchParams.set("token", token);
 				await sendEmail({
 					to: user.email,
 					subject: "Reset your password",
-					react: createElement(ResetPasswordEmail, { url }),
+					react: createElement(ResetPasswordEmail, { url: url.toString() }),
 				});
 			},
 			revokeSessionsOnPasswordReset: true,
@@ -605,6 +612,13 @@ const getAuthConfig = () => {
 				disableSignUp: env.FLAG_DISABLE_SIGNUPS,
 				clientId: env.APPLE_CLIENT_ID ?? "",
 				clientSecret: env.APPLE_CLIENT_SECRET ?? "",
+				// ID tokens from the web flow name the Services ID; Sign in with Apple in the iOS apps names their bundle ids,
+				// taken from `MOBILE_IOS_APP_IDS` (`TEAMID.bundle.id`, the apps the apple-app-site-association file lists), so
+				// a server no app is associated with accepts no app's tokens.
+				audience: [
+					...(env.APPLE_CLIENT_ID ? [env.APPLE_CLIENT_ID] : []),
+					...env.MOBILE_IOS_APP_IDS.map((appID) => appID.slice(appID.indexOf(".") + 1)),
+				],
 				mapProfileToUser: createProfileMapper({
 					providerName: "Apple",
 					getName: (profile, context) => profile.name || context.emailLocalPart,
@@ -614,7 +628,9 @@ const getAuthConfig = () => {
 			google: {
 				enabled: !!env.GOOGLE_CLIENT_ID && !!env.GOOGLE_CLIENT_SECRET,
 				disableSignUp: env.FLAG_DISABLE_SIGNUPS,
-				clientId: env.GOOGLE_CLIENT_ID ?? "",
+				// The web client first (the redirect flow uses it). The Android app's Credential Manager tokens name it too;
+				// the iOS app's tokens name the iOS client.
+				clientId: [env.GOOGLE_CLIENT_ID ?? "", ...(env.GOOGLE_CLIENT_ID_IOS ? [env.GOOGLE_CLIENT_ID_IOS] : [])],
 				clientSecret: env.GOOGLE_CLIENT_SECRET ?? "",
 				mapProfileToUser: createProfileMapper({
 					providerName: "Google",
@@ -689,6 +705,7 @@ const getAuthConfig = () => {
 				rateLimit: oauthProviderRateLimit,
 				silenceWarnings: { oauthAuthServerConfig: true },
 			}) as WithoutEndpointMetadata<ReturnType<typeof oauthProvider>>,
+			nativeApp({ resources: OAUTH_AUDIENCES, rateLimitEnabled: isRateLimitEnabled }),
 			username({
 				minUsernameLength: 3,
 				maxUsernameLength: 64,

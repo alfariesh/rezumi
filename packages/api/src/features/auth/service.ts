@@ -30,6 +30,18 @@ const providers = {
 
 		return providers;
 	},
+
+	/**
+	 * What the mobile apps need for native Apple and Google sign-in: whether Apple is on, and Google's public client
+	 * ids (the web client, which Android's Credential Manager asks for, and the iOS client). Client ids are public.
+	 */
+	native: () => ({
+		apple: Boolean(env.APPLE_CLIENT_ID && env.APPLE_CLIENT_SECRET),
+		google:
+			env.GOOGLE_CLIENT_ID && env.GOOGLE_CLIENT_SECRET
+				? { webClientId: env.GOOGLE_CLIENT_ID, iosClientId: env.GOOGLE_CLIENT_ID_IOS ?? null }
+				: null,
+	}),
 };
 
 export const authService = {

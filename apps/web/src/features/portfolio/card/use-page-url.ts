@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { portfolioHoldsShortLink } from "@/features/resume/share/short-link";
+import { portfolioHoldsShortLink } from "@rezumi/resume/sharing";
 import { useShareOrigin } from "@/features/resume/share/use-share-origin";
 import { orpc } from "@/libs/orpc/client";
 

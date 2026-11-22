@@ -1,11 +1,9 @@
-import type { AppHref, BuilderPane } from "../routes";
-import { routes } from "../routes";
+import type { AccountPane, AppHref, BuilderPane, ProfileTab } from "../routes";
+import { WORKSPACE_TABS } from "@rezumi/schema/career";
+import { PROFILE_TABS, routes } from "../routes";
 import { DEFAULT_SERVER } from "@/auth/session";
 
-export type DeepLink =
-	| { kind: "callback" }
-	| { kind: "root" }
-	| { kind: "target"; server: string | null; href: AppHref };
+type DeepLink = { kind: "callback" } | { kind: "root" } | { kind: "target"; server: string | null; href: AppHref };
 
 // Matches the server's public-resume exclusions.
 const reserved = new Set([
@@ -21,8 +19,13 @@ const reserved = new Set([
 	"ats-checker",
 ]);
 const nativeReserved = new Set([
+	"home",
 	"documents",
 	"applications",
+	"portfolio",
+	"profile",
+	"account",
+	"coach",
 	"career",
 	"settings",
 	"server",
@@ -34,6 +37,91 @@ const nativeReserved = new Set([
 	"r",
 ]);
 const panes = new Set<string>(["write", "page", "design", "check", "share"]);
+const workspaceTabs = new Set<string>(WORKSPACE_TABS);
+const profileTabs = new Set<string>(PROFILE_TABS);
+/** `/dashboard/profile/stories/st_1` → Stories: the web's Profile pages map to the app's sections. */
+const profileTab = (name: string | undefined): ProfileTab | undefined =>
+	name && profileTabs.has(name) ? (name as ProfileTab) : undefined;
+// Web settings pages and the app screen holding the same settings. Billing has no app page (K6): the settings index.
+// Universal and App Links open the app for these pages too (APP_LINK_PREFIXES in apps/server/src/http/app-links.ts and
+// `intentFilters` in app.config.ts; linking/app-links.test.ts keeps the three in step).
+const settingsPanes: Record<string, AccountPane | undefined> = {
+	account: "account",
+	profile: "account",
+	authentication: "account",
+	preferences: "preferences",
+	app: "preferences",
+	ai: "ai",
+	"api-keys": "ai",
+	integrations: "ai",
+};
+// A schedule id, or "new" / "new:<kind>" from the web's schedule links.
+const schedulePattern = /^[A-Za-z0-9_-]{1,128}$|^new(?::(?:discovery|prepare|follow-up))?$/;
+
+/** One query parameter, decoded; undefined when absent or malformed. */
+function queryParam(path: string, key: string): string | undefined {
+	for (const pair of path.split("#", 1)[0]?.split("?", 2)[1]?.split("&") ?? []) {
+		const separator = pair.indexOf("=");
+		if (separator < 0 || pair.slice(0, separator) !== key) continue;
+		try {
+			return decodeURIComponent(pair.slice(separator + 1).replaceAll("+", " "));
+		} catch {
+			return undefined;
+		}
+	}
+	return undefined;
+}
+
+/**
+ * The web app's `/dashboard/...` pages (and the paths of in-app notifications) mapped to the app screen that shows
+ * the same thing (02-teknis 7). Pages the app has no screen for yet land on the tab that will hold them.
+ */
+function dashboardHref(rest: readonly string[], path: string): AppHref | null {
+	const [section, second, third] = rest;
+	if (!section || (section === "career" && !second)) {
+		const schedule = queryParam(path, "schedule");
+		return routes.home(schedule && schedulePattern.test(schedule) ? schedule : undefined);
+	}
+	switch (section) {
+		case "documents":
+		case "resumes":
+		case "cover-letters":
+			return rest.length === 1 ? routes.documents() : null;
+		case "trash":
+			return rest.length === 1 ? routes.trash() : null;
+		case "portfolio":
+			return routes.portfolio();
+		case "profile":
+			return routes.profile(profileTab(second));
+		case "jobs":
+			return routes.applications();
+		case "coach":
+			return rest.length <= 2 ? routes.coach() : null;
+		case "career":
+			if (second === "knowledge") return routes.profile(profileTab(third) ?? "facts");
+			if (second === "offers") return rest.length === 2 ? routes.offers() : null;
+			if (second === "coach") return rest.length <= 3 ? routes.coach() : null;
+			return null;
+		case "applications":
+			if (!second) return routes.applications();
+			if (rest.length === 2 && second === "jobs") return routes.applications();
+			if (rest.length === 2 && second === "offers") return routes.offers();
+			if (rest.length === 2) return routes.application(second);
+			if (rest.length === 3 && third && workspaceTabs.has(third))
+				return routes.application(second, third as (typeof WORKSPACE_TABS)[number]);
+			return null;
+		case "settings": {
+			if (!second) return routes.account();
+			if (second === "billing") return routes.account();
+			// The web's old Job search settings page now redirects to Jobs.
+			if (second === "job-search") return routes.applications();
+			const pane = settingsPanes[second];
+			return pane ? routes.account(pane) : null;
+		}
+		default:
+			return null;
+	}
+}
 
 /** Only known screens, with decoded segments checked before WHATWG URL can erase traversal. */
 export function parseDeepLink(input: string, currentServer: string): DeepLink | null {
@@ -85,8 +173,21 @@ export function parseDeepLink(input: string, currentServer: string): DeepLink | 
 	)
 		return null;
 	const [first, second, third, fourth, fifth] = segments;
-	if (!first || !second) return null;
 	const target = (href: AppHref): DeepLink => ({ kind: "target", server, href });
+	if (first === "dashboard") {
+		const href = dashboardHref(segments.slice(1), path);
+		return href ? target(href) : null;
+	}
+	if (!first || !second) return null;
+	// The reset email's link, after the server checked the token (`?token=`, or `?error=INVALID_TOKEN`).
+	if (first === "auth" && second === "reset-password" && segments.length === 2) {
+		const token = queryParam(path, "token");
+		return target(
+			token && /^[A-Za-z0-9_-]{8,256}$/.test(token) && !queryParam(path, "error")
+				? routes.resetPassword(token)
+				: routes.resetPassword(),
+		);
+	}
 
 	if (__DEV__ && native && pathname === "/builder/preview-sample/page") {
 		for (const pair of path.split("#", 1)[0]?.split("?", 2)[1]?.split("&") ?? []) {
@@ -108,6 +209,14 @@ export function parseDeepLink(input: string, currentServer: string): DeepLink | 
 		}
 	}
 
+	// Development builds only: the design-system gallery (app/dev/ui.tsx), with one known group parameter.
+	if (__DEV__ && native && first === "dev" && second === "ui" && segments.length === 2) {
+		const group = /[?&]group=([a-z]+)(?:&|#|$)/.exec(path)?.[1];
+		return target((group ? `/dev/ui?group=${group}` : "/dev/ui") as AppHref);
+	}
+
+	// The portfolio editor (`/builder/portfolio?mode=`) is not in the app yet: its tab (Phase 12–13 add the editor).
+	if (first === "builder" && second === "portfolio" && segments.length === 2) return target(routes.portfolio());
 	if (first === "builder") {
 		// Web editor mode is a query parameter. Never forward arbitrary queries (e.g. assistant auto-send prompts).
 		let mode: BuilderPane = "write";

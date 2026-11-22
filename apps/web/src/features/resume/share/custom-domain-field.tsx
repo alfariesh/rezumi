@@ -1,5 +1,5 @@
-import type { DnsFindings, DomainStatus, DomainStep } from "./domain-progress";
 import type { RouterOutput } from "@/libs/orpc/client";
+import type { DnsFindings, DomainStep } from "@rezumi/resume/custom-domain";
 import type { IconName } from "@rezumi/ui/components/icon";
 import { Alert, Button, Chip, Input, Label, Spinner, TextField } from "@heroui/react";
 import { t } from "@lingui/core/macro";
@@ -7,13 +7,13 @@ import { useLingui } from "@lingui/react";
 import { Trans } from "@lingui/react/macro";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
+import { DOMAIN_SETTLING_REFRESH_MS, domainSteps, isDomainSettling } from "@rezumi/resume/custom-domain";
+import { portfolioHoldsShortLink } from "@rezumi/resume/sharing";
 import { Icon } from "@rezumi/ui/components/icon";
 import { toast } from "@rezumi/ui/components/toast";
 import { cn } from "@rezumi/utils/style";
 import { CvDomainCard } from "./cv-domain-card";
 import { DnsRecordsDialog } from "./dns-records-dialog";
-import { domainSteps, isDomainSettling } from "./domain-progress";
-import { portfolioHoldsShortLink } from "./short-link";
 import { INPUT_WITH_ICON, WithInputIcon } from "@/components/input/input-icon";
 import { hasPlanFeature, usePlan } from "@/features/billing/plan";
 import { openPlanDialog, openPlanDialogForError } from "@/features/billing/plan-dialog";
@@ -26,7 +26,7 @@ type CustomDomainFieldProps = {
 	suggest: boolean;
 };
 
-const SETTLING_REFRESH_MS = 15_000;
+type DomainStatus = NonNullable<RouterOutput["customDomain"]["get"]>;
 
 /** Connects the account's own domain: the domain, the DNS records to add in a dialog, a check, and the result. */
 export function CustomDomainField({ suggest }: CustomDomainFieldProps) {
@@ -40,7 +40,7 @@ export function CustomDomainField({ suggest }: CustomDomainFieldProps) {
 		...orpc.customDomain.get.queryOptions(),
 		// A refusal means the feature isn't open to this account; the field stays away instead of retrying.
 		retry: false,
-		refetchInterval: (query) => (isDomainSettling(query.state.data) ? SETTLING_REFRESH_MS : false),
+		refetchInterval: (query) => (isDomainSettling(query.state.data) ? DOMAIN_SETTLING_REFRESH_MS : false),
 	});
 	const plan = usePlan();
 	// Connecting needs the plan from the day portfolios open to the account; the server decides the same way.

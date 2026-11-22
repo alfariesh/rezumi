@@ -1,3 +1,6 @@
+// Rich text (react-native-enriched-html) for the letter body and an older letter's recipient. Only an edited field is
+// re-serialised; the session logic lives in `features/write/rich-text.ts`. Render `LetterRichTextToolbar` once on the
+// screen for bold, italic, underline and lists above the keyboard. No Improve on letters.
 import type { RichTextSession } from "@/features/write/rich-text";
 import type { IconName } from "@/ui";
 import type { RefObject } from "react";
@@ -9,8 +12,7 @@ import { EnrichedTextInput } from "react-native-enriched-html";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { letterFieldFocus } from "@/draft";
 import { createRichTextSession } from "@/features/write/rich-text";
-import { Button, IconButton, Text, useTheme } from "@/ui";
-import { useKeyboardVisible } from "@/ui/keyboard";
+import { Button, IconButton, Label, cx, space, useKeyboardVisible, useResolveClassNames, useThemeColor } from "@/ui";
 
 /** The focused editor, for the toolbar docked above the keyboard (one per screen). */
 type ActiveEditor = {
@@ -45,26 +47,34 @@ const loadBaseline = (
 		})
 		.catch(() => undefined);
 
+const LINE = 24;
+
 type LetterRichTextProps = {
 	label: string;
 	value: string;
-	/** Receives letter HTML, only after the user edits this field. */
+	/** Receives letter HTML, only after the person edits this field. */
 	onChange: (html: string) => void;
 	disabled?: boolean | undefined;
 	autoFocus?: boolean | undefined;
 	minLines?: number | undefined;
+	testID?: string | undefined;
 };
 
-/**
- * Rich text for the letter body and an older letter's recipient (react-native-enriched-html). Only an edited field
- * is re-serialised (README §0). Render `LetterRichTextToolbar` once on the screen for bold, italic and lists.
- */
-export function LetterRichText({ label, value, onChange, disabled, autoFocus, minLines = 8 }: LetterRichTextProps) {
-	const { colors, fonts, radius, space, type } = useTheme();
+export function LetterRichText({
+	label,
+	value,
+	onChange,
+	disabled = false,
+	autoFocus,
+	minLines = 8,
+	testID,
+}: LetterRichTextProps) {
+	const [foreground, muted, accent, accentSoft] = useThemeColor(["foreground", "muted", "accent", "accent-soft"]);
+	// The interface font and body size from the design system, the way a `Text` gets them.
+	const { fontFamily, fontSize } = useResolveClassNames("font-normal text-base");
 	const ref = useRef<EnrichedTextInputInstance>(null);
 	const [session] = useState(() => createRichTextSession(value));
 	const [focused, setFocused] = useState(false);
-	const border = focused ? 2 : 1;
 
 	// Undo, a kept draft and remote updates change the text from outside; load them while the field isn't focused.
 	useEffect(() => {
@@ -81,42 +91,44 @@ export function LetterRichText({ label, value, onChange, disabled, autoFocus, mi
 		};
 	}, [session]);
 
+	const inputStyle = {
+		minHeight: LINE * minLines + space[3] * 2,
+		paddingHorizontal: space[3],
+		paddingVertical: space[3],
+		color: foreground,
+		...(typeof fontFamily === "string" ? { fontFamily } : {}),
+		...(typeof fontSize === "number" ? { fontSize } : {}),
+	};
+	const htmlStyle = {
+		a: { color: accent, textDecorationLine: "underline" as const },
+		ul: { bulletColor: muted },
+		ol: { markerColor: muted },
+	};
+
 	return (
-		<View style={{ gap: space.s1 }}>
-			<Text variant="label">{label}</Text>
+		<View className="gap-1.5">
+			<Label>{label}</Label>
 			<View
-				style={{
-					borderWidth: border,
-					borderRadius: radius.rLg,
-					borderColor: focused ? colors.accent : colors.lineStrong,
-					backgroundColor: disabled ? colors.sunken : colors.raised,
-					overflow: "hidden",
-				}}
+				className={cx(
+					"overflow-hidden rounded-field border bg-background",
+					focused ? "border-accent" : "border-transparent",
+					disabled && "opacity-60",
+				)}
 			>
 				<EnrichedTextInput
 					ref={ref}
+					testID={testID}
 					accessibilityLabel={label}
 					// The initial markup only: changing defaultValue reloads the editor and moves the caret.
 					defaultValue={session.markup}
 					editable={!disabled}
 					autoFocus={autoFocus ?? false}
-					placeholderTextColor={colors.ink3}
-					cursorColor={colors.accent}
-					selectionColor={colors.accentSoft}
+					placeholderTextColor={muted}
+					cursorColor={accent}
+					selectionColor={accentSoft}
 					linkRegex={null}
-					style={{
-						minHeight: type.bodyLarge.lineHeight * minLines + space.s3 * 2 - border * 2,
-						paddingHorizontal: space.s3 - (border - 1),
-						paddingVertical: space.s3 - (border - 1),
-						color: colors.ink,
-						fontFamily: fonts.ui[400],
-						fontSize: type.bodyLarge.fontSize,
-					}}
-					htmlStyle={{
-						a: { color: colors.accentText, textDecorationLine: "underline" },
-						ul: { bulletColor: colors.ink2 },
-						ol: { markerColor: colors.ink2 },
-					}}
+					style={inputStyle}
+					htmlStyle={htmlStyle}
 					onFocus={() => {
 						session.focus();
 						letterFieldFocus.onFocus();
@@ -143,13 +155,11 @@ export function LetterRichText({ label, value, onChange, disabled, autoFocus, mi
 	);
 }
 
-/**
- * Bold, italic, underline and lists above the keyboard while a rich-text field has focus, with Done at the end. No
- * Improve on letters. Render it last in the screen: the editor chrome ends content at the keyboard.
- */
+type ToolbarButton = { key: string; icon: IconName; label: string; isActive: boolean | undefined; run: () => void };
+
+/** Bold, italic, underline and lists above the keyboard while a letter field has focus, with Done at the end. */
 export function LetterRichTextToolbar() {
 	const { t } = useLingui();
-	const { colors, size, space } = useTheme();
 	const insets = useSafeAreaInsets();
 	const keyboardVisible = useKeyboardVisible();
 	const editor = useSyncExternalStore(subscribe, () => active);
@@ -160,62 +170,65 @@ export function LetterRichTextToolbar() {
 	};
 	const state = editor.state;
 
-	const buttons: { key: string; icon: IconName; label: string; on: boolean | undefined; run: () => void }[] = [
-		{ key: "b", icon: "text-b", label: t`Bold`, on: state?.bold.isActive, run: () => input()?.toggleBold() },
-		{ key: "i", icon: "text-italic", label: t`Italic`, on: state?.italic.isActive, run: () => input()?.toggleItalic() },
+	const buttons: ToolbarButton[] = [
+		{ key: "b", icon: "text-b", label: t`Bold`, isActive: state?.bold.isActive, run: () => input()?.toggleBold() },
+		{
+			key: "i",
+			icon: "text-italic",
+			label: t`Italic`,
+			isActive: state?.italic.isActive,
+			run: () => input()?.toggleItalic(),
+		},
 		{
 			key: "u",
 			icon: "text-underline",
 			label: t`Underline`,
-			on: state?.underline.isActive,
+			isActive: state?.underline.isActive,
 			run: () => input()?.toggleUnderline(),
 		},
 		{
 			key: "ul",
 			icon: "list-bullets",
 			label: t`Bulleted list`,
-			on: state?.unorderedList.isActive,
+			isActive: state?.unorderedList.isActive,
 			run: () => input()?.toggleUnorderedList(),
 		},
 		{
 			key: "ol",
 			icon: "list-numbers",
 			label: t`Numbered list`,
-			on: state?.orderedList.isActive,
+			isActive: state?.orderedList.isActive,
 			run: () => input()?.toggleOrderedList(),
 		},
 	];
+	// Above the keyboard the bar sits flush; without it, it clears the home indicator.
+	const toolbarStyle = { paddingBottom: keyboardVisible ? 0 : insets.bottom };
 
 	return (
-		// The editor chrome already ends its content at the keyboard, so the toolbar is simply last in the layout.
 		<View
 			accessibilityRole="toolbar"
 			accessibilityLabel={t`Formatting`}
-			style={{
-				flexDirection: "row",
-				alignItems: "center",
-				minHeight: size.hit + space.s1 * 2 + (keyboardVisible ? 0 : insets.bottom),
-				paddingBottom: keyboardVisible ? 0 : insets.bottom,
-				borderTopWidth: 1,
-				borderTopColor: colors.line,
-				backgroundColor: colors.raised,
-			}}
+			className="flex-row items-center border-t border-separator bg-overlay"
+			style={toolbarStyle}
 		>
 			<ScrollView horizontal keyboardShouldPersistTaps="always" showsHorizontalScrollIndicator={false}>
-				<View style={{ flexDirection: "row", alignItems: "center", paddingHorizontal: space.s1 }}>
+				<View className="flex-row items-center px-1">
 					{buttons.map((button) => (
 						<IconButton
 							key={button.key}
+							variant="ghost"
 							icon={button.icon}
 							label={button.label}
-							selected={button.on ?? false}
+							isSelected={button.isActive ?? false}
 							onPress={button.run}
 						/>
 					))}
 				</View>
 			</ScrollView>
-			<Button variant="link" label={t`Done`} onPress={() => editor.ref.current?.blur()} />
-			<View style={{ width: space.s3 }} />
+			<Button variant="ghost" onPress={() => editor.ref.current?.blur()}>
+				{t`Done`}
+			</Button>
+			<View className="w-2" />
 		</View>
 	);
 }

@@ -2,6 +2,7 @@
 // (apps/web/src/routes/builder/$resumeId/-sidebar/right/sections/layout). Pure: no React.
 import type { ResumeData, SectionType } from "@rezumi/schema/resume/data";
 import type { WritableDraft } from "immer";
+import { findPlacement } from "@rezumi/resume/write";
 
 type Layout = ResumeData["metadata"]["layout"];
 export type ColumnId = "main" | "sidebar";
@@ -12,20 +13,12 @@ export type Drop = Location & { index: number };
 // A section shows in the editor only when it has visible content, as on the page.
 export { isSectionVisible as isVisibleSection } from "@rezumi/pdf/filtering";
 
-export function locate(layout: Layout, id: string): Location | null {
-	for (const [page, value] of layout.pages.entries()) {
-		if (value.main.includes(id)) return { page, column: "main" };
-		if (value.sidebar.includes(id)) return { page, column: "sidebar" };
-	}
-	return null;
-}
-
 /**
  * Moves `id` to `to`. `to.index` counts only the visible sections of the target column (what the editor shows);
  * hidden ones keep their place relative to their neighbours. Returns false when nothing changed.
  */
 export function moveSection(layout: WritableDraft<Layout>, id: string, to: Drop, visible: (id: string) => boolean) {
-	const from = locate(layout, id);
+	const from = findPlacement(layout.pages, id);
 	const target = layout.pages[to.page]?.[to.column];
 	const source = from && layout.pages[from.page]?.[from.column];
 	if (!source || !target) return false;
@@ -50,7 +43,7 @@ export function moveToEnd(layout: WritableDraft<Layout>, id: string, to: Locatio
 }
 
 export function moveToNewPage(layout: WritableDraft<Layout>, id: string) {
-	const from = locate(layout, id);
+	const from = findPlacement(layout.pages, id);
 	const source = from && layout.pages[from.page]?.[from.column];
 	if (!source) return;
 	source.splice(source.indexOf(id), 1);

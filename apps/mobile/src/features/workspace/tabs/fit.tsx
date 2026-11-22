@@ -1,5 +1,5 @@
 // Fit (web workspace/fit.tsx, W1–W3): each requirement from the posting against the user's evidence, with gaps
-// closed in place by saving a fact to Knowledge.
+// closed in place by saving a fact to the Profile.
 import type { SavedData, SavedItem } from "../hooks";
 import type { EvidenceStatus } from "../parts";
 import type { WorkspaceTabProps } from "../shell";
@@ -14,7 +14,7 @@ import { Actions, AiNotice, Block, EmptyNotice, StatusPill, useWorking, workingS
 import { WorkspaceScreen } from "../shell";
 import { orpc } from "@/api/client";
 import { useHasAIProvider } from "@/features/ai/providers";
-import { Button, Icon, Skeleton, Text, TextArea, showToast, useTheme } from "@/ui";
+import { Button, Icon, Skeleton, Text, TextArea, showToast, useTheme } from "@/ui-legacy";
 
 type FitItem = SavedItem & { data: SavedData<"fit"> };
 type Requirement = SavedData<"fit">["requirements"][number];
@@ -46,7 +46,7 @@ function Fit({ application, version }: WorkspaceTabProps) {
 		return (
 			<EmptyNotice
 				title={t`Check this role against your evidence`}
-				message={t`Each requirement in the posting is checked against the facts and stories in your Knowledge. Gaps show as missing evidence, never missing ability.`}
+				message={t`Each requirement in the posting is checked against the facts and stories in your Profile. Gaps show as missing evidence, never missing ability.`}
 			>
 				<AiNotice centered />
 				{provider ? (
@@ -75,7 +75,7 @@ function Fit({ application, version }: WorkspaceTabProps) {
 		void queryClient.invalidateQueries({ queryKey: orpc.career.facts.key() });
 		// The fact is already saved, so Undo forgets it and reopens the gap.
 		showToast({
-			message: t`Saved to Knowledge as a fact`,
+			message: t`Saved to your Profile as a fact`,
 			action: {
 				label: t`Undo`,
 				onPress: () => {
@@ -195,7 +195,7 @@ function RequirementCard({ requirement, status, evidence, readOnly, onSaved }: R
 
 type EvidenceEditorProps = { requirement: Requirement; onCancel: () => void; onSaved: (factId: string) => void };
 
-/** W2: what the user did, saved to Knowledge as a shared Experience fact (it's about them, not this job). */
+/** W2: what the user did, saved to the Profile as a shared Experience fact (it's about them, not this job). */
 function EvidenceEditor({ requirement, onCancel, onSaved }: EvidenceEditorProps) {
 	const { t } = useLingui();
 	const { space } = useTheme();
@@ -217,7 +217,7 @@ function EvidenceEditor({ requirement, onCancel, onSaved }: EvidenceEditorProps)
 			if (!fact) throw new Error("not saved");
 			onSaved(fact.id);
 		} catch (error) {
-			showToast({ message: workspaceError(error, t`Couldn't save that to Knowledge. Try again.`) });
+			showToast({ message: workspaceError(error, t`Couldn't save that to your Profile. Try again.`) });
 		}
 	};
 
@@ -237,7 +237,7 @@ function EvidenceEditor({ requirement, onCancel, onSaved }: EvidenceEditorProps)
 				<Button
 					variant="secondary"
 					size="sm"
-					label={t`Save to Knowledge`}
+					label={t`Save to Profile`}
 					loading={saveFact.isPending}
 					onPress={() => void save()}
 				/>

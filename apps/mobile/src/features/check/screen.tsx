@@ -18,8 +18,8 @@ import { Writing } from "./writing";
 import { useSession } from "@/auth/session";
 import { useResumeStore } from "@/draft";
 import { routes } from "@/routes";
-import { Banner, Button, Card, EmptyState, ListRow, Segmented, Skeleton, Text, useTheme } from "@/ui";
-import { usePullRefresh } from "@/ui/use-pull-refresh";
+import { usePullRefresh } from "@/ui";
+import { Banner, Button, Card, EmptyState, ListRow, Segmented, Skeleton, Text, useTheme } from "@/ui-legacy";
 
 type CheckScreenProps = { id: string };
 export function CheckScreen({ id }: CheckScreenProps) {

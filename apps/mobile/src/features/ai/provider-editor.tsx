@@ -25,7 +25,7 @@ import {
 	Text,
 	TextField,
 	useTheme,
-} from "@/ui";
+} from "@/ui-legacy";
 
 export type AIProviderSetupSheetProps = {
 	open: boolean;

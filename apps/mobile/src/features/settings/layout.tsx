@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import { Stack } from "expo-router";
 import { View } from "react-native";
 import { CollectionHeader } from "@/components/collection-header";
-import { Card, Screen, Text, useTheme } from "@/ui";
+import { Card, Screen, Text, useTheme } from "@/ui-legacy";
 
 type SettingsPageProps = {
 	title: string;

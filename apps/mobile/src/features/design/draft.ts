@@ -3,10 +3,10 @@ import type { Template } from "@rezumi/schema/templates";
 import { t } from "@lingui/core/macro";
 import { useEffect, useMemo } from "react";
 import { create } from "zustand";
-import { templateName } from "./presets";
+import { templateName } from "@rezumi/resume/design-presets";
 import { readOnlyDraft, writeTo } from "./write";
 import { useResumeStore } from "@/draft";
-import { showToast } from "@/ui";
+import { showToast } from "@/ui-legacy";
 
 export type { DesignWrite } from "./write";
 

@@ -42,7 +42,7 @@ import {
 	TextArea,
 	TextField,
 	useTheme,
-} from "@/ui";
+} from "@/ui-legacy";
 
 const KINDS: InterviewKind[] = ["screening", "technical", "behavioral", "onsite", "other"];
 const LENGTHS = [30, 45, 60, 90];

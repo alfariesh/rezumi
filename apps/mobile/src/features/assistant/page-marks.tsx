@@ -3,7 +3,7 @@ import { useLingui } from "@lingui/react/macro";
 import { useRouter } from "expo-router";
 import { View } from "react-native";
 import { routes } from "@/routes";
-import { Button, Icon, Text, useTheme } from "@/ui";
+import { Button, Icon, Text, useTheme } from "@/ui-legacy";
 
 export { useMarkedResumeData } from "./proposals";
 

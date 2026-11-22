@@ -7,12 +7,13 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { toast } from "@rezumi/ui/components/toast";
 import { downloadWithAnchor } from "@rezumi/utils/file";
+import { getDefaultFileName, sanitizeFileName } from "@rezumi/utils/file-name";
 import { usePlan } from "@/features/billing/plan";
 import { openPlanDialog } from "@/features/billing/plan-dialog";
 import { createLetterFile, letterFileName } from "@/features/letters/export";
 import { useLetterEditorStore } from "@/features/letters/store";
 import { DownloadSheetFrame } from "@/features/resume/editor/chrome/download-sheet";
-import { createExportFile, getDefaultFileName, sanitizeFileName } from "@/features/resume/export/use-resume-export";
+import { createExportFile } from "@/features/resume/export/use-resume-export";
 import {
 	DownloadActions,
 	FileNameField,

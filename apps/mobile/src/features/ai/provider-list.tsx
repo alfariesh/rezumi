@@ -10,7 +10,7 @@ import { ProviderEditorSheet } from "./provider-editor";
 import { AIProviderSetupSheet, useHasAIProvider } from "./providers";
 import { client, orpc } from "@/api/client";
 import { creditCount } from "@/features/billing/credits";
-import { Banner, Button, Card, EmptyState, Skeleton, Text, useTheme } from "@/ui";
+import { Banner, Button, Card, EmptyState, Skeleton, Text, useTheme } from "@/ui-legacy";
 
 export function ProviderList() {
 	const { t } = useLingui();

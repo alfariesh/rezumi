@@ -2,12 +2,34 @@ import type { ExpoConfig } from "expo/config";
 
 // The official host. Universal Links, App Links and the OAuth callback (`/auth/native-callback`) verify against it.
 const host = "rezumi.app";
+/** Web pages under /dashboard that open their app screen (with `/dashboard` itself). */
+const appLinkPrefixes = [
+	"/dashboard/career",
+	"/dashboard/documents",
+	"/dashboard/resumes",
+	"/dashboard/cover-letters",
+	"/dashboard/trash",
+	"/dashboard/applications",
+	"/dashboard/jobs",
+	"/dashboard/coach",
+	"/dashboard/profile",
+	"/dashboard/portfolio",
+	"/dashboard/settings/account",
+	"/dashboard/settings/profile",
+	"/dashboard/settings/authentication",
+	"/dashboard/settings/preferences",
+	"/dashboard/settings/app",
+	"/dashboard/settings/job-search",
+	"/dashboard/settings/ai",
+	"/dashboard/settings/api-keys",
+	"/dashboard/settings/integrations",
+];
 const microphonePermission = "Rezumi records your answers when you practise for an interview.";
 
 const config: ExpoConfig = {
 	name: "Rezumi",
 	slug: "rezumi",
-	platforms: process.env.EXPO_MOBILE_WEB_PREVIEW === "1" ? ["ios", "android", "web"] : ["ios", "android"],
+	platforms: ["ios", "android"],
 	scheme: "app.rezumi",
 	version: "1.0.0",
 	runtimeVersion: { policy: "fingerprint" },
@@ -24,6 +46,8 @@ const config: ExpoConfig = {
 			dark: "./assets/icon-dark.png",
 		},
 		bundleIdentifier: "app.rezumi",
+		// Sign in with Apple (K4): the `com.apple.developer.applesignin` entitlement.
+		usesAppleSignIn: true,
 		appleTeamId: "ZAVWN3Z2YX",
 		deploymentTarget: "17.4",
 		supportsTablet: true,
@@ -99,9 +123,15 @@ const config: ExpoConfig = {
 				action: "VIEW",
 				autoVerify: true,
 				category: ["BROWSABLE", "DEFAULT"],
+				// The pages with an app screen (plans/mobile 02-teknis 7); keep in step with apps/server/src/http/app-links.ts.
+				// Billing and admin stay on the web: a checkout returning to /dashboard/settings/billing must not open the app.
 				data: [
 					{ scheme: "https", host, path: "/auth/native-callback" },
+					{ scheme: "https", host, path: "/auth/reset-password" },
 					{ scheme: "https", host, pathPrefix: "/builder/" },
+					{ scheme: "https", host, path: "/dashboard" },
+					{ scheme: "https", host, path: "/dashboard/" },
+					...appLinkPrefixes.map((pathPrefix) => ({ scheme: "https", host, pathPrefix })),
 				],
 			},
 		],
@@ -126,8 +156,8 @@ const config: ExpoConfig = {
 			{
 				image: "./assets/splash-icon.png",
 				imageWidth: 160,
-				backgroundColor: "#F8F7F3",
-				dark: { image: "./assets/splash-icon-dark.png", backgroundColor: "#100F0C" },
+				backgroundColor: "#F5F5F5", // the `background` token (DESIGN.md); native config, applies from the next build
+				dark: { image: "./assets/splash-icon-dark.png", backgroundColor: "#060607" },
 			},
 		],
 		[

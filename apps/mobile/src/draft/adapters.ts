@@ -1,9 +1,10 @@
-import type { DraftAdapter } from "./store";
 import type { LetterDocument, ResumeDocument } from "./types";
 import type { RouterInput } from "@/api/client";
+import type { DraftAdapter } from "@rezumi/resume/draft";
 import { t } from "@lingui/core/macro";
 import { ORPCError } from "@orpc/client";
 import { produce } from "immer";
+import { changedFields } from "@rezumi/resume/draft";
 import { coverLetterSchema } from "@rezumi/schema/cover-letter/data";
 import { resumeDataSchema } from "@rezumi/schema/resume/data";
 import { syncResumeDates } from "@rezumi/schema/resume/dates";
@@ -43,14 +44,6 @@ function letterFields(document: LetterDocument) {
 		designLinked: document.designLinked,
 		style: document.style,
 	};
-}
-
-function changedFields<T extends object>(current: T, baseline: T): Partial<T> {
-	const changes: Partial<T> = {};
-	for (const key of Object.keys(current) as (keyof T)[]) {
-		if (JSON.stringify(current[key]) !== JSON.stringify(baseline[key])) changes[key] = current[key];
-	}
-	return changes;
 }
 
 export const resumeAdapter: DraftAdapter<ResumeDocument, ResumeDocument["data"]> = {
@@ -141,6 +134,9 @@ export const letterAdapter: DraftAdapter<LetterDocument, LetterDocument> = {
 			...("senderLinked" in changes ? { senderLinked: document.senderLinked } : {}),
 			...("designLinked" in changes ? { designLinked: document.designLinked } : {}),
 		};
+		// The letter's own sender details ("This letter only"); linked details come from the resume or the Profile.
+		if (!document.senderLinked && "basics" in changedFields(document.style, baseline.style))
+			input.basics = document.style.basics;
 		const metadata = changedFields(document.style.metadata, baseline.style.metadata);
 		if ("template" in metadata) input.template = document.style.metadata.template;
 		if ("typography" in metadata || "design" in metadata || "page" in metadata)

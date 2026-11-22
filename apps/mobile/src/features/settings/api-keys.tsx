@@ -17,7 +17,7 @@ import {
 	listLayout,
 	showToast,
 	useFirstAppearance,
-} from "@/ui";
+} from "@/ui-legacy";
 
 type ApiKeysProps = { userId: string };
 export function ApiKeys({ userId }: ApiKeysProps) {

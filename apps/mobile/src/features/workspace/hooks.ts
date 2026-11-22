@@ -17,12 +17,11 @@ import { orpc } from "@/api/client";
 import { getServer, useSession } from "@/auth/session";
 import { getDraftScope } from "@/draft";
 import { useHasAIProvider } from "@/features/ai/providers";
-import { showToast } from "@/ui";
+import { showToast } from "@/ui-legacy";
 
 export type SavedItem = RouterOutput["career"]["savedItems"][number];
 export type SavedData<K extends SavedItem["data"]["kind"]> = Extract<SavedItem["data"], { kind: K }>;
 export type Fact = RouterOutput["career"]["facts"][number];
-export type Story = RouterOutput["career"]["stories"][number];
 
 /** The server's own message when it explains the problem (web `allowServerMessage`), otherwise `fallback`. */
 export function workspaceError(error: unknown, fallback: string) {
@@ -158,11 +157,8 @@ export function useStories(applicationId: string) {
 	return useQuery({ ...options, queryKey: [...options.queryKey, server], enabled });
 }
 
-export function useSchedules() {
-	const { server, enabled } = useSignedIn();
-	const options = orpc.career.schedules.queryOptions({ input: {} });
-	return useQuery({ ...options, queryKey: [...options.queryKey, server], enabled });
-}
+/** Home's schedules query: one cache copy, so a switch flipped on Home shows here and the other way round. */
+export { useSchedules } from "@/features/home/queries";
 
 /** The newest saved item of one kind, optionally for one interview. */
 export function latest<K extends SavedItem["data"]["kind"]>(

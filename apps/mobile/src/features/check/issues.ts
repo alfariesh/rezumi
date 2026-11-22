@@ -1,4 +1,4 @@
-import type { IconName } from "@/ui";
+import type { IconName } from "@/ui-legacy";
 import type { PageMapTarget } from "@rezumi/pdf/page-map";
 import type { AtsCategory, AtsFinding, AtsReport } from "@rezumi/resume/ats";
 import type { ResumeData } from "@rezumi/schema/resume/data";

@@ -5,7 +5,7 @@ import { Button, Disclosure, Tabs } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useState } from "react";
-import { defaultResumeData } from "@rezumi/schema/resume/default";
+import { DATE_FORMATS, resetDesign } from "@rezumi/resume/design-presets";
 import { Icon } from "@rezumi/ui/components/icon";
 import { toast } from "@rezumi/ui/components/toast";
 import { CustomStylesSectionBuilder } from "../-sidebar/right/sections/custom-styles";
@@ -216,13 +216,6 @@ export function DesignSheet() {
 	);
 }
 
-const DATE_FORMATS: { value: DateFormat; label: string }[] = [
-	{ value: "short", label: "Mar 2022" },
-	{ value: "long", label: "March 2022" },
-	{ value: "numeric", label: "03/2022" },
-	{ value: "iso", label: "2022-03" },
-];
-
 type ExactSectionProps = { id: string; title: ReactNode; children: ReactNode };
 
 /** One part of Advanced: a small muted heading over its exact-value editor, anchored as `design-advanced-{id}`. */
@@ -278,18 +271,8 @@ function AdvancedWidget({ open, onOpenChange }: AdvancedWidgetProps) {
 	const { icon, label } = groupOf("advanced");
 
 	const reset = () => {
-		updateResumeData(
-			(draft) => {
-				const defaults = defaultResumeData.metadata;
-				draft.metadata.typography = structuredClone(defaults.typography);
-				draft.metadata.design = structuredClone(defaults.design);
-				draft.metadata.layout.sidebarWidth = defaults.layout.sidebarWidth;
-				// Paper, language, date format, section placement and custom CSS are the user's, not the look's; they stay.
-				const { gapX, gapY, marginX, marginY, hideLinkUnderline } = defaults.page;
-				Object.assign(draft.metadata.page, { gapX, gapY, marginX, marginY, hideLinkUnderline });
-			},
-			{ newStep: true },
-		);
+		// Paper, language, date format, section placement and custom CSS are the user's, not the look's; they stay.
+		updateResumeData((draft) => resetDesign(draft.metadata), { newStep: true });
 		toast.add({
 			description: t`Design reset to defaults`,
 			actionProps: { children: t`Undo`, onClick: () => useResumeStore.getState().undo() },

@@ -1,5 +1,6 @@
 import "../global.css";
 import type { DefaultTheme } from "expo-router";
+import type { ReactNode } from "react";
 import { I18nProvider } from "@lingui/react";
 import { useLingui } from "@lingui/react/macro";
 import { TrueSheetProvider } from "@lodev09/react-native-true-sheet";
@@ -9,7 +10,7 @@ import { Stack, ThemeProvider } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
 import { HeroUINativeProvider } from "heroui-native";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { KeyboardProvider } from "react-native-keyboard-controller";
 import { SafeAreaProvider } from "react-native-safe-area-context";
@@ -20,32 +21,46 @@ import { useOpenReminder } from "@/features/reminders/open";
 import { useReviewPrompt } from "@/features/reviews/use-review-prompt";
 import { i18n, initI18n } from "@/i18n";
 import { ErrorBoundary } from "@/shell/error-boundary";
-import { EmptyState, Screen, Toaster, WindowSafeAreaProvider, useReducedMotion, useTheme } from "@/ui";
+import { PermissionPrimerHost } from "@/shell/permissions";
+import {
+	ToastBridge,
+	WindowSafeAreaProvider,
+	toastBottomOffset,
+	useColorSchemeValue,
+	useReducedMotion,
+	useThemeColor,
+	useToastBarHeight,
+} from "@/ui";
+import { EmptyState, Screen, Toaster } from "@/ui-legacy";
 import { fontAssets } from "@/ui/fonts";
 import { initTheme } from "@/ui/theme";
 
 void SplashScreen.preventAutoHideAsync();
 
+// React Navigation's chrome (stack headers, native tab bar) in the design system's colors and Google Sans.
 function useNavigationTheme() {
-	const { scheme, colors, fonts } = useTheme();
+	const scheme = useColorSchemeValue();
+	const [accent, background, surface, foreground, border, danger] = useThemeColor([
+		"accent",
+		"background",
+		"surface",
+		"foreground",
+		"border",
+		"danger",
+	]);
 	return {
 		dark: scheme === "dark",
-		colors: {
-			primary: colors.accent,
-			background: colors.bg,
-			card: colors.surface,
-			text: colors.ink,
-			border: colors.line,
-			notification: colors.danger,
-		},
+		colors: { primary: accent, background, card: surface, text: foreground, border, notification: danger },
 		fonts: {
-			regular: { fontFamily: fonts.ui[400], fontWeight: "400" as const },
-			medium: { fontFamily: fonts.ui[500], fontWeight: "500" as const },
-			bold: { fontFamily: fonts.ui[600], fontWeight: "600" as const },
-			heavy: { fontFamily: fonts.ui[700], fontWeight: "700" as const },
+			regular: { fontFamily: "GoogleSans-Regular", fontWeight: "400" as const },
+			medium: { fontFamily: "GoogleSans-Medium", fontWeight: "500" as const },
+			bold: { fontFamily: "GoogleSans-SemiBold", fontWeight: "600" as const },
+			heavy: { fontFamily: "GoogleSans-Bold", fontWeight: "700" as const },
 		},
 	} satisfies typeof DefaultTheme;
 }
+
+const overTabs = (name: string) => name === "coach" || name === "ats-checker" || name.startsWith("account/");
 
 type CrashScreenProps = { onRetry: () => void };
 
@@ -74,13 +89,20 @@ function RootStack() {
 		<ThemeProvider value={navigationTheme}>
 			<StatusBar style="auto" />
 			<Stack
-				screenOptions={{
+				screenOptions={({ route }) => ({
 					animation: reduced ? "fade" : "default",
 					headerTitleStyle: { fontFamily: navigationTheme.fonts.bold.fontFamily },
-				}}
+					// Screens pushed over the tabs (account stack, Coach, ATS checker) would read "(tabs)" as their back title.
+					...(overTabs(route.name) ? { headerBackButtonDisplayMode: "minimal" as const } : {}),
+				})}
 			>
 				<Stack.Screen name="(tabs)" options={{ headerShown: false }} />
 				<Stack.Screen name="(auth)" options={{ headerShown: false }} />
+				<Stack.Screen name="check-email" options={{ headerShown: false, gestureEnabled: false }} />
+				<Stack.Screen
+					name="onboarding"
+					options={{ headerShown: false, gestureEnabled: false, animation: reduced ? "fade" : "slide_from_bottom" }}
+				/>
 				<Stack.Screen name="builder/[id]" options={{ headerShown: false, title: t`Resume` }} />
 				<Stack.Screen name="letter/[id]" options={{ headerShown: false, title: t`Cover letter` }} />
 				<Stack.Screen
@@ -88,12 +110,29 @@ function RootStack() {
 					options={{ presentation: "formSheet", sheetAllowedDetents: [0.5, 0.9], title: t`New` }}
 				/>
 				<Stack.Screen name="search" options={{ presentation: "modal", headerShown: false, title: t`Search` }} />
+				<Stack.Screen name="coach" options={{ title: t`Coach`, headerTransparent: false }} />
 				<Stack.Screen name="ats-checker" options={{ title: t`ATS checker` }} />
 				<Stack.Screen name="applications/[id]" options={{ headerShown: false, title: t`Application` }} />
 				<Stack.Screen name="r/[username]/[slug]" options={{ title: t`Resume` }} />
 			</Stack>
 		</ThemeProvider>
 	);
+}
+
+type UiProviderProps = { children: ReactNode };
+
+// HeroUI's toast region clears the bottom bar that shows (the editor's pane bar; the legacy Toaster reads the same
+// height), so an Undo toast never covers its buttons. Only this wrapper re-renders when the height changes.
+function UiProvider({ children }: UiProviderProps) {
+	const bar = useToastBarHeight();
+	const config = useMemo(
+		() => ({
+			devInfo: { stylingPrinciples: false },
+			toast: bar > 0 ? { insets: { bottom: toastBottomOffset(bar, 0) } } : {},
+		}),
+		[bar],
+	);
+	return <HeroUINativeProvider config={config}>{children}</HeroUINativeProvider>;
 }
 
 function RootLayout() {
@@ -117,7 +156,7 @@ function RootLayout() {
 
 	return (
 		<GestureHandlerRootView style={{ flex: 1 }}>
-			<HeroUINativeProvider>
+			<UiProvider>
 				<SafeAreaProvider>
 					<WindowSafeAreaProvider>
 						<KeyboardProvider>
@@ -129,13 +168,15 @@ function RootLayout() {
 											<SessionGate />
 										</ErrorBoundary>
 										<Toaster />
+										<ToastBridge />
+										<PermissionPrimerHost />
 									</TrueSheetProvider>
 								</I18nProvider>
 							</QueryClientProvider>
 						</KeyboardProvider>
 					</WindowSafeAreaProvider>
 				</SafeAreaProvider>
-			</HeroUINativeProvider>
+			</UiProvider>
 		</GestureHandlerRootView>
 	);
 }

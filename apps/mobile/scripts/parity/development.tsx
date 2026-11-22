@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { Platform } from "react-native";
 import { installDevelopmentSession } from "../../src/auth/session";
 import { resumeFieldFocus, useResumeStore } from "../../src/draft";
-import { Banner, Button, TextField } from "../../src/ui";
+import { Banner, Button, TextField } from "../../src/ui-legacy";
 import { runParity } from "./device";
 import { runReviewChecks } from "./review";
 

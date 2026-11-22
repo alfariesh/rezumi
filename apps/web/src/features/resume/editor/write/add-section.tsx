@@ -4,10 +4,6 @@ import type { CustomSectionType, SectionType } from "@rezumi/schema/resume/data"
 import { Button, Dropdown, Header, Label, Link, Separator } from "@heroui/react";
 import { plural, t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
-import { Icon } from "@rezumi/ui/components/icon";
-import { PanelSection } from "../chrome/panel-section";
-import { useEditorStore } from "../store";
-import { openEntry } from "./actions";
 import {
 	addBuiltinSection,
 	addCustomSection,
@@ -15,7 +11,11 @@ import {
 	CUSTOM_SECTION_TYPES,
 	ensurePlaced,
 	isSectionInUse,
-} from "./model";
+} from "@rezumi/resume/write";
+import { Icon } from "@rezumi/ui/components/icon";
+import { PanelSection } from "../chrome/panel-section";
+import { useEditorStore } from "../store";
+import { openEntry } from "./actions";
 import { sectionParts, takeProfileParts, useBuilderProfile, useSectionsFromProfile } from "./profile-link";
 import { useWriteSelector, useWriteSource } from "./source";
 import { getSectionTitle, SECTION_ICONS } from "@/libs/resume/section";

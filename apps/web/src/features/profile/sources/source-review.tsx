@@ -1,15 +1,15 @@
-import type { PhotoCandidate, ReviewEntry, ReviewGroup } from "./model";
-import type { Entry } from "@/features/resume/editor/write/model";
+import type { PhotoCandidate, ReviewEntry, ReviewGroup } from "@rezumi/resume/profile-sources";
+import type { Entry } from "@rezumi/resume/write";
 import type { ProfileBasicsField, ProfileData } from "@rezumi/schema/profile/data";
 import { Checkbox, Radio, RadioGroup } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useId } from "react";
+import { describeEntry } from "@rezumi/resume/write";
 import { Icon } from "@rezumi/ui/components/icon";
 import { stripHtml } from "@rezumi/utils/string";
 import { cn } from "@rezumi/utils/style";
 import { photoSourceLabel } from "./messages";
-import { describeEntry } from "@/features/resume/editor/write/model";
 import { UserAvatar } from "@/features/user/avatar";
 import { ENTER_CLASS, stagger } from "@/libs/motion";
 import { getSectionTitle, SECTION_ICONS } from "@/libs/resume/section";

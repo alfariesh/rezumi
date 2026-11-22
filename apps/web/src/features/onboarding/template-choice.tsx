@@ -6,6 +6,7 @@ import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Trans } from "@lingui/react/macro";
 import { useMemo, useState } from "react";
+import { offeredTemplates } from "@rezumi/career/onboarding";
 import { resumeDataFromProfile } from "@rezumi/resume/profile";
 import { applyTemplatePreset } from "@rezumi/resume/template-preset";
 import { templateLineup } from "@rezumi/schema/templates";
@@ -14,16 +15,6 @@ import { isLabelledTemplate, isLockedTemplate, usePlan } from "@/features/billin
 import { openPlanDialog } from "@/features/billing/plan-dialog";
 import { TemplateCard } from "@/features/resume/editor/design/template-card";
 import { thumbnailContent } from "@/features/resume/editor/design/thumbnails";
-
-/** How many templates show before "More templates": the first ones in gallery order the plan opens. */
-export const FIRST_TEMPLATES = 6;
-
-/** The templates offered first, then the rest of the lineup once asked for. The chosen one always shows. */
-export function offeredTemplates(locked: (template: Template) => boolean, all: boolean, chosen: Template): Template[] {
-	if (all) return [...templateLineup];
-	const first = templateLineup.filter((template) => !locked(template)).slice(0, FIRST_TEMPLATES);
-	return first.includes(chosen) ? first : [...first, chosen];
-}
 
 /**
  * A new resume takes its template with the template's own look (fonts, accent), so each card is drawn that way. The

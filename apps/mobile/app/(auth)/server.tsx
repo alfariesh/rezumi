@@ -1,19 +1,25 @@
 import type { ImperativeRouter } from "expo-router";
 import { useLingui } from "@lingui/react/macro";
-import { useRouter, Stack } from "expo-router";
+import { Redirect, useRouter, Stack } from "expo-router";
 import { useEffect, useEffectEvent, useRef, useState } from "react";
 import { ActivityIndicator, View, useWindowDimensions } from "react-native";
 import { KeyboardAwareScrollView, KeyboardStickyView } from "react-native-keyboard-controller";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { hostOf } from "@/auth/auth-header";
 import { serverErrorMessage } from "@/auth/messages";
 import { discover, isAllowedServer, ServerError, toOrigin } from "@/auth/oauth";
-import { useSession } from "@/auth/session";
+import { setSignInServer, useSession } from "@/auth/session";
 import { routes } from "@/routes";
-import { Button, Screen, Text, TextField, useTheme } from "@/ui";
+import { Button, Screen, Text, TextField, useTheme } from "@/ui-legacy";
+
+// Development builds only (the Welcome screen shows the Server row under `__DEV__`).
+/** The host of an origin, as people type it: `https://rezumi.app` → `rezumi.app`. */
+const hostOf = (origin: string) => origin.replace(/^https?:\/\//, "");
 
 const continueTo = (server: string, router: ImperativeRouter) =>
-	router.push({ pathname: routes.signIn(), params: { server } });
+	void setSignInServer(server).then(
+		() => router.replace(routes.signIn()),
+		() => router.replace(routes.signIn()),
+	);
 
 type Check =
 	| { state: "idle" }
@@ -24,6 +30,11 @@ type Check =
 const checkDelay = 600;
 
 export default function CustomServer() {
+	if (!__DEV__) return <Redirect href={routes.signIn()} />;
+	return <ServerPicker />;
+}
+
+function ServerPicker() {
 	const router = useRouter();
 	const { t, i18n } = useLingui();
 	const { colors, size, space } = useTheme();

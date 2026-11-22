@@ -9,7 +9,7 @@ import { useCareerQueries, useCareerTime, useNow, useOffers } from "./hooks";
 import { defaultPair, formatMoney, matchingPlace, meetsMinimum, moneyDifference, sameTerms } from "./offer-compare";
 import { Actions, LoadState } from "./shared";
 import { routes } from "@/routes";
-import { Banner, Button, Card, EmptyState, Screen, SelectSheet, Text, useTheme } from "@/ui";
+import { Banner, Button, Card, EmptyState, Screen, SelectSheet, Text, useTheme } from "@/ui-legacy";
 
 type Offer = SavedItem & { data: OfferTerms & { kind: "offer" } };
 const periodLabel = (value: OfferTerms["period"]) =>
@@ -51,12 +51,7 @@ export function OffersScreen() {
 						/>
 						<Button
 							label={t`Plan what to ask`}
-							onPress={() =>
-								router.push({
-									pathname: routes.career("coach"),
-									params: { offers: [a?.id, b?.id].filter((id): id is string => !!id) },
-								})
-							}
+							onPress={() => router.push(routes.coach([a?.id, b?.id].filter((id): id is string => !!id)))}
 						/>
 					</Actions>
 					<View

@@ -1,4 +1,5 @@
 import { eq } from "drizzle-orm";
+import { nativeAppRedirectUris } from "@rezumi/auth/native-app";
 import { db } from "@rezumi/db/client";
 import * as schema from "@rezumi/db/schema";
 import { env } from "@rezumi/env/server";
@@ -6,9 +7,6 @@ import { getBillingMode, getEntitlements } from "./entitlements";
 import { planFeatureRequired } from "./limits";
 
 type Authentication = { user: { id: string }; method: "apiKey" | "bearer" | "session"; clientId?: string | undefined };
-
-/** The host Rezumi's own iOS and Android apps are associated with; their OAuth callback lands there for every server. */
-const OFFICIAL_APP_HOST = "rezumi.app";
 
 /**
  * The Rezumi browser extension's store ids (Chrome Web Store, Edge Add-ons). Its OAuth redirect is
@@ -23,10 +21,9 @@ export const EXTENSION_IDS = ["fiogmglhgeiaaeajahbpmmehgmojbjjo", "jnemleffcmnbk
  * builds use against a local server; the browser extension uses its store ids' `chromiumapp.org` addresses.
  */
 export function firstPartyRedirectUris(appUrl = env.APP_URL): ReadonlySet<string> {
+	// The development scheme stays on this list as before; client registration refuses it unless the server allows it.
 	return new Set([
-		`https://${OFFICIAL_APP_HOST}/auth/native-callback`,
-		`https://${new URL(appUrl).host}/auth/native-callback`,
-		"app.rezumi:/auth/native-callback",
+		...nativeAppRedirectUris(appUrl, true),
 		...EXTENSION_IDS.map((id) => `https://${id}.chromiumapp.org/`),
 	]);
 }

@@ -1,6 +1,6 @@
 import type { MessageContext, ThreadSummary } from "./chat";
 import type { AssistantDocument } from "./document";
-import type { IconName } from "@/ui";
+import type { IconName } from "@/ui-legacy";
 import { Trans, useLingui } from "@lingui/react/macro";
 import { useRouter } from "expo-router";
 import { useState } from "react";
@@ -17,7 +17,7 @@ import { getAccountScope, useSession } from "@/auth/session";
 import { useLetterStore, useResumeStore } from "@/draft";
 import { useHasAIProvider } from "@/features/ai/providers";
 import { routes } from "@/routes";
-import { Banner, Button, Icon, IconButton, Text, useTheme } from "@/ui";
+import { Banner, Button, Icon, IconButton, Text, useTheme } from "@/ui-legacy";
 
 export type AssistantScreenProps = {
 	resumeId: string;

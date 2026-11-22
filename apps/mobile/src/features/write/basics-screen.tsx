@@ -13,7 +13,7 @@ import { resolvePictureUrl } from "./picture-screen";
 import { useSession } from "@/auth/session";
 import { useIsResumeLocked, useResumeStore } from "@/draft";
 import { routes } from "@/routes";
-import { Button, Icon, IconButton, Text, TextField, useTheme } from "@/ui";
+import { Button, Icon, IconButton, Text, TextField, useTheme } from "@/ui-legacy";
 
 type TextKey = "name" | "headline" | "email" | "phone" | "location";
 

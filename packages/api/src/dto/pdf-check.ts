@@ -72,6 +72,8 @@ export const pdfCheckSchema = z.object({
 	file: z.object({ name: z.string(), sizeBytes: z.number(), magicBytesOk: z.boolean() }),
 	document: z.object({
 		pageCount: z.number(),
+		// The pages the report covers: all of them, or the first ones when `truncated`.
+		checkedPageCount: z.number(),
 		truncated: z.boolean(),
 		wordCount: z.number(),
 		operatorsAvailable: z.boolean(),

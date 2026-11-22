@@ -1,5 +1,5 @@
 import type { PlanSummary } from "./plan";
-import type { IconName } from "@/ui";
+import type { IconName } from "@/ui-legacy";
 import type { ReactNode } from "react";
 import type { LayoutChangeEvent } from "react-native";
 import { useLingui } from "@lingui/react/macro";
@@ -14,7 +14,7 @@ import Animated, {
 	withTiming,
 } from "react-native-reanimated";
 import { getPlanName } from "./plan";
-import { Icon, Text, useReducedMotion, useTheme } from "@/ui";
+import { Icon, Text, useReducedMotion, useTheme } from "@/ui-legacy";
 
 // Paid plans get a coloured frame (as on the web): Plus deep blue, Pro AI deep violet into blue.
 const frames = {

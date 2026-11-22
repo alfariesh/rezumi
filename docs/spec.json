@@ -30850,6 +30850,110 @@
 				]
 			}
 		},
+		"/auth/providers/native": {
+			"get": {
+				"operationId": "getNativeSignInOptions",
+				"summary": "Get native app sign-in options",
+				"description": "Returns what Rezumi's mobile apps need to offer native Sign in with Apple and Google: whether Apple sign-in is enabled, and Google's public OAuth client ids. No authentication required.",
+				"tags": [
+					"Authentication"
+				],
+				"parameters": [],
+				"responses": {
+					"200": {
+						"description": "Native sign-in options for this instance.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"apple": {
+											"type": "boolean",
+											"description": "Whether Sign in with Apple is enabled."
+										},
+										"google": {
+											"anyOf": [
+												{
+													"type": "object",
+													"properties": {
+														"webClientId": {
+															"type": "string",
+															"description": "Google's web OAuth client id (Android asks Credential Manager for it)."
+														},
+														"iosClientId": {
+															"anyOf": [
+																{
+																	"type": "string"
+																},
+																{
+																	"type": "null"
+																}
+															],
+															"description": "Google's iOS OAuth client id, when configured."
+														}
+													},
+													"required": [
+														"webClientId",
+														"iosClientId"
+													]
+												},
+												{
+													"type": "null"
+												}
+											],
+											"description": "Google sign-in, when enabled."
+										}
+									},
+									"required": [
+										"apple",
+										"google"
+									]
+								}
+							}
+						}
+					},
+					"default": {
+						"description": "Structured API error. See status and code; do not branch on message text.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"required": [
+										"defined",
+										"code",
+										"status",
+										"message"
+									],
+									"properties": {
+										"defined": {
+											"type": "boolean"
+										},
+										"code": {
+											"type": "string"
+										},
+										"status": {
+											"type": "integer"
+										},
+										"message": {
+											"type": "string"
+										},
+										"data": {}
+									}
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"x-codeSamples": [
+					{
+						"lang": "bash",
+						"label": "cURL",
+						"source": "curl \"https://rezumi.app/api/openapi/auth/providers/native\""
+					}
+				]
+			}
+		},
 		"/auth/account/export": {
 			"get": {
 				"operationId": "exportAccountData",
@@ -106209,6 +106313,9 @@
 												"pageCount": {
 													"type": "number"
 												},
+												"checkedPageCount": {
+													"type": "number"
+												},
 												"truncated": {
 													"type": "boolean"
 												},
@@ -106221,6 +106328,7 @@
 											},
 											"required": [
 												"pageCount",
+												"checkedPageCount",
 												"truncated",
 												"wordCount",
 												"operatorsAvailable"

@@ -2,7 +2,7 @@ import type { UIMessage } from "ai";
 import { Trans, useLingui } from "@lingui/react/macro";
 import { View } from "react-native";
 import { agentApprovalRequests } from "@rezumi/ai/tools/agent-tool-contracts";
-import { Button, Text, useTheme } from "@/ui";
+import { Button, Text, useTheme } from "@/ui-legacy";
 
 type ToolApprovalsProps = {
 	message: UIMessage;
@@ -19,7 +19,7 @@ export function ToolApprovals({ message, disabled, onDecision }: ToolApprovalsPr
 				{kind === "search" ? (
 					<Trans>Send this exact query to your web search provider?</Trans>
 				) : (
-					<Trans>Save this story to Knowledge?</Trans>
+					<Trans>Save this story to your Profile?</Trans>
 				)}
 			</Text>
 			<Text selectable>{text}</Text>

@@ -1,6 +1,6 @@
 // Small pieces every workspace tab uses, ported from apps/web/src/features/career/shared.tsx.
-import type { IconName } from "@/ui";
-import type { ColorToken } from "@/ui/tokens";
+import type { IconName } from "@/ui-legacy";
+import type { ColorToken } from "@/ui-legacy/tokens";
 import type { GenerateTask, WorkspaceTab } from "@rezumi/schema/career";
 import type { ReactNode } from "react";
 import { t } from "@lingui/core/macro";
@@ -9,7 +9,7 @@ import { Children, useEffect, useState } from "react";
 import { ActivityIndicator, Pressable, View } from "react-native";
 import { AIProviderSetupSheet, useHasAIProvider } from "@/features/ai/providers";
 import { ReportAiContent } from "@/features/ai/report-content";
-import { Banner, Button, Card, Icon, Text, useTheme } from "@/ui";
+import { Banner, Button, Card, Icon, Text, useTheme } from "@/ui-legacy";
 
 export const tabLabel = (tab: WorkspaceTab) =>
 	({
@@ -28,7 +28,7 @@ export const workingSteps = (task: GenerateTask["task"] | "tighten") =>
 		fit: [t`Reading the posting`, t`Matching your facts`, t`Weighing each requirement`, t`Checking your preferences`],
 		briefing: [t`Reading the posting`, t`Picking your stories`, t`Timing the plan`, t`Drafting questions`],
 		practice: [t`Reading your answer`, t`Finding what works`, t`Sharpening the opening`],
-		debrief: [t`Reading your notes`, t`Checking against Knowledge`, t`Planning your week`],
+		debrief: [t`Reading your notes`, t`Checking against your Profile`, t`Planning your week`],
 		reply: [t`Reading the message`, t`Spotting what changed`, t`Drafting a reply`],
 		answer: [t`Reading the question`, t`Drafting`],
 		tighten: [t`Tightening`, t`Trimming words`],
@@ -216,7 +216,7 @@ export function AiNotice({ sends, centered = false }: AiNoticeProps) {
 		<>
 			<PrivacyLine centered={centered}>
 				{sends ??
-					t`Sends this application's posting, notes and documents, plus Knowledge that's switched on, to ${label}.`}
+					t`Sends this application's posting, notes and documents, plus your Profile if switched on, to ${label}.`}
 			</PrivacyLine>
 			<ReportAiContent source="career" />
 		</>

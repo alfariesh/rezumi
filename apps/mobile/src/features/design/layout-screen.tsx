@@ -19,7 +19,7 @@ import {
 	setFullWidth,
 	toggleBreak,
 } from "./layout";
-import { Button, Icon, IconButton, ListRow, Sheet, Text, haptics, useTheme } from "@/ui";
+import { Button, Icon, IconButton, ListRow, Sheet, Text, haptics, useTheme } from "@/ui-legacy";
 
 type Measurable = {
 	measureInWindow: (callback: (x: number, y: number, width: number, height: number) => void) => void;

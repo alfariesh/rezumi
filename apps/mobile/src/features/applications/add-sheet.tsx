@@ -25,7 +25,7 @@ import {
 	TextArea,
 	TextField,
 	useTheme,
-} from "@/ui";
+} from "@/ui-legacy";
 
 type ParsedPosting = RouterOutput["applications"]["ai"]["parsePosting"];
 type AddApplicationSheetProps = { onClose: () => void };

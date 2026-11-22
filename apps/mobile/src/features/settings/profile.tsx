@@ -7,7 +7,9 @@ import { useState } from "react";
 import { View } from "react-native";
 import { client, orpc, rest } from "@/api/client";
 import { useSession } from "@/auth/session";
-import { Avatar, Button, ListRow, Sheet, TextField, showToast, useTheme } from "@/ui";
+import { askPermission } from "@/shell/permissions";
+import { useUnsavedChangesGuard } from "@/shell/unsaved-changes";
+import { Avatar, Button, ListRow, Sheet, TextField, showToast, useTheme } from "@/ui-legacy";
 
 type Profile = RouterOutput["auth"]["getProfile"];
 type ProfileFieldProps = { field: "name" | "username"; value: string; server: string };
@@ -31,6 +33,8 @@ function ProfileField({ field, value, server }: ProfileFieldProps) {
 			setEdit(null);
 		},
 	});
+	// An edit that can't be saved (invalid, or the save failed) asks before the screen closes; a valid one saves on blur.
+	useUnsavedChangesGuard({ dirty: edit !== null && trimmed !== value && (invalid || mutation.isError) });
 	const commit = () => {
 		setTouched(true);
 		if (!invalid && trimmed !== value && !mutation.isPending) mutation.mutate();
@@ -80,9 +84,14 @@ export function ProfileEditor({ profile }: ProfileEditorProps) {
 		mutationFn: async (source: "library" | "camera" | "remove") => {
 			let image: string | null = null;
 			if (source !== "remove") {
-				if (source === "camera" && !(await ImagePicker.requestCameraPermissionsAsync()).granted) {
-					throw new Error(t`Allow camera access in your device settings to take a photo.`);
-				}
+				if (
+					source === "camera" &&
+					!(await askPermission("camera", {
+						get: () => ImagePicker.getCameraPermissionsAsync(),
+						request: () => ImagePicker.requestCameraPermissionsAsync(),
+					}))
+				)
+					return;
 				const options: ImagePicker.ImagePickerOptions = {
 					mediaTypes: ["images"],
 					allowsEditing: true,

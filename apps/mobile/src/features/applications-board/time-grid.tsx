@@ -20,7 +20,7 @@ import {
 	zonedTime,
 } from "./calendar";
 import { interviewTypeLabel, useUserTime } from "@/features/application-detail/hooks";
-import { haptics, showToast, Text, useTheme } from "@/ui";
+import { haptics, showToast, Text, useTheme } from "@/ui-legacy";
 
 const HOURS = Array.from({ length: 24 }, (_, hour) => hour);
 const LONG_PRESS_MS = 400;

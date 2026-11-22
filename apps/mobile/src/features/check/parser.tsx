@@ -7,7 +7,7 @@ import { useEffect, useRef, useState } from "react";
 import { View } from "react-native";
 import { runAtsCheck } from "@/features/ats-checker/check";
 import { getPdfFindingMessage } from "@/features/ats-checker/messages";
-import { Banner, Button, Card, Skeleton, Text, useTheme } from "@/ui";
+import { Banner, Button, Card, Skeleton, Text, useTheme } from "@/ui-legacy";
 
 type ParserProps = {
 	pdf: Uint8Array | null;

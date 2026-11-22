@@ -1,12 +1,24 @@
-import type { DraftAdapter } from "./store";
 import type { PendingDocument } from "./types";
+import type { DraftAdapter, DraftStore } from "@rezumi/resume/draft";
+import type { StoreApi, UseBoundStore } from "zustand";
+import { useStore } from "zustand";
+import { createDraftStore } from "@rezumi/resume/draft";
 import { letterAdapter, resumeAdapter } from "./adapters";
 import { nativeEnvironment, watchDraft } from "./native";
-import { createDraftStore } from "./store";
-import { streamClient } from "@/api/client";
+import { orpc, streamClient } from "@/api/client";
+import { queryClient } from "@/api/query-client";
+
+/** The engine's store as a React hook that also carries `getState`/`setState`/`subscribe`. */
+function bindStore<S>(api: StoreApi<S>): UseBoundStore<StoreApi<S>> {
+	function useBoundStore<U>(selector: (state: S) => U) {
+		return useStore(api, selector);
+	}
+	return Object.assign(useBoundStore, api) as UseBoundStore<StoreApi<S>>;
+}
 
 function createNativeDraft<D extends { id: string; isLocked: boolean }, T>(adapter: DraftAdapter<D, T>) {
 	const draft = createDraftStore(adapter, nativeEnvironment);
+	const store: UseBoundStore<StoreApi<DraftStore<D, T>>> = bindStore(draft.store);
 	const { open, close, flush } = draft.store.getState();
 	let stop: (() => void) | undefined;
 	let stream: AbortController | undefined;
@@ -25,8 +37,10 @@ function createNativeDraft<D extends { id: string; isLocked: boolean }, T>(adapt
 		const signal = stream.signal;
 		try {
 			const events = await streamClient.resume.updates.subscribe({ id }, { signal });
-			for await (const _event of events) {
+			for await (const event of events) {
 				if (signal.aborted || current !== visit) return;
+				// The Profile changed and this resume followed it: Write's Profile markers compare against the new one.
+				if (event?.mutation === "profile") void queryClient.invalidateQueries({ queryKey: orpc.profile.get.key() });
 				await draft.refresh();
 			}
 		} catch {
@@ -35,7 +49,7 @@ function createNativeDraft<D extends { id: string; isLocked: boolean }, T>(adapt
 		if (!signal.aborted && current === visit) reconnect = setTimeout(() => void subscribe(id, current), 2500);
 	}
 
-	draft.store.setState({
+	store.setState({
 		open: async (id) => {
 			stopStream();
 			const current = visit;
@@ -52,11 +66,12 @@ function createNativeDraft<D extends { id: string; isLocked: boolean }, T>(adapt
 	});
 	return {
 		...draft,
+		store,
 		clearDraftsFor: (owner: string) => {
 			try {
 				draft.clearDraftsFor(owner);
 			} finally {
-				if (!draft.store.getState().document) {
+				if (!store.getState().document) {
 					stopStream();
 					stop?.();
 					stop = undefined;

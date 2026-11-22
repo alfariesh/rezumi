@@ -1,4 +1,4 @@
-import type { FlatRow, OutlineRow, WriteSection } from "./model";
+import type { FlatRow, OutlineRow } from "./model";
 import type { CustomSectionType, ResumeData, SectionType } from "@rezumi/schema/resume/data";
 import { plural } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react/macro";
@@ -39,7 +39,19 @@ import { useSession } from "@/auth/session";
 import { useIsResumeLocked } from "@/draft";
 import { resume } from "@/draft/runtime";
 import { routes } from "@/routes";
-import { Banner, Button, Chip, Icon, IconButton, ListRow, Sheet, SortableList, Text, showToast, useTheme } from "@/ui";
+import {
+	Banner,
+	Button,
+	Chip,
+	Icon,
+	IconButton,
+	ListRow,
+	Sheet,
+	SortableList,
+	Text,
+	showToast,
+	useTheme,
+} from "@/ui-legacy";
 
 type OutlineProps = { resumeId: string; imported?: string | undefined; initialSection?: string | undefined };
 
@@ -647,5 +659,3 @@ function AddSectionSheet({ open, data, added, onClose, onAdd, onAddCustom }: Add
 		</Sheet>
 	);
 }
-
-export type { WriteSection };

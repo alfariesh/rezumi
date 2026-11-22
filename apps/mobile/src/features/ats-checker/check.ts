@@ -7,7 +7,7 @@ import { rest } from "@/api/client";
 export type AtsResult = { report: PdfAtsReport; fullText: string };
 
 /** The server checks PDFs up to 25 MB (`POST /pdf-checks`). */
-export const MAX_CHECK_BYTES = 25_000_000;
+const MAX_CHECK_BYTES = 25_000_000;
 /** Importing into the editor (`POST /resumes/file-imports`) takes up to 10 MB. */
 export const MAX_IMPORT_BYTES = 10 * 1024 * 1024;
 

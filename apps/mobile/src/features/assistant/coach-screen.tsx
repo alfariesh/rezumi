@@ -1,7 +1,7 @@
 // Career → Coach (ported from apps/web/src/features/career/coach.tsx): conversations about the whole search, with what
 // each message shares chosen in the composer.
 import type { MessageContext, ThreadSummary } from "./chat";
-import type { IconName } from "@/ui";
+import type { IconName } from "@/ui-legacy";
 import { plural } from "@lingui/core/macro";
 import { Trans, useLingui } from "@lingui/react/macro";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
@@ -15,7 +15,7 @@ import { useDeleteThread, useThreadTime, useThreadTitle } from "./threads";
 import { client, orpc } from "@/api/client";
 import { useSession } from "@/auth/session";
 import { useHasAIProvider } from "@/features/ai/providers";
-import { Button, Icon, IconButton, ListRow, Sheet, Text, TextField, showToast, useTheme } from "@/ui";
+import { Button, Icon, IconButton, ListRow, Sheet, Text, TextField, showToast, useTheme } from "@/ui-legacy";
 
 type Chips = { application: boolean; memory: boolean; web: boolean; offers: boolean };
 const DEFAULT_CHIPS: Chips = { application: true, memory: true, web: false, offers: true };
@@ -112,9 +112,9 @@ export function CoachScreen({ offerIds }: CoachScreenProps) {
 	const connection = /connection$/i.test(label) ? label : t`${label} connection`;
 	const privacy = [
 		chips.memory && knowledge.isError
-			? t`Knowledge couldn't load. Try again or switch Knowledge off before sending.`
+			? t`Your Profile couldn't load. Try again or switch Profile off before sending.`
 			: chips.memory && knowledge.isPending
-				? t`Loading Knowledge before you send…`
+				? t`Loading your Profile before you send…`
 				: t`When you tap send, ${list} go to ${connection}.`,
 		...(chips.web ? [t`Search terms go to your web search service.`] : []),
 	].join(" ");
@@ -144,7 +144,7 @@ export function CoachScreen({ offerIds }: CoachScreenProps) {
 					void threads.refetch();
 					knowledge.retry();
 				}}
-				notSetUp={t`The coach isn't set up on this server. Whoever runs it needs to set ENCRYPTION_SECRET. Knowledge, Offers and your applications work without it.`}
+				notSetUp={t`The coach isn't set up on this server. Whoever runs it needs to set ENCRYPTION_SECRET. Your Profile, Offers and your applications work without it.`}
 			>
 				<View
 					style={{
@@ -215,7 +215,7 @@ export function CoachScreen({ offerIds }: CoachScreenProps) {
 							/>
 							<ContextChip
 								icon="brain"
-								label={plural(knowledge.facts, { one: "Knowledge · # fact", other: "Knowledge · # facts" })}
+								label={plural(knowledge.facts, { one: "Profile · # fact", other: "Profile · # facts" })}
 								pressed={chips.memory}
 								onPress={() => setChips({ ...chips, memory: !chips.memory })}
 							/>

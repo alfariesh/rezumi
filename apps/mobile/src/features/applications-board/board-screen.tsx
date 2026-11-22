@@ -31,6 +31,7 @@ import { useApplicationMutations, useApplications } from "@/features/application
 import { getStageColor, getStageLabel } from "@/features/applications/stages";
 import { routes } from "@/routes";
 import { useIsTablet } from "@/shell/use-is-tablet";
+import { usePullRefresh } from "@/ui";
 import {
 	Banner,
 	Button,
@@ -47,8 +48,7 @@ import {
 	useFirstAppearance,
 	useReducedMotion,
 	useTheme,
-} from "@/ui";
-import { usePullRefresh } from "@/ui/use-pull-refresh";
+} from "@/ui-legacy";
 
 const STAGES: readonly ApplicationStatus[] = ["saved", "applied", "screening", "interview", "offer", "closed"];
 // Column widths from the mockup (career.html `.column`): phone 268 pt, tablet 250 pt.

@@ -12,7 +12,7 @@ import { useThreads } from "@/features/assistant/chat";
 import { ChatView } from "@/features/assistant/chat-view";
 import { ModelButton, ModelSheet, ProviderGate, useConversationProvider } from "@/features/assistant/provider";
 import { useDeleteThread, useThreadTime, useThreadTitle } from "@/features/assistant/threads";
-import { Banner, IconButton, ListRow, Sheet, Text, useTheme } from "@/ui";
+import { Banner, IconButton, ListRow, Sheet, Text, useTheme } from "@/ui-legacy";
 
 type CoachSheetProps = { application: Application; tab: WorkspaceTab; open: boolean; onClose: () => void };
 
@@ -64,7 +64,7 @@ function ApplicationCoach({ application, tab }: ApplicationCoachProps) {
 	const context: MessageContext = { document: true, posting: true, application: true, memory: true, web: false, tab };
 	const company = application.company;
 	const tabName = tabLabel(tab);
-	const privacy = t`Sends your message, earlier messages, this application (posting, notes, documents sent) and Knowledge that's switched on to ${label}.`;
+	const privacy = t`Sends your message, earlier messages, this application (posting, notes, documents sent) and your Profile, if switched on, to ${label}.`;
 
 	return (
 		<View style={{ height: height * 0.7 }}>

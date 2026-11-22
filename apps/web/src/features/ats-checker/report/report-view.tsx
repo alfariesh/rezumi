@@ -44,7 +44,8 @@ export function AtsPdfReportView({ report, className }: ReportViewProps) {
 			{report.document.truncated && (
 				<p className="text-body-xs text-muted">
 					<Trans>
-						Only the first {report.document.pageCount} pages were checked, so this report does not cover the whole file.
+						Only the first {report.document.checkedPageCount} pages were checked, so this report does not cover the
+						whole file.
 					</Trans>
 				</p>
 			)}

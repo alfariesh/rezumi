@@ -5,6 +5,7 @@ import type { VoiceChoice } from "./logic";
 import type { AudioPlayer } from "expo-audio";
 import {
 	createAudioPlayer,
+	getRecordingPermissionsAsync,
 	requestRecordingPermissionsAsync,
 	setAudioModeAsync,
 	useAudioRecorder,
@@ -17,6 +18,7 @@ import { audioProblem, chooseVoice, MAX_SECONDS, RECORDING_OPTIONS, speechExtens
 import { client, rest } from "@/api/client";
 import { useSession } from "@/auth/session";
 import { useHasAIProvider } from "@/features/ai/providers";
+import { askPermission } from "@/shell/permissions";
 
 // ---- Voice settings: kept on this device, per server ----
 
@@ -129,8 +131,13 @@ export function useRecorder(onStop: (result: RecordStop) => void) {
 		recording: state.isRecording,
 		seconds,
 		start: async (): Promise<"started" | "denied" | "failed"> => {
-			const permission = await requestRecordingPermissionsAsync().catch(() => null);
-			if (!permission?.granted) return "denied";
+			const allowed = await askPermission(
+				"microphone",
+				{ get: () => getRecordingPermissionsAsync(), request: () => requestRecordingPermissionsAsync() },
+				// The practice screen explains a refusal itself.
+				true,
+			);
+			if (!allowed) return "denied";
 			try {
 				await setAudioModeAsync({ allowsRecording: true, playsInSilentMode: true });
 				await recorder.prepareToRecordAsync();

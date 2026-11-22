@@ -41,9 +41,43 @@ const UNITS = [
 	{ unit: "year", ms: 365 * DAY_MS, below: Number.POSITIVE_INFINITY },
 ] as const;
 
-/** Time since a moment in the largest whole unit, written short: "5m", "2h", "3d", "6w", "1y". */
-export function formatTimeSince(date: Date, locale: string, now = Date.now()) {
+export type TimeSinceUnit = (typeof UNITS)[number]["unit"];
+
+/**
+ * Time since a moment in the largest whole unit: `{ count: 5, unit: "minute" }`. Pure, so each app writes it its own
+ * way (the native app with Lingui plurals, since Hermes prints `Intl.NumberFormat` units wrong).
+ */
+export function timeSinceParts(date: Date, now = Date.now()): { count: number; unit: TimeSinceUnit } {
 	const elapsed = Math.max(0, now - date.getTime());
 	const { unit, ms } = UNITS.find(({ ms, below }) => elapsed / ms < below) ?? UNITS[4];
-	return new Intl.NumberFormat(locale, { style: "unit", unit, unitDisplay: "narrow" }).format(Math.floor(elapsed / ms));
+	return { count: Math.floor(elapsed / ms), unit };
+}
+
+/** Time since a moment in the largest whole unit, written short: "5m", "2h", "3d", "6w", "1y". Not for Hermes. */
+export function formatTimeSince(date: Date, locale: string, now = Date.now()) {
+	const { count, unit } = timeSinceParts(date, now);
+	return new Intl.NumberFormat(locale, { style: "unit", unit, unitDisplay: "narrow" }).format(count);
+}
+
+type PortfolioVisibility = { isPublic: boolean; suspendedAt: Date | string | null };
+
+/**
+ * Whether visitors can open the portfolio: published and not taken down. The server decides the same way before it
+ * serves the page (`portfolioOwnsProfilePath`), so no screen calls a page live that answers "not found".
+ */
+export function isPortfolioLive(portfolio: PortfolioVisibility | null | undefined): boolean {
+	return Boolean(portfolio?.isPublic && !portfolio.suspendedAt);
+}
+
+/** `portfolio.status`, the part Share reads. */
+type PortfolioState = { enabled: boolean; portfolio: PortfolioVisibility | null } | null;
+
+/**
+ * Whether the account's published portfolio holds the short link (`/<username>`) and custom domain, the way the
+ * server decides it (`portfolioOwnsProfilePath`): portfolios are open to the account, and its portfolio is live
+ * (published and not taken down). While portfolios are switched off this is always false, and Share reads as it
+ * always has.
+ */
+export function portfolioHoldsShortLink(state: PortfolioState | undefined): boolean {
+	return Boolean(state?.enabled && isPortfolioLive(state.portfolio));
 }

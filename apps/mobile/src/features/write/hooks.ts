@@ -7,7 +7,7 @@ import { sortSectionItemsByPeriod } from "@rezumi/resume/section-sort";
 import { SECTION_TITLES } from "./fields";
 import { createEntry, findEntry, getEntries, getSectionObject, readData } from "./model";
 import { useResumeStore } from "@/draft";
-import { showToast } from "@/ui";
+import { showToast } from "@/ui-legacy";
 
 /** Reads from the open resume's data. Return stable values (data sub-objects or primitives). */
 export function useWriteData<T>(select: (data: ResumeData) => T, fallback: T): T {

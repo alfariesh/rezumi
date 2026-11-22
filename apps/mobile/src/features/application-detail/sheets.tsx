@@ -28,7 +28,7 @@ import {
 	TextArea,
 	TextField,
 	useTheme,
-} from "@/ui";
+} from "@/ui-legacy";
 
 type SheetBaseProps = { open: boolean; onClose: () => void };
 type ApplicationActionSheetProps = SheetBaseProps & { application: ApplicationSummary };

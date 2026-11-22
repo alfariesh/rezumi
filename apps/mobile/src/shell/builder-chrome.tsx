@@ -1,5 +1,5 @@
 import type { SaveStatus } from "@/draft/types";
-import type { IconName } from "@/ui";
+import type { IconName } from "@/ui-legacy";
 import type { Href } from "expo-router";
 import type { ReactNode } from "react";
 import { useLingui } from "@lingui/react/macro";
@@ -8,13 +8,13 @@ import { createContext, use, useEffect, useState } from "react";
 import { ActivityIndicator, I18nManager, Platform, Pressable, View } from "react-native";
 import { SafeAreaInsetsContext, useSafeAreaInsets } from "react-native-safe-area-context";
 import { AppStrip } from "./app-banner";
-import { Bar, BarItem } from "./app-tabs";
+import { Bar, BarItem } from "./editor-bar";
 import { useKeyCommands } from "./key-commands";
 import { createSlot } from "./slot";
 import { TopBar } from "./top-bar";
 import { useIsTablet } from "./use-is-tablet";
 import { routes } from "@/routes";
-import { Button, Icon, IconButton, Segmented, Text, useReducedMotion, useTheme } from "@/ui";
+import { Button, Icon, IconButton, Segmented, Text, useReducedMotion, useTheme } from "@/ui-legacy";
 import { KeyboardFrame, useKeyboardVisible } from "@/ui/keyboard";
 
 export type SaveStatusSlot = {
@@ -288,7 +288,6 @@ function PaneBar<T extends string>({ panes, active, onSwitch }: PaneBarProps<T>)
 					icon={pane.icon}
 					focused={pane.pane === active}
 					badge={slots.badges?.[pane.pane]}
-					badgeTone="warn"
 					onPress={() => onSwitch(pane)}
 				/>
 			))}

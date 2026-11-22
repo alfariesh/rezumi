@@ -15,7 +15,7 @@ import { client, rest } from "@/api/client";
 import { useSession } from "@/auth/session";
 import { useIsResumeLocked, useResumeStore } from "@/draft";
 import { nativeEnvironment } from "@/draft/native";
-import { Button, ConfirmDialog, Segmented, Switch, Text, TextField, showToast, useTheme } from "@/ui";
+import { Button, ConfirmDialog, Segmented, Switch, Text, TextField, showToast, useTheme } from "@/ui-legacy";
 
 const MAX_UPLOAD = 10 * 1024 * 1024;
 

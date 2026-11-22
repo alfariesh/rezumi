@@ -1,21 +1,9 @@
-import type { SwitchProps } from "@/ui";
+import type { SwitchProps } from "@/ui-legacy";
 import type { ReactNode } from "react";
 import { useLingui } from "@lingui/react/macro";
 import { Pressable, View } from "react-native";
-import { Banner, Button, Skeleton, Switch, Text, useTheme } from "@/ui";
+import { Banner, Button, Skeleton, Switch, Text, useTheme } from "@/ui-legacy";
 
-type SectionProps = { title: string; children: ReactNode };
-export function Section({ title, children }: SectionProps) {
-	const { space } = useTheme();
-	return (
-		<View style={{ gap: space.s3 }}>
-			<Text variant="title" accessibilityRole="header">
-				{title}
-			</Text>
-			{children}
-		</View>
-	);
-}
 type LoadStateProps = { query: { isError: boolean; isPending: boolean; refetch: () => unknown } };
 export function LoadState({ query }: LoadStateProps) {
 	const { t } = useLingui();
@@ -68,4 +56,4 @@ export function SwitchRow(props: SwitchProps) {
 	);
 }
 
-export { EditorSheet } from "@/ui";
+export { EditorSheet } from "@/ui-legacy";

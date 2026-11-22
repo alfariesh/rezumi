@@ -408,7 +408,7 @@ function Result({ result, file, onFix, onReset }: ResultProps) {
 
 				{report.document.truncated && (
 					<p className="text-body-xs text-muted">
-						<Trans>Only the first {report.document.pageCount} pages were checked.</Trans>
+						<Trans>Only the first {report.document.checkedPageCount} pages were checked.</Trans>
 					</p>
 				)}
 

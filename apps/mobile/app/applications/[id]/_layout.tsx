@@ -3,7 +3,7 @@ import { useRouter, Stack, useNavigation } from "expo-router";
 import { Platform } from "react-native";
 import { routes } from "@/routes";
 import { isWorkspaceTab, WorkspaceChrome } from "@/shell/workspace-chrome";
-import { IconButton } from "@/ui";
+import { IconButton } from "@/ui-legacy";
 
 /**
  * One application: the workspace tabs (Fit … Saved) under the workspace top bar, and the application detail

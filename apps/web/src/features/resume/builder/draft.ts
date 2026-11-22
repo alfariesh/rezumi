@@ -1,3 +1,4 @@
+import type { LastEdit, SaveStatus, UpdateOptions } from "@rezumi/resume/draft";
 import type { ResumeData } from "@rezumi/schema/resume/data";
 import type { QueryClient, QueryKey } from "@tanstack/react-query";
 import type { WritableDraft } from "immer";
@@ -9,6 +10,7 @@ import { debounce, isEqual } from "es-toolkit";
 import { useCallback, useEffect, useState } from "react";
 import { immer } from "zustand/middleware/immer";
 import { create } from "zustand/react";
+import { joinsUndoStep, MAX_HISTORY_ENTRIES } from "@rezumi/resume/draft";
 import { syncResumeDates } from "@rezumi/schema/resume/dates";
 import { toast } from "@rezumi/ui/components/toast";
 import { generateId } from "@rezumi/utils/string";
@@ -37,28 +39,6 @@ export type Resume = {
 type ResumeUpdateMutation = "sync" | "create" | "update" | "patch" | "lock" | "password" | "delete" | "profile";
 type ResumeUpdateEvent = { mutation: ResumeUpdateMutation };
 
-/**
- * `offline`: the browser is offline; changes are kept on this device and sent when it reconnects.
- * `error`: the server rejected or couldn't be reached while online; changes are kept on this device
- * and the editor offers Retry.
- */
-type SaveStatus = "idle" | "saving" | "saved" | "offline" | "error";
-
-type UpdateResumeDataOptions = {
-	/**
-	 * Identifies the field being edited. Consecutive edits to the same field within a second merge into
-	 * one undo step, so typing a sentence undoes as a whole.
-	 */
-	coalesceKey?: string;
-	/** Always a step of its own (structural actions such as adding, moving or deleting). */
-	newStep?: boolean;
-	/**
-	 * Merges into the current step whenever the previous edit had the same key, however long ago: one action
-	 * made of several edits, such as Fit to one page, undoes as a whole.
-	 */
-	sameStep?: boolean;
-};
-
 type ResumeStoreState = {
 	resume: Resume | null;
 	resumeId?: string | undefined;
@@ -74,7 +54,7 @@ type ResumeStoreActions = {
 	initialize: (resume: Resume | null) => void;
 	reset: () => void;
 	replaceResumeFromServer: (resume: Resume) => void;
-	updateResumeData: (fn: (draft: WritableDraft<ResumeData>) => void, options?: UpdateResumeDataOptions) => void;
+	updateResumeData: (fn: (draft: WritableDraft<ResumeData>) => void, options?: UpdateOptions) => void;
 	patchResume: (fn: (draft: WritableDraft<Resume>) => void) => void;
 	mergeResumeMetadata: (resume: Resume) => void;
 	setSaveStatus: (status: SaveStatus) => void;
@@ -114,34 +94,14 @@ type ResumeUpdateSubscriptionOptions = {
 
 const SAVE_DEBOUNCE_MS = 500;
 const NAVIGATION_SAVE_WAIT_MS = 10_000;
-// Edits without a field key coalesce within this window (e.g. dragging); keyed edits to the same field
-// coalesce within FIELD_COALESCE_MS (typing a sentence).
-const HISTORY_COALESCE_MS = 500;
-const FIELD_COALESCE_MS = 1000;
-// Bounded stacks. Entries are shared-structure references, so 200 steps stay cheap.
-export const MAX_HISTORY_ENTRIES = 200;
 const UNSAVED_STORAGE_PREFIX = "rezumi:unsaved:";
 const runtimes = new Map<string, Runtime>();
 
 // Coalescing bookkeeping. Not reactive — only decides whether the next edit opens a new undo step.
-let historyLastEditAt = 0;
-let historyLastKey: string | undefined;
-let historyCanCoalesce = false;
+let lastEdit: LastEdit | null = null;
 
 function resetHistoryRuntime() {
-	historyLastEditAt = 0;
-	historyLastKey = undefined;
-	historyCanCoalesce = false;
-}
-
-/** Whether the next edit merges into the current undo step. The Profile's editor keeps its history the same way. */
-export function shouldCoalesceEdit(
-	previous: { at: number; key: string | undefined; canCoalesce: boolean },
-	next: { at: number; key: string | undefined; newStep: boolean },
-): boolean {
-	if (next.newStep || !previous.canCoalesce || previous.key !== next.key) return false;
-	const window = next.key === undefined ? HISTORY_COALESCE_MS : FIELD_COALESCE_MS;
-	return next.at - previous.at < window;
+	lastEdit = null;
 }
 
 // Unsaved changes survive a reload or a closed tab: they're kept on this device until a save succeeds.
@@ -535,20 +495,10 @@ export const useResumeStore = create<ResumeStore>()(
 			}
 
 			// Coalesce bursts: only the first edit of a burst opens a new undo step, holding the pre-edit
-			// state. Later edits to the same field fold into it (see shouldCoalesceEdit).
+			// state. Later edits to the same field fold into it (the same rule as the app, see joinsUndoStep).
 			const now = Date.now();
-			const newStep = options.newStep ?? false;
-			const coalesce =
-				options.sameStep && options.coalesceKey !== undefined && historyLastKey === options.coalesceKey
-					? true
-					: shouldCoalesceEdit(
-							{ at: historyLastEditAt, key: historyLastKey, canCoalesce: historyCanCoalesce },
-							{ at: now, key: options.coalesceKey, newStep },
-						);
-			const snapshotBefore = coalesce ? undefined : currentResume.data;
-			historyLastEditAt = now;
-			historyLastKey = options.coalesceKey;
-			historyCanCoalesce = !newStep;
+			const snapshotBefore = joinsUndoStep(lastEdit, options, now) ? undefined : currentResume.data;
+			lastEdit = { at: now, key: options.coalesceKey, coalesce: !options.newStep };
 
 			set((state) => {
 				if (!state.resume) return;
@@ -690,7 +640,7 @@ export function useUpdateResumeData() {
 	const updateResumeData = useResumeStore((state) => state.updateResumeData);
 
 	return useCallback(
-		(fn: (draft: WritableDraft<ResumeData>) => void, options?: UpdateResumeDataOptions) => {
+		(fn: (draft: WritableDraft<ResumeData>) => void, options?: UpdateOptions) => {
 			if (!resumeId) return;
 			bindRuntimeQueryClient(resumeId, queryClient);
 			updateResumeData(fn, options);

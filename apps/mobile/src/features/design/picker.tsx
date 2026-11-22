@@ -1,7 +1,7 @@
 import { useLingui } from "@lingui/react/macro";
 import { useState } from "react";
 import { FlatList, Pressable, View } from "react-native";
-import { Icon, TextField, Text, useTheme } from "@/ui";
+import { Icon, TextField, Text, useTheme } from "@/ui-legacy";
 
 export type PickerOption = { value: string; label: string; detail?: string | undefined };
 

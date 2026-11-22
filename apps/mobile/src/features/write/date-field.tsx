@@ -6,7 +6,7 @@ import { Platform, View } from "react-native";
 import { getPresentLabel } from "@rezumi/schema/resume/dates";
 import { editDates, fromPickerDate, isReversed, pickerDate, readTypedDate, showYearMonth } from "./dates";
 import { resumeFieldFocus } from "@/draft";
-import { Button, Icon, IconButton, Sheet, Switch, Text, TextField, useTheme } from "@/ui";
+import { Button, Icon, IconButton, Sheet, Switch, Text, TextField, useTheme } from "@/ui-legacy";
 
 type MonthInputProps = {
 	label: string;

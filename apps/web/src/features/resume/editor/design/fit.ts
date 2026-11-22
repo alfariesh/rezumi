@@ -1,11 +1,18 @@
-import type { FitStep } from "./presets";
 import type { PageMap } from "@rezumi/pdf/page-map";
+import type { FitStep } from "@rezumi/resume/design-presets";
 import type { ResumeData } from "@rezumi/schema/resume/data";
 import type { WritableDraft } from "immer";
 import { plural, t } from "@lingui/core/macro";
+import {
+	applyDensity,
+	applyMargins,
+	applyTextSize,
+	fitToPages,
+	matchDensity,
+	matchMargins,
+} from "@rezumi/resume/design-presets";
 import { toast } from "@rezumi/ui/components/toast";
 import { useEditorStore } from "../store";
-import { applyDensity, applyMargins, applyTextSize, fitToPages, matchDensity, matchMargins } from "./presets";
 import { useResumeStore } from "@/features/resume/builder/draft";
 
 const RENDER_TIMEOUT_MS = 8000;

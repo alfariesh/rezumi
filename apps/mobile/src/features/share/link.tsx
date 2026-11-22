@@ -1,3 +1,5 @@
+// Share's public link (plans/mobile Phase 08): publishing, the address with its availability check, copy, share, the
+// web page and its QR code, then the web page settings and the visitor numbers.
 import type { ResumeDocument } from "@/draft/types";
 import { useLingui } from "@lingui/react/macro";
 import { useQuery } from "@tanstack/react-query";
@@ -6,15 +8,10 @@ import { useEffect, useEffectEvent, useRef, useState } from "react";
 import { Linking, Share, View } from "react-native";
 import QRCode from "react-native-qrcode-svg";
 import Svg, { Rect } from "react-native-svg";
-import {
-	formatTimeSince,
-	normalizeSlug,
-	publicResumeUrl,
-	isValidSlug,
-	MAX_SLUG_LENGTH,
-	summarizeViews,
-} from "@rezumi/resume/sharing";
+import { normalizeSlug, publicResumeUrl, isValidSlug, MAX_SLUG_LENGTH, summarizeViews } from "@rezumi/resume/sharing";
+import { ShareNotice } from "./custom-domain";
 import { flushResume } from "./document";
+import { formatTimeSince } from "./time-since";
 import { WebPageSettings } from "./web-page";
 import { client, orpc } from "@/api/client";
 import { useFlags } from "@/api/flags";
@@ -23,17 +20,25 @@ import { useResumeStore } from "@/draft";
 import { resume as draftResume } from "@/draft/runtime";
 import { useDocumentOperations } from "@/features/documents/queries";
 import {
-	Banner,
 	Button,
-	ListGroup,
+	Card,
+	FieldError,
+	Icon,
+	Input,
+	Label,
 	ListRow,
+	ListSection,
 	Sheet,
 	Skeleton,
 	Switch,
 	Text,
 	TextField,
+	Typography,
+	haptics,
 	showToast,
-	useTheme,
+	size,
+	space,
+	useThemeColor,
 } from "@/ui";
 
 /** Sharing settings: saved beside the resume, not in its data. */
@@ -48,7 +53,6 @@ type LinkProps = { resume: ResumeDocument; offline: boolean };
 
 export function LinkTab({ resume, offline }: LinkProps) {
 	const { t } = useLingui();
-	const { space, colors, size } = useTheme();
 	const operations = useDocumentOperations();
 	const [slug, setSlug] = useState(resume.slug);
 	const savedSlug = useRef(resume.slug);
@@ -131,89 +135,113 @@ export function LinkTab({ resume, offline }: LinkProps) {
 						: slugState === "error"
 							? t`Couldn't check or save this address. Try again.`
 							: undefined;
+	const addressHelp = !resume.isPublic
+		? t`Turn on the link to choose an address.`
+		: changed
+			? t`Checking… Copy is available after saving.`
+			: url
+				? t`Live at ${url}`
+				: t`Loading your public address…`;
 
 	return (
-		<View style={{ gap: space.s4 }}>
-			{operations.error && <Banner tone="danger" message={operations.error} />}
-			<ListGroup>
+		<View className="gap-4">
+			{operations.error ? <ShareNotice status="danger">{operations.error}</ShareNotice> : null}
+			<ListSection title={t`Public link`}>
 				<ListRow
 					title={t`Public link`}
-					subtitle={
+					description={
 						resume.isPublic ? t`On. Anyone with the link can see your web page.` : t`Off. Only you can see this resume.`
 					}
 					trailing={
 						<Switch
-							label={t`Public link`}
-							value={resume.isPublic}
-							disabled={disabled}
-							onValueChange={(value) => void save({ isPublic: value })}
+							isSelected={resume.isPublic}
+							isDisabled={disabled}
+							accessibilityLabel={t`Public link`}
+							onSelectedChange={(value) => void save({ isPublic: value })}
 						/>
 					}
 				/>
-			</ListGroup>
+			</ListSection>
 			<TextField
-				label={t`Address`}
-				value={slug}
-				onChangeText={(value) => setSlug(normalizeSlug(value))}
-				autoCapitalize="none"
-				autoCorrect={false}
-				editable={resume.isPublic && !disabled && slugState !== "saving"}
-				error={resume.isPublic ? addressError : undefined}
-				helper={
-					!resume.isPublic
-						? t`Turn on the link to choose an address.`
-						: changed
-							? t`Checking… Copy is available after saving.`
-							: url
-								? t`Live at ${url}`
-								: t`Loading your public address…`
-				}
-			/>
-			{suggestion && slugState === "taken" && (
-				<Button variant="link" label={t`Try ${suggestion}`} disabled={disabled} onPress={() => setSlug(suggestion)} />
-			)}
-			{slugState === "error" && (
-				<Button label={t`Retry`} variant="secondary" onPress={() => setRetry((value) => value + 1)} />
-			)}
-			{profile.isError && (
-				<Banner
-					tone="danger"
-					message={t`Couldn't load your public address.`}
-					action={{ label: t`Retry`, onPress: () => void profile.refetch() }}
+				isDisabled={!resume.isPublic || disabled || slugState === "saving"}
+				isInvalid={resume.isPublic && !!addressError}
+			>
+				<Label>{t`Address`}</Label>
+				<Input
+					accessibilityLabel={t`Address`}
+					value={slug}
+					onChangeText={(value) => setSlug(normalizeSlug(value))}
+					autoCapitalize="none"
+					autoCorrect={false}
+					className="font-mono"
 				/>
-			)}
-			<View style={{ flexDirection: "row", flexWrap: "wrap", gap: space.s2 }}>
+				{resume.isPublic && addressError ? (
+					<FieldError>{addressError}</FieldError>
+				) : (
+					<Text size="xs" tone="muted" selectable>
+						{addressHelp}
+					</Text>
+				)}
+			</TextField>
+			{suggestion && slugState === "taken" ? (
+				<Button
+					variant="ghost"
+					size="sm"
+					className="self-start"
+					isDisabled={disabled}
+					onPress={() => setSlug(suggestion)}
+				>
+					<Button.Label>{t`Try ${suggestion}`}</Button.Label>
+				</Button>
+			) : null}
+			{slugState === "error" ? (
+				<Button variant="secondary" size="sm" className="self-start" onPress={() => setRetry((value) => value + 1)}>
+					<Button.Label>{t`Retry`}</Button.Label>
+				</Button>
+			) : null}
+			{profile.isError ? (
+				<View className="gap-2">
+					<ShareNotice status="danger">{t`Couldn't load your public address.`}</ShareNotice>
+					<Button variant="secondary" size="sm" className="self-start" onPress={() => void profile.refetch()}>
+						<Button.Label>{t`Retry`}</Button.Label>
+					</Button>
+				</View>
+			) : null}
+			<View className="flex-row flex-wrap gap-2">
 				<Button
 					variant="secondary"
-					label={t`Copy`}
-					icon="copy"
-					disabled={!shareable}
+					isDisabled={!shareable}
 					onPress={() =>
 						void operations.run(async () => {
 							await Clipboard.setStringAsync(url);
-							showToast({ message: t`Link copied` });
+							haptics.light();
+							showToast({ title: t`Link copied` });
 						})
 					}
-				/>
+				>
+					<Icon name="copy" size={16} />
+					<Button.Label>{t`Copy`}</Button.Label>
+				</Button>
 				<Button
 					variant="secondary"
-					label={t`Share via…`}
-					icon="export"
-					disabled={!shareable}
+					isDisabled={!shareable}
 					onPress={() => void operations.run(() => Share.share({ title: resume.name, message: url, url }))}
-				/>
+				>
+					<Icon name="export" size={16} />
+					<Button.Label>{t`Share via…`}</Button.Label>
+				</Button>
 			</View>
-			{resume.isPublic && (
-				<>
+			{resume.isPublic ? (
+				<ListSection>
 					<ListRow
 						title={t`Open web page`}
-						leading="arrow-square-out"
-						disabled={!shareable}
+						icon="arrow-square-out"
+						isDisabled={!shareable}
 						onPress={() => void operations.run(() => Linking.openURL(url))}
 					/>
-					<ListRow title={t`QR code`} leading="qr-code" disabled={!shareable} onPress={() => setQrOpen(true)} />
-				</>
-			)}
+					<ListRow title={t`QR code`} icon="qr-code" isDisabled={!shareable} onPress={() => setQrOpen(true)} />
+				</ListSection>
+			) : null}
 			<WebPageSettings
 				resume={resume}
 				offline={offline}
@@ -224,22 +252,15 @@ export function LinkTab({ resume, offline }: LinkProps) {
 				save={save}
 			/>
 			<Statistics id={resume.id} isPublic={resume.isPublic} offline={offline} />
-			<Sheet open={qrOpen} title={t`QR code`} onClose={() => setQrOpen(false)} detents={[0.5]}>
-				<View
-					accessible
-					accessibilityLabel={t`QR code for ${url}`}
-					style={{ alignItems: "center", padding: space.s5, gap: space.s3 }}
-				>
-					{url && (
-						<QRCode
-							value={url}
-							size={size.hit * 4}
-							quietZone={space.s3}
-							color={colors.paperInk}
-							backgroundColor={colors.paper}
-						/>
-					)}
-					<Text selectable>{url}</Text>
+			<Sheet isOpen={qrOpen} onOpenChange={setQrOpen} title={t`QR code`} closeLabel={t`Close`}>
+				<View accessible accessibilityLabel={t`QR code for ${url}`} className="items-center gap-3 pb-4">
+					{/* A printed code is dark on white in both themes, so it stays on paper. */}
+					<View className="rounded-xl bg-paper p-3">
+						{url ? <QRCode value={url} size={size.hit * 4} quietZone={space[2]} /> : null}
+					</View>
+					<Text mono selectable>
+						{url}
+					</Text>
 				</View>
 			</Sheet>
 		</View>
@@ -247,9 +268,10 @@ export function LinkTab({ resume, offline }: LinkProps) {
 }
 
 type StatisticsProps = { id: string; isPublic: boolean; offline: boolean };
+
 function Statistics({ id, isPublic, offline }: StatisticsProps) {
 	const { t, i18n } = useLingui();
-	const { colors, space, size } = useTheme();
+	const accent = useThemeColor("accent");
 	const daily = useQuery({
 		...orpc.resume.statistics.getDailyById.queryOptions({ input: { id, days: 30 } }),
 		enabled: isPublic && !offline,
@@ -259,45 +281,64 @@ function Statistics({ id, isPublic, offline }: StatisticsProps) {
 		enabled: isPublic && !offline,
 	});
 	const summary = summarizeViews(daily.data ?? []);
+	const bars = Math.max(1, summary.bars.length);
+	const numbers = [
+		{ value: i18n.number(summary.views), label: t`views · 30 days` },
+		{ value: i18n.number(summary.downloads), label: t`downloads` },
+		{
+			value: total.data?.lastViewedAt ? formatTimeSince(total.data.lastViewedAt) : "—",
+			label: t`since last view`,
+		},
+	];
+
 	return (
-		<View style={{ gap: space.s3, paddingTop: space.s4, borderTopWidth: 1, borderColor: colors.line }}>
-			<Text variant="heading">{t`Visitors`}</Text>
-			<Text variant="caption" color="ink3">{t`Only you see these`}</Text>
+		<Card className="gap-3">
+			<View className="flex-row items-center gap-2">
+				<Icon name="chart-line-up" size={20} tone="muted" />
+				<Typography.Heading type="h6" accessibilityRole="header" className="flex-1">
+					{t`Visitors`}
+				</Typography.Heading>
+				<Text size="xs" tone="muted">{t`Only you see these`}</Text>
+			</View>
 			{!isPublic ? (
-				<Text color="ink2">
+				<Typography type="body-sm" className="text-muted">
 					{t`Publish the web page to count views and downloads. Counts are anonymous, and search engines aren't counted.`}
-				</Text>
+				</Typography>
+			) : offline && !daily.data ? (
+				<Typography type="body-sm" className="text-muted">{t`Statistics need a connection.`}</Typography>
 			) : daily.isError || total.isError ? (
-				<Banner
-					tone="danger"
-					message={t`Couldn't load statistics.`}
-					action={{
-						label: t`Retry`,
-						onPress: () => {
+				<View className="gap-2">
+					<ShareNotice status="danger">{t`Couldn't load statistics.`}</ShareNotice>
+					<Button
+						variant="secondary"
+						size="sm"
+						className="self-start"
+						onPress={() => {
 							void daily.refetch();
 							void total.refetch();
-						},
-					}}
-				/>
+						}}
+					>
+						<Button.Label>{t`Retry`}</Button.Label>
+					</Button>
+				</View>
 			) : daily.isPending || total.isPending ? (
-				<Skeleton height={size.hit * 2} />
+				<View className="gap-3" accessibilityLabel={t`Loading`}>
+					<Skeleton variant="none" className="h-10 w-2/3 rounded-md" />
+					<Skeleton variant="none" className="h-16 w-full rounded-md" />
+				</View>
 			) : (
 				<>
-					<View style={{ flexDirection: "row", flexWrap: "wrap", gap: space.s5 }}>
-						<View>
-							<Text variant="title">{i18n.number(summary.views)}</Text>
-							<Text variant="caption">{t`views · 30 days`}</Text>
-						</View>
-						<View>
-							<Text variant="title">{i18n.number(summary.downloads)}</Text>
-							<Text variant="caption">{t`downloads`}</Text>
-						</View>
-						<View>
-							<Text variant="title">
-								{total.data?.lastViewedAt ? formatTimeSince(total.data.lastViewedAt, i18n.locale) : "—"}
-							</Text>
-							<Text variant="caption">{t`since last view`}</Text>
-						</View>
+					<View className="flex-row flex-wrap gap-5">
+						{numbers.map((number) => (
+							<View key={number.label}>
+								<Text size="base" weight="semibold" tabular>
+									{number.value}
+								</Text>
+								<Text size="xs" tone="muted">
+									{number.label}
+								</Text>
+							</View>
+						))}
 					</View>
 					<View
 						accessible
@@ -308,22 +349,26 @@ function Statistics({ id, isPublic, offline }: StatisticsProps) {
 							{summary.bars.map((bar, index) => (
 								<Rect
 									key={bar.date}
-									x={(index * 300) / Math.max(1, summary.bars.length)}
+									x={(index * 300) / bars}
 									y={60 - Math.max(3, bar.height * 60)}
-									width={300 / Math.max(1, summary.bars.length) - 2}
+									width={300 / bars - 2}
 									height={Math.max(3, bar.height * 60)}
-									fill={colors.line2}
+									rx={1.5}
+									fill={accent}
+									opacity={bar.views > 0 ? 1 : 0.25}
 								/>
 							))}
 						</Svg>
 					</View>
-					<View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-						<Text variant="caption">{daily.data?.[0]?.date}</Text>
-						<Text variant="caption">{t`Today`}</Text>
+					<View className="flex-row justify-between">
+						<Text size="xs" tone="muted">
+							{daily.data?.[0]?.date}
+						</Text>
+						<Text size="xs" tone="muted">{t`Today`}</Text>
 					</View>
 				</>
 			)}
-			<Text variant="caption" color="ink3">{t`Download totals can include repeat clicks.`}</Text>
-		</View>
+			<Text size="xs" tone="muted">{t`Download totals can include repeat clicks.`}</Text>
+		</Card>
 	);
 }

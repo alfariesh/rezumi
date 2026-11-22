@@ -7,7 +7,7 @@ import { useRef, useState } from "react";
 import { documentRef } from "./filter";
 import { client, orpc } from "@/api/client";
 import { getServer, useSession } from "@/auth/session";
-import { showToast } from "@/ui";
+import { showToast } from "@/ui-legacy";
 
 type BatchOptions = {
 	applies?: (document: DocumentSummary) => boolean;

@@ -3,9 +3,9 @@ import { Alert, Button, Modal, Spinner, Table } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans, useLingui } from "@lingui/react/macro";
 import { useId } from "react";
+import { isRootDomain } from "@rezumi/resume/custom-domain";
 import { formatTimeSince } from "@rezumi/resume/sharing";
 import { CopyText } from "./copy-text";
-import { isRootDomain } from "./domain-progress";
 
 type DnsRecordsDialogProps = {
 	domain: NonNullable<RouterOutput["customDomain"]["get"]>;

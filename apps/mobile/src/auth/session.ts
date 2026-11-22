@@ -1,3 +1,4 @@
+import type { Discovery } from "./oauth";
 /**
  * The signed-in session: which server the app talks to and its OAuth tokens. Tokens live only in SecureStore
  * (Keychain / Keystore) and are never logged, rendered or written anywhere else.
@@ -24,7 +25,6 @@ import * as AuthSession from "expo-auth-session";
 import * as Network from "expo-network";
 import * as SecureStore from "expo-secure-store";
 import Storage from "expo-sqlite/kv-store";
-import * as WebBrowser from "expo-web-browser";
 import { useSyncExternalStore } from "react";
 import { fnv1a } from "@rezumi/utils/string";
 import {
@@ -247,6 +247,20 @@ async function readStoredSession(): Promise<void> {
 	}
 }
 
+/**
+ * Development builds: points a signed-out app at another server (the Server screen), so the sign-in screens talk to
+ * it. Release builds never show that screen; the call refuses outside development and while signed in.
+ */
+export function setSignInServer(origin: string): Promise<void> {
+	return transition(async () => {
+		if (!__DEV__) throw new Error("Only development builds can change the server.");
+		if (!isAllowedServer(origin) || new URL(origin).origin !== origin) throw new Error("Not an allowed server origin.");
+		if (session.status === "signed-in" || tokens) throw new Error("Sign out before changing the server.");
+		await SecureStore.setItemAsync(serverKey, origin);
+		setSession({ status: "signed-out", server: origin });
+	});
+}
+
 /** Development previews may install a local fixture only when no real account is present. */
 export async function installDevelopmentSession(origin: string): Promise<void> {
 	if (!__DEV__ || !["localhost", "127.0.0.1", "[::1]", "10.0.2.2"].includes(new URL(origin).hostname))
@@ -277,12 +291,24 @@ export async function installDevelopmentSession(origin: string): Promise<void> {
  * were. Resolves true when signed in and false when the user cancelled; throws on discovery, registration, redirect
  * or token errors.
  */
-export async function signIn(server: string): Promise<boolean> {
+export function signIn(server: string): Promise<boolean> {
+	return signInWith(server, (origin, attempt) => authorize(origin, attempt));
+}
+
+/**
+ * Runs one sign-in attempt: `obtain` gets the token pair for `server` (browser, or the native screens' session
+ * exchange), then the tokens are committed as one queued transition. Null from `obtain` means cancelled. Shared by
+ * every way in, so all of them honour cancellation, sign-out during the attempt and the identity change.
+ */
+export async function signInWith(
+	server: string,
+	obtain: (origin: string, attempt: number) => Promise<Tokens | null>,
+): Promise<boolean> {
 	const origin = new URL(server).origin;
 	if (!isAllowedServer(origin)) throw new Error("The app needs an https server.");
 	const attempt = ++attempts;
 	// A cancelled or superseded attempt resolves false, even if its discovery or exchange failed meanwhile.
-	const next = await authorize(origin, attempt).catch((error: unknown) => {
+	const next = await obtain(origin, attempt).catch((error: unknown) => {
 		if (attempt !== attempts) return null;
 		throw error;
 	});
@@ -304,16 +330,37 @@ export async function signIn(server: string): Promise<boolean> {
 	});
 }
 
+/** Whether `attempt` is still the sign-in the user is waiting for (not cancelled, superseded or signed out). */
+export function isCurrentAttempt(attempt: number): boolean {
+	return attempt === attempts;
+}
+
 /** A sign-in that failed at the redirect, with the OAuth error code `messages.ts` maps. */
-class SignInError extends Error {
+export class SignInError extends Error {
 	constructor(readonly code: string) {
 		super(code);
 		this.name = "SignInError";
 	}
 }
 
-/** Discovery, DCR, PKCE in the system browser and the code exchange. Null when the user cancels or `attempt` is stale. */
-async function authorize(origin: string, attempt: number): Promise<Tokens | null> {
+/** One authorization request, bound to its state: only a response carrying the same state (and issuer) may use its verifier. */
+export type PendingAuthorization = {
+	origin: string;
+	discovery: Discovery;
+	clientId: string;
+	request: AuthSession.AuthRequest;
+	/** The `/oauth2/authorize` URL to open (browser) or fetch (native sign-in). */
+	url: string;
+	state: string;
+	verifier: string;
+	redirect: string;
+};
+
+/** Discovery, dynamic client registration and a PKCE authorization request for `origin`. */
+export async function prepareAuthorization(
+	origin: string,
+	extraParams: Record<string, string> = {},
+): Promise<PendingAuthorization> {
 	const discovery = await discover(origin);
 	const clientId = await registerClient(origin, discovery);
 	const request = new AuthSession.AuthRequest({
@@ -321,27 +368,31 @@ async function authorize(origin: string, attempt: number): Promise<Tokens | null
 		redirectUri: redirectUri(origin),
 		scopes,
 		usePKCE: true,
-		extraParams: { resource: origin },
+		extraParams: { resource: origin, ...extraParams },
 	});
-	await request.makeAuthUrlAsync(discovery);
-	// This attempt, bound to its state: only a redirect carrying the same state (and issuer) may use its verifier.
-	const pending = {
+	const url = await request.makeAuthUrlAsync(discovery);
+	return {
+		origin,
+		discovery,
+		clientId,
+		request,
+		url,
 		state: request.state,
-		issuer: discovery.issuer,
 		verifier: request.codeVerifier ?? "",
 		redirect: request.redirectUri,
 	};
-	// Cancelled (or superseded) during discovery or registration: never open the browser.
-	if (attempt !== attempts) return null;
-	// iOS 17.4+: an https redirect completes through ASWebAuthenticationSession's `.https` callback.
-	const result = await request.promptAsync(discovery, { preferUniversalLinks: true });
-	if (result.type === "cancel" || result.type === "dismiss" || attempt !== attempts) return null;
-	if (result.type !== "success" && result.type !== "error") throw new SignInError(`authorization_${result.type}`);
+}
 
+/**
+ * Checks an authorization response URL against its request (state, RFC 9207 issuer, error) and exchanges the code
+ * for tokens. Forgets the client when the token endpoint no longer knows it.
+ */
+export async function completeAuthorization(pending: PendingAuthorization, responseUrl: string): Promise<Tokens> {
+	const { discovery, origin } = pending;
 	// Parsed here, by hand and from the query only, rather than trusting expo-auth-session's URL parsing.
 	let params: Record<string, string>;
 	try {
-		params = parseAuthorizationResponse(result.url);
+		params = parseAuthorizationResponse(responseUrl);
 	} catch {
 		throw new SignInError("invalid_response");
 	}
@@ -350,8 +401,8 @@ async function authorize(origin: string, attempt: number): Promise<Tokens | null
 	// error redirects; a server that does not advertise it must at least not name another issuer.
 	if (
 		discovery.issParameterSupported
-			? params.iss !== pending.issuer
-			: params.iss !== undefined && params.iss !== pending.issuer
+			? params.iss !== discovery.issuer
+			: params.iss !== undefined && params.iss !== discovery.issuer
 	)
 		throw new SignInError("issuer_mismatch");
 	if (params.error) throw new SignInError(params.error);
@@ -360,7 +411,7 @@ async function authorize(origin: string, attempt: number): Promise<Tokens | null
 	try {
 		const response = await AuthSession.exchangeCodeAsync(
 			{
-				clientId,
+				clientId: pending.clientId,
 				code: params.code,
 				redirectUri: pending.redirect,
 				extraParams: { code_verifier: pending.verifier, resource: origin },
@@ -375,21 +426,33 @@ async function authorize(origin: string, attempt: number): Promise<Tokens | null
 	}
 }
 
+/** The system-browser sign-in: PKCE in ASWebAuthenticationSession / Custom Tabs. Null when cancelled or stale. */
+async function authorize(origin: string, attempt: number): Promise<Tokens | null> {
+	const pending = await prepareAuthorization(origin);
+	// Cancelled (or superseded) during discovery or registration: never open the browser.
+	if (attempt !== attempts) return null;
+	// iOS 17.4+: an https redirect completes through ASWebAuthenticationSession's `.https` callback.
+	const result = await pending.request.promptAsync(pending.discovery, { preferUniversalLinks: true });
+	if (result.type === "cancel" || result.type === "dismiss" || attempt !== attempts) return null;
+	if (result.type !== "success" && result.type !== "error") throw new SignInError(`authorization_${result.type}`);
+	return completeAuthorization(pending, result.url);
+}
+
 const toTokens = (response: AuthSession.TokenResponse, previousRefreshToken?: string): Tokens => ({
 	accessToken: response.accessToken,
 	refreshToken: response.refreshToken ?? previousRefreshToken,
 	expiresAt: response.expiresIn ? response.issuedAt + response.expiresIn : undefined,
 });
 
-/** Cancels the sign-in in progress: closes its browser and invalidates the attempt; `signIn` then resolves false. */
-export function cancelSignIn(): void {
-	attempts++;
-	WebBrowser.dismissAuthSession();
-}
-
-// kv-store prefixes other features keep per account (`<prefix><scope>:<id>`): application notes (M5-T2) and Career
-// workspace drafts (M6-T2). Resume and letter drafts are cleared by the draft runtime.
-const scopedStoragePrefixes = ["rezumi:application-notes:", "rezumi:career-draft:"];
+// kv-store prefixes other features keep per account (`<prefix><scope>:<id>`): application notes (M5-T2), Career
+// workspace drafts (M6-T2), an onboarding picked up again (features/onboarding/saved-run.ts) and Profile edits not
+// saved yet (features/profile/pending.ts). Resume and letter drafts are cleared by the draft runtime.
+const scopedStoragePrefixes = [
+	"rezumi:application-notes:",
+	"rezumi:career-draft:",
+	"rezumi:onboarding:",
+	"rezumi:profile-pending:",
+];
 
 /** Best-effort revocation of a refresh token on `server`, given up after `revokeTimeout`. */
 async function revoke(server: string, refreshToken: string | undefined): Promise<void> {
@@ -437,6 +500,8 @@ export function signOut(): Promise<void> {
 		};
 
 		await revoke(departing.server, departing.tokens?.refreshToken);
+		// Android: the next Google sign-in shows the account picker instead of reusing this account.
+		await attempt(async () => (await import("./google")).forgetGoogleAccount());
 		await attempt(async () => {
 			// Imported here, like the draft runtime below, to keep this module free of feature imports.
 			const { clearStoredThumbnails } = await import("@/features/documents/thumbnail-store");

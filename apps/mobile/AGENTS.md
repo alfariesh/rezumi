@@ -3,8 +3,8 @@
 Expo SDK 58 / React Native 0.88 app for iOS and Android (Expo Router, TanStack Query, oRPC, Lingui, HeroUI Native +
 Uniwind, the native Forme PDF engine from `packages/forme-native`). The app is being rebuilt: read
 `.agents/docs/plans/mobile/README.md` (rules for every session), `00-keputusan.md` (decisions), `01-desain.md` (design)
-and `02-teknis.md` (architecture, tests, two-platform checklist) before changing it. Visual rules will live in
-`apps/mobile/DESIGN.md` (Phase 02).
+and `02-teknis.md` (architecture, tests, two-platform checklist) before changing it. Visual rules: `DESIGN.md` (the
+design system in `src/ui`; gallery at `app.rezumi://dev/ui` in development builds).
 
 ## Owner's Mac: one heavy job at a time
 
@@ -75,11 +75,17 @@ Prerequisites: Xcode with an iOS simulator runtime, CocoaPods, Docker (Postgres)
    builds accept `http://` only for `localhost`, `127.0.0.1` and `10.0.2.2` (`src/auth/oauth.ts`).
 
 5. **Metro.** `pnpm exec expo start` from `apps/mobile` (port 8081); in the dev client tap **Enter URL manually** if it
-   does not find Metro. Sign in: **Another server** → `http://localhost:3400` → **Continue in browser**. Test accounts:
-   sign up through `/api/auth/sign-up/email` (needs `username` without `-`, and `displayUsername`), then mark the email
-   verified in the database. Use a lowercase hex password (`openssl rand -hex 16`) kept in a scratch file and in
-   `~/.argent/secrets.env`; never in the repository, logs or chat.
+   does not find Metro. Sign in (Phase 04, native): on Welcome tap the **Server** row (development builds only) →
+   `http://localhost:3400`, then **Continue with email** or **Create account**; no browser. A new account works at
+   once (the verification link is printed in the server log). Apple and Google show only for `https://rezumi.app`
+   (their ID tokens are not bound to a server). Use a lowercase hex password (`openssl rand -hex 16`) kept in a
+   scratch file and in `~/.argent/secrets.env`; never in the repository, logs or chat. Typing it on Create account
+   brings up iOS's **Use Strong Password?** sheet, which swallows keystrokes: close it (×), clear the field, then type
+   slowly (Argent `keyboard` `delayMs` ±120) and submit in the same `run-sequence`. The reset email's link is
+   `…/api/auth/reset-password/<token>`; on a simulator open the app at
+   `app.rezumi://auth/reset-password?token=<token>`.
 
+   The browser sign-in (**More ways to sign in**) still works as before; for it:
    Typing into Safari's sign-in sheet on the simulator is unreliable: iOS turns shift on after a paste (the first typed
    letter becomes a capital) and Safari autofill can duplicate text. What works: paste the email with Argent `paste`,
    move to the password field with the keyboard's **Next**, put the password on the simulator clipboard from the file
@@ -93,8 +99,10 @@ Prerequisites: Xcode with an iOS simulator runtime, CocoaPods, Docker (Postgres)
   (`src/api`, `src/auth`, `src/draft`, `src/linking`, `src/i18n`, `src/preview`) is kept: change it carefully and with
   tests.
 - No business rules in the app: shared logic goes to workspace packages (`02-teknis.md` 5). Never copy from `apps/web`.
-- Styling through `src/ui` components and tokens (HeroUI Native from Phase 02); `Platform.OS` only in `src/ui` and
-  `src/shell` (and permission prompts).
+- Styling through `@/ui` components and `className` tokens (HeroUI Native + Uniwind, `DESIGN.md`); never `@/ui-legacy`
+  in a rebuilt file. `src/design-guard.test.ts` fails a file outside `src/design-guard.legacy.json` that holds a hex
+  color, a `style={{…}}` literal or a legacy import; remove a screen from that list when you rebuild it.
+  `Platform.OS` only in `src/ui` and `src/shell` (and permission prompts).
 - Data through `useQuery` with oRPC query options. The `QueryClient` (`src/api/query-client.ts`) refetches on
   foreground (`focusManager` ↔ `AppState`), pauses offline (`onlineManager` ↔ `expo-network`), retries network and 5xx
   failures twice and never retries 4xx, account switches or mutations.
@@ -104,9 +112,12 @@ Prerequisites: Xcode with an iOS simulator runtime, CocoaPods, Docker (Postgres)
 
 ## Tests
 
-- **Jest + React Native Testing Library** (`jest.config.js`, preset `jest-expo`): component and hook tests next to the
-  source as `*.test.ts(x)`. `@/` maps to `src/`; `.mjs` dependencies (oRPC) go through `babel-jest`. RNTL 14's
-  `render`/`fireEvent` are async: `await` them.
+- **Jest + React Native Testing Library** (`jest.config.js`, preset `jest-expo`, `jest.setup.js`): component and hook
+  tests next to the source as `*.test.ts(x)`. `@/` maps to `src/`; `.mjs` dependencies (oRPC) go through `babel-jest`.
+  RNTL 14's `render`/`fireEvent` are async: `await` them. Render design-system components with `renderUi` from
+  `src/ui/test-utils.tsx` (HeroUI provider, safe area, animations off). `jest.setup.js` mocks Reanimated (with
+  `modify`), worklets, gesture handler and keyboard controller; a new native package that crashes on import under Jest
+  gets its published mock there, or joins `transformIgnorePatterns` when it ships untranspiled ESM.
 - **`scripts/*.test.mjs`** (`node:test` with hand-made React Native fixtures): legacy; kept only until their logic moves
   to packages (Vitest there), then deleted.
 - **Maestro** flows in `e2e/` (see `e2e/README.md`); installed with `brew install mobile-dev-inc/tap/maestro`, run with
@@ -115,6 +126,22 @@ Prerequisites: Xcode with an iOS simulator runtime, CocoaPods, Docker (Postgres)
   and Indonesian; screenshots for each phase go to `.agents/docs/plans/mobile/laporan/phase-NN/`.
 
 ## Gotchas found
+
+- Hermes on iOS has no `Intl.NumberFormat.prototype.formatToParts`: read separators from `format()` output
+  (`features/career/amount.ts`).
+- Hermes has no `Intl.RelativeTimeFormat`, and `Intl.NumberFormat` with `style: "unit"` prints nonsense ("2,700s" for
+  45 minutes). Write relative days and durations as Lingui strings or plurals.
+- `tokens.motion` easings are Reanimated worklets; React Navigation animates with React Native's `Animated`, which
+  crashes on them ("Object is not a function"). Use `Easing` from `react-native` in navigator `transitionSpec`s.
+- The development client's floating **Tools** button sits on the avatar in the top bar. Turn it off in the dev menu
+  (Tools button switch) before tapping the account menu or taking screenshots.
+- Local test data for Home (fictional notifications, roles, a schedule, an interview) is inserted with SQL into
+  `rezumi_mobile_dev` (ids prefixed `p03-`); the `rezumi-mobile` launch config runs with `PORTFOLIO_MODE=on` so the
+  Portfolio tab shows.
+- Screen tests render with `renderScreen` from `src/test/render-screen.tsx` (providers, Lingui, a fresh QueryClient)
+  and mock the feature's query hooks; `jest.setup.js` stubs TrueSheet for every suite.
+
+- The first `app.rezumi://…` link sent to a running simulator sometimes does not navigate; send it again.
 
 - CocoaPods 1.17 on Ruby 4 crashes with `Unicode Normalization not appropriate for ASCII-8BIT` unless the shell locale
   is UTF-8: export `LANG`/`LC_ALL=en_US.UTF-8` before `expo run:ios`.
@@ -129,11 +156,12 @@ Prerequisites: Xcode with an iOS simulator runtime, CocoaPods, Docker (Postgres)
   `src/shell/error-boundary.tsx`.
 - The Apple team is the owner's `ZAVWN3Z2YX`; simulator builds need no signing. Store identities still to re-check are
   listed in `.agents/docs/mobile-release-handoff.md`.
-- The app caches its OAuth `client_id` per server in SecureStore. If that server's database is replaced, the browser
-  shows "client not found" and the app never re-registers (it only forgets the client on a token-endpoint
-  `invalid_client`). Workaround on a development build: delete the `client.<hex of origin>` SecureStore key through the
-  debugger. Fix belongs to Phase 04 (`02-teknis.md` 4).
-- Sign-in failures in development builds log the cause (`console.warn("Sign-in failed", …)` in
-  `src/auth/use-sign-in.ts`); the screen still shows the generic message.
+- The app caches its OAuth `client_id` per server in SecureStore. Native sign-in re-registers by itself when the
+  server no longer knows it (`INVALID_CLIENT` from `/native-app/consent`). The browser sign-in still cannot: there,
+  "client not found" needs the `client.<hex of origin>` SecureStore key deleted through the debugger.
+- Sign-in failures in development builds log the cause (`console.warn("Auth step … failed", …)` in
+  `src/features/auth/use-auth-action.ts`, codes only); the screen shows the sentence from `errors.ts`.
+- Screen tests that mock a module with `jest.mock(path, () => mockObject)` get `undefined` when the factory runs
+  before the test file's constants: delegate (`(...args) => mockObject.fn(...args)`), as `auth-screens.test.tsx` does.
 - `.github/workflows/mobile-release.yml` still names Blacksmith runners directly; without Blacksmith on the repository
   its jobs never leave the queue (fix before Phase 16, like `mobile-forme-build.yml`).

@@ -8,7 +8,7 @@ import { ProposedEditsCaption, useMarkedResumeData } from "@/features/assistant/
 import { usePreviewedDraft } from "@/features/design/draft";
 import { TemplatePreviewCaption } from "@/features/design/preview-caption";
 import { ResumePage } from "@/preview/page";
-import { Banner } from "@/ui";
+import { Banner } from "@/ui-legacy";
 
 // Metro removes this branch and its require before collecting release dependencies.
 const DevelopmentTools: typeof import("../../../scripts/parity/development").DevelopmentTools | null = __DEV__

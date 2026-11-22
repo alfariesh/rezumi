@@ -1,3 +1,6 @@
+// Write for letters (plans/mobile Phase 08): who the letter is for (the application), to (recipient, company, date),
+// from (the Profile, a resume, or this letter's own details), then the body with its AI draft, the length guide and a
+// note on the design. Mirrors web's `routes/builder/letter/-components/write-panel.tsx`.
 import type { RelinkResult } from "./save";
 import type { LetterDocument } from "@/draft/types";
 import type { ApplicationSummary as Application } from "@/features/applications/types";
@@ -6,98 +9,124 @@ import type { ReactNode } from "react";
 import { plural, t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react/macro";
 import { ORPCError } from "@orpc/client";
+import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "expo-router";
 import { useState } from "react";
-import { Keyboard, View, useWindowDimensions } from "react-native";
-import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
+import { Keyboard, View } from "react-native";
 import { coverLetterTextToHtml, defaultCoverLetterSignOff, greetingName } from "@rezumi/resume/cover-letter";
+import { ACCENTS, matchFontPairing, rgbaToHex, templateName } from "@rezumi/resume/design-presets";
+import { profileHasCareer } from "@rezumi/resume/profile";
 import { useLetterWords } from "./compose";
-import { designSummary } from "./design-presets";
 import { discardLetterDraft, startLetterDraft, useLetterDrafting } from "./drafting";
 import { LETTER_LENGTH, countWords, letterLength } from "./length";
 import { useResumes } from "./queries";
 import { LetterRichText, LetterRichTextToolbar } from "./rich-text-field";
 import { relinkLetter } from "./save";
+import { useSession } from "@/auth/session";
 import { letterFieldFocus, useLetterStore } from "@/draft";
 import { AIProviderSetupSheet, useHasAIProvider } from "@/features/ai/providers";
-import { WallClockField } from "@/features/application-detail/date-field";
+import { ReportAiContent } from "@/features/ai/report-content";
 import { useApplications } from "@/features/applications/queries";
-import { getStageColor, getStageLabel } from "@/features/applications/stages";
+import { getStageLabel } from "@/features/applications/stages";
+import { ACCENT_NAMES, PAIRING_NAMES } from "@/features/design/preset-names";
+import { profileQuery } from "@/features/onboarding/queries";
 import { routes } from "@/routes";
 import {
-	Banner,
+	Alert,
 	Button,
+	Card,
+	DatePicker,
+	EmptyState,
+	Icon,
+	Input,
+	Label,
 	ListRow,
-	SelectSheet,
+	ListSection,
+	Screen,
+	SearchField,
 	Sheet,
 	Skeleton,
-	Switch,
+	StageLabel,
 	Text,
 	TextArea,
 	TextField,
+	Typography,
+	cx,
 	showToast,
 	useReducedMotion,
-	useTheme,
 } from "@/ui";
-import { useKeyboardScrollSpace } from "@/ui/keyboard";
 
 type Recipe = (letter: WritableDraft<LetterDocument>) => void;
 
 /** Typing: one undo step per field while typing pauses under a second. */
 const edit = (key: string, recipe: Recipe) => useLetterStore.getState().update(recipe, { coalesceKey: key });
 
-/** Tells the user how a link change went: confirmed, waiting for a connection, or refused over unsaved edits. */
+/** Tells the person how a link change went: confirmed, waiting for a connection, or refused over unsaved edits. */
 export function relinked(result: RelinkResult, done?: string) {
-	if (result === "unsaved") showToast({ message: t`Couldn't save your changes. Try again before continuing.` });
-	else if (result === "linked" && done) showToast({ message: done });
+	if (result === "unsaved")
+		showToast({ title: t`Couldn't save your changes. Try again before continuing.`, variant: "danger" });
+	else if (result === "linked" && done) showToast({ title: done });
 }
 
-type SectionProps = { title: string; aside?: ReactNode; children: ReactNode };
+type SectionProps = { title: string; aside?: ReactNode; children: ReactNode; testID?: string | undefined };
 
-function Section({ title, aside, children }: SectionProps) {
-	const { colors, space } = useTheme();
+function Section({ title, aside, children, testID }: SectionProps) {
 	return (
-		<View style={{ gap: space.s3, padding: space.s4, borderBottomWidth: 1, borderBottomColor: colors.line }}>
-			<View style={{ flexDirection: "row", alignItems: "center", gap: space.s3 }}>
-				<Text accessibilityRole="header" variant="eyebrow" color="ink3" style={{ flex: 1 }}>
-					{title}
-				</Text>
-				{aside}
-			</View>
-			{children}
-		</View>
+		<Card testID={testID}>
+			<Card.Body className="gap-3">
+				<View className="flex-row items-center gap-3">
+					<Typography.Heading type="h6" className="flex-1" accessibilityRole="header">
+						{title}
+					</Typography.Heading>
+					{aside}
+				</View>
+				{children}
+			</Card.Body>
+		</Card>
 	);
 }
 
-/**
- * Write: who the letter is for (the application), to (recipient, company, date) and from (the resume, live or
- * copied), then the body with its length guide and a note on the design. Ported from web's `write-panel.tsx`.
- */
+function Notice({ status, message }: { status: "accent" | "warning" | "danger"; message: string }) {
+	return (
+		<Alert status={status}>
+			<Alert.Indicator />
+			<Alert.Content>
+				<Alert.Description>{message}</Alert.Description>
+			</Alert.Content>
+		</Alert>
+	);
+}
+
 export function LetterWrite({ id }: { id: string }) {
 	const { t } = useLingui();
 	const letter = useLetterStore((state) => (state.document?.id === id ? state.document : null));
 	const status = useLetterStore((state) => state.status);
 	const draft = useLetterDrafting((state) => state.draft);
 	const applications = useApplications();
-	const { size, space } = useTheme();
-	const keyboardSpace = useKeyboardScrollSpace();
 
 	if (!letter) {
 		return status === "error" ? (
-			<Banner
-				tone="danger"
-				message={t`Couldn't load the cover letter.`}
-				action={{
-					label: t`Retry`,
-					onPress: () =>
-						void useLetterStore
-							.getState()
-							.open(id)
-							.catch(() => undefined),
-				}}
-			/>
+			<Screen>
+				<EmptyState
+					kind="page"
+					icon="warning-circle"
+					title={t`Couldn't load the cover letter`}
+					description={t`Check your connection and try again.`}
+					action={{
+						label: t`Retry`,
+						onPress: () =>
+							void useLetterStore
+								.getState()
+								.open(id)
+								.catch(() => undefined),
+					}}
+				/>
+			</Screen>
 		) : (
-			<LoadingForm />
+			<Screen>
+				<Skeleton variant="none" className="h-28 rounded-3xl" />
+				<Skeleton variant="none" className="h-48 rounded-3xl" />
+			</Screen>
 		);
 	}
 
@@ -105,15 +134,10 @@ export function LetterWrite({ id }: { id: string }) {
 	const disabled = letter.isLocked;
 
 	return (
-		<View style={{ flex: 1 }}>
-			<KeyboardAwareScrollView
-				extraKeyboardSpace={keyboardSpace}
-				bottomOffset={size.hit + space.s4}
-				keyboardShouldPersistTaps="handled"
-				keyboardDismissMode="interactive"
-			>
+		<View className="flex-1">
+			<Screen testID="letter-write">
 				{disabled ? (
-					<Banner icon="lock" tone="info" message={t`This letter is locked. Unlock it in Documents to edit.`} />
+					<Notice status="accent" message={t`This letter is locked. Unlock it in Documents to edit.`} />
 				) : null}
 				<ForSection application={application} applications={applications.data ?? []} disabled={disabled} />
 				<ToSection letter={letter} application={application} disabled={disabled} />
@@ -124,35 +148,17 @@ export function LetterWrite({ id }: { id: string }) {
 					words={countWords(draft.phase === "streaming" || draft.phase === "ready" ? draft.text : letter.content)}
 				/>
 				<DesignNote letter={letter} />
-				<View style={{ height: size.hit + space.s5 }} />
-			</KeyboardAwareScrollView>
+			</Screen>
 			<LetterRichTextToolbar />
 		</View>
 	);
 }
 
-function LoadingForm() {
-	const { size, space } = useTheme();
-	return (
-		<View style={{ padding: space.s4, gap: space.s3 }}>
-			<Skeleton height={size.hit} />
-			<Skeleton height={size.hit * 3} />
-		</View>
-	);
-}
-
-type ForSectionProps = {
-	application: Application | null;
-	applications: Application[];
-	disabled: boolean;
-};
+type ForSectionProps = { application: Application | null; applications: Application[]; disabled: boolean };
 
 /** FOR: the application the letter is for. Linking one fills the recipient; without one, drafting uses the resume. */
 function ForSection({ application, applications, disabled }: ForSectionProps) {
 	const { t } = useLingui();
-	const { colors, radius, size, space } = useTheme();
-	const { fontScale } = useWindowDimensions();
-	const stacked = fontScale > 1.3;
 	const [open, setOpen] = useState(false);
 	const [query, setQuery] = useState("");
 	const search = query.trim().toLocaleLowerCase();
@@ -160,8 +166,12 @@ function ForSection({ application, applications, disabled }: ForSectionProps) {
 		.filter((item) => item.status !== "closed" || item.id === application?.id)
 		.filter((item) => !search || `${item.role} ${item.company}`.toLocaleLowerCase().includes(search));
 
-	const choose = (next: Application | null) => {
+	const close = () => {
 		setOpen(false);
+		setQuery("");
+	};
+	const choose = (next: Application | null) => {
+		close();
 		void relinkLetter((draft) => {
 			draft.sourceApplicationId = next?.id ?? null;
 			// The recipient comes from the application: its company, and its first contact when it has one.
@@ -175,110 +185,90 @@ function ForSection({ application, applications, disabled }: ForSectionProps) {
 	return (
 		<Section title={t`For`}>
 			{application ? (
-				<View
-					style={{
-						flexDirection: stacked ? "column" : "row",
-						alignItems: stacked ? "flex-start" : "center",
-						gap: space.s3,
-						padding: space.s3,
-						borderWidth: 1,
-						borderColor: colors.line,
-						borderRadius: radius.rLg,
-					}}
-				>
-					<View
-						style={{
-							minWidth: size.hit - space.s2,
-							minHeight: size.hit - space.s2,
-							borderRadius: radius.rLg,
-							backgroundColor: colors.sunken,
-							alignItems: "center",
-							justifyContent: "center",
-						}}
-					>
-						<Text weight={600} color="ink2">
+				<View className="flex-row items-center gap-3 rounded-2xl bg-surface-secondary p-3">
+					<View className="size-10 items-center justify-center rounded-xl bg-surface">
+						<Text weight="semibold" tone="muted">
 							{application.company.charAt(0).toLocaleUpperCase()}
 						</Text>
 					</View>
-					<View style={stacked ? { alignSelf: "stretch" } : { flex: 1, minWidth: 0 }}>
-						<Text weight={500} numberOfLines={stacked ? undefined : 2}>
+					<View className="min-w-0 flex-1 gap-0.5">
+						<Text weight="medium" numberOfLines={2}>
 							{application.role}
 						</Text>
-						<View
-							style={{
-								flexDirection: stacked ? "column" : "row",
-								alignItems: stacked ? "flex-start" : "center",
-								gap: space.s1,
-							}}
-						>
-							<Text
-								variant="caption"
-								color="ink3"
-								numberOfLines={stacked ? undefined : 1}
-								style={stacked ? { alignSelf: "stretch" } : { flexShrink: 1 }}
-							>
-								{application.company}
-							</Text>
-							<View style={{ flexDirection: "row", alignItems: "center", gap: space.s1 }}>
-								<View
-									style={{
-										width: space.s2 - space.s0,
-										height: space.s2 - space.s0,
-										borderRadius: radius.rLg,
-										backgroundColor: getStageColor(application.status, colors),
-									}}
-								/>
-								<Text variant="caption" color="ink3">
-									{getStageLabel(application.status)}
-								</Text>
-							</View>
-						</View>
+						<Text size="xs" tone="muted" numberOfLines={1}>
+							{application.company}
+						</Text>
+						<StageLabel stage={application.status} label={getStageLabel(application.status)} size="xs" tone="muted" />
 					</View>
-					<Button size="sm" variant="secondary" label={t`Change`} disabled={disabled} onPress={() => setOpen(true)} />
+					<Button size="sm" variant="secondary" isDisabled={disabled} onPress={() => setOpen(true)}>
+						{t`Change`}
+					</Button>
 				</View>
 			) : (
 				<>
 					<Button
 						variant="secondary"
-						icon="briefcase"
-						label={t`Link an application`}
-						disabled={disabled}
+						isDisabled={disabled}
 						onPress={() => setOpen(true)}
-					/>
-					<Text variant="caption" color="ink3">
+						testID="letter-link-application"
+					>
+						<Icon name="briefcase" size={16} />
+						<Button.Label>{t`Link an application`}</Button.Label>
+					</Button>
+					<Text size="xs" tone="muted" className="leading-5">
 						{t`Without one, you fill in the recipient yourself and drafting uses only your resume.`}
 					</Text>
 				</>
 			)}
 			<Sheet
-				open={open}
+				isOpen={open}
+				onOpenChange={(next) => !next && close()}
 				title={t`Application`}
-				detents={[0.5, 0.9]}
-				onClose={() => {
-					setOpen(false);
-					setQuery("");
-				}}
+				closeLabel={t`Close`}
+				detents={[0.6, 0.95]}
 			>
 				{applications.length === 0 ? (
-					<Text color="ink2" align="center">
-						{t`No applications yet. Add one in Applications first.`}
-					</Text>
+					<EmptyState
+						kind="page"
+						icon="briefcase"
+						title={t`No applications yet`}
+						description={t`Add one in Applications first.`}
+					/>
 				) : (
-					<View style={{ gap: space.s2 }}>
-						<TextField label={t`Search applications`} value={query} onChangeText={setQuery} />
-						{application ? (
-							<ListRow title={t`No application`} leading="link-break" onPress={() => choose(null)} />
-						) : null}
-						{choices.map((item) => (
-							<ListRow
-								key={item.id}
-								title={item.role}
-								subtitle={`${item.company} · ${getStageLabel(item.status)}`}
-								leading="briefcase"
-								selected={item.id === application?.id}
-								onPress={() => choose(item)}
-							/>
-						))}
+					<View className="gap-3">
+						<SearchField value={query} onChange={setQuery}>
+							<SearchField.Group>
+								<SearchField.SearchIcon />
+								<SearchField.Input placeholder={t`Search applications`} accessibilityLabel={t`Search applications`} />
+								<SearchField.ClearButton />
+							</SearchField.Group>
+						</SearchField>
+						<ListSection>
+							{[
+								...(application
+									? [
+											<ListRow
+												key="none"
+												icon="link-break"
+												title={t`No application`}
+												chevron={false}
+												onPress={() => choose(null)}
+											/>,
+										]
+									: []),
+								...choices.map((item) => (
+									<ListRow
+										key={item.id}
+										icon="briefcase"
+										title={item.role}
+										description={`${item.company} · ${getStageLabel(item.status)}`}
+										chevron={false}
+										isSelected={item.id === application?.id}
+										onPress={() => choose(item)}
+									/>
+								)),
+							]}
+						</ListSection>
 					</View>
 				)}
 			</Sheet>
@@ -290,8 +280,7 @@ type LetterSectionProps = { letter: LetterDocument; application: Application | n
 
 /** TO: name or team, company and date for structured letters; older (freeform) letters keep their recipient block. */
 function ToSection({ letter, application, disabled }: LetterSectionProps) {
-	const { t } = useLingui();
-	const { space } = useTheme();
+	const { t, i18n } = useLingui();
 
 	if (letter.layout === "freeform") {
 		return (
@@ -304,50 +293,48 @@ function ToSection({ letter, application, disabled }: LetterSectionProps) {
 					minLines={3}
 					onChange={(recipient) => edit("recipient", (draft) => void (draft.recipient = recipient))}
 				/>
-				<Text variant="caption" color="ink3">{t`This letter keeps its recipient as written.`}</Text>
+				<Text size="xs" tone="muted">{t`This letter keeps its recipient as written.`}</Text>
 			</Section>
 		);
 	}
 
 	return (
 		<Section title={t`To`}>
-			<TextField
-				label={t`Name or team`}
-				value={letter.recipientName}
-				maxLength={200}
-				placeholder={t`Hiring team`}
-				editable={!disabled}
-				returnKeyType="next"
-				{...letterFieldFocus}
-				onChangeText={(value) => edit("recipientName", (draft) => void (draft.recipientName = value))}
+			<TextField isDisabled={disabled}>
+				<Label>{t`Name or team`}</Label>
+				<Input
+					variant="secondary"
+					value={letter.recipientName}
+					maxLength={200}
+					placeholder={t`Hiring team`}
+					returnKeyType="next"
+					accessibilityLabel={t`Name or team`}
+					{...letterFieldFocus}
+					onChangeText={(value) => edit("recipientName", (draft) => void (draft.recipientName = value))}
+				/>
+			</TextField>
+			<TextField isDisabled={disabled}>
+				<Label>{t`Company`}</Label>
+				<Input
+					variant="secondary"
+					value={letter.recipientCompany}
+					maxLength={200}
+					accessibilityLabel={t`Company`}
+					{...letterFieldFocus}
+					onChangeText={(value) => edit("recipientCompany", (draft) => void (draft.recipientCompany = value))}
+				/>
+			</TextField>
+			<DatePicker
+				variant="secondary"
+				label={t`Date`}
+				value={letter.letterDate}
+				placeholder={t`No date`}
+				clearLabel={t`No date`}
+				locale={i18n.locale}
+				isDisabled={disabled}
+				onChange={(value) => edit("letterDate", (draft) => void (draft.letterDate = value))}
 			/>
-			<TextField
-				label={t`Company`}
-				value={letter.recipientCompany}
-				maxLength={200}
-				editable={!disabled}
-				{...letterFieldFocus}
-				onChangeText={(value) => edit("recipientCompany", (draft) => void (draft.recipientCompany = value))}
-			/>
-			<View style={{ flexDirection: "row", alignItems: "flex-end", gap: space.s2 }}>
-				<View style={{ flex: 1 }} pointerEvents={disabled ? "none" : "auto"}>
-					<WallClockField
-						label={t`Date`}
-						mode="date"
-						value={letter.letterDate ?? ""}
-						onChange={(value) => edit("letterDate", (draft) => void (draft.letterDate = value))}
-					/>
-				</View>
-				{letter.letterDate && !disabled ? (
-					<Button
-						size="sm"
-						variant="ghost"
-						label={t`No date`}
-						onPress={() => edit("letterDate", (draft) => void (draft.letterDate = null))}
-					/>
-				) : null}
-			</View>
-			<Text variant="caption" color="ink3">
+			<Text size="xs" tone="muted">
 				{application
 					? t`Filled from the application. The greeting follows the name.`
 					: t`The greeting follows the name.`}
@@ -356,79 +343,164 @@ function ToSection({ letter, application, disabled }: LetterSectionProps) {
 	);
 }
 
-/** FROM: the resume the sender's details come from, and whether they stay live or are copied into the letter. */
+// The From choices that aren't a resume id. Resume ids are UUIDs, so they can't clash.
+const FROM_PROFILE = "profile";
+const FROM_OWN = "own";
+
+/** Which From choice a letter is on: its own copy, a linked resume, or (linked without a resume) the Profile. */
+const fromChoice = (letter: Pick<LetterDocument, "senderLinked" | "sourceResumeId">) =>
+	!letter.senderLinked ? FROM_OWN : (letter.sourceResumeId ?? FROM_PROFILE);
+
+/**
+ * FROM: where the sender's details come from. The Profile (the default) and a resume stay live; "this letter only" is a
+ * copy, edited here. Picking the Profile lets go of the letter's resume, whose design link ends with it.
+ */
 function FromSection({ letter, disabled }: { letter: LetterDocument; disabled: boolean }) {
 	const { t } = useLingui();
 	const resumes = useResumes();
-	const resume = resumes.data?.find((item) => item.id === letter.sourceResumeId);
-	const resumeName = resume?.name;
-	const useDetailsLabel = resumeName ? t`Use details from “${resumeName}”` : t`Use details from the resume`;
+	const [open, setOpen] = useState(false);
+	const value = fromChoice(letter);
+	const resumeName = resumes.data?.find((item) => item.id === letter.sourceResumeId)?.name;
+	const label =
+		value === FROM_OWN ? t`This letter only` : value === FROM_PROFILE ? t`Your Profile` : (resumeName ?? t`A resume`);
 
-	const setResume = (resumeId: string) =>
+	const choose = (next: string) => {
+		setOpen(false);
+		if (next === value) return;
 		void relinkLetter((draft) => {
-			// A letter taking a resume for the first time takes its details and design with it.
-			if (resumeId && !draft.sourceResumeId) {
-				draft.senderLinked = true;
-				draft.designLinked = true;
-			}
-			if (!resumeId) {
+			if (next === FROM_OWN) {
 				draft.senderLinked = false;
+			} else if (next === FROM_PROFILE) {
+				draft.sourceResumeId = null;
+				draft.senderLinked = true;
 				draft.designLinked = false;
+			} else {
+				// A letter taking a resume for the first time takes its design with it.
+				if (!draft.sourceResumeId) draft.designLinked = true;
+				draft.sourceResumeId = next;
+				draft.senderLinked = true;
 			}
-			draft.sourceResumeId = resumeId || null;
-		}).then((result) => relinked(result));
-
-	const setLinked = (senderLinked: boolean) => {
-		void relinkLetter((draft) => void (draft.senderLinked = senderLinked)).then((result) =>
-			relinked(result, senderLinked ? t`Linked to the resume again` : t`Sender details copied into the letter`),
+		}).then((result) =>
+			relinked(result, next === FROM_OWN ? t`Your details were copied into the letter. Edit them here.` : undefined),
 		);
 	};
 
+	const options = [
+		{ value: FROM_PROFILE, title: t`Your Profile`, icon: "user-circle" as const },
+		...(resumes.data ?? []).map((item) => ({ value: item.id, title: item.name, icon: "file-text" as const })),
+		{ value: FROM_OWN, title: t`This letter only`, icon: "pencil-simple" as const },
+	];
+
 	return (
-		<Section title={t`From`}>
-			<SelectSheet
-				label={t`Resume`}
-				value={letter.sourceResumeId ?? ""}
-				disabled={disabled || resumes.isPending}
-				options={[
-					{ value: "", label: t`No resume` },
-					...(resumes.data ?? []).map((item) => ({ value: item.id, label: item.name, icon: "file-text" as const })),
-				]}
-				onChange={setResume}
-			/>
-			{resumes.isError ? (
-				<Banner
-					tone="warn"
-					message={t`Couldn't load your resumes.`}
-					action={{ label: t`Retry`, onPress: () => void resumes.refetch() }}
-				/>
-			) : null}
-			{letter.sourceResumeId ? (
+		<Section title={t`From`} testID="letter-from">
+			<ListSection>
 				<ListRow
-					title={useDetailsLabel}
-					subtitle={
-						letter.senderLinked
-							? t`Linked. Name, email, phone and city update when the resume does.`
-							: t`Off. The letter keeps its own copy of your details.`
-					}
-					trailing={
-						<Switch label={useDetailsLabel} value={letter.senderLinked} disabled={disabled} onValueChange={setLinked} />
-					}
+					icon="user-circle"
+					title={t`Your details from`}
+					value={label}
+					isDisabled={disabled}
+					onPress={() => setOpen(true)}
+					testID="letter-from-choice"
 				/>
+			</ListSection>
+			{resumes.isError ? (
+				<View className="gap-2">
+					<Notice status="warning" message={t`Couldn't load your resumes.`} />
+					<Button size="sm" variant="secondary" className="self-start" onPress={() => void resumes.refetch()}>
+						{t`Retry`}
+					</Button>
+				</View>
+			) : null}
+			{value === FROM_OWN ? (
+				<SenderFields letter={letter} disabled={disabled} />
 			) : (
-				<Text variant="caption" color="ink3">{t`Your name and contact details come from a resume.`}</Text>
+				<Text size="xs" tone="muted" className="leading-5">
+					{value === FROM_PROFILE
+						? t`Your name and contact details follow your Profile.`
+						: t`Your name and contact details follow “${resumeName ?? t`the resume`}”.`}
+				</Text>
 			)}
+			<Sheet
+				isOpen={open}
+				onOpenChange={(next) => !next && setOpen(false)}
+				title={t`Your details from`}
+				closeLabel={t`Close`}
+				detents={["auto", 0.9]}
+			>
+				<ListSection>
+					{options.map((option) => (
+						<ListRow
+							key={option.value}
+							icon={option.icon}
+							title={option.title}
+							chevron={false}
+							isSelected={option.value === value}
+							onPress={() => choose(option.value)}
+							testID={`letter-from-${option.value === FROM_PROFILE || option.value === FROM_OWN ? option.value : "resume"}`}
+						/>
+					))}
+				</ListSection>
+			</Sheet>
 		</Section>
 	);
 }
 
+type SenderField = "name" | "headline" | "email" | "phone" | "location";
+
+/** The letter's own sender details: saved with the letter (`coverLetters.update` with `basics`), nowhere else. */
+function SenderFields({ letter, disabled }: { letter: LetterDocument; disabled: boolean }) {
+	const { t } = useLingui();
+	const basics = letter.style.basics;
+	const fields: { key: SenderField; label: string; keyboard?: "email-address" | "phone-pad" }[] = [
+		{ key: "name", label: t`Name` },
+		{ key: "headline", label: t`Headline` },
+		{ key: "email", label: t`Email`, keyboard: "email-address" },
+		{ key: "phone", label: t`Phone`, keyboard: "phone-pad" },
+		{ key: "location", label: t`Location` },
+	];
+
+	return (
+		<View className="gap-3" testID="letter-sender-fields">
+			{fields.map((field) => (
+				<TextField key={field.key} isDisabled={disabled}>
+					<Label>{field.label}</Label>
+					<Input
+						variant="secondary"
+						value={basics[field.key]}
+						maxLength={200}
+						autoCapitalize={field.keyboard ? "none" : "sentences"}
+						keyboardType={field.keyboard ?? "default"}
+						accessibilityLabel={field.label}
+						{...letterFieldFocus}
+						onChangeText={(value) =>
+							edit(`basics.${field.key}`, (draft) => void (draft.style.basics[field.key] = value))
+						}
+					/>
+				</TextField>
+			))}
+			<TextField isDisabled={disabled}>
+				<Label>{t`Website`}</Label>
+				<Input
+					variant="secondary"
+					value={basics.website.url}
+					maxLength={200}
+					autoCapitalize="none"
+					keyboardType="url"
+					accessibilityLabel={t`Website`}
+					{...letterFieldFocus}
+					onChangeText={(url) => edit("basics.website", (draft) => void (draft.style.basics.website.url = url))}
+				/>
+			</TextField>
+		</View>
+	);
+}
+
 /**
- * The body. Empty, it offers a draft from the posting and the resume. A draft shows on a green wash until it's kept:
+ * The body. Empty, it offers a draft from the posting and the resume. A draft shows on a tinted block until it's kept:
  * it never replaces typed text by itself.
  */
 function BodySection({ letter, application, disabled }: LetterSectionProps) {
 	const { t } = useLingui();
-	const { space } = useTheme();
 	const words = useLetterWords(letter.style.metadata.page.locale);
 	const draft = useLetterDrafting((state) => state.draft);
 	// Once the editor shows it stays, so clearing the text while typing never swaps it for the draft offer.
@@ -448,7 +520,7 @@ function BodySection({ letter, application, disabled }: LetterSectionProps) {
 					});
 					discardLetterDraft();
 					setWriting(true);
-					showToast({ message: t`Draft kept. Edit anything you like.` });
+					showToast({ title: t`Draft kept. Edit anything you like.`, variant: "success" });
 				}}
 			/>
 		) : showEditor ? (
@@ -459,6 +531,7 @@ function BodySection({ letter, application, disabled }: LetterSectionProps) {
 				disabled={disabled}
 				autoFocus={writing && countWords(letter.content) === 0}
 				onChange={(content) => edit("content", (value) => void (value.content = content))}
+				testID="letter-body"
 			/>
 		) : (
 			<EmptyBody letter={letter} application={application} disabled={disabled} onWrite={() => setWriting(true)} />
@@ -476,17 +549,17 @@ function BodySection({ letter, application, disabled }: LetterSectionProps) {
 			) : null}
 			{body}
 			{structured && words ? (
-				<View style={{ gap: space.s2 }}>
+				<>
 					<FramingField
 						letter={letter}
 						field="signOff"
 						defaultValue={defaultCoverLetterSignOff(letter, words)}
 						disabled={disabled}
 					/>
-					<Text variant="caption" color="ink3">
+					<Text size="xs" tone="muted" className="leading-5">
 						{t`Clear the greeting or sign-off to omit it. Clearing the sign-off also removes the automatic signature.`}
 					</Text>
-				</View>
+				</>
 			) : null}
 		</Section>
 	);
@@ -502,26 +575,30 @@ type FramingFieldProps = {
 /** Greeting and sign-off: plain text that follows the recipient and locale until edited. */
 function FramingField({ letter, field, defaultValue, disabled }: FramingFieldProps) {
 	const { t } = useLingui();
-	const { space } = useTheme();
 	const label = field === "greeting" ? t`Greeting` : t`Sign-off`;
 	return (
-		<View style={{ gap: space.s1 }}>
-			<TextArea
-				label={label}
-				value={letter[field] ?? defaultValue}
-				maxLength={2_000}
-				minLines={field === "greeting" ? 1 : 2}
-				editable={!disabled}
-				{...letterFieldFocus}
-				onChangeText={(value) => edit(field, (draft) => void (draft[field] = value))}
-			/>
+		<View className="gap-1">
+			<TextField isDisabled={disabled}>
+				<Label>{label}</Label>
+				<TextArea
+					variant="secondary"
+					value={letter[field] ?? defaultValue}
+					maxLength={2_000}
+					numberOfLines={field === "greeting" ? 1 : 2}
+					accessibilityLabel={label}
+					{...letterFieldFocus}
+					onChangeText={(value) => edit(field, (draft) => void (draft[field] = value))}
+				/>
+			</TextField>
 			{letter[field] !== null && !disabled ? (
 				<Button
 					size="sm"
 					variant="ghost"
-					label={t`Use default`}
+					className="self-start"
 					onPress={() => useLetterStore.getState().update((draft) => void (draft[field] = null), { newStep: true })}
-				/>
+				>
+					{t`Use default`}
+				</Button>
 			) : null}
 		</View>
 	);
@@ -536,59 +613,75 @@ type EmptyBodyProps = {
 
 function EmptyBody({ letter, application, disabled, onWrite }: EmptyBodyProps) {
 	const { t } = useLingui();
-	const { colors, radius, space } = useTheme();
+	const session = useSession();
 	const ai = useHasAIProvider();
 	const [setup, setSetup] = useState(false);
 	const hasResume = !!letter.sourceResumeId;
+	// Without a resume, a draft reads the Profile.
+	const profile = useQuery({
+		...profileQuery(session.server),
+		enabled: !hasResume && session.status === "signed-in",
+	});
+	const hasProfile = !hasResume && !!profile.data && profileHasCareer(profile.data.data);
 	const company = application?.company;
-	const canDraft = hasResume || !!application;
+	const canDraft = hasResume || hasProfile || !!application;
+	const offerDraft = canDraft && ai.hasAIProvider;
 
 	return (
-		<View
-			style={{
-				gap: space.s3,
-				padding: space.s4,
-				borderWidth: 1,
-				borderStyle: "dashed",
-				borderColor: colors.line2,
-				borderRadius: radius.rLg,
-			}}
-		>
-			<Text color="ink2">
+		<View className="gap-3 rounded-2xl border border-dashed border-border p-4">
+			<Text tone="muted" className="leading-5">
 				{company && hasResume
 					? t`Start typing, or draft from what we know: the ${company} posting and your resume.`
-					: company
-						? t`Start typing, or draft from what we know: the ${company} posting.`
-						: hasResume
-							? t`Start typing, or draft from what we know: your resume.`
-							: t`Start typing. To draft one, link a resume or an application first.`}
+					: company && hasProfile
+						? t`Start typing, or draft from what we know: the ${company} posting and your Profile.`
+						: company
+							? t`Start typing, or draft from what we know: the ${company} posting.`
+							: hasResume
+								? t`Start typing, or draft from what we know: your resume.`
+								: hasProfile
+									? t`Start typing, or draft from what we know: your Profile.`
+									: t`Start typing. To draft one, fill in your Profile, or link a resume or an application.`}
 			</Text>
-			<View style={{ flexDirection: "row", flexWrap: "wrap", gap: space.s2 }}>
-				{canDraft && ai.hasAIProvider ? (
+			<View className="flex-row flex-wrap gap-2">
+				{offerDraft ? (
 					<Button
 						size="sm"
-						icon="sparkle"
-						label={application ? t`Draft from the posting` : t`Draft from your resume`}
-						disabled={disabled}
+						isDisabled={disabled}
 						onPress={() => {
 							Keyboard.dismiss();
 							void startLetterDraft("draft");
 						}}
-					/>
+						testID="letter-draft"
+					>
+						<Icon name="sparkle" size={16} tone="accent-foreground" />
+						<Button.Label>
+							{application
+								? t`Draft from the posting`
+								: hasResume
+									? t`Draft from your resume`
+									: t`Draft from your Profile`}
+						</Button.Label>
+					</Button>
 				) : null}
-				<Button size="sm" variant="secondary" label={t`Write it myself`} disabled={disabled} onPress={onWrite} />
+				{/* The draft is the one primary action; without it, writing is the way in. */}
+				<Button size="sm" variant={offerDraft ? "ghost" : "secondary"} isDisabled={disabled} onPress={onWrite}>
+					{t`Write it myself`}
+				</Button>
 			</View>
 			{canDraft && ai.error ? (
-				<Banner
-					tone="warn"
-					message={t`Couldn't check your AI providers.`}
-					action={{ label: t`Retry`, onPress: ai.retry }}
-				/>
+				<View className="gap-2">
+					<Notice status="warning" message={t`Couldn't check your AI providers.`} />
+					<Button size="sm" variant="secondary" className="self-start" onPress={ai.retry}>
+						{t`Retry`}
+					</Button>
+				</View>
 			) : null}
 			{canDraft && !ai.isUnavailable && !ai.hasAIProvider ? (
-				<View style={{ gap: space.s1 }}>
-					<Text variant="caption" color="ink3">{t`Drafting needs an AI provider.`}</Text>
-					<Button size="sm" variant="link" label={t`Open AI settings`} onPress={() => setSetup(true)} />
+				<View className="gap-1">
+					<Text size="xs" tone="muted">{t`Drafting needs an AI provider.`}</Text>
+					<Button size="sm" variant="ghost" className="self-start" onPress={() => setSetup(true)}>
+						{t`Open AI settings`}
+					</Button>
 				</View>
 			) : null}
 			<AIProviderSetupSheet open={setup} onClose={() => setSetup(false)} />
@@ -598,54 +691,36 @@ function EmptyBody({ letter, application, disabled, onWrite }: EmptyBodyProps) {
 
 type DraftBoxProps = { letter: LetterDocument; application: Application | null; onKeep: (text: string) => void };
 
-/** The draft on its green wash, then Keep, Shorter, More personal or Discard. */
+/** The draft on its tinted block, then Keep, Shorter, More personal or Discard. */
 function DraftBox({ letter, application, onKeep }: DraftBoxProps) {
 	const { t } = useLingui();
-	const { colors, radius, size, space } = useTheme();
 	const reducedMotion = useReducedMotion();
 	const draft = useLetterDrafting((state) => state.draft);
 	const last = useLetterDrafting((state) => state.last);
 
 	if (draft.phase === "idle") return null;
-	if (draft.phase === "unsaved") {
+	if (draft.phase === "unsaved" || draft.phase === "failed") {
+		const gateway = draft.phase === "failed" && draft.error instanceof ORPCError && draft.error.code === "BAD_GATEWAY";
+		const provider = draft.phase === "failed" ? draft.provider : null;
 		return (
-			<View style={{ gap: space.s2 }}>
-				<Banner
-					tone="danger"
-					message={t`Couldn't save your changes, so drafting didn't start. Nothing on the page changed.`}
-				/>
-				<View style={{ flexDirection: "row", gap: space.s2 }}>
-					<Button
-						size="sm"
-						variant="secondary"
-						label={t`Try again`}
-						onPress={() => void startLetterDraft(last.variant, last.previous)}
-					/>
-					<Button size="sm" variant="ghost" label={t`Dismiss`} onPress={discardLetterDraft} />
-				</View>
-			</View>
-		);
-	}
-	if (draft.phase === "failed") {
-		const gateway = draft.error instanceof ORPCError && draft.error.code === "BAD_GATEWAY";
-		return (
-			<View style={{ gap: space.s2 }}>
-				<Banner
-					tone="danger"
+			<View className="gap-2">
+				<Notice
+					status="danger"
 					message={
-						gateway && draft.provider
-							? t`Drafting stopped: ${draft.provider} didn't respond. Nothing on the page changed.`
-							: t`Drafting stopped. Nothing on the page changed.`
+						draft.phase === "unsaved"
+							? t`Couldn't save your changes, so drafting didn't start. Nothing on the page changed.`
+							: gateway && provider
+								? t`Drafting stopped: ${provider} didn't respond. Nothing on the page changed.`
+								: t`Drafting stopped. Nothing on the page changed.`
 					}
 				/>
-				<View style={{ flexDirection: "row", gap: space.s2 }}>
-					<Button
-						size="sm"
-						variant="secondary"
-						label={t`Try again`}
-						onPress={() => void startLetterDraft(last.variant, last.previous)}
-					/>
-					<Button size="sm" variant="ghost" label={t`Dismiss`} onPress={discardLetterDraft} />
+				<View className="flex-row gap-2">
+					<Button size="sm" variant="secondary" onPress={() => void startLetterDraft(last.variant, last.previous)}>
+						{t`Try again`}
+					</Button>
+					<Button size="sm" variant="ghost" onPress={discardLetterDraft}>
+						{t`Dismiss`}
+					</Button>
 				</View>
 			</View>
 		);
@@ -657,49 +732,48 @@ function DraftBox({ letter, application, onKeep }: DraftBoxProps) {
 			? t`Draft · uses only your resume and the posting`
 			: application
 				? t`Draft · uses only the posting`
-				: t`Draft · uses only your resume`;
+				: letter.sourceResumeId
+					? t`Draft · uses only your resume`
+					: t`Draft · uses only your Profile`;
 
 	return (
-		<View style={{ gap: space.s2 }}>
-			<Text variant="caption" color="ink3">
+		<View className="gap-2" testID="letter-draft-box">
+			<Text size="xs" tone="muted">
 				{sources}
 			</Text>
 			<View
 				accessibilityLiveRegion="polite"
-				style={{
-					minHeight: size.hit * 3,
-					padding: space.s3,
-					borderRadius: radius.rLg,
-					borderWidth: 1,
-					borderColor: draft.phase === "ready" ? colors.accent : "transparent",
-					backgroundColor: colors.accentSoft,
-				}}
+				className={cx(
+					"min-h-32 rounded-2xl border bg-accent-soft p-3",
+					draft.phase === "ready" ? "border-accent" : "border-transparent",
+				)}
 			>
-				<Text>
+				<Typography type="body-sm" className="text-accent-soft-foreground">
 					{/* Reduced motion shows the whole draft at once. */}
-					{streaming && reducedMotion ? "" : draft.text}
-					{streaming ? <Text color="ink3">{reducedMotion ? t`Drafting…` : "▍"}</Text> : null}
-				</Text>
+					{streaming && reducedMotion ? t`Drafting…` : draft.text}
+					{streaming && !reducedMotion ? "▍" : ""}
+				</Typography>
 			</View>
 			{streaming ? (
-				<Button size="sm" variant="secondary" icon="stop" label={t`Stop`} onPress={discardLetterDraft} />
+				<Button size="sm" variant="secondary" className="self-start" onPress={discardLetterDraft}>
+					<Icon name="stop" size={16} />
+					<Button.Label>{t`Stop`}</Button.Label>
+				</Button>
 			) : (
-				<View style={{ flexDirection: "row", flexWrap: "wrap", gap: space.s2 }}>
+				<View className="flex-row flex-wrap gap-2">
+					<Button size="sm" onPress={() => onKeep(draft.text)} testID="letter-draft-keep">
+						{t`Keep`}
+					</Button>
+					<Button size="sm" variant="secondary" onPress={() => void startLetterDraft("shorter", draft.text)}>
+						{t`Shorter`}
+					</Button>
+					<Button size="sm" variant="secondary" onPress={() => void startLetterDraft("personal", draft.text)}>
+						{t`More personal`}
+					</Button>
+					<Button size="sm" variant="danger-soft" onPress={discardLetterDraft}>
+						{t`Discard`}
+					</Button>
 					<ReportAiContent source="letter" text={draft.text} />
-					<Button size="sm" label={t`Keep`} onPress={() => onKeep(draft.text)} />
-					<Button
-						size="sm"
-						variant="secondary"
-						label={t`Shorter`}
-						onPress={() => void startLetterDraft("shorter", draft.text)}
-					/>
-					<Button
-						size="sm"
-						variant="secondary"
-						label={t`More personal`}
-						onPress={() => void startLetterDraft("personal", draft.text)}
-					/>
-					<Button size="sm" variant="dangerOutline" label={t`Discard`} onPress={discardLetterDraft} />
 				</View>
 			)}
 		</View>
@@ -709,16 +783,16 @@ function DraftBox({ letter, application, onKeep }: DraftBoxProps) {
 /** Length: the word count against the 180 to 320 band most recruiters read, as a hint rather than a rule. */
 function LengthSection({ words }: { words: number }) {
 	const { t } = useLingui();
-	const { colors, radius, space } = useTheme();
 	const length = letterLength(words);
-	const tone = length === "empty" ? "ink3" : length === "comfortable" ? "accentText" : "warnText";
-	const percent = (value: number) => `${(value / LETTER_LENGTH.scale) * 100}%` as const;
+	const fraction = (value: number) => `${(value / LETTER_LENGTH.scale) * 100}%` as const;
+	const band = { start: fraction(LETTER_LENGTH.min), width: fraction(LETTER_LENGTH.max - LETTER_LENGTH.min) };
+	const fill = { width: fraction(Math.min(words, LETTER_LENGTH.scale)) };
 
 	return (
 		<Section
 			title={t`Length`}
 			aside={
-				<Text variant="mono" color={tone}>
+				<Text mono tabular tone={length === "comfortable" ? "accent" : length === "empty" ? "muted" : "warning"}>
 					{plural(words, { one: "# word", other: "# words" })}
 				</Text>
 			}
@@ -726,33 +800,18 @@ function LengthSection({ words }: { words: number }) {
 			<View
 				accessibilityElementsHidden
 				importantForAccessibility="no-hide-descendants"
-				style={{
-					height: space.s2 - space.s0,
-					borderRadius: radius.rLg,
-					backgroundColor: colors.sunken,
-					overflow: "hidden",
-				}}
+				className="h-1.5 overflow-hidden rounded-full bg-default"
 			>
+				<View className="absolute inset-y-0 bg-border" style={[band]} />
 				<View
-					style={{
-						position: "absolute",
-						top: 0,
-						bottom: 0,
-						start: percent(LETTER_LENGTH.min),
-						width: percent(LETTER_LENGTH.max - LETTER_LENGTH.min),
-						backgroundColor: colors.line2,
-					}}
-				/>
-				<View
-					style={{
-						height: "100%",
-						width: percent(Math.min(words, LETTER_LENGTH.scale)),
-						borderRadius: radius.rLg,
-						backgroundColor: length === "empty" ? colors.line2 : length === "comfortable" ? colors.accent : colors.warn,
-					}}
+					className={cx(
+						"h-full rounded-full",
+						length === "empty" ? "bg-border" : length === "comfortable" ? "bg-accent" : "bg-warning",
+					)}
+					style={[fill]}
 				/>
 			</View>
-			<Text variant="caption" color={length === "long" ? "warnText" : "ink3"}>
+			<Text size="xs" tone={length === "long" ? "warning" : "muted"} className="leading-5">
 				{length === "empty"
 					? t`Most recruiters read 180–320 words. The shaded band shows the range.`
 					: length === "short"
@@ -769,19 +828,30 @@ function LengthSection({ words }: { words: number }) {
 function DesignNote({ letter }: { letter: LetterDocument }) {
 	const router = useRouter();
 	const { t, i18n } = useLingui();
-	const summary = designSummary(letter.style.metadata, i18n, (pairing) => t`${pairing} type`);
+	const metadata = letter.style.metadata;
+	const pairing = matchFontPairing(metadata);
+	const accent = ACCENTS.find((option) => option.hex === rgbaToHex(metadata.design.colors.primary));
+	const pairingName = pairing ? i18n._(PAIRING_NAMES[pairing]) : null;
+	const summary = [
+		templateName(metadata.template),
+		pairingName && t`${pairingName} type`,
+		accent && i18n._(ACCENT_NAMES[accent.label]),
+	]
+		.filter(Boolean)
+		.join(", ");
 	return (
 		<Section title={t`Design`}>
-			<Text color="ink2">
+			<Text tone="muted">
 				{letter.designLinked ? t`Matches the resume (${summary}).` : t`Its own design (${summary}).`}
 			</Text>
 			<Button
 				size="sm"
-				variant="link"
-				label={t`Change it in Design.`}
+				variant="ghost"
+				className="self-start"
 				onPress={() => router.replace(routes.letter(letter.id, "design"))}
-			/>
+			>
+				{t`Change it in Design`}
+			</Button>
 		</Section>
 	);
 }
-import { ReportAiContent } from "@/features/ai/report-content";

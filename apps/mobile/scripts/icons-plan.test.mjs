@@ -27,7 +27,7 @@ const mocks = {
 	"./presets": `export const ACCENTS=[],FONT_PAIRINGS=[],MIN_CONTRAST=0,TEXT_SIZE={};export const applyDensity=()=>{},applyFontPairing=()=>{},applyMargins=()=>{},applyTextSize=()=>{},contrastOver=()=>0,darkenForWhite=(c)=>c,hexToRgba=(c)=>c,isValidHex=()=>true,matchDensity=()=>null,matchFontPairing=()=>null,matchMargins=()=>null,rgbaToHex=(c)=>c;`,
 	"@/features/billing/plan": `const e=globalThis.__iconsPlanCheck;export const canShowPlans=()=>e.os==="android";export const usePlan=()=>e.plan;export const hasPlanFeature=(plan,feature)=>!plan?.enabled||plan.features[feature];export const showPlanAlert=(problem)=>e.alerts.push(problem);`,
 	"@/features/settings/locale-names": `export const localeMap={};`,
-	"@/ui": `export const Button='Button',Icon='Icon',IconButton='IconButton',Segmented='Segmented',Text='Text';export const haptics={selection:()=>{}};export const listLayout={};export const useTheme=()=>({space:{s0:2,s1:4,s2:8,s3:12,s4:16}});`,
+	"@/ui-legacy": `export const Button='Button',Icon='Icon',IconButton='IconButton',Segmented='Segmented',Text='Text';export const haptics={selection:()=>{}};export const listLayout={};export const useTheme=()=>({space:{s0:2,s1:4,s2:8,s3:12,s4:16}});`,
 };
 
 const result = await build({

@@ -2,7 +2,8 @@ import type { ReactNode } from "react";
 import { useLingui } from "@lingui/react/macro";
 import { useState } from "react";
 import { I18nManager, Keyboard, TextInput, View, useWindowDimensions } from "react-native";
-import { Icon, IconButton, Text, useTheme } from "@/ui";
+import { TabBarActions, TabBarLeading, useInTabs } from "@/shell/tab-chrome";
+import { Icon, IconButton, Text, useTheme } from "@/ui-legacy";
 
 type CollectionHeaderProps = {
 	title: string;
@@ -39,7 +40,10 @@ export function CollectionHeader({
 	const [searching, setSearching] = useState(Boolean(value));
 	const { fontScale } = useWindowDimensions();
 	const stacked = fontScale > 1.3;
-	return (
+	// Inside the tab shell the old headers carry the sections' avatar · Coach · Search row above the title, like the
+	// rebuilt sections' top bar.
+	const inTabs = useInTabs();
+	const header = (
 		<View
 			style={{
 				minHeight: size.hit,
@@ -122,6 +126,17 @@ export function CollectionHeader({
 					</View>
 				</>
 			)}
+		</View>
+	);
+	if (!inTabs) return header;
+	return (
+		<View style={{ gap: space.s1 }}>
+			<View style={{ flexDirection: "row", alignItems: "center", gap: space.s1 }}>
+				<TabBarLeading />
+				<View style={{ flex: 1 }} />
+				<TabBarActions />
+			</View>
+			{header}
 		</View>
 	);
 }

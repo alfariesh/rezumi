@@ -19,11 +19,13 @@ vi.mock("@/features/billing/plan", async (importOriginal) => ({
 }));
 vi.mock("@rezumi/ui/components/toast", () => ({ toast: { add: mocks.toast } }));
 vi.mock("@rezumi/utils/file", () => ({ downloadWithAnchor: mocks.download }));
+vi.mock("@rezumi/utils/file-name", () => ({
+	getDefaultFileName: () => "resume",
+	sanitizeFileName: (value: string) => value,
+}));
 vi.mock("@/features/resume/export/use-resume-export", () => ({
 	createExportFile: mocks.generate,
-	getDefaultFileName: () => "resume",
 	preloadDocumentExport: () => undefined,
-	sanitizeFileName: (value: string) => value,
 }));
 
 it("downloads a file, and offers PDF when another format fails", async () => {

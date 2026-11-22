@@ -10,7 +10,7 @@ import { useDocumentOperations } from "./queries";
 import { client, orpc } from "@/api/client";
 import { useSession } from "@/auth/session";
 import { routes } from "@/routes";
-import { Banner, Button, ChipInput, ListRow, Sheet, Skeleton, Text, TextField, useTheme } from "@/ui";
+import { Banner, Button, ChipInput, ListRow, Sheet, Skeleton, Text, TextField, useTheme } from "@/ui-legacy";
 
 export type DocumentSheet =
 	| { kind: "menu" | "rename" | "link"; documents: [DocumentSummary] }

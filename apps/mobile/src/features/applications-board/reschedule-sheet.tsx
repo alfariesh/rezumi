@@ -7,7 +7,7 @@ import { fromZonedDateTime } from "@rezumi/utils/timezone";
 import { WallClockField } from "@/features/application-detail/date-field";
 import { interviewTypeLabel, useUserTime } from "@/features/application-detail/hooks";
 import { isTimeZone, zonedParts } from "@/features/reminders";
-import { Button, Segmented, Sheet, Text, useTheme } from "@/ui";
+import { Button, Segmented, Sheet, Text, useTheme } from "@/ui-legacy";
 
 const LENGTHS = [30, 45, 60, 90];
 

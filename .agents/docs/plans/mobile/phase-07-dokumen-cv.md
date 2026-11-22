@@ -41,3 +41,7 @@ Urutan kerja disarankan: (a) inti draf ke paket + tes, (b) Documents, (c) Write,
 - Pembuat CV setara web untuk Write, Design, Check, History (kecuali editor CSS).
 - Inti draf satu sumber untuk web dan app, dengan tes.
 - Butir template revamp dan penanda Profil di "Feature parity exceptions" dihapus.
+
+## Kemajuan
+
+- **2026-11-21, sesi 1:** langkah 1 (inti draf ke `@rezumi/resume/draft`, 27 tes) dan 2 (model Write dan preset desain ke `@rezumi/resume/write` dan `./design-presets`; web dan app memakai paket) selesai, kecuali web yang belum memakai `createDraftStore` (lihat `02-teknis.md` 19). Berikutnya: langkah 3 Documents, lalu Write, Design, pratinjau, Check/History, kerangka editor, hapus layar lama; dan menyatukan draf web.

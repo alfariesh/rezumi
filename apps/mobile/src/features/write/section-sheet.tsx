@@ -7,7 +7,7 @@ import { addEntry, edit, requestFocus, useSectionTitle, useSortByDate, useUndoTo
 import { deleteCustomSection, findPlacement, getSectionObject, NO_PAGES, placeSection, selectPages } from "./model";
 import { IconPickerSheet, PromptSheet } from "./pickers";
 import { routes } from "@/routes";
-import { Icon, ListRow, Sheet, Switch, Text, useTheme } from "@/ui";
+import { Icon, ListRow, Sheet, Switch, Text, useTheme } from "@/ui-legacy";
 
 type SectionSheetProps = {
 	resumeId: string;

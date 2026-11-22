@@ -9,7 +9,7 @@ import { useApplicationSearch } from "./search";
 import { CollectionHeader } from "@/components/collection-header";
 import { AddApplicationSheet } from "@/features/applications/add-sheet";
 import { routes } from "@/routes";
-import { Segmented, IconButton, useTheme } from "@/ui";
+import { Segmented, IconButton, useTheme } from "@/ui-legacy";
 
 type ApplicationsViewFrameProps = {
 	current: ApplicationsView;
@@ -38,7 +38,14 @@ export function ApplicationsViewFrame({ current, children, search, actions }: Ap
 					searchLabel={t`Search applications`}
 					placeholder={t`Role, company or contact`}
 					{...(search ?? { value: shared.search, onChangeText: shared.setSearch })}
-					actions={actions ?? <IconButton icon="plus" label={t`Save a job`} onPress={() => setAdding(true)} />}
+					actions={
+						actions ?? (
+							<>
+								<IconButton icon="seal-check" label={t`Offers`} onPress={() => router.push(routes.offers())} />
+								<IconButton icon="plus" label={t`Save a job`} onPress={() => setAdding(true)} />
+							</>
+						)
+					}
 				/>
 				<Segmented
 					label={t`Application views`}

@@ -17,6 +17,7 @@ import { useUserTime } from "@/features/application-detail/hooks";
 import { useApplicationSearch } from "@/features/applications-board/search";
 import { ApplicationsViewFrame } from "@/features/applications-board/views";
 import { routes } from "@/routes";
+import { usePullRefresh } from "@/ui";
 import {
 	Banner,
 	Button,
@@ -34,8 +35,7 @@ import {
 	listItemMotion,
 	useFirstAppearance,
 	useTheme,
-} from "@/ui";
-import { usePullRefresh } from "@/ui/use-pull-refresh";
+} from "@/ui-legacy";
 
 const VIEWABILITY_CONFIG = { itemVisiblePercentThreshold: 30 };
 
@@ -244,7 +244,12 @@ function ApplicationsList() {
 		<ApplicationsViewFrame
 			current="list"
 			search={{ value: search, onChangeText: (value) => changeFilters(() => setSearch(value)), disabled: busy }}
-			actions={<IconButton icon="plus" label={t`Save a job`} disabled={busy} onPress={() => setAdding(true)} />}
+			actions={
+				<>
+					<IconButton icon="seal-check" label={t`Offers`} onPress={() => router.push(routes.offers())} />
+					<IconButton icon="plus" label={t`Save a job`} disabled={busy} onPress={() => setAdding(true)} />
+				</>
+			}
 		>
 			<Screen scroll={false} contentStyle={{ padding: 0 }}>
 				<SectionList

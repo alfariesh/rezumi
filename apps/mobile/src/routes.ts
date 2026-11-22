@@ -4,8 +4,22 @@ import type { WorkspaceTab } from "@rezumi/schema/career";
 
 export type BuilderPane = "write" | "page" | "design" | "check" | "share";
 export type LetterPane = "write" | "page" | "design";
-export type CareerPane = "today" | "coach" | "knowledge" | "offers";
-export type SettingsPane = "account" | "preferences" | "ai" | "membership";
+/** Screens of the account stack (`app/account/*`), opened from the avatar menu. Omitted: the stack's index. */
+export type AccountPane =
+	| "account"
+	| "preferences"
+	| "ai"
+	| "ai-providers"
+	| "ai-mcp"
+	| "ai-report"
+	| "membership"
+	| "licences";
+/** The sections of `app/(tabs)` (the phone drawer and the tablet sidebar). */
+export type AppTab = "home" | "documents" | "applications" | "portfolio" | "profile";
+
+/** The Profile's sections, in the order of its tab row. */
+export const PROFILE_TABS = ["details", "career", "facts", "stories", "preferences"] as const;
+export type ProfileTab = (typeof PROFILE_TABS)[number];
 export type ApplicationTab = WorkspaceTab;
 /** The Applications tab's views; List is the tab's index. */
 export type ApplicationsView = "list" | "board" | "calendar" | "insights";
@@ -14,20 +28,51 @@ const segment = (value: string) => encodeURIComponent(value);
 
 export const routes = {
 	// (auth)
+	/** The three intro pages, before Welcome on a fresh install. */
+	intro: () => "/intro" as const,
+	/** Development builds only: pick another server. */
 	server: () => "/server" as const,
+	/** Welcome: Apple, Google, email, Create account, other ways. */
 	signIn: () => "/sign-in" as const,
+	emailSignIn: (email?: string) =>
+		email ? (`/sign-in/email?email=${segment(email)}` as const) : ("/sign-in/email" as const),
+	createAccount: () => "/create-account" as const,
+	checkEmail: (email: string) => `/check-email?email=${segment(email)}` as const,
+	forgotPassword: (email?: string) =>
+		email ? (`/forgot-password?email=${segment(email)}` as const) : ("/forgot-password" as const),
+	/** From the reset email (`/auth/reset-password?token=`, an app link). */
+	resetPassword: (token?: string) =>
+		token ? (`/auth/reset-password?token=${segment(token)}` as const) : ("/auth/reset-password" as const),
+	twoFactor: () => "/two-factor" as const,
 
 	// (tabs)
+	/** `schedule`: a schedule id or "new" opens the schedule sheet (links from notifications and `/dashboard?schedule=`). */
+	home: (schedule?: string) => (schedule ? (`/home?schedule=${segment(schedule)}` as const) : ("/home" as const)),
 	documents: () => "/documents" as const,
 	trash: () => "/documents/trash" as const,
 	applications: (view: ApplicationsView = "list") =>
 		view === "list" ? ("/applications" as const) : (`/applications/${view}` as const),
-	career: (pane: CareerPane = "today") => `/career/${pane}` as const,
-	settings: (pane?: SettingsPane) => (pane ? (`/settings/${pane}` as const) : ("/settings" as const)),
+	offers: () => "/applications/offers" as const,
+	portfolio: () => "/portfolio" as const,
+	/** `tab`: the Profile section to open (Details by default). */
+	profile: (tab?: ProfileTab) => (tab && tab !== "details" ? (`/profile?tab=${tab}` as const) : ("/profile" as const)),
+	/** One Profile entry (Career), full screen. */
+	profileEntry: (section: string, item: string) => `/profile/entry/${segment(section)}/${segment(item)}` as const,
+	profileSummary: () => "/profile/summary" as const,
+	/** Bring what you have: a file, LinkedIn, GitHub or a website fills the Profile after a review. */
+	profileBring: () => "/profile/bring" as const,
+
+	// Account stack, opened from the avatar menu
+	account: (pane?: AccountPane) => (pane ? (`/account/${pane}` as const) : ("/account" as const)),
 
 	// Modals and full-screen flows
+	/** The first run of a new account: sources, two questions, review, first resume. */
+	onboarding: () => "/onboarding" as const,
 	new: () => "/new" as const,
 	search: () => "/search" as const,
+	/** Coach full screen. `offers`: saved offer ids picked in Offers → Plan what to ask. */
+	coach: (offers?: readonly string[]) =>
+		offers?.length ? (`/coach?offers=${offers.map(segment).join(",")}` as const) : ("/coach" as const),
 	atsChecker: () => "/ats-checker" as const,
 	application: (id: string, tab: ApplicationTab = "fit") => `/applications/${segment(id)}/${tab}` as const,
 	/** The application detail; it shares the dynamic `[tab]` route with the workspace tabs. */

@@ -6,6 +6,7 @@ import { syncResumeDates } from "@rezumi/schema/resume/dates";
 import { defaultResumeData } from "@rezumi/schema/resume/default";
 import { sampleResumeData } from "@rezumi/schema/resume/sample";
 import {
+	profileHasCareer,
 	compareWithProfile,
 	completeProfile,
 	followProfile,
@@ -317,5 +318,14 @@ describe("Profile data", () => {
 	it("treats a missing key as an undefined one", () => {
 		expect(sameContent({ a: 1, b: undefined }, { a: 1 })).toBe(true);
 		expect(sameContent({ a: [1, { b: 2 }] }, { a: [1, { b: 3 }] })).toBe(false);
+	});
+});
+
+describe("profileHasCareer", () => {
+	it("needs a summary or an entry, not just a name", () => {
+		const empty = emptyProfileData();
+		expect(profileHasCareer({ ...empty, basics: { ...empty.basics, name: "Ada" } })).toBe(false);
+		expect(profileHasCareer({ ...empty, summary: { ...empty.summary, content: "<p> </p>" } })).toBe(false);
+		expect(profileHasCareer({ ...empty, summary: { ...empty.summary, content: "<p>Engineer</p>" } })).toBe(true);
 	});
 });

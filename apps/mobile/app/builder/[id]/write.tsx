@@ -4,7 +4,7 @@ import { View } from "react-native";
 import { useSession } from "@/auth/session";
 import { useResumeStore } from "@/draft";
 import { Outline } from "@/features/write/outline";
-import { Banner, EmptyState, useTheme } from "@/ui";
+import { Banner, EmptyState, useTheme } from "@/ui-legacy";
 
 export default function WriteScreen() {
 	const { t } = useLingui();

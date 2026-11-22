@@ -1,99 +1,59 @@
-import type { ColorToken, type as typeScale } from "./tokens";
+// Text. Titles and paragraphs use HeroUI's `Typography` (the web's scale: page title h2 30/36, section h4 20/28, card
+// or row title h6 16/24, paragraphs body-sm 14/24). One-line labels, captions and values use `Text`: a step's own
+// leading, which a paragraph type would make too loose for rows and chips (web DESIGN.md → Typography).
 import type { ReactNode } from "react";
-import type { TextProps as NativeTextProps, StyleProp, ViewProps, ViewStyle } from "react-native";
-import { RefreshControl, Text as NativeText, View } from "react-native";
-import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { useKeyboardScrollSpace } from "./keyboard";
-import { useTheme } from "./theme";
-import { usePullRefresh } from "./use-pull-refresh";
+import type { TextProps as NativeTextProps } from "react-native";
+import { Text as NativeText } from "react-native";
+import { cx } from "./cx";
 
-export type TextVariant = keyof typeof typeScale;
+export { Typography } from "heroui-native";
 
-/** Layout styles (`flex`, padding) may go in `style`; typography and colour come from the tokens. */
-export type TextProps = NativeTextProps & {
-	/** A type token (old design system; replaced in plans/mobile Phase 02). Defaults to `body`. */
-	variant?: TextVariant | undefined;
-	/** A colour token. Defaults to `ink`. */
-	color?: ColorToken | undefined;
-	/**
-	 * Figtree weight for UI variants, where the design names one (field labels 600, document names 600).
-	 * Ignored for the Instrument Serif (single weight) and mono variants.
-	 */
-	weight?: 400 | 500 | 600 | 700 | undefined;
-	align?: "auto" | "left" | "center" | "right" | undefined;
+const sizes = { xs: "text-xs", sm: "text-sm", base: "text-base" } as const;
+const weights = { normal: "font-normal", medium: "font-medium", semibold: "font-semibold", bold: "font-bold" } as const;
+const tones = {
+	default: "text-foreground",
+	muted: "text-muted",
+	accent: "text-accent",
+	danger: "text-danger",
+	success: "text-success-soft-foreground",
+	warning: "text-warning-soft-foreground",
+} as const;
+
+export type TextProps = Omit<NativeTextProps, "style"> & {
+	/** 14 (default), 12 for captions and group labels, 16 for inputs and prominent values. */
+	size?: keyof typeof sizes | undefined;
+	weight?: keyof typeof weights | undefined;
+	tone?: keyof typeof tones | undefined;
+	/** Google Sans Code: URLs, slugs, file names, shortcuts and counts. */
+	mono?: boolean | undefined;
+	/** Columns of numbers (counts, prices, scores) line up. */
+	tabular?: boolean | undefined;
+	className?: string | undefined;
 	children?: ReactNode;
 };
 
-const displayVariants = new Set<TextVariant>(["largeIOS", "largeAnd", "display", "heading", "mono"]);
-
-export function Text({ variant = "body", color = "ink", weight, align, style, ...props }: TextProps) {
-	const { colors, fonts, type } = useTheme();
-	const { maxFontSizeMultiplier, ...font } = type[variant] as (typeof type)[TextVariant] & {
-		maxFontSizeMultiplier?: number;
-	};
-	const fontFamily = weight && !displayVariants.has(variant) ? fonts.ui[weight] : font.fontFamily;
-
+/** One-line interface text. Grows with the system text size up to 1.6× so rows keep their shape. */
+export function Text({
+	size = "sm",
+	weight = "normal",
+	tone = "default",
+	mono = false,
+	tabular = false,
+	className,
+	maxFontSizeMultiplier = 1.6,
+	...props
+}: TextProps) {
 	return (
 		<NativeText
 			maxFontSizeMultiplier={maxFontSizeMultiplier}
 			{...props}
-			style={[font, { fontFamily, color: colors[color] }, align ? { textAlign: align } : null, style]}
-		/>
-	);
-}
-
-export type ScreenProps = {
-	children?: ReactNode;
-	/** Scrolls its content. Defaults to true; lists that scroll themselves pass false. */
-	scroll?: boolean | undefined;
-	/** Additional edges to pad. Horizontal safe areas are always protected; headers and tab bars handle vertical ones. */
-	edges?: ("top" | "bottom" | "left" | "right")[] | undefined;
-	contentStyle?: StyleProp<ViewStyle>;
-	/** Measures the viewport after safe areas, before content padding. */
-	onLayout?: ViewProps["onLayout"];
-	onRefresh?: (() => Promise<unknown>) | undefined;
-};
-
-/** A screen on the `bg` desk with phone side padding (`s4`). */
-export function Screen({ children, scroll = true, edges = [], contentStyle, onLayout, onRefresh }: ScreenProps) {
-	const { colors, space } = useTheme();
-	const insets = useSafeAreaInsets();
-	const keyboardSpace = useKeyboardScrollSpace();
-	const pull = usePullRefresh(...(onRefresh ? [onRefresh] : []));
-	const padding = [{ padding: space.s4, gap: space.s4 }, contentStyle];
-
-	return (
-		<View
-			style={{
-				flex: 1,
-				backgroundColor: colors.bg,
-				paddingLeft: insets.left,
-				paddingRight: insets.right,
-				paddingTop: edges.includes("top") ? insets.top : 0,
-				paddingBottom: edges.includes("bottom") ? insets.bottom : 0,
-			}}
-		>
-			{scroll ? (
-				<KeyboardAwareScrollView
-					extraKeyboardSpace={keyboardSpace}
-					onLayout={onLayout}
-					bottomOffset={space.s4}
-					keyboardShouldPersistTaps="handled"
-					contentInsetAdjustmentBehavior="automatic"
-					contentContainerStyle={padding}
-					alwaysBounceVertical
-					refreshControl={
-						onRefresh ? <RefreshControl {...pull} tintColor={colors.accent} colors={[colors.accent]} /> : undefined
-					}
-				>
-					{children}
-				</KeyboardAwareScrollView>
-			) : (
-				<View onLayout={onLayout} style={[{ flex: 1 }, padding]}>
-					{children}
-				</View>
+			className={cx(
+				sizes[size],
+				mono ? "font-mono" : weights[weight],
+				tones[tone],
+				tabular && "tabular-nums",
+				className,
 			)}
-		</View>
+		/>
 	);
 }
