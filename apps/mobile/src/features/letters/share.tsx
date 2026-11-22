@@ -11,7 +11,8 @@ import { useQuery } from "@tanstack/react-query";
 import { useNetworkState } from "expo-network";
 import { useMemo, useRef, useState } from "react";
 import { View } from "react-native";
-import { letterPageData, useLetterWords } from "./compose";
+import { getDefaultFileName } from "@rezumi/utils/file-name";
+import { letterFileName, letterPageData, useLetterWords } from "./compose";
 import { LetterPages } from "./page";
 import { useResumes } from "./queries";
 import { restoreLetterVersion, saveLetter } from "./save";
@@ -99,9 +100,10 @@ function LetterDownload({ letter, offline }: { letter: LetterDocument; offline: 
 	const resumes = useResumes();
 	const resumeId = letter.sourceResumeId;
 	const resumeName = resumes.data?.find((item) => item.id === resumeId)?.name;
-	const sender = letter.style.basics.name.trim() || letter.name;
-	const [format, setFormat] = useState<LetterFormat>("pdf");
-	const [name, setName] = useState(safeFileName(t`${sender}-Cover-Letter`).replaceAll(" ", "-"));
+	const [picked, setFormat] = useState<LetterFormat>("pdf");
+	// "Resume + letter" goes away when the letter lets go of its resume; the choice falls back to the PDF.
+	const format = picked === "both" && !resumeId ? "pdf" : picked;
+	const [name, setName] = useState(() => letterFileName(letter));
 	const [busy, setBusy] = useState(false);
 	const [error, setError] = useState<string | null>(null);
 	const active = useRef(false);
@@ -176,32 +178,35 @@ function LetterDownload({ letter, offline }: { letter: LetterDocument; offline: 
 			const current = offline && local(as) ? useLetterStore.getState().document : await flushLetter(letter.id);
 			if (current?.id !== letter.id) throw new Error(t`Couldn't load the cover letter.`);
 			const directory = exportDirectory();
-			const pdf = async (fileName: string) =>
+			const words = await letterWords(current.style.metadata.page.locale);
+			const pdf = (fileName: string) =>
 				exportFile({
 					directory,
 					id: current.id,
 					name: fileName,
 					format: "pdf",
-					data: letterPageData(current, await letterWords(current.style.metadata.page.locale)),
+					data: letterPageData(current, words),
 					letter: true,
 				});
 
 			const files: [File, ExportFormat][] = [];
-			if (as === "both" && current.sourceResumeId) {
-				// Both files are ready before either is handed off, so a failure leaves a clear retry.
+			if (as === "both") {
+				if (!current.sourceResumeId) throw new Error(t`This letter has no resume anymore. Choose another format.`);
+				// Both files are ready before either is handed off, so a failure leaves a clear retry. They're named to
+				// match, from the person's name, as on the web.
 				const resume = await client.resume.getById({ id: current.sourceResumeId });
 				const resumeFile = await exportFile({
 					directory,
 					id: resume.id,
-					name: safeFileName(t`${resume.data.basics.name || resume.name}-Resume`).replaceAll(" ", "-"),
+					name: getDefaultFileName(resume),
 					format: "pdf",
 					data: resume.data,
 				});
-				files.push([resumeFile, "pdf"], [await pdf(name), "pdf"]);
+				files.push([resumeFile, "pdf"], [await pdf(letterFileName(current)), "pdf"]);
 			} else if (as === "pdf") {
 				files.push([await pdf(name), "pdf"]);
-			} else if (as !== "both") {
-				files.push([await exportFile({ directory, id: current.id, name, format: as, letter: true }), as]);
+			} else {
+				files.push([await exportFile({ directory, id: current.id, name, format: as, letter: true, words }), as]);
 			}
 			for (const [file, type] of files) await shareExport(file, type);
 		} catch (cause) {
@@ -512,7 +517,7 @@ function VersionPage({ letter, versionId }: { letter: LetterDocument; versionId:
 			</View>
 		);
 	return (
-		<View className="h-[480px] overflow-hidden rounded-2xl">
+		<View className="h-120 overflow-hidden rounded-2xl">
 			<LetterPages data={data} zoomBar={false} />
 		</View>
 	);

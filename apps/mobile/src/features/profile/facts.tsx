@@ -10,6 +10,7 @@ import { useLingui } from "@lingui/react/macro";
 import { useQueryClient } from "@tanstack/react-query";
 import { memo, useDeferredValue, useLayoutEffect, useRef, useState } from "react";
 import { Pressable, ScrollView, View } from "react-native";
+import { useProfileAccount } from "./account";
 import { AddFactButton, AddFactFields, useAddFact } from "./facts-add";
 import { FactDetail } from "./facts-detail";
 import { FACT_CATEGORIES, categoryLabel, categoryOf, factExcerpt, sourceLabel } from "./facts-labels";
@@ -40,9 +41,9 @@ import {
 type Open = { kind: "fact"; id: string } | { kind: "add" } | null;
 
 export function FactsPanel() {
-	const { server } = useSession();
-	// A server switch starts over: no selection or pending Undo carries across accounts.
-	return <FactsContent key={server ?? "signed-out"} />;
+	const account = useProfileAccount();
+	// Another account starts over: no selection or pending Undo carries across accounts.
+	return <FactsContent key={account ?? "signed-out"} />;
 }
 
 function FactsContent() {

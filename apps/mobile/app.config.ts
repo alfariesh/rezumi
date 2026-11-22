@@ -16,9 +16,13 @@ const appLinkPrefixes = [
 	"/dashboard/portfolio",
 	"/dashboard/settings/account",
 	"/dashboard/settings/profile",
+	"/dashboard/settings/authentication",
 	"/dashboard/settings/preferences",
 	"/dashboard/settings/app",
+	"/dashboard/settings/job-search",
 	"/dashboard/settings/ai",
+	"/dashboard/settings/api-keys",
+	"/dashboard/settings/integrations",
 ];
 const microphonePermission = "Rezumi records your answers when you practise for an interview.";
 
@@ -126,6 +130,7 @@ const config: ExpoConfig = {
 					{ scheme: "https", host, path: "/auth/reset-password" },
 					{ scheme: "https", host, pathPrefix: "/builder/" },
 					{ scheme: "https", host, path: "/dashboard" },
+					{ scheme: "https", host, path: "/dashboard/" },
 					...appLinkPrefixes.map((pathPrefix) => ({ scheme: "https", host, pathPrefix })),
 				],
 			},

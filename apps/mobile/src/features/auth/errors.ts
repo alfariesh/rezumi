@@ -33,10 +33,11 @@ export function authErrorMessage(i18n: I18n, error: unknown, step: AuthStep): st
 		case "PASSWORD_TOO_LONG":
 			return i18n._(msg`Use 64 characters or fewer.`);
 		case "INVALID_CODE":
-		case "INVALID_TWO_FACTOR_CODE":
 		case "INVALID_BACKUP_CODE":
-		case "INVALID_TOTP":
 			return i18n._(msg`That code didn't work. Check it and try again.`);
+		case "TOO_MANY_ATTEMPTS_REQUEST_NEW_CODE":
+		case "ACCOUNT_TEMPORARILY_LOCKED":
+			return i18n._(msg`Too many wrong codes. Wait a few minutes, then sign in again.`);
 		case "TWO_FACTOR_EXPIRED":
 		case "INVALID_TWO_FACTOR_COOKIE":
 			return i18n._(msg`This sign-in took too long. Start again.`);
@@ -44,11 +45,14 @@ export function authErrorMessage(i18n: I18n, error: unknown, step: AuthStep): st
 			return step === "reset"
 				? i18n._(msg`This reset link expired or was already used. Ask for a new one.`)
 				: i18n._(msg`This sign-in attempt expired. Start again.`);
-		case "SIGNUP_DISABLED":
-		case "SIGN_UP_DISABLED":
+		case "EMAIL_PASSWORD_SIGN_UP_DISABLED":
 			return i18n._(msg`New account sign-ups are turned off. Sign in with an account you already have.`);
+		// Apple or Google with no account yet on a server that has sign-ups turned off; retrying never helps.
+		case "OAUTH_LINK_ERROR":
+			return i18n._(
+				msg`Couldn't sign in with this account. If you don't have a Rezumi account yet, sign-ups may be turned off.`,
+			);
 		case "ID_TOKEN_NOT_SUPPORTED":
-		case "INVALID_ID_TOKEN":
 		case "PROVIDER_NOT_FOUND":
 			return i18n._(msg`This sign-in option isn't available right now. Use another way to sign in.`);
 		default:

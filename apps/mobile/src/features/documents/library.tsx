@@ -4,7 +4,6 @@ import type { LegendListProps } from "@legendapp/list/react-native";
 import { AnimatedLegendList } from "@legendapp/list/reanimated";
 import { plural } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react/macro";
-import { useQuery } from "@tanstack/react-query";
 import { useRouter, Stack, useFocusEffect } from "expo-router";
 import { useCallback, useState } from "react";
 import { RefreshControl, I18nManager, Platform, Pressable, ScrollView, View, useWindowDimensions } from "react-native";
@@ -16,10 +15,12 @@ import { isNewDocument, useNewDocuments } from "./new-documents";
 import { usePendingDocuments } from "./pending";
 import { useDocumentOperations, useDocuments } from "./queries";
 import { Thumbnail } from "./thumbnail";
-import { client, orpc } from "@/api/client";
+import { client } from "@/api/client";
 import { useSession } from "@/auth/session";
 import { CollectionHeader } from "@/components/collection-header";
+import { useDocumentCounts } from "@/features/home/queries";
 import { routes } from "@/routes";
+import { usePullRefresh } from "@/ui";
 import {
 	Banner,
 	Button,
@@ -41,7 +42,6 @@ import {
 	useFirstAppearance,
 	useTheme,
 } from "@/ui-legacy";
-import { usePullRefresh } from "@/ui-legacy/use-pull-refresh";
 
 type DocumentItemProps = {
 	document: DocumentSummary;
@@ -164,12 +164,7 @@ export function DocumentsLibrary({ trashed = false }: DocumentsLibraryProps) {
 	const session = useSession();
 	const documents = useDocuments(trashed);
 	const pending = usePendingDocuments();
-	const countsOptions = orpc.documents.counts.queryOptions();
-	const counts = useQuery({
-		...countsOptions,
-		queryKey: [...countsOptions.queryKey, session.server],
-		enabled: session.status === "signed-in",
-	});
+	const counts = useDocumentCounts();
 	const operations = useDocumentOperations();
 	const [q, setQ] = useState("");
 	const [type, setType] = useState<DocumentTypeFilter>("all");

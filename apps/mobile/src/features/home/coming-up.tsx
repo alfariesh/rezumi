@@ -53,7 +53,7 @@ export function ComingUp({ now, time }: ComingUpProps) {
 		minutes <= 0
 			? t`Started`
 			: soon
-				? t`Starts in ${minutes} minutes`
+				? plural(minutes, { one: "Starts in # minute", other: "Starts in # minutes" })
 				: minutes < 48 * 60
 					? plural(hours, { one: "In # hour", other: "In # hours" })
 					: plural(days, { one: "In # day", other: "In # days" });
@@ -87,12 +87,12 @@ export function ComingUp({ now, time }: ComingUpProps) {
 			</View>
 			<View className="flex-row flex-wrap gap-1.5">
 				<Chip size="sm" variant="soft" color={soon ? "warning" : "default"}>
-					<Icon name="clock" size={14} tone={soon ? "warning" : "muted"} />
+					<Icon name="clock" size={16} tone={soon ? "warning" : "muted"} />
 					<Chip.Label>{countdown}</Chip.Label>
 				</Chip>
 				{ready ? (
 					<Chip size="sm" variant="soft" color="success">
-						<Icon name="check" size={14} tone="success" />
+						<Icon name="check" size={16} tone="success" />
 						<Chip.Label>{t`Briefing ready`}</Chip.Label>
 					</Chip>
 				) : null}

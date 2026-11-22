@@ -1,3 +1,4 @@
+import type { LetterWords } from "@rezumi/resume/cover-letter";
 import type { ResumeData } from "@rezumi/schema/resume/data";
 import { t } from "@lingui/core/macro";
 import { Directory, File, Paths } from "expo-file-system";
@@ -68,9 +69,11 @@ type ExportFileOptions = {
 	format: ExportFormat;
 	data?: ResumeData;
 	letter?: boolean;
+	/** The letter's words in its own language, when the caller has them; otherwise the letter is read for its locale. */
+	words?: LetterWords | undefined;
 };
 
-export async function exportFile({ directory, id, name, format, data, letter }: ExportFileOptions) {
+export async function exportFile({ directory, id, name, format, data, letter, words: known }: ExportFileOptions) {
 	let bytes: Uint8Array;
 	if (format === "pdf" && data) {
 		const result = await localPdf(data, letter);
@@ -79,8 +82,8 @@ export async function exportFile({ directory, id, name, format, data, letter }: 
 	} else {
 		let query = "";
 		if (letter && format !== "json") {
-			const document = await client.coverLetters.getById({ id });
-			const words = await letterWords(document.style.metadata.page.locale);
+			const words =
+				known ?? (await letterWords((await client.coverLetters.getById({ id })).style.metadata.page.locale));
 			query = `?${new URLSearchParams({
 				"words[greeting]": words.greeting("{name}"),
 				"words[teamGreeting]": words.teamGreeting,

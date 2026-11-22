@@ -17,6 +17,7 @@ import { useUserTime } from "@/features/application-detail/hooks";
 import { useApplicationSearch } from "@/features/applications-board/search";
 import { ApplicationsViewFrame } from "@/features/applications-board/views";
 import { routes } from "@/routes";
+import { usePullRefresh } from "@/ui";
 import {
 	Banner,
 	Button,
@@ -35,7 +36,6 @@ import {
 	useFirstAppearance,
 	useTheme,
 } from "@/ui-legacy";
-import { usePullRefresh } from "@/ui-legacy/use-pull-refresh";
 
 const VIEWABILITY_CONFIG = { itemVisiblePercentThreshold: 30 };
 

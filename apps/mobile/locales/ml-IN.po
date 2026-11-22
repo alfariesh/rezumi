@@ -454,12 +454,6 @@ msgstr "{0} \"{1}\" തിരികെ നൽകി. നിങ്ങളുടെ
 msgid "{0} selected"
 msgstr "{0} തിരഞ്ഞെടുത്തു"
 
-#. placeholder {0}: resume.data.basics.name || resume.name
-#: src/features/letters/share.tsx
-#: src/features/share/download.tsx
-msgid "{0}-Resume"
-msgstr "{0}-റെസ്യൂമെ"
-
 #. placeholder {0}: title || t`Untitled`
 #. placeholder {1}: row.index + 1
 #. placeholder {2}: row.count
@@ -506,14 +500,6 @@ msgstr "{company} · {tabName}"
 msgid "{completed, plural, one {# document updated} other {# documents updated}}"
 msgstr "{completed, plural, one {# പ്രമാണം അപ്‌ഡേറ്റ് ചെയ്‌തു} other {# പ്രമാണങ്ങൾ അപ്‌ഡേറ്റ് ചെയ്‌തു}}"
 
-#: src/features/share/custom-domain.tsx
-msgid "{cost} a year"
-msgstr "വർഷം {cost}"
-
-#: src/features/share/custom-domain.tsx
-msgid "{cost} the first year"
-msgstr "ആദ്യ വർഷം {cost}"
-
 #: src/features/write/section-sheet.tsx
 msgid "{count, plural, one {# column} other {# columns}}"
 msgstr "{count, plural, one {# കോളം} other {# കോളങ്ങൾ}}"
@@ -530,6 +516,31 @@ msgstr ""
 #: src/features/workspace/tabs/messages.tsx
 msgid "{count, plural, one {Apply # change} other {Apply # changes}}"
 msgstr "{count, plural, one {# മാറ്റം പ്രയോഗിക്കുക} other {# മാറ്റങ്ങൾ പ്രയോഗിക്കുക}}"
+
+#. Short time since, in days: 3d
+#: src/features/share/time-since.ts
+msgid "{count, plural, other {#d}}"
+msgstr ""
+
+#. Short time since, in hours: 2h
+#: src/features/share/time-since.ts
+msgid "{count, plural, other {#h}}"
+msgstr ""
+
+#. Short time since, in minutes: 5m
+#: src/features/share/time-since.ts
+msgid "{count, plural, other {#m}}"
+msgstr ""
+
+#. Short time since, in weeks: 6w
+#: src/features/share/time-since.ts
+msgid "{count, plural, other {#w}}"
+msgstr ""
+
+#. Short time since, in years: 1y
+#: src/features/share/time-since.ts
+msgid "{count, plural, other {#y}}"
+msgstr ""
 
 #: src/features/workspace/tabs/debrief.tsx
 msgid "{day} · {length}m"
@@ -651,6 +662,7 @@ msgstr ""
 msgid "{minutes, plural, one {# minute in total} other {# minutes in total}}"
 msgstr "{minutes, plural, one {ആകെ # മിനിറ്റ്} other {ആകെ # മിനിറ്റ്}}"
 
+#: src/features/home/coming-up.tsx
 #: src/features/workspace/tabs/prepare.tsx
 msgid "{minutes, plural, one {Starts in # minute} other {Starts in # minutes}}"
 msgstr "{minutes, plural, one {# മിനിറ്റിൽ തുടങ്ങും} other {# മിനിറ്റിൽ തുടങ്ങും}}"
@@ -697,10 +709,6 @@ msgstr "{name} സൈഡ്‌ബാറിൽ ഇരിക്കുന്നു"
 msgid "{name} uses one column"
 msgstr "{name} ഒരു കോളം ഉപയോഗിക്കുന്നു"
 
-#: src/features/share/download.tsx
-msgid "{name}-Cover-Letter"
-msgstr "{name}-കവർ-ലെറ്റർ"
-
 #: src/features/check/issues.ts
 msgid "{names} come last in the text. Most systems still find them; some don't."
 msgstr "{names} വാചകത്തിൽ അവസാനം വരുന്നു. മിക്ക സിസ്റ്റങ്ങളും ഇപ്പോഴും അവരെ കണ്ടെത്തുന്നു; ചിലത് ചെയ്യില്ല."
@@ -720,10 +728,6 @@ msgstr "{role} · {company}"
 #: src/features/write/outline.tsx
 msgid "{sections, plural, one {# section} other {# sections}}"
 msgstr "{sections, plural, one {# വിഭാഗം} other {# വിഭാഗങ്ങൾ}}"
-
-#: src/features/letters/share.tsx
-msgid "{sender}-Cover-Letter"
-msgstr "{sender}-കവർ-ലെറ്റർ"
 
 #: src/features/assistant/messages.tsx
 msgid "{skipped, plural, one {# edit couldn't be placed: its text changed. Ask again to redo it.} other {# edits couldn't be placed: their text changed. Ask again to redo them.}}"
@@ -2003,10 +2007,6 @@ msgstr "സ്വയമേവ"
 msgid "Autosaves are grouped by session and kept for 90 days. Named versions are kept until you delete them. Restoring saves the current state first."
 msgstr "ഓട്ടോസേവുകൾ സെഷൻ പ്രകാരം തരംതിരിക്കുകയും 90 ദിവസത്തേക്ക് സൂക്ഷിക്കുകയും ചെയ്യുന്നു. പേരിട്ട പതിപ്പുകൾ നിങ്ങൾ ഇല്ലാതാക്കുന്നത് വരെ സൂക്ഷിക്കും. പുനഃസ്ഥാപിക്കുന്നത് നിലവിലെ അവസ്ഥയെ ആദ്യം സംരക്ഷിക്കുന്നു."
 
-#: src/features/share/custom-domain.tsx
-msgid "Available"
-msgstr "ലഭ്യമാണ്"
-
 #: src/features/ats-checker/messages.ts
 msgid "Avoid heavy letter-spacing effects, then re-export."
 msgstr "കനത്ത അക്ഷര അകലം ഒഴിവാക്കി, വീണ്ടും എക്സ്പോർട്ട് ചെയ്യുക."
@@ -2574,10 +2574,6 @@ msgstr "ഒരു PDF ഫയൽ തിരഞ്ഞെടുക്കുക. ത�
 msgid "Choose a PDF smaller than 10 MB. The selected file was not uploaded."
 msgstr "10 MB-യിൽ കുറഞ്ഞ PDF തിരഞ്ഞെടുക്കുക. തിരഞ്ഞെടുത്ത ഫയൽ അപ്‌ലോഡ് ചെയ്തിട്ടില്ല."
 
-#: src/shell/permissions.tsx
-msgid "Choose a photo"
-msgstr ""
-
 #: src/features/entries/photo-field.tsx
 #: src/features/settings/profile.tsx
 #: src/features/write/picture-screen.tsx
@@ -2787,10 +2783,6 @@ msgstr "കോച്ച്"
 msgid "Coach memory"
 msgstr ""
 
-#: src/features/share/custom-domain.tsx
-msgid "Code copied"
-msgstr "കോഡ് പകർത്തി"
-
 #: src/features/auth/two-factor-screen.tsx
 msgid "Codes look like a1b2c-d3e4f."
 msgstr ""
@@ -2890,10 +2882,6 @@ msgstr ""
 #: src/features/share/custom-domain.tsx
 msgid "Connect"
 msgstr "കണക്റ്റ് ചെയ്യുക"
-
-#: src/features/share/custom-domain.tsx
-msgid "Connect {domain}"
-msgstr "{domain} കണക്റ്റ് ചെയ്യുക"
 
 #: src/features/share/custom-domain.tsx
 msgid "Connect {hostname}"
@@ -3058,10 +3046,6 @@ msgstr "ഒരു ജോലിക്കായി ഒരു റെസ്യൂമ
 #: src/features/workspace/tabs/apply.tsx
 msgid "Copy answers"
 msgstr "ഉത്തരങ്ങൾ പകർത്തുക"
-
-#: src/features/share/custom-domain.tsx
-msgid "Copy code"
-msgstr "കോഡ് പകർത്തുക"
 
 #: src/features/document-menu/index.tsx
 msgid "Copy created"
@@ -3303,6 +3287,10 @@ msgstr ""
 #: src/features/history/history.tsx
 msgid "Couldn't load versions."
 msgstr "പതിപ്പുകൾ ലോഡ് ചെയ്യാനായില്ല."
+
+#: src/features/share/custom-domain.tsx
+msgid "Couldn't load your custom domain."
+msgstr ""
 
 #: src/features/onboarding/onboarding-screen.tsx
 msgid "Couldn't load your details"
@@ -3560,6 +3548,10 @@ msgstr "ചിത്രം പങ്കിടാൻ കഴിഞ്ഞില്�
 #: src/features/workspace/tabs/practise.tsx
 msgid "Couldn't share the recording. Try again."
 msgstr "റെക്കോർഡിംഗ് പങ്കിടാനായില്ല. വീണ്ടും ശ്രമിക്കുക."
+
+#: src/features/auth/errors.ts
+msgid "Couldn't sign in with this account. If you don't have a Rezumi account yet, sign-ups may be turned off."
+msgstr ""
 
 #: src/features/settings/sign-out.tsx
 msgid "Couldn't sign out. Try again."
@@ -4468,6 +4460,10 @@ msgstr "എഡിറ്റ് ചെയ്യുക"
 #: src/features/assistant/messages.tsx
 msgid "Edit {0}: {1}"
 msgstr "എഡിറ്റ് {0}: {1}"
+
+#: src/features/home/schedules.tsx
+msgid "Edit {name}"
+msgstr ""
 
 #: src/features/application-detail/sheets.tsx
 msgid "Edit date"
@@ -5903,6 +5899,10 @@ msgstr ""
 msgid "Keep on one page"
 msgstr "ഒരു പേജിൽ സൂക്ഷിക്കുക"
 
+#: src/features/entries/photo-field.tsx
+msgid "Keep photo"
+msgstr ""
+
 #: src/features/document-menu/index.tsx
 msgid "Keep private notes about this resume here. Nobody else can see them."
 msgstr "ഈ റിസ്യൂമിനെക്കുറിച്ചുള്ള സ്വകാര്യ കുറിപ്പുകൾ ഇവിടെ സൂക്ഷിക്കുക. മറ്റാർക്കും അവ കാണാനാവില്ല."
@@ -6301,6 +6301,7 @@ msgid "Live at {url}"
 msgstr "{url}-ൽ ലഭ്യമാണ്"
 
 #: src/features/design/design-pane.tsx
+#: src/features/home/recent-documents.tsx
 #: src/features/home/section.tsx
 #: src/features/onboarding/onboarding-screen.tsx
 #: src/features/profile/facts.tsx
@@ -6583,10 +6584,6 @@ msgstr "റെസ്യൂമെയുമായി പൊരുത്തപ്�
 #: src/features/workspace/parts.tsx
 msgid "Matching your facts"
 msgstr "നിങ്ങളുടെ വസ്തുതകളുമായി പൊരുത്തപ്പെടുത്തുന്നു"
-
-#: src/features/share/custom-domain.tsx
-msgid "May be available"
-msgstr "ലഭ്യമായേക്കാം"
 
 #: src/features/search/search-screen.tsx
 msgid "MCP"
@@ -6906,7 +6903,6 @@ msgid "Names, tags or applications"
 msgstr "പേരുകൾ, ടാഗുകൾ അല്ലെങ്കിൽ അപേക്ഷകൾ"
 
 #: src/features/design/preset-names.ts
-#: src/features/design/style-groups.tsx
 msgid "Narrow"
 msgstr "ഇടുങ്ങിയത്"
 
@@ -7627,10 +7623,14 @@ msgstr "ഇതുവരെ ഒരു പതിപ്പ് മാത്രം. �
 msgid "Only providers that pass their test can be turned on."
 msgstr "അവരുടെ ടെസ്റ്റ് വിജയിക്കുന്ന ദാതാക്കൾക്ക് മാത്രമേ ഓണാക്കാൻ കഴിയൂ."
 
-#. placeholder {0}: report.document.pageCount
+#. placeholder {0}: report.document.checkedPageCount
 #: src/features/ats-checker/checker.tsx
 msgid "Only the first {0} pages were checked."
 msgstr "ആദ്യ {0} പേജുകൾ മാത്രമാണ് പരിശോധിച്ചത്."
+
+#: src/features/ats-checker/original-page.tsx
+msgid "Only the first {MAX_PAGES} pages are shown."
+msgstr ""
 
 #: src/features/check/parser.tsx
 msgid "Only the first 30 pages were checked."
@@ -8824,10 +8824,6 @@ msgstr "അന്ന് രാവിലെ ബ്രീഫിംഗ് പുത
 msgid "Refund policy"
 msgstr ""
 
-#: src/features/share/custom-domain.tsx
-msgid "Register at OlaCV"
-msgstr "OlaCV-യിൽ രജിസ്റ്റർ ചെയ്യുക"
-
 #: src/features/workspace/tabs/prepare.tsx
 msgid "Rehearse aloud"
 msgstr "ഉറക്കെ റിഹേഴ്സ് ചെയ്യുക"
@@ -8988,6 +8984,7 @@ msgstr "പാസ്‌വേഡ് നീക്കം ചെയ്യണോ?"
 msgid "Remove this file?"
 msgstr "ഈ ഫയൽ നീക്കം ചെയ്യണോ?"
 
+#: src/features/entries/photo-field.tsx
 #: src/features/write/picture-screen.tsx
 msgid "Remove this photo?"
 msgstr "ഈ ഫോട്ടോ നീക്കം ചെയ്യണോ?"
@@ -9248,6 +9245,7 @@ msgstr "{1} ഉപയോഗിച്ച് {0} വീണ്ടെടുത്ത
 #: src/features/profile/preferences.tsx
 #: src/features/profile/save-note.tsx
 #: src/features/profile/stories.tsx
+#: src/features/share/custom-domain.tsx
 #: src/features/share/download.tsx
 #: src/features/share/export-screen.tsx
 #: src/features/share/link.tsx
@@ -9393,10 +9391,6 @@ msgstr ""
 
 #: src/shell/permissions.tsx
 msgid "Rezumi can't ask again. Turn it on for Rezumi in your device's Settings, then try again."
-msgstr ""
-
-#: src/shell/permissions.tsx
-msgid "Rezumi opens your photos only to pick the one you choose. You can change this any time in Settings."
 msgstr ""
 
 #: src/shell/permissions.tsx
@@ -9816,10 +9810,6 @@ msgstr "വിഭാഗങ്ങൾ · പ്രിൻ്റ് ഓർഡർ"
 msgid "Sections use headings systems recognize, and work experience shows."
 msgstr "വിഭാഗങ്ങൾ സിസ്റ്റങ്ങൾ തിരിച്ചറിയുന്ന തലക്കെട്ടുകൾ ഉപയോഗിക്കുന്നു, പ്രവൃത്തിപരിചയം ദൃശ്യമാണ്."
 
-#: src/features/share/custom-domain.tsx
-msgid "See plans"
-msgstr ""
-
 #: src/features/onboarding/intro-screen.tsx
 msgid "See where each one stands, get new roles that fit you, and never miss an interview."
 msgstr ""
@@ -9850,10 +9840,6 @@ msgstr "എൻട്രി തിരഞ്ഞെടുക്കുക {0}"
 #: src/features/applications/list-screen.tsx
 msgid "Select visible"
 msgstr "ദൃശ്യമാകുന്ന എല്ലാ ഇനങ്ങളും തിരഞ്ഞെടുക്കുക"
-
-#: src/features/share/export-options.tsx
-msgid "Selected"
-msgstr ""
 
 #: src/preview/page.tsx
 msgid "Selected entry"
@@ -10246,6 +10232,7 @@ msgid "Sign in"
 msgstr "സൈൻ ഇൻ"
 
 #: src/auth/session-gate.tsx
+#: src/features/auth/two-factor-screen.tsx
 #: src/features/check/screen.tsx
 msgid "Sign in again"
 msgstr "വീണ്ടും സൈൻ ഇൻ ചെയ്യുക"
@@ -10630,10 +10617,6 @@ msgstr "നിങ്ങളുടെ പേരിൽ ആരംഭിക്കു�
 #: src/features/home/coming-up.tsx
 msgid "Started"
 msgstr "തുടങ്ങി"
-
-#: src/features/home/coming-up.tsx
-msgid "Starts in {minutes} minutes"
-msgstr "{minutes} മിനിറ്റിൽ തുടങ്ങും"
 
 #: src/features/workspace/tabs/prepare.tsx
 msgid "Starts now"
@@ -11162,6 +11145,10 @@ msgstr "തുടക്കത്തിനു മുമ്പാണ് അവസ�
 msgid "The file couldn't be read as a resume."
 msgstr "ഫയൽ ഒരു റെസ്യൂമെ ആയി വായിക്കാൻ കഴിഞ്ഞില്ല."
 
+#: src/features/entries/photo-field.tsx
+msgid "The file is deleted. Resumes that show this photo lose it too."
+msgstr ""
+
 #: src/features/onboarding/read-file.ts
 msgid "The file is too large. Choose one up to 10 MB."
 msgstr ""
@@ -11497,8 +11484,8 @@ msgid "This file couldn't be read. Choose a PDF, Word, JSON or LinkedIn export (
 msgstr "ഈ ഫയൽ വായിക്കാൻ കഴിഞ്ഞില്ല. ഒരു PDF, Word, JSON അല്ലെങ്കിൽ LinkedIn എക്‌സ്‌പോർട്ട് (.zip) തിരഞ്ഞെടുക്കുക."
 
 #: src/features/ats-checker/original-page.tsx
-msgid "This file couldn't be shown as pages. The report above still applies."
-msgstr "ഈ ഫയൽ പേജുകളായി കാണിക്കാൻ കഴിഞ്ഞില്ല. മുകളിലെ റിപ്പോർട്ട് ഇപ്പോഴും ബാധകമാണ്."
+msgid "This file couldn't be shown as pages. The report still applies."
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "This file declares no language."
@@ -11591,6 +11578,10 @@ msgstr "ഈ കത്തും നിങ്ങളുടെ റെസ്യൂമ
 #: src/draft/conflict-sheet.tsx
 msgid "This letter changed elsewhere"
 msgstr "ഈ കവർ ലെറ്റർ മറ്റെവിടെയോ മാറ്റി"
+
+#: src/features/letters/share.tsx
+msgid "This letter has no resume anymore. Choose another format."
+msgstr ""
 
 #: src/features/letters/design.tsx
 #: src/features/letters/write.tsx
@@ -11871,6 +11862,10 @@ msgstr "വളരെയധികം അഭ്യർത്ഥനകൾ. പിന
 msgid "Too many tries in a short time. Wait a minute, then try again."
 msgstr ""
 
+#: src/features/auth/errors.ts
+msgid "Too many wrong codes. Wait a few minutes, then sign in again."
+msgstr ""
+
 #: src/features/auth/create-account-screen.tsx
 msgid "Too short"
 msgstr ""
@@ -12010,10 +12005,6 @@ msgstr "ഈ ആമുഖം പരീക്ഷിക്കുക"
 #: src/features/documents/new-document.tsx
 msgid "Try with a sample resume"
 msgstr "ഒരു സാമ്പിൾ റെസ്യൂമെ ഉപയോഗിച്ച് ശ്രമിക്കുക"
-
-#: src/features/auth/welcome-screen.tsx
-msgid "Try without an account"
-msgstr ""
 
 #: src/features/settings/locale-names.ts
 msgid "Turkish"
@@ -12885,7 +12876,6 @@ msgid "Why do you want this role at {company}?"
 msgstr "{company}-ലെ ഈ റോൾ നിങ്ങൾക്ക് എന്തുകൊണ്ട് വേണം?"
 
 #: src/features/design/preset-names.ts
-#: src/features/design/style-groups.tsx
 msgid "Wide"
 msgstr "വിശാലമായ"
 
@@ -13290,10 +13280,6 @@ msgstr ""
 msgid "Your name and contact details follow your Profile."
 msgstr ""
 
-#: src/features/share/custom-domain.tsx
-msgid "Your name as your address, from OlaCV, the .cv registry. Code {CODE} takes 50% off the first year."
-msgstr "നിങ്ങളുടെ പേര് തന്നെ നിങ്ങളുടെ വിലാസം, .cv രജിസ്ട്രിയായ OlaCV-യിൽ നിന്ന്. {CODE} എന്ന കോഡ് ആദ്യ വർഷം 50% കിഴിവ് നൽകുന്നു."
-
 #: src/features/check/issues.ts
 msgid "Your name is missing"
 msgstr "നിങ്ങളുടെ പേര് കാണാനില്ല"
@@ -13350,10 +13336,6 @@ msgstr "നിങ്ങളുടെ ഫോൺ നമ്പർ അസാധാര
 #: app/account/membership.tsx
 #: src/features/billing/plan-card.tsx
 msgid "Your plan"
-msgstr ""
-
-#: src/features/share/custom-domain.tsx
-msgid "Your plan no longer includes a custom domain. Renew it and the domain comes back by itself."
 msgstr ""
 
 #: app/(tabs)/portfolio/index.tsx

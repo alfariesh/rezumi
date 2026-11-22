@@ -303,7 +303,7 @@ type Row = {
 };
 
 /** One row per category with something to fix, worst first; the web's `issueRows`. */
-export function issueRows(report: PdfAtsReport): Row[] {
+function issueRows(report: PdfAtsReport): Row[] {
 	const byCategory = new Map<PdfCategory, PdfAtsReport["findings"]>();
 	for (const finding of [...report.findings, ...report.tips])
 		byCategory.set(finding.category, [...(byCategory.get(finding.category) ?? []), finding]);
@@ -387,7 +387,7 @@ function Result({ result, uri, size, onFix, onReset, onBlank }: ResultProps) {
 					<Alert status="accent">
 						<Alert.Indicator />
 						<Alert.Content>
-							<Alert.Title>{t`Only the first ${report.document.pageCount} pages were checked.`}</Alert.Title>
+							<Alert.Title>{t`Only the first ${report.document.checkedPageCount} pages were checked.`}</Alert.Title>
 							<Alert.Description>{t`The rest of the file isn't in this report.`}</Alert.Description>
 						</Alert.Content>
 					</Alert>

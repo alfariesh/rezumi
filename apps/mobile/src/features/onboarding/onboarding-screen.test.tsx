@@ -6,7 +6,7 @@ import { fireEvent, screen, waitFor } from "@testing-library/react-native";
 import Storage from "expo-sqlite/kv-store";
 import { emptyProfileData } from "@rezumi/schema/profile/data";
 import { OnboardingScreen } from "./onboarding-screen";
-import { storeSavedOnboarding } from "./saved-run";
+import { clearSavedOnboarding, loadSavedOnboarding, storeSavedOnboarding } from "./saved-run";
 import { renderScreen } from "@/test/render-screen";
 
 const SCOPE = '["https://rezumi.app","user-1"]';
@@ -111,7 +111,7 @@ const orpcError = (code: string) => Object.assign(new Error(code), { name: "ORPC
 
 beforeEach(() => {
 	jest.clearAllMocks();
-	Storage.removeItemSync(`onboarding:${SCOPE}`);
+	clearSavedOnboarding(Storage, SCOPE);
 	mockReads.profile = read(profile);
 	mockReads.preferences = read(preferences);
 	mockReads.status = read(status);
@@ -152,7 +152,7 @@ describe("OnboardingScreen", () => {
 			expect.objectContaining({ template: "meridian", withSampleData: false }),
 		);
 		// Finished: nothing is kept to pick up again.
-		expect(Storage.getItemSync(`onboarding:${SCOPE}`)).toBeNull();
+		expect(loadSavedOnboarding(Storage, SCOPE)).toBeNull();
 	});
 
 	it("says why a source failed, offers Retry only when it can help, and still goes on", async () => {
@@ -236,5 +236,41 @@ describe("OnboardingScreen", () => {
 		expect(screen.getByText("Check what we found")).toBeOnTheScreen();
 		expect(screen.getByText("ledger")).toBeOnTheScreen();
 		expect(mockApi.github).not.toHaveBeenCalled();
+	});
+
+	it("reads again a source that was still being read when the app closed", async () => {
+		mockApi.website.mockResolvedValue(found());
+		storeSavedOnboarding(Storage, SCOPE, {
+			step: "review",
+			inputs: { linkedin: "", linkedinOwn: false, github: "ayu-dev", website: "https://ayu.example.test" },
+			answers: { targetRoles: [], locations: [], maxOfficeDays: null },
+			runs: {
+				github: { status: "done", key: "ayu-dev", result: found() },
+				website: { status: "loading", key: "https://ayu.example.test/" },
+			},
+			excluded: [],
+			template: "meridian",
+			savedAt: null,
+		});
+		await renderScreen(<OnboardingScreen />);
+		expect(screen.getByText("Check what we found")).toBeOnTheScreen();
+		await waitFor(() => expect(mockApi.website).toHaveBeenCalledTimes(1));
+		// The finished source is kept, not read again.
+		expect(mockApi.github).not.toHaveBeenCalled();
+		expect(await screen.findByText("Save to my Profile")).toBeOnTheScreen();
+	});
+
+	it("goes back to the first step when a file was still being read, since the file itself is gone", async () => {
+		storeSavedOnboarding(Storage, SCOPE, {
+			step: "questions",
+			inputs: { linkedin: "", linkedinOwn: false, github: "", website: "" },
+			answers: { targetRoles: [], locations: [], maxOfficeDays: null },
+			runs: { file: { status: "loading", key: "cv.pdf:1200" } },
+			excluded: [],
+			template: "meridian",
+			savedAt: null,
+		});
+		await renderScreen(<OnboardingScreen />);
+		expect(screen.getByText("Bring what you have")).toBeOnTheScreen();
 	});
 });

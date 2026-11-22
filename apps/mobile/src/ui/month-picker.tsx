@@ -1,6 +1,6 @@
 // Picking a month and year (resume dates): Android's date dialog (the day is ignored), iOS's wheels in a sheet with
 // Clear and Done. Typed input stays the main way in; this is the calendar button beside it.
-import DateTimePicker from "@react-native-community/datetimepicker";
+import DateTimePicker, { DateTimePickerAndroid } from "@react-native-community/datetimepicker";
 import { useEffect, useState } from "react";
 import { Platform, View } from "react-native";
 import { Button } from "./button";
@@ -36,21 +36,23 @@ export function MonthPicker({
 }: MonthPickerProps) {
 	const [picked, setPicked] = useState(value);
 	useEffect(() => {
-		if (isOpen) setPicked(value);
+		if (!isOpen) return;
+		setPicked(value);
+		// Android's own dialog, opened imperatively like DatePicker's; it reports a pick or a dismissal.
+		if (Platform.OS === "android")
+			DateTimePickerAndroid.open({
+				value,
+				mode: "date",
+				onValueChange: (_event, date) => {
+					onOpenChange(false);
+					onPick(date);
+				},
+				onDismiss: () => onOpenChange(false),
+			});
 		// oxlint-disable-next-line react-hooks/exhaustive-deps -- starts from the value each time it opens
 	}, [isOpen]);
 
-	if (Platform.OS === "android")
-		return isOpen ? (
-			<DateTimePicker
-				value={value}
-				mode="date"
-				onChange={(event, date) => {
-					onOpenChange(false);
-					if (event.type === "set" && date) onPick(date);
-				}}
-			/>
-		) : null;
+	if (Platform.OS === "android") return null;
 
 	return (
 		<Sheet
@@ -86,7 +88,7 @@ export function MonthPicker({
 					mode="date"
 					display="spinner"
 					{...(locale ? { locale } : {})}
-					onChange={(_event, date) => date && setPicked(date)}
+					onValueChange={(_event, date) => setPicked(date)}
 				/>
 			</View>
 		</Sheet>

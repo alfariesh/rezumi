@@ -13,7 +13,7 @@ import { PromptSheet } from "./pickers";
 import { createRichTextSession, fromEnrichedHtml, lineAtCaret, replaceLine } from "./rich-text";
 import { resumeFieldFocus } from "@/draft";
 import { Button, IconButton, ListRow, Sheet, Text, useTheme } from "@/ui-legacy";
-import { useKeyboardVisible } from "@/ui-legacy/keyboard";
+import { useKeyboardVisible } from "@/ui/keyboard";
 
 /** The focused editor, for the toolbar docked above the keyboard (one per screen). */
 type ActiveEditor = {

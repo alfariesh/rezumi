@@ -10,7 +10,7 @@ import { useRouter } from "expo-router";
 import { useRef, useState } from "react";
 import { View } from "react-native";
 import { lintResumeForAts } from "@rezumi/resume/ats";
-import { composeCoverLetter, createCoverLetterResumeData } from "@rezumi/resume/cover-letter";
+import { getDefaultFileName } from "@rezumi/utils/file-name";
 import { flushResume } from "./document";
 import { FileNameField, FormatList, Notice } from "./export-options";
 import { exportDirectory, exportFile, printResume, shareExport } from "./files";
@@ -20,6 +20,7 @@ import { client } from "@/api/client";
 import { useLetterStore, useResumeStore } from "@/draft";
 import { useApplications } from "@/features/applications/queries";
 import { canShowPlans, hasPlanFeature, showPlanAlert, usePlan } from "@/features/billing/plan";
+import { letterFileName, letterPageData } from "@/features/letters/compose";
 import { routes } from "@/routes";
 import { Button, ListRow, ListSection, Switch, Text } from "@/ui";
 
@@ -35,7 +36,7 @@ export function DownloadTab({ resume, offline }: DownloadProps) {
 	);
 	const [withLetter, setWithLetter] = useState(false);
 	const [format, setFormat] = useState<ExportFormat>("pdf");
-	const [name, setName] = useState(safeFileName(t`${resume.data.basics.name || resume.name}-Resume`));
+	const [name, setName] = useState(() => getDefaultFileName(resume));
 	const [busy, setBusy] = useState<"file" | "print" | null>(null);
 	const active = useRef(false);
 	const [error, setError] = useState<string | null>(null);
@@ -102,24 +103,26 @@ export function DownloadTab({ resume, offline }: DownloadProps) {
 			// Generate both files before handing either to another app, so failures leave a clear retry path.
 			let letterFile;
 			if (includeLetter && linked?.coverLetterId) {
+				const letterId = linked.coverLetterId;
 				const letter = useLetterStore.getState();
-				if (letter.document?.id === linked.coverLetterId) {
+				if (letter.document?.id === letterId) {
 					await letter.flush();
 					const latest = useLetterStore.getState();
 					if (latest.conflict || !["saved", "idle"].includes(latest.status))
 						throw new Error(t`Save the cover letter before exporting it.`);
 				}
-				const savedLetter = chosen === "pdf" ? await client.coverLetters.getById({ id: linked.coverLetterId }) : null;
-				const composed = savedLetter
-					? composeCoverLetter(savedLetter, await letterWords(savedLetter.style.metadata.page.locale))
-					: null;
+				// The letter open in its editor was just saved, so its copy here is the server's; any other is read.
+				const opened = useLetterStore.getState().document;
+				const savedLetter = opened?.id === letterId ? opened : await client.coverLetters.getById({ id: letterId });
+				const words = await letterWords(savedLetter.style.metadata.page.locale);
 				letterFile = await exportFile({
 					directory,
-					id: linked.coverLetterId,
-					name: t`${name}-Cover-Letter`,
+					id: letterId,
+					name: letterFileName(savedLetter),
 					format: chosen,
 					letter: true,
-					...(savedLetter && composed ? { data: createCoverLetterResumeData({ ...savedLetter, ...composed }) } : {}),
+					words,
+					...(chosen === "pdf" ? { data: letterPageData(savedLetter, words) } : {}),
 				});
 			}
 			await shareExport(file, chosen);

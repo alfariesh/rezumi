@@ -454,12 +454,6 @@ msgstr "Το {0} επέστρεψε το \"{1}\". Το μήνυμά σας δι�
 msgid "{0} selected"
 msgstr "Επιλεγμένα: {0}"
 
-#. placeholder {0}: resume.data.basics.name || resume.name
-#: src/features/letters/share.tsx
-#: src/features/share/download.tsx
-msgid "{0}-Resume"
-msgstr "{0}-Βιογραφικό"
-
 #. placeholder {0}: title || t`Untitled`
 #. placeholder {1}: row.index + 1
 #. placeholder {2}: row.count
@@ -506,14 +500,6 @@ msgstr "{company} · {tabName}"
 msgid "{completed, plural, one {# document updated} other {# documents updated}}"
 msgstr "{completed, plural, one {Ενημερώθηκε # έγγραφο} other {Ενημερώθηκαν # έγγραφα}}"
 
-#: src/features/share/custom-domain.tsx
-msgid "{cost} a year"
-msgstr "{cost} τον χρόνο"
-
-#: src/features/share/custom-domain.tsx
-msgid "{cost} the first year"
-msgstr "{cost} τον πρώτο χρόνο"
-
 #: src/features/write/section-sheet.tsx
 msgid "{count, plural, one {# column} other {# columns}}"
 msgstr "{count, plural, one {# στήλη} other {# στήλες}}"
@@ -530,6 +516,31 @@ msgstr ""
 #: src/features/workspace/tabs/messages.tsx
 msgid "{count, plural, one {Apply # change} other {Apply # changes}}"
 msgstr "{count, plural, one {Εφαρμογή # αλλαγής} other {Εφαρμογή # αλλαγών}}"
+
+#. Short time since, in days: 3d
+#: src/features/share/time-since.ts
+msgid "{count, plural, other {#d}}"
+msgstr ""
+
+#. Short time since, in hours: 2h
+#: src/features/share/time-since.ts
+msgid "{count, plural, other {#h}}"
+msgstr ""
+
+#. Short time since, in minutes: 5m
+#: src/features/share/time-since.ts
+msgid "{count, plural, other {#m}}"
+msgstr ""
+
+#. Short time since, in weeks: 6w
+#: src/features/share/time-since.ts
+msgid "{count, plural, other {#w}}"
+msgstr ""
+
+#. Short time since, in years: 1y
+#: src/features/share/time-since.ts
+msgid "{count, plural, other {#y}}"
+msgstr ""
 
 #: src/features/workspace/tabs/debrief.tsx
 msgid "{day} · {length}m"
@@ -651,6 +662,7 @@ msgstr ""
 msgid "{minutes, plural, one {# minute in total} other {# minutes in total}}"
 msgstr "{minutes, plural, one {# λεπτό συνολικά} other {# λεπτά συνολικά}}"
 
+#: src/features/home/coming-up.tsx
 #: src/features/workspace/tabs/prepare.tsx
 msgid "{minutes, plural, one {Starts in # minute} other {Starts in # minutes}}"
 msgstr "{minutes, plural, one {Ξεκινά σε # λεπτό} other {Ξεκινά σε # λεπτά}}"
@@ -697,10 +709,6 @@ msgstr "Το {name} βρίσκεται στην πλαϊνή γραμμή"
 msgid "{name} uses one column"
 msgstr "Το {name} χρησιμοποιεί μία στήλη"
 
-#: src/features/share/download.tsx
-msgid "{name}-Cover-Letter"
-msgstr "{name}-Συνοδευτική επιστολή"
-
 #: src/features/check/issues.ts
 msgid "{names} come last in the text. Most systems still find them; some don't."
 msgstr "Το {names} έρχεται τελευταίο στο κείμενο. Τα περισσότερα συστήματα εξακολουθούν να τα βρίσκουν. κάποιοι όχι."
@@ -720,10 +728,6 @@ msgstr "{role} · {company}"
 #: src/features/write/outline.tsx
 msgid "{sections, plural, one {# section} other {# sections}}"
 msgstr "{sections, plural, one {τμήμα #} other {τμήματα #}}"
-
-#: src/features/letters/share.tsx
-msgid "{sender}-Cover-Letter"
-msgstr "{sender}-Συνοδευτική-επιστολή"
 
 #: src/features/assistant/messages.tsx
 msgid "{skipped, plural, one {# edit couldn't be placed: its text changed. Ask again to redo it.} other {# edits couldn't be placed: their text changed. Ask again to redo them.}}"
@@ -2003,10 +2007,6 @@ msgstr "Αυτόματα"
 msgid "Autosaves are grouped by session and kept for 90 days. Named versions are kept until you delete them. Restoring saves the current state first."
 msgstr "Οι αυτόματες αποθηκεύσεις ομαδοποιούνται ανά περίοδο λειτουργίας και διατηρούνται για 90 ημέρες. Οι επώνυμες εκδόσεις διατηρούνται μέχρι να τις διαγράψετε. Η επαναφορά αποθηκεύει πρώτα την τρέχουσα κατάσταση."
 
-#: src/features/share/custom-domain.tsx
-msgid "Available"
-msgstr "Διαθέσιμο"
-
 #: src/features/ats-checker/messages.ts
 msgid "Avoid heavy letter-spacing effects, then re-export."
 msgstr "Αποφύγετε έντονα εφέ απόστασης γραμμάτων και μετά επανεξαγάγετε."
@@ -2574,10 +2574,6 @@ msgstr "Επιλέξτε ένα αρχείο PDF. Το επιλεγμένο αρ
 msgid "Choose a PDF smaller than 10 MB. The selected file was not uploaded."
 msgstr "Επιλέξτε PDF μικρότερο από 10 MB. Το επιλεγμένο αρχείο δεν μεταφορτώθηκε."
 
-#: src/shell/permissions.tsx
-msgid "Choose a photo"
-msgstr ""
-
 #: src/features/entries/photo-field.tsx
 #: src/features/settings/profile.tsx
 #: src/features/write/picture-screen.tsx
@@ -2787,10 +2783,6 @@ msgstr "Σύμβουλος"
 msgid "Coach memory"
 msgstr ""
 
-#: src/features/share/custom-domain.tsx
-msgid "Code copied"
-msgstr "Ο κωδικός αντιγράφηκε"
-
 #: src/features/auth/two-factor-screen.tsx
 msgid "Codes look like a1b2c-d3e4f."
 msgstr ""
@@ -2890,10 +2882,6 @@ msgstr ""
 #: src/features/share/custom-domain.tsx
 msgid "Connect"
 msgstr "Σύνδεση"
-
-#: src/features/share/custom-domain.tsx
-msgid "Connect {domain}"
-msgstr "Σύνδεση του {domain}"
 
 #: src/features/share/custom-domain.tsx
 msgid "Connect {hostname}"
@@ -3058,10 +3046,6 @@ msgstr "Αντιγράψτε ένα βιογραφικό για μια θέση 
 #: src/features/workspace/tabs/apply.tsx
 msgid "Copy answers"
 msgstr "Αντιγραφή απαντήσεων"
-
-#: src/features/share/custom-domain.tsx
-msgid "Copy code"
-msgstr "Αντιγραφή κωδικού"
 
 #: src/features/document-menu/index.tsx
 msgid "Copy created"
@@ -3303,6 +3287,10 @@ msgstr ""
 #: src/features/history/history.tsx
 msgid "Couldn't load versions."
 msgstr "Δεν ήταν δυνατή η φόρτωση των εκδόσεων."
+
+#: src/features/share/custom-domain.tsx
+msgid "Couldn't load your custom domain."
+msgstr ""
 
 #: src/features/onboarding/onboarding-screen.tsx
 msgid "Couldn't load your details"
@@ -3560,6 +3548,10 @@ msgstr "Δεν ήταν δυνατή η κοινή χρήση της εικόν�
 #: src/features/workspace/tabs/practise.tsx
 msgid "Couldn't share the recording. Try again."
 msgstr "Δεν ήταν δυνατή η κοινή χρήση της ηχογράφησης. Προσπαθήστε ξανά."
+
+#: src/features/auth/errors.ts
+msgid "Couldn't sign in with this account. If you don't have a Rezumi account yet, sign-ups may be turned off."
+msgstr ""
 
 #: src/features/settings/sign-out.tsx
 msgid "Couldn't sign out. Try again."
@@ -4468,6 +4460,10 @@ msgstr "Εκδίδω"
 #: src/features/assistant/messages.tsx
 msgid "Edit {0}: {1}"
 msgstr "Επεξεργασία {0}: {1}"
+
+#: src/features/home/schedules.tsx
+msgid "Edit {name}"
+msgstr ""
 
 #: src/features/application-detail/sheets.tsx
 msgid "Edit date"
@@ -5903,6 +5899,10 @@ msgstr ""
 msgid "Keep on one page"
 msgstr "Διατήρηση σε μία σελίδα"
 
+#: src/features/entries/photo-field.tsx
+msgid "Keep photo"
+msgstr ""
+
 #: src/features/document-menu/index.tsx
 msgid "Keep private notes about this resume here. Nobody else can see them."
 msgstr "Κρατήστε εδώ ιδιωτικές σημειώσεις για αυτό το βιογραφικό. Κανείς άλλος δεν μπορεί να τις δει."
@@ -6301,6 +6301,7 @@ msgid "Live at {url}"
 msgstr "Δημοσιευμένο στο {url}"
 
 #: src/features/design/design-pane.tsx
+#: src/features/home/recent-documents.tsx
 #: src/features/home/section.tsx
 #: src/features/onboarding/onboarding-screen.tsx
 #: src/features/profile/facts.tsx
@@ -6583,10 +6584,6 @@ msgstr "Ταίριασμα με το βιογραφικό"
 #: src/features/workspace/parts.tsx
 msgid "Matching your facts"
 msgstr "Αντιστοίχιση των γεγονότων σας"
-
-#: src/features/share/custom-domain.tsx
-msgid "May be available"
-msgstr "Ίσως διαθέσιμο"
 
 #: src/features/search/search-screen.tsx
 msgid "MCP"
@@ -6906,7 +6903,6 @@ msgid "Names, tags or applications"
 msgstr "Ονόματα, ετικέτες ή αιτήσεις"
 
 #: src/features/design/preset-names.ts
-#: src/features/design/style-groups.tsx
 msgid "Narrow"
 msgstr "Στενός"
 
@@ -7627,10 +7623,14 @@ msgstr "Μόνο μία έκδοση μέχρι στιγμής. Κάθε συν�
 msgid "Only providers that pass their test can be turned on."
 msgstr "Μόνο οι πάροχοι που περνούν το τεστ μπορούν να ενεργοποιηθούν."
 
-#. placeholder {0}: report.document.pageCount
+#. placeholder {0}: report.document.checkedPageCount
 #: src/features/ats-checker/checker.tsx
 msgid "Only the first {0} pages were checked."
 msgstr "Ελέγχθηκαν μόνο οι πρώτες σελίδες {0}."
+
+#: src/features/ats-checker/original-page.tsx
+msgid "Only the first {MAX_PAGES} pages are shown."
+msgstr ""
 
 #: src/features/check/parser.tsx
 msgid "Only the first 30 pages were checked."
@@ -8824,10 +8824,6 @@ msgstr "Ανανέωση του ενημερωτικού το πρωί της η
 msgid "Refund policy"
 msgstr ""
 
-#: src/features/share/custom-domain.tsx
-msgid "Register at OlaCV"
-msgstr "Καταχώριση στο OlaCV"
-
 #: src/features/workspace/tabs/prepare.tsx
 msgid "Rehearse aloud"
 msgstr "Πρόβα φωναχτά"
@@ -8988,6 +8984,7 @@ msgstr "Κατάργηση του κωδικού πρόσβασης;"
 msgid "Remove this file?"
 msgstr "Κατάργηση αυτού του αρχείου;"
 
+#: src/features/entries/photo-field.tsx
 #: src/features/write/picture-screen.tsx
 msgid "Remove this photo?"
 msgstr "Κατάργηση αυτής της φωτογραφίας;"
@@ -9248,6 +9245,7 @@ msgstr "Ανακτήθηκε το {0} χρησιμοποιώντας το {1}. �
 #: src/features/profile/preferences.tsx
 #: src/features/profile/save-note.tsx
 #: src/features/profile/stories.tsx
+#: src/features/share/custom-domain.tsx
 #: src/features/share/download.tsx
 #: src/features/share/export-screen.tsx
 #: src/features/share/link.tsx
@@ -9393,10 +9391,6 @@ msgstr ""
 
 #: src/shell/permissions.tsx
 msgid "Rezumi can't ask again. Turn it on for Rezumi in your device's Settings, then try again."
-msgstr ""
-
-#: src/shell/permissions.tsx
-msgid "Rezumi opens your photos only to pick the one you choose. You can change this any time in Settings."
 msgstr ""
 
 #: src/shell/permissions.tsx
@@ -9816,10 +9810,6 @@ msgstr "Ενότητες · παραγγελία εκτύπωσης"
 msgid "Sections use headings systems recognize, and work experience shows."
 msgstr "Οι ενότητες χρησιμοποιούν επικεφαλίδες που αναγνωρίζουν τα συστήματα και η επαγγελματική εμπειρία εμφανίζεται."
 
-#: src/features/share/custom-domain.tsx
-msgid "See plans"
-msgstr ""
-
 #: src/features/onboarding/intro-screen.tsx
 msgid "See where each one stands, get new roles that fit you, and never miss an interview."
 msgstr ""
@@ -9850,10 +9840,6 @@ msgstr "Επιλέξτε την καταχώριση {0}"
 #: src/features/applications/list-screen.tsx
 msgid "Select visible"
 msgstr "Επιλογή ορατών"
-
-#: src/features/share/export-options.tsx
-msgid "Selected"
-msgstr ""
 
 #: src/preview/page.tsx
 msgid "Selected entry"
@@ -10246,6 +10232,7 @@ msgid "Sign in"
 msgstr "Σύνδεση"
 
 #: src/auth/session-gate.tsx
+#: src/features/auth/two-factor-screen.tsx
 #: src/features/check/screen.tsx
 msgid "Sign in again"
 msgstr "Συνδεθείτε ξανά"
@@ -10630,10 +10617,6 @@ msgstr "Ξεκινήστε με το όνομά σας. Κατασκευάστε
 #: src/features/home/coming-up.tsx
 msgid "Started"
 msgstr "Ξεκίνησε"
-
-#: src/features/home/coming-up.tsx
-msgid "Starts in {minutes} minutes"
-msgstr "Ξεκινά σε {minutes} λεπτά"
 
 #: src/features/workspace/tabs/prepare.tsx
 msgid "Starts now"
@@ -11162,6 +11145,10 @@ msgstr "Το τέλος είναι πριν την έναρξη."
 msgid "The file couldn't be read as a resume."
 msgstr "Δεν ήταν δυνατή η ανάγνωση του αρχείου ως βιογραφικό."
 
+#: src/features/entries/photo-field.tsx
+msgid "The file is deleted. Resumes that show this photo lose it too."
+msgstr ""
+
 #: src/features/onboarding/read-file.ts
 msgid "The file is too large. Choose one up to 10 MB."
 msgstr ""
@@ -11497,8 +11484,8 @@ msgid "This file couldn't be read. Choose a PDF, Word, JSON or LinkedIn export (
 msgstr "Δεν ήταν δυνατή η ανάγνωση αυτού του αρχείου. Επιλέξτε μια εξαγωγή PDF, Word, JSON ή LinkedIn (.zip)."
 
 #: src/features/ats-checker/original-page.tsx
-msgid "This file couldn't be shown as pages. The report above still applies."
-msgstr "Αυτό το αρχείο δεν μπόρεσε να εμφανιστεί ως σελίδες. Η παραπάνω αναφορά εξακολουθεί να ισχύει."
+msgid "This file couldn't be shown as pages. The report still applies."
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "This file declares no language."
@@ -11591,6 +11578,10 @@ msgstr "Αυτό το γράμμα και το βιογραφικό σας ως 
 #: src/draft/conflict-sheet.tsx
 msgid "This letter changed elsewhere"
 msgstr "Αυτή η συνοδευτική επιστολή άλλαξε αλλού"
+
+#: src/features/letters/share.tsx
+msgid "This letter has no resume anymore. Choose another format."
+msgstr ""
 
 #: src/features/letters/design.tsx
 #: src/features/letters/write.tsx
@@ -11871,6 +11862,10 @@ msgstr "Πάρα πολλά αιτήματα. Δοκιμάστε ξανά αργ
 msgid "Too many tries in a short time. Wait a minute, then try again."
 msgstr ""
 
+#: src/features/auth/errors.ts
+msgid "Too many wrong codes. Wait a few minutes, then sign in again."
+msgstr ""
+
 #: src/features/auth/create-account-screen.tsx
 msgid "Too short"
 msgstr ""
@@ -12010,10 +12005,6 @@ msgstr "Δοκιμάστε αυτή την εισαγωγή"
 #: src/features/documents/new-document.tsx
 msgid "Try with a sample resume"
 msgstr "Δοκιμάστε με ένα δείγμα βιογραφικού"
-
-#: src/features/auth/welcome-screen.tsx
-msgid "Try without an account"
-msgstr ""
 
 #: src/features/settings/locale-names.ts
 msgid "Turkish"
@@ -12885,7 +12876,6 @@ msgid "Why do you want this role at {company}?"
 msgstr "Γιατί θέλετε αυτή τη θέση στην εταιρεία {company};"
 
 #: src/features/design/preset-names.ts
-#: src/features/design/style-groups.tsx
 msgid "Wide"
 msgstr "Ευρύς"
 
@@ -13290,10 +13280,6 @@ msgstr ""
 msgid "Your name and contact details follow your Profile."
 msgstr ""
 
-#: src/features/share/custom-domain.tsx
-msgid "Your name as your address, from OlaCV, the .cv registry. Code {CODE} takes 50% off the first year."
-msgstr "Το όνομά σας ως διεύθυνσή σας, από το OlaCV, το μητρώο του .cv. Ο κωδικός {CODE} δίνει έκπτωση 50% τον πρώτο χρόνο."
-
 #: src/features/check/issues.ts
 msgid "Your name is missing"
 msgstr "Το όνομά σας λείπει"
@@ -13350,10 +13336,6 @@ msgstr "Ο αριθμός τηλεφώνου σας είναι γραμμένο�
 #: app/account/membership.tsx
 #: src/features/billing/plan-card.tsx
 msgid "Your plan"
-msgstr ""
-
-#: src/features/share/custom-domain.tsx
-msgid "Your plan no longer includes a custom domain. Renew it and the domain comes back by itself."
 msgstr ""
 
 #: app/(tabs)/portfolio/index.tsx

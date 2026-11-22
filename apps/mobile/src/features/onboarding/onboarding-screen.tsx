@@ -15,7 +15,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "expo-router";
 import Storage from "expo-sqlite/kv-store";
 import { useEffect, useRef, useState } from "react";
-import { BackHandler, I18nManager, useWindowDimensions, View } from "react-native";
+import { BackHandler, useWindowDimensions, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { answersOf, nextStep, ONBOARDING_STEPS, previousStep, sameAnswers, skipSaves } from "@rezumi/career/onboarding";
 import { countReviewEntries, SOURCE_IDS } from "@rezumi/resume/profile-sources";
@@ -288,7 +288,7 @@ function Onboarding({ profile, preferences, status }: OnboardingProps) {
 
 	const backButton = back ? (
 		<Button variant="ghost" isDisabled={busy !== null} onPress={() => goTo(back)} testID="onboarding-back">
-			<Icon name={I18nManager.isRTL ? "arrow-right" : "arrow-left"} size={18} />
+			<Icon name="arrow-left" size={16} />
 			<Button.Label>{t`Back`}</Button.Label>
 		</Button>
 	) : (

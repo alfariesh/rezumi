@@ -1,6 +1,8 @@
 // The Profile editor's loading and failed-load states, in the shape of what they stand in for.
+import type { ReactNode } from "react";
 import { useLingui } from "@lingui/react/macro";
 import { View } from "react-native";
+import { useProfileQuery } from "./source";
 import { EmptyState, Screen, Skeleton } from "@/ui";
 
 export function ProfileSkeleton() {
@@ -30,4 +32,17 @@ export function ProfileLoadError({ onRetry }: ProfileLoadErrorProps) {
 			/>
 		</Screen>
 	);
+}
+
+type ProfileGateProps = { children: ReactNode };
+
+/**
+ * A Profile screen opened on its own (one entry, the summary, from a link or after the app was closed): it waits for
+ * the Profile like the tabs do, so it never says an entry was deleted while the Profile is still loading.
+ */
+export function ProfileGate({ children }: ProfileGateProps) {
+	const { query, ready } = useProfileQuery();
+	if (ready) return children;
+	if (query.isError) return <ProfileLoadError onRetry={() => void query.refetch()} />;
+	return <ProfileSkeleton />;
 }

@@ -58,6 +58,7 @@ ui.showToast = (value) => calls.push(value);
 ui.listItemMotion = () => ({});
 ui.listLayout = {};
 ui.useFirstAppearance = () => false;
+ui.usePullRefresh = () => ({ refreshing: false, onRefresh: () => undefined });
 const mocks = {
 	react,
 	"react-native": { View: "View", Pressable: "Pressable", ScrollView: "ScrollView" },
@@ -67,7 +68,6 @@ const mocks = {
 	"@/routes": { routes },
 	"@/ui-legacy": ui,
 	"@/ui": ui,
-	"@/ui-legacy/use-pull-refresh": { usePullRefresh: () => ({ refreshing: false, onRefresh: () => undefined }) },
 	"react-native-reanimated": {
 		View: "Animated.View",
 		useSharedValue: (initial) => ({ get: () => initial, set() {} }),

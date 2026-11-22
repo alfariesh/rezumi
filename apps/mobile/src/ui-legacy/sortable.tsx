@@ -4,8 +4,8 @@ import { useLingui } from "@lingui/react/macro";
 import { View } from "react-native";
 import { useSharedValue, withTiming } from "react-native-reanimated";
 import ReorderableList, { reorderItems, useIsActive, useReorderableDrag } from "react-native-reorderable-list";
-import { haptics, useReducedMotion } from "./motion";
 import { useTheme } from "./theme";
+import { haptics, useReducedMotion } from "@/ui/motion";
 
 export type SortableItemInfo<T> = {
 	item: T;

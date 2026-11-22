@@ -21,5 +21,3 @@ export function storeSavedProfile(queryClient: QueryClient, result: ProfileSaveR
 	for (const resume of result.updatedResumes)
 		void queryClient.invalidateQueries({ queryKey: orpc.resume.getById.queryKey({ input: { id: resume.id } }) });
 }
-
-export { profileHasCareer } from "@rezumi/resume/profile";

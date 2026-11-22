@@ -63,7 +63,7 @@ describe("Download", () => {
 			await fireEvent.press(screen.getByTestId("export-download"));
 		});
 		expect(mockFiles.exportFile).toHaveBeenCalledWith(
-			expect.objectContaining({ format: "pdf", name: "Ada Lovelace-Resume", data: resume.data }),
+			expect.objectContaining({ format: "pdf", name: "Ada-Lovelace-Resume", data: resume.data }),
 		);
 		expect(mockFiles.shareExport).toHaveBeenCalledWith({ uri: "file:///Ada-Lovelace-Resume.pdf" }, "pdf");
 	});

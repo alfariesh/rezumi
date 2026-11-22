@@ -3,10 +3,7 @@ import { WORKSPACE_TABS } from "@rezumi/schema/career";
 import { PROFILE_TABS, routes } from "../routes";
 import { DEFAULT_SERVER } from "@/auth/session";
 
-export type DeepLink =
-	| { kind: "callback" }
-	| { kind: "root" }
-	| { kind: "target"; server: string | null; href: AppHref };
+type DeepLink = { kind: "callback" } | { kind: "root" } | { kind: "target"; server: string | null; href: AppHref };
 
 // Matches the server's public-resume exclusions.
 const reserved = new Set([
@@ -46,13 +43,14 @@ const profileTabs = new Set<string>(PROFILE_TABS);
 const profileTab = (name: string | undefined): ProfileTab | undefined =>
 	name && profileTabs.has(name) ? (name as ProfileTab) : undefined;
 // Web settings pages and the app screen holding the same settings. Billing has no app page (K6): the settings index.
+// Universal and App Links open the app for these pages too (APP_LINK_PREFIXES in apps/server/src/http/app-links.ts and
+// `intentFilters` in app.config.ts; linking/app-links.test.ts keeps the three in step).
 const settingsPanes: Record<string, AccountPane | undefined> = {
 	account: "account",
 	profile: "account",
 	authentication: "account",
 	preferences: "preferences",
 	app: "preferences",
-	"job-search": "preferences",
 	ai: "ai",
 	"api-keys": "ai",
 	integrations: "ai",
@@ -115,6 +113,8 @@ function dashboardHref(rest: readonly string[], path: string): AppHref | null {
 		case "settings": {
 			if (!second) return routes.account();
 			if (second === "billing") return routes.account();
+			// The web's old Job search settings page now redirects to Jobs.
+			if (second === "job-search") return routes.applications();
 			const pane = settingsPanes[second];
 			return pane ? routes.account(pane) : null;
 		}

@@ -15,7 +15,7 @@ import { TopBar } from "./top-bar";
 import { useIsTablet } from "./use-is-tablet";
 import { routes } from "@/routes";
 import { Button, Icon, IconButton, Segmented, Text, useReducedMotion, useTheme } from "@/ui-legacy";
-import { KeyboardFrame, useKeyboardVisible } from "@/ui-legacy/keyboard";
+import { KeyboardFrame, useKeyboardVisible } from "@/ui/keyboard";
 
 export type SaveStatusSlot = {
 	status: SaveStatus;
@@ -288,7 +288,6 @@ function PaneBar<T extends string>({ panes, active, onSwitch }: PaneBarProps<T>)
 					icon={pane.icon}
 					focused={pane.pane === active}
 					badge={slots.badges?.[pane.pane]}
-					badgeTone="warn"
 					onPress={() => onSwitch(pane)}
 				/>
 			))}

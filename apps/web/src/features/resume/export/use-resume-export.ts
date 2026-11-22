@@ -6,6 +6,7 @@ import { getResumeExportData } from "@rezumi/resume/export-sections";
 import { buildMarkdown } from "@rezumi/resume/markdown";
 import { toast } from "@rezumi/ui/components/toast";
 import { downloadWithAnchor } from "@rezumi/utils/file";
+import { getDefaultFileName } from "@rezumi/utils/file-name";
 import { createResumePdfBlob } from "./pdf-document";
 import { getLostCharactersMessage, getReadableErrorMessage } from "@/libs/error-message";
 
@@ -31,24 +32,6 @@ type DownloadPdfOptions = {
 };
 
 export type ExportFormat = "pdf" | "docx" | "odt" | "md" | "json";
-
-// Characters Windows and macOS won't take in a file name.
-const UNSAFE_FILE_NAME_CHARACTERS = /[\\/:*?"<>|]/g;
-
-/** A file name as the user typed it, minus the characters file systems reject. */
-export const sanitizeFileName = (value: string) => value.replace(UNSAFE_FILE_NAME_CHARACTERS, "").trim();
-
-/**
- * "First-Last-Resume" (or "First-Last-Cover-Letter"): recruiters see this name. Without a name on the
- * resume it falls back to the document's name.
- */
-export function getDefaultFileName(resume: ExportableResume, target: ResumeExportTarget = "resume") {
-	const words = (text: string) => sanitizeFileName(text).split(/\s+/).filter(Boolean);
-	const person = words(resume.data.basics.name);
-	const suffix = target === "cover-letter" ? ["Cover", "Letter"] : ["Resume"];
-	if (person.length > 0) return [...person, ...suffix].join("-");
-	return [...words(resume.name || resume.slug), ...(target === "cover-letter" ? suffix : [])].join("-") || "Resume";
-}
 
 // The file still downloads, with "?" for each character no font can draw.
 const warnLostCharacters = (characters: string[]) =>

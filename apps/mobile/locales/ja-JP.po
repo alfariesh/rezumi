@@ -454,12 +454,6 @@ msgstr "{0} は「{1}」を返しました。あなたのメッセージは保�
 msgid "{0} selected"
 msgstr "{0} が選択されました"
 
-#. placeholder {0}: resume.data.basics.name || resume.name
-#: src/features/letters/share.tsx
-#: src/features/share/download.tsx
-msgid "{0}-Resume"
-msgstr "{0}-レジュメ"
-
 #. placeholder {0}: title || t`Untitled`
 #. placeholder {1}: row.index + 1
 #. placeholder {2}: row.count
@@ -506,14 +500,6 @@ msgstr "{company} · {tabName}"
 msgid "{completed, plural, one {# document updated} other {# documents updated}}"
 msgstr "{completed, plural, one {書類#件を更新しました} other {書類#件を更新しました}}"
 
-#: src/features/share/custom-domain.tsx
-msgid "{cost} a year"
-msgstr "年額 {cost}"
-
-#: src/features/share/custom-domain.tsx
-msgid "{cost} the first year"
-msgstr "初年度 {cost}"
-
 #: src/features/write/section-sheet.tsx
 msgid "{count, plural, one {# column} other {# columns}}"
 msgstr "{count, plural, one {#列} other {#列}}"
@@ -530,6 +516,31 @@ msgstr ""
 #: src/features/workspace/tabs/messages.tsx
 msgid "{count, plural, one {Apply # change} other {Apply # changes}}"
 msgstr "{count, plural, other {#件の変更を適用}}"
+
+#. Short time since, in days: 3d
+#: src/features/share/time-since.ts
+msgid "{count, plural, other {#d}}"
+msgstr ""
+
+#. Short time since, in hours: 2h
+#: src/features/share/time-since.ts
+msgid "{count, plural, other {#h}}"
+msgstr ""
+
+#. Short time since, in minutes: 5m
+#: src/features/share/time-since.ts
+msgid "{count, plural, other {#m}}"
+msgstr ""
+
+#. Short time since, in weeks: 6w
+#: src/features/share/time-since.ts
+msgid "{count, plural, other {#w}}"
+msgstr ""
+
+#. Short time since, in years: 1y
+#: src/features/share/time-since.ts
+msgid "{count, plural, other {#y}}"
+msgstr ""
 
 #: src/features/workspace/tabs/debrief.tsx
 msgid "{day} · {length}m"
@@ -651,6 +662,7 @@ msgstr ""
 msgid "{minutes, plural, one {# minute in total} other {# minutes in total}}"
 msgstr "{minutes, plural, other {合計#分}}"
 
+#: src/features/home/coming-up.tsx
 #: src/features/workspace/tabs/prepare.tsx
 msgid "{minutes, plural, one {Starts in # minute} other {Starts in # minutes}}"
 msgstr "{minutes, plural, other {あと#分で開始}}"
@@ -697,10 +709,6 @@ msgstr "{name} はサイドバーにあります"
 msgid "{name} uses one column"
 msgstr "{name} は 1 つの列を使用します"
 
-#: src/features/share/download.tsx
-msgid "{name}-Cover-Letter"
-msgstr "{name}-カバーレター"
-
 #: src/features/check/issues.ts
 msgid "{names} come last in the text. Most systems still find them; some don't."
 msgstr "{names} はテキストの最後に来ます。ほとんどのシステムは依然としてそれらを見つけます。そうしない人もいます。"
@@ -720,10 +728,6 @@ msgstr "{role} · {company}"
 #: src/features/write/outline.tsx
 msgid "{sections, plural, one {# section} other {# sections}}"
 msgstr "{sections, plural, one {#セクション} other {# セクション}}"
-
-#: src/features/letters/share.tsx
-msgid "{sender}-Cover-Letter"
-msgstr "{sender}-カバーレター"
 
 #: src/features/assistant/messages.tsx
 msgid "{skipped, plural, one {# edit couldn't be placed: its text changed. Ask again to redo it.} other {# edits couldn't be placed: their text changed. Ask again to redo them.}}"
@@ -2003,10 +2007,6 @@ msgstr "自動"
 msgid "Autosaves are grouped by session and kept for 90 days. Named versions are kept until you delete them. Restoring saves the current state first."
 msgstr "自動保存はセッションごとにグループ化され、90 日間保存されます。名前付きバージョンは、削除するまで保持されます。復元では、まず現在の状態が保存されます。"
 
-#: src/features/share/custom-domain.tsx
-msgid "Available"
-msgstr "取得可能"
-
 #: src/features/ats-checker/messages.ts
 msgid "Avoid heavy letter-spacing effects, then re-export."
 msgstr "文字間隔を大きく広げる効果を避けてから、再エクスポートしてください。"
@@ -2574,10 +2574,6 @@ msgstr "PDF ファイルを選択します。選択したファイルはアッ�
 msgid "Choose a PDF smaller than 10 MB. The selected file was not uploaded."
 msgstr "10 MB 未満の PDF を選択してください。選択したファイルはアップロードされませんでした。"
 
-#: src/shell/permissions.tsx
-msgid "Choose a photo"
-msgstr ""
-
 #: src/features/entries/photo-field.tsx
 #: src/features/settings/profile.tsx
 #: src/features/write/picture-screen.tsx
@@ -2787,10 +2783,6 @@ msgstr "コーチ"
 msgid "Coach memory"
 msgstr ""
 
-#: src/features/share/custom-domain.tsx
-msgid "Code copied"
-msgstr "コードをコピーしました"
-
 #: src/features/auth/two-factor-screen.tsx
 msgid "Codes look like a1b2c-d3e4f."
 msgstr ""
@@ -2890,10 +2882,6 @@ msgstr ""
 #: src/features/share/custom-domain.tsx
 msgid "Connect"
 msgstr "接続"
-
-#: src/features/share/custom-domain.tsx
-msgid "Connect {domain}"
-msgstr "{domain} を接続"
 
 #: src/features/share/custom-domain.tsx
 msgid "Connect {hostname}"
@@ -3058,10 +3046,6 @@ msgstr "仕事の履歴書をコピーする"
 #: src/features/workspace/tabs/apply.tsx
 msgid "Copy answers"
 msgstr "回答をコピー"
-
-#: src/features/share/custom-domain.tsx
-msgid "Copy code"
-msgstr "コードをコピー"
 
 #: src/features/document-menu/index.tsx
 msgid "Copy created"
@@ -3303,6 +3287,10 @@ msgstr ""
 #: src/features/history/history.tsx
 msgid "Couldn't load versions."
 msgstr "バージョンをロードできませんでした。"
+
+#: src/features/share/custom-domain.tsx
+msgid "Couldn't load your custom domain."
+msgstr ""
 
 #: src/features/onboarding/onboarding-screen.tsx
 msgid "Couldn't load your details"
@@ -3560,6 +3548,10 @@ msgstr "写真を共有できませんでした。もう一度やり直してく
 #: src/features/workspace/tabs/practise.tsx
 msgid "Couldn't share the recording. Try again."
 msgstr "録音を共有できませんでした。もう一度お試しください。"
+
+#: src/features/auth/errors.ts
+msgid "Couldn't sign in with this account. If you don't have a Rezumi account yet, sign-ups may be turned off."
+msgstr ""
 
 #: src/features/settings/sign-out.tsx
 msgid "Couldn't sign out. Try again."
@@ -4468,6 +4460,10 @@ msgstr "編集"
 #: src/features/assistant/messages.tsx
 msgid "Edit {0}: {1}"
 msgstr "{0} を編集: {1}"
+
+#: src/features/home/schedules.tsx
+msgid "Edit {name}"
+msgstr ""
 
 #: src/features/application-detail/sheets.tsx
 msgid "Edit date"
@@ -5903,6 +5899,10 @@ msgstr ""
 msgid "Keep on one page"
 msgstr "1 ページにまとめてください"
 
+#: src/features/entries/photo-field.tsx
+msgid "Keep photo"
+msgstr ""
+
 #: src/features/document-menu/index.tsx
 msgid "Keep private notes about this resume here. Nobody else can see them."
 msgstr "この履歴書に関する非公開のメモをここに残せます。他の人には見えません。"
@@ -6301,6 +6301,7 @@ msgid "Live at {url}"
 msgstr "{url}で公開中"
 
 #: src/features/design/design-pane.tsx
+#: src/features/home/recent-documents.tsx
 #: src/features/home/section.tsx
 #: src/features/onboarding/onboarding-screen.tsx
 #: src/features/profile/facts.tsx
@@ -6583,10 +6584,6 @@ msgstr "履歴書とのマッチング"
 #: src/features/workspace/parts.tsx
 msgid "Matching your facts"
 msgstr "事実を照合中"
-
-#: src/features/share/custom-domain.tsx
-msgid "May be available"
-msgstr "取得できる可能性あり"
 
 #: src/features/search/search-screen.tsx
 msgid "MCP"
@@ -6906,7 +6903,6 @@ msgid "Names, tags or applications"
 msgstr "名前、タグ、または応募"
 
 #: src/features/design/preset-names.ts
-#: src/features/design/style-groups.tsx
 msgid "Narrow"
 msgstr "狭い"
 
@@ -7627,10 +7623,14 @@ msgstr "今のところバージョンは 1 つだけです。編集セッショ
 msgid "Only providers that pass their test can be turned on."
 msgstr "テストに合格したプロバイダーのみをオンにできます。"
 
-#. placeholder {0}: report.document.pageCount
+#. placeholder {0}: report.document.checkedPageCount
 #: src/features/ats-checker/checker.tsx
 msgid "Only the first {0} pages were checked."
 msgstr "最初の {0} ページのみがチェックされました。"
+
+#: src/features/ats-checker/original-page.tsx
+msgid "Only the first {MAX_PAGES} pages are shown."
+msgstr ""
 
 #: src/features/check/parser.tsx
 msgid "Only the first 30 pages were checked."
@@ -8824,10 +8824,6 @@ msgstr "当日の朝にブリーフィングを更新"
 msgid "Refund policy"
 msgstr ""
 
-#: src/features/share/custom-domain.tsx
-msgid "Register at OlaCV"
-msgstr "OlaCV で登録"
-
 #: src/features/workspace/tabs/prepare.tsx
 msgid "Rehearse aloud"
 msgstr "声に出してリハーサル"
@@ -8988,6 +8984,7 @@ msgstr "パスワードを削除しますか?"
 msgid "Remove this file?"
 msgstr "このファイルを削除しますか?"
 
+#: src/features/entries/photo-field.tsx
 #: src/features/write/picture-screen.tsx
 msgid "Remove this photo?"
 msgstr "この写真を削除しますか?"
@@ -9248,6 +9245,7 @@ msgstr "{1} を使用して {0} を取得しました。取得時間は、オリ
 #: src/features/profile/preferences.tsx
 #: src/features/profile/save-note.tsx
 #: src/features/profile/stories.tsx
+#: src/features/share/custom-domain.tsx
 #: src/features/share/download.tsx
 #: src/features/share/export-screen.tsx
 #: src/features/share/link.tsx
@@ -9393,10 +9391,6 @@ msgstr ""
 
 #: src/shell/permissions.tsx
 msgid "Rezumi can't ask again. Turn it on for Rezumi in your device's Settings, then try again."
-msgstr ""
-
-#: src/shell/permissions.tsx
-msgid "Rezumi opens your photos only to pick the one you choose. You can change this any time in Settings."
 msgstr ""
 
 #: src/shell/permissions.tsx
@@ -9816,10 +9810,6 @@ msgstr "セクション・印刷注文"
 msgid "Sections use headings systems recognize, and work experience shows."
 msgstr "セクションにはシステムが認識する見出しが使われ、職務経験が表示されています。"
 
-#: src/features/share/custom-domain.tsx
-msgid "See plans"
-msgstr ""
-
 #: src/features/onboarding/intro-screen.tsx
 msgid "See where each one stands, get new roles that fit you, and never miss an interview."
 msgstr ""
@@ -9850,10 +9840,6 @@ msgstr "エントリ {0} を選択してください"
 #: src/features/applications/list-screen.tsx
 msgid "Select visible"
 msgstr "表示されている項目をすべて選択します"
-
-#: src/features/share/export-options.tsx
-msgid "Selected"
-msgstr ""
 
 #: src/preview/page.tsx
 msgid "Selected entry"
@@ -10246,6 +10232,7 @@ msgid "Sign in"
 msgstr "サインイン"
 
 #: src/auth/session-gate.tsx
+#: src/features/auth/two-factor-screen.tsx
 #: src/features/check/screen.tsx
 msgid "Sign in again"
 msgstr "再度サインインしてください"
@@ -10630,10 +10617,6 @@ msgstr "まずはあなたの名前から始めましょう。そこから構築
 #: src/features/home/coming-up.tsx
 msgid "Started"
 msgstr "開始済み"
-
-#: src/features/home/coming-up.tsx
-msgid "Starts in {minutes} minutes"
-msgstr "あと{minutes}分で開始"
 
 #: src/features/workspace/tabs/prepare.tsx
 msgid "Starts now"
@@ -11162,6 +11145,10 @@ msgstr "終わりは始まりの前にある。"
 msgid "The file couldn't be read as a resume."
 msgstr "ファイルを履歴書として読み取ることができませんでした。"
 
+#: src/features/entries/photo-field.tsx
+msgid "The file is deleted. Resumes that show this photo lose it too."
+msgstr ""
+
 #: src/features/onboarding/read-file.ts
 msgid "The file is too large. Choose one up to 10 MB."
 msgstr ""
@@ -11497,8 +11484,8 @@ msgid "This file couldn't be read. Choose a PDF, Word, JSON or LinkedIn export (
 msgstr "このファイルを読み取れませんでした。 PDF、Word、JSON、または LinkedIn エクスポート (.zip) を選択します。"
 
 #: src/features/ats-checker/original-page.tsx
-msgid "This file couldn't be shown as pages. The report above still applies."
-msgstr "このファイルはページとして表示できませんでした。上記のレポートは引き続き適用されます。"
+msgid "This file couldn't be shown as pages. The report still applies."
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "This file declares no language."
@@ -11591,6 +11578,10 @@ msgstr "このレターとレジュメを、名前をそろえた 2 つの PDF �
 #: src/draft/conflict-sheet.tsx
 msgid "This letter changed elsewhere"
 msgstr "このカバーレターは別の場所で変更されました"
+
+#: src/features/letters/share.tsx
+msgid "This letter has no resume anymore. Choose another format."
+msgstr ""
 
 #: src/features/letters/design.tsx
 #: src/features/letters/write.tsx
@@ -11871,6 +11862,10 @@ msgstr "リクエストが多すぎます。後でもう一度試してくださ
 msgid "Too many tries in a short time. Wait a minute, then try again."
 msgstr ""
 
+#: src/features/auth/errors.ts
+msgid "Too many wrong codes. Wait a few minutes, then sign in again."
+msgstr ""
+
 #: src/features/auth/create-account-screen.tsx
 msgid "Too short"
 msgstr ""
@@ -12010,10 +12005,6 @@ msgstr "この冒頭を試す"
 #: src/features/documents/new-document.tsx
 msgid "Try with a sample resume"
 msgstr "履歴書のサンプルを使って試してみる"
-
-#: src/features/auth/welcome-screen.tsx
-msgid "Try without an account"
-msgstr ""
 
 #: src/features/settings/locale-names.ts
 msgid "Turkish"
@@ -12885,7 +12876,6 @@ msgid "Why do you want this role at {company}?"
 msgstr "{company}でこの職種を志望する理由は何ですか？"
 
 #: src/features/design/preset-names.ts
-#: src/features/design/style-groups.tsx
 msgid "Wide"
 msgstr "広い"
 
@@ -13290,10 +13280,6 @@ msgstr ""
 msgid "Your name and contact details follow your Profile."
 msgstr ""
 
-#: src/features/share/custom-domain.tsx
-msgid "Your name as your address, from OlaCV, the .cv registry. Code {CODE} takes 50% off the first year."
-msgstr "名前をそのままアドレスに。.cv のレジストリである OlaCV が提供しています。コード {CODE} で初年度が 50% オフになります。"
-
 #: src/features/check/issues.ts
 msgid "Your name is missing"
 msgstr "あなたの名前がありません"
@@ -13350,10 +13336,6 @@ msgstr "電話番号が一般的でない形式で書かれています。"
 #: app/account/membership.tsx
 #: src/features/billing/plan-card.tsx
 msgid "Your plan"
-msgstr ""
-
-#: src/features/share/custom-domain.tsx
-msgid "Your plan no longer includes a custom domain. Renew it and the domain comes back by itself."
 msgstr ""
 
 #: app/(tabs)/portfolio/index.tsx

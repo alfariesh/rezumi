@@ -28,7 +28,10 @@ let mockTablet = false;
 jest.mock("expo-crypto", () => ({ randomUUID: () => "uuid-1" }));
 jest.mock("@/auth/session", () => ({
 	useSession: () => ({ status: "signed-in", server: "https://rezumi.app" }),
+	getSession: () => ({ status: "signed-in", server: "https://rezumi.app" }),
 	getServer: () => "https://rezumi.app",
+	getAccountScope: () => '["https://rezumi.app","user-1"]',
+	subscribeSession: () => () => undefined,
 }));
 jest.mock("@/api/client", () => {
 	const call =

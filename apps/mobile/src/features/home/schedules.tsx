@@ -6,7 +6,7 @@ import type { RouterInput } from "@/api/client";
 import { useLingui } from "@lingui/react/macro";
 import { useQueryClient } from "@tanstack/react-query";
 import { View } from "react-native";
-import { useSchedules } from "./queries";
+import { schedulesKey, useSchedules } from "./queries";
 import { HomeSection, LoadError, RowsSkeleton } from "./section";
 import { client, orpc } from "@/api/client";
 import { getServer, useSession } from "@/auth/session";
@@ -31,7 +31,7 @@ export function Schedules({ time, deleted, onOpenSchedule }: SchedulesProps) {
 	const { server } = useSession();
 	const schedules = useSchedules();
 	const applications = useApplications();
-	const key = [...orpc.career.schedules.key(), server];
+	const key = schedulesKey(server);
 
 	const replace = (row: Schedule) =>
 		queryClient.setQueryData<Schedule[]>(key, (rows) => rows?.map((item) => (item.id === row.id ? row : item)));
@@ -138,6 +138,8 @@ export function Schedules({ time, deleted, onOpenSchedule }: SchedulesProps) {
 					{rows.map((row, index) => {
 						const title = scheduleTitle(row.kind);
 						const detail = describe(row);
+						// Several rows can share a kind: the labels name the row by its detail too.
+						const name = detail ? `${title}, ${detail}` : title;
 						return (
 							<View key={row.id}>
 								{index > 0 ? <Separator className="my-3" /> : null}
@@ -152,14 +154,20 @@ export function Schedules({ time, deleted, onOpenSchedule }: SchedulesProps) {
 										<Text size="xs" tone="muted">
 											{status(row)}
 										</Text>
-										<Button size="sm" variant="ghost" className="-ms-3 self-start" onPress={() => onOpenSchedule(row)}>
+										<Button
+											size="sm"
+											variant="ghost"
+											className="-ms-3 self-start"
+											accessibilityLabel={t`Edit ${name}`}
+											onPress={() => onOpenSchedule(row)}
+										>
 											<Button.Label>{t`Edit`}</Button.Label>
 										</Button>
 									</View>
 									<Switch
 										isSelected={row.enabled}
 										onSelectedChange={(enabled) => void toggle(row, enabled)}
-										accessibilityLabel={title}
+										accessibilityLabel={name}
 									/>
 								</View>
 							</View>

@@ -56,7 +56,7 @@ function Bring({ status }: BringProps) {
 	const router = useRouter();
 	const insets = useWindowSafeAreaInsets();
 	const ai = useHasAIProvider();
-	// The Profile the sources add to, as it was when this screen opened.
+	// The Profile the review is worked out against, as it was when this screen opened.
 	const [base] = useState<ProfileData>(() => {
 		const data = useProfileEditor.getState().data;
 		return data ? profileFromResume(data) : emptyProfileData();
@@ -84,8 +84,17 @@ function Bring({ status }: BringProps) {
 
 	const save = async () => {
 		setBusy(true);
-		const { data, photoFailed } = await flow.finish(copied.current);
-		const current = useProfileEditor.getState().data;
+		// What was kept goes onto the Profile as it is now, which may have been saved elsewhere since this screen opened
+		// (a fresh read replaced it): the save then sends that version with nothing of it lost. A copied photo is
+		// remembered, so working it out again after the copy is instant.
+		let current = useProfileEditor.getState().data;
+		let reviewed = await flow.finish(copied.current, current ? profileFromResume(current) : base);
+		const latest = useProfileEditor.getState().data;
+		if (latest && latest !== current) {
+			current = latest;
+			reviewed = await flow.finish(copied.current, profileFromResume(latest));
+		}
+		const { data, photoFailed } = reviewed;
 		if (current) {
 			const next = resumeDataFromProfile(data, current);
 			updateProfile(

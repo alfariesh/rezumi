@@ -16,6 +16,9 @@ export function TwoFactorScreen() {
 	const router = useRouter();
 	const [mode, setMode] = useState<"totp" | "backup">("totp");
 	const [code, setCode] = useState("");
+	// The pending sign-in is gone (it expired, or the code was accepted but the connection failed afterwards): another
+	// code can't help, so the screen offers to start again instead of Verify.
+	const [ended, setEnded] = useState(false);
 	const { pending, error, run } = useAuthAction("two-factor");
 
 	// Opened without a pending sign-in (expired, or restored from a link): start again.
@@ -26,7 +29,9 @@ export function TwoFactorScreen() {
 	const submit = async (value = code) => {
 		if (mode === "totp" ? value.length !== 6 : value.trim().length < 6) return;
 		const result = await run(() => verifyTwoFactor(value, mode));
-		if (!result) setCode("");
+		if (result) return;
+		setCode("");
+		if (!hasPendingTwoFactor()) setEnded(true);
 	};
 
 	const switchMode = () => {
@@ -88,12 +93,20 @@ export function TwoFactorScreen() {
 					<Description>{t`Codes look like a1b2c-d3e4f.`}</Description>
 				</TextField>
 			)}
-			<Button size="lg" isDisabled={pending} onPress={() => void submit()} testID="two-factor-submit">
-				<Button.Label>{pending ? t`Checking…` : t`Verify`}</Button.Label>
-			</Button>
-			<Button variant="ghost" isDisabled={pending} onPress={switchMode}>
-				<Button.Label>{mode === "totp" ? t`Use a backup code instead` : t`Use the authenticator app`}</Button.Label>
-			</Button>
+			{ended ? (
+				<Button size="lg" onPress={() => router.replace(routes.emailSignIn())} testID="two-factor-restart">
+					<Button.Label>{t`Sign in again`}</Button.Label>
+				</Button>
+			) : (
+				<>
+					<Button size="lg" isDisabled={pending} onPress={() => void submit()} testID="two-factor-submit">
+						<Button.Label>{pending ? t`Checking…` : t`Verify`}</Button.Label>
+					</Button>
+					<Button variant="ghost" isDisabled={pending} onPress={switchMode}>
+						<Button.Label>{mode === "totp" ? t`Use a backup code instead` : t`Use the authenticator app`}</Button.Label>
+					</Button>
+				</>
+			)}
 		</AuthFrame>
 	);
 }

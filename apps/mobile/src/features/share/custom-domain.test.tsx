@@ -1,6 +1,8 @@
-// Share's custom domain (plans/mobile Phase 08): each connection stage, the problem and plan notices, the portfolio's
-// wording, the plan lock and offline. The API is replaced; the component and its wording are the real ones.
 import { fireEvent, screen, waitFor } from "@testing-library/react-native";
+// Share's custom domain (plans/mobile Phase 08): each connection stage, the problem and plan notices, the portfolio's
+// wording, the plan lock, offline, a failed load, and no call to buy (K6). The API is replaced; the component and its
+// wording are the real ones.
+import { ORPCError } from "@orpc/client";
 import { CustomDomain } from "./custom-domain";
 import { renderScreen } from "@/test/render-screen";
 
@@ -17,7 +19,15 @@ const mockPlan: { features: Record<string, boolean> } = { features: { customDoma
 
 function mockQuery(key: string, read: () => unknown) {
 	return {
-		queryOptions: () => ({ queryKey: [key], queryFn: () => Promise.resolve(read()) }),
+		// An Error in the mock data makes the query fail with it.
+		queryOptions: () => ({
+			queryKey: [key],
+			queryFn: async () => {
+				const value = read();
+				if (value instanceof Error) throw value;
+				return value;
+			},
+		}),
 		queryKey: () => [key],
 	};
 }
@@ -81,7 +91,7 @@ beforeEach(() => {
 describe("CustomDomain", () => {
 	it("connects a domain typed in", async () => {
 		mockSet.mockResolvedValue(domain({ verified: false, stage: "dns" }));
-		await renderScreen(<CustomDomain offline={false} suggest={false} />);
+		await renderScreen(<CustomDomain offline={false} />);
 		await fireEvent.changeText(await screen.findByLabelText("Your domain"), "www.example.com");
 		await fireEvent.press(screen.getByText("Connect"));
 		await waitFor(() => expect(mockSet).toHaveBeenCalledWith({ hostname: "www.example.com" }));
@@ -90,7 +100,7 @@ describe("CustomDomain", () => {
 	it("asks for a plan instead of connecting when portfolios need one", async () => {
 		mockData.portfolio = { enabled: true, portfolio: null };
 		mockPlan.features = {};
-		await renderScreen(<CustomDomain offline={false} suggest={false} />);
+		await renderScreen(<CustomDomain offline={false} />);
 		expect(await screen.findByText("Plus")).toBeOnTheScreen();
 		await fireEvent.changeText(screen.getByLabelText("Your domain"), "www.example.com");
 		await fireEvent.press(screen.getByText("Connect"));
@@ -100,7 +110,7 @@ describe("CustomDomain", () => {
 
 	it("waits for DNS with the records and a check", async () => {
 		mockData.domain = domain({ verified: false, stage: "dns" });
-		await renderScreen(<CustomDomain offline={false} suggest={false} />);
+		await renderScreen(<CustomDomain offline={false} />);
 		expect(
 			await screen.findByText("Not connected yet. Add its DNS records where you manage the domain, then check."),
 		).toBeOnTheScreen();
@@ -111,7 +121,7 @@ describe("CustomDomain", () => {
 
 	it("shows the certificate being set up", async () => {
 		mockData.domain = domain({ stage: "certificate" });
-		await renderScreen(<CustomDomain offline={false} suggest={false} />);
+		await renderScreen(<CustomDomain offline={false} />);
 		expect(
 			await screen.findByText("Setting up HTTPS. This usually takes a few minutes, and this screen updates by itself."),
 		).toBeOnTheScreen();
@@ -122,7 +132,7 @@ describe("CustomDomain", () => {
 
 	it("explains a problem", async () => {
 		mockData.domain = domain({ stage: "problem", problem: "caa" });
-		await renderScreen(<CustomDomain offline={false} suggest={false} />);
+		await renderScreen(<CustomDomain offline={false} />);
 		expect(
 			await screen.findByText(
 				"A CAA record on this domain blocks its HTTPS certificate. Remove that record or allow the certificate authority, then check again.",
@@ -133,36 +143,67 @@ describe("CustomDomain", () => {
 
 	it("says an active domain opens the primary resume", async () => {
 		mockData.domain = domain();
-		await renderScreen(<CustomDomain offline={false} suggest={false} />);
+		await renderScreen(<CustomDomain offline={false} />);
 		expect(await screen.findByText("Connected. Your domain opens your primary resume.")).toBeOnTheScreen();
 	});
 
 	it("says an active domain opens the published portfolio", async () => {
 		mockData.domain = domain();
 		mockData.portfolio = { enabled: true, portfolio: { isPublic: true, suspendedAt: null } };
-		await renderScreen(<CustomDomain offline={false} suggest={false} />);
+		await renderScreen(<CustomDomain offline={false} />);
 		expect(await screen.findByText("Connected. Your domain opens your portfolio.")).toBeOnTheScreen();
 	});
 
-	it("warns during the plan's grace period", async () => {
+	it("warns during the plan's grace period without a call to buy", async () => {
 		mockData.domain = domain({ plan: { state: "grace", until: new Date("2026-12-24T12:00:00Z") } });
-		await renderScreen(<CustomDomain offline={false} suggest={false} />);
+		await renderScreen(<CustomDomain offline={false} />);
 		expect(await screen.findByText(/Your domain stops working on/)).toBeOnTheScreen();
-		await fireEvent.press(screen.getByText("See plans"));
-		expect(mockPlanAlert).toHaveBeenCalledWith({ kind: "feature", feature: "customDomain" });
+		expect(screen.getByText("Your page keeps its address on Rezumi.")).toBeOnTheScreen();
+		expect(screen.queryByText("See plans")).toBeNull();
+		expect(screen.queryByText(/Renew/)).toBeNull();
+	});
+
+	it("never offers a .cv domain to buy, even when the server suggests one", async () => {
+		mockData.suggestion = {
+			domain: "jane.cv",
+			checked: true,
+			price: { amount: 10, renewal: 10, currency: "USD" },
+		};
+		await renderScreen(<CustomDomain offline={false} />);
+		expect(await screen.findByLabelText("Your domain")).toBeOnTheScreen();
+		expect(screen.queryByText("jane.cv")).toBeNull();
+		expect(screen.queryByText("Register at OlaCV")).toBeNull();
+		expect(screen.queryByText("Copy code")).toBeNull();
+	});
+
+	it("says a failed load and retries it", async () => {
+		mockData.domain = new Error("timeout");
+		await renderScreen(<CustomDomain offline={false} />);
+		expect(await screen.findByText("Couldn't load your custom domain.")).toBeOnTheScreen();
+		mockData.domain = domain();
+		await fireEvent.press(screen.getByText("Retry"));
+		expect(await screen.findByText("Connected. Your domain opens your primary resume.")).toBeOnTheScreen();
+	});
+
+	it("stays away when custom domains aren't open to the account", async () => {
+		mockData.domain = new ORPCError("PRECONDITION_FAILED", { status: 412 });
+		const { queryClient } = await renderScreen(<CustomDomain offline={false} />);
+		await waitFor(() => expect(queryClient.getQueryState(["domain"])?.status).toBe("error"));
+		expect(screen.queryByLabelText("Your domain")).toBeNull();
+		expect(screen.queryByText("Couldn't load your custom domain.")).toBeNull();
 	});
 
 	it("confirms before disconnecting a working domain", async () => {
 		mockData.domain = domain();
 		mockRemove.mockResolvedValue(undefined);
-		await renderScreen(<CustomDomain offline={false} suggest={false} />);
+		await renderScreen(<CustomDomain offline={false} />);
 		await fireEvent.press(await screen.findByText("Remove"));
 		expect(mockRemove).not.toHaveBeenCalled();
 		expect(screen.getByText("Disconnect www.example.com?")).toBeOnTheScreen();
 	});
 
 	it("can't connect, check or remove offline", async () => {
-		await renderScreen(<CustomDomain offline suggest={false} />);
+		await renderScreen(<CustomDomain offline />);
 		// Offline the status isn't read, so nothing is shown rather than a stale form.
 		expect(screen.queryByLabelText("Your domain")).toBeNull();
 	});

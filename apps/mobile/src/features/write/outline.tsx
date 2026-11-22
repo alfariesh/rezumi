@@ -1,4 +1,4 @@
-import type { FlatRow, OutlineRow, WriteSection } from "./model";
+import type { FlatRow, OutlineRow } from "./model";
 import type { CustomSectionType, ResumeData, SectionType } from "@rezumi/schema/resume/data";
 import { plural } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react/macro";
@@ -659,5 +659,3 @@ function AddSectionSheet({ open, data, added, onClose, onAdd, onAddCustom }: Add
 		</Sheet>
 	);
 }
-
-export type { WriteSection };

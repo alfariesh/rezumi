@@ -454,12 +454,6 @@ msgstr "{0}가 \"{1}\"를 반환했습니다. 귀하의 메시지는 보관됩�
 msgid "{0} selected"
 msgstr "{0} 선택됨"
 
-#. placeholder {0}: resume.data.basics.name || resume.name
-#: src/features/letters/share.tsx
-#: src/features/share/download.tsx
-msgid "{0}-Resume"
-msgstr "{0}-이력서"
-
 #. placeholder {0}: title || t`Untitled`
 #. placeholder {1}: row.index + 1
 #. placeholder {2}: row.count
@@ -506,14 +500,6 @@ msgstr "{company} · {tabName}"
 msgid "{completed, plural, one {# document updated} other {# documents updated}}"
 msgstr "{completed, plural, one {문서 #개 업데이트됨} other {문서 #개 업데이트됨}}"
 
-#: src/features/share/custom-domain.tsx
-msgid "{cost} a year"
-msgstr "연 {cost}"
-
-#: src/features/share/custom-domain.tsx
-msgid "{cost} the first year"
-msgstr "첫해 {cost}"
-
 #: src/features/write/section-sheet.tsx
 msgid "{count, plural, one {# column} other {# columns}}"
 msgstr "{count, plural, one {#열} other {#열}}"
@@ -530,6 +516,31 @@ msgstr ""
 #: src/features/workspace/tabs/messages.tsx
 msgid "{count, plural, one {Apply # change} other {Apply # changes}}"
 msgstr "{count, plural, other {변경 사항 #개 적용}}"
+
+#. Short time since, in days: 3d
+#: src/features/share/time-since.ts
+msgid "{count, plural, other {#d}}"
+msgstr ""
+
+#. Short time since, in hours: 2h
+#: src/features/share/time-since.ts
+msgid "{count, plural, other {#h}}"
+msgstr ""
+
+#. Short time since, in minutes: 5m
+#: src/features/share/time-since.ts
+msgid "{count, plural, other {#m}}"
+msgstr ""
+
+#. Short time since, in weeks: 6w
+#: src/features/share/time-since.ts
+msgid "{count, plural, other {#w}}"
+msgstr ""
+
+#. Short time since, in years: 1y
+#: src/features/share/time-since.ts
+msgid "{count, plural, other {#y}}"
+msgstr ""
 
 #: src/features/workspace/tabs/debrief.tsx
 msgid "{day} · {length}m"
@@ -651,6 +662,7 @@ msgstr ""
 msgid "{minutes, plural, one {# minute in total} other {# minutes in total}}"
 msgstr "{minutes, plural, other {총 #분}}"
 
+#: src/features/home/coming-up.tsx
 #: src/features/workspace/tabs/prepare.tsx
 msgid "{minutes, plural, one {Starts in # minute} other {Starts in # minutes}}"
 msgstr "{minutes, plural, other {#분 후 시작}}"
@@ -697,10 +709,6 @@ msgstr "{name}는 사이드바에 있습니다."
 msgid "{name} uses one column"
 msgstr "{name}는 하나의 열을 사용합니다."
 
-#: src/features/share/download.tsx
-msgid "{name}-Cover-Letter"
-msgstr "{name}-커버-커버레터"
-
 #: src/features/check/issues.ts
 msgid "{names} come last in the text. Most systems still find them; some don't."
 msgstr "{names}는 텍스트의 마지막에 옵니다. 대부분의 시스템은 여전히 ​​해당 항목을 찾습니다. 일부는 그렇지 않습니다."
@@ -720,10 +728,6 @@ msgstr "{role} · {company}"
 #: src/features/write/outline.tsx
 msgid "{sections, plural, one {# section} other {# sections}}"
 msgstr "{sections, plural, one {# 섹션} other {# 섹션}}"
-
-#: src/features/letters/share.tsx
-msgid "{sender}-Cover-Letter"
-msgstr "{sender}-커버레터"
 
 #: src/features/assistant/messages.tsx
 msgid "{skipped, plural, one {# edit couldn't be placed: its text changed. Ask again to redo it.} other {# edits couldn't be placed: their text changed. Ask again to redo them.}}"
@@ -2003,10 +2007,6 @@ msgstr "자동으로"
 msgid "Autosaves are grouped by session and kept for 90 days. Named versions are kept until you delete them. Restoring saves the current state first."
 msgstr "자동 저장은 세션별로 그룹화되어 90일 동안 보관됩니다. 명명된 버전은 삭제할 때까지 유지됩니다. 복원하면 현재 상태가 먼저 저장됩니다."
 
-#: src/features/share/custom-domain.tsx
-msgid "Available"
-msgstr "등록 가능"
-
 #: src/features/ats-checker/messages.ts
 msgid "Avoid heavy letter-spacing effects, then re-export."
 msgstr "강한 자간 효과를 피한 뒤 다시 내보내세요."
@@ -2574,10 +2574,6 @@ msgstr "PDF 파일을 선택하세요. 선택한 파일이 업로드되지 않�
 msgid "Choose a PDF smaller than 10 MB. The selected file was not uploaded."
 msgstr "10MB보다 작은 PDF를 선택하세요. 선택한 파일이 업로드되지 않았습니다."
 
-#: src/shell/permissions.tsx
-msgid "Choose a photo"
-msgstr ""
-
 #: src/features/entries/photo-field.tsx
 #: src/features/settings/profile.tsx
 #: src/features/write/picture-screen.tsx
@@ -2787,10 +2783,6 @@ msgstr "코치"
 msgid "Coach memory"
 msgstr ""
 
-#: src/features/share/custom-domain.tsx
-msgid "Code copied"
-msgstr "코드가 복사되었습니다"
-
 #: src/features/auth/two-factor-screen.tsx
 msgid "Codes look like a1b2c-d3e4f."
 msgstr ""
@@ -2890,10 +2882,6 @@ msgstr ""
 #: src/features/share/custom-domain.tsx
 msgid "Connect"
 msgstr "연결"
-
-#: src/features/share/custom-domain.tsx
-msgid "Connect {domain}"
-msgstr "{domain} 연결"
 
 #: src/features/share/custom-domain.tsx
 msgid "Connect {hostname}"
@@ -3058,10 +3046,6 @@ msgstr "직업에 대한 이력서 복사"
 #: src/features/workspace/tabs/apply.tsx
 msgid "Copy answers"
 msgstr "답변 복사"
-
-#: src/features/share/custom-domain.tsx
-msgid "Copy code"
-msgstr "코드 복사"
 
 #: src/features/document-menu/index.tsx
 msgid "Copy created"
@@ -3303,6 +3287,10 @@ msgstr ""
 #: src/features/history/history.tsx
 msgid "Couldn't load versions."
 msgstr "버전을 로드할 수 없습니다."
+
+#: src/features/share/custom-domain.tsx
+msgid "Couldn't load your custom domain."
+msgstr ""
 
 #: src/features/onboarding/onboarding-screen.tsx
 msgid "Couldn't load your details"
@@ -3560,6 +3548,10 @@ msgstr "사진을 공유할 수 없습니다. 다시 시도해 보세요."
 #: src/features/workspace/tabs/practise.tsx
 msgid "Couldn't share the recording. Try again."
 msgstr "녹음을 공유할 수 없습니다. 다시 시도해 보세요."
+
+#: src/features/auth/errors.ts
+msgid "Couldn't sign in with this account. If you don't have a Rezumi account yet, sign-ups may be turned off."
+msgstr ""
 
 #: src/features/settings/sign-out.tsx
 msgid "Couldn't sign out. Try again."
@@ -4468,6 +4460,10 @@ msgstr "편집하다"
 #: src/features/assistant/messages.tsx
 msgid "Edit {0}: {1}"
 msgstr "{0} 편집: {1}"
+
+#: src/features/home/schedules.tsx
+msgid "Edit {name}"
+msgstr ""
 
 #: src/features/application-detail/sheets.tsx
 msgid "Edit date"
@@ -5903,6 +5899,10 @@ msgstr ""
 msgid "Keep on one page"
 msgstr "한 페이지에 계속"
 
+#: src/features/entries/photo-field.tsx
+msgid "Keep photo"
+msgstr ""
+
 #: src/features/document-menu/index.tsx
 msgid "Keep private notes about this resume here. Nobody else can see them."
 msgstr "이 이력서에 대한 비공개 메모를 여기에 남기세요. 다른 사람은 볼 수 없습니다."
@@ -6301,6 +6301,7 @@ msgid "Live at {url}"
 msgstr "{url}에서 라이브"
 
 #: src/features/design/design-pane.tsx
+#: src/features/home/recent-documents.tsx
 #: src/features/home/section.tsx
 #: src/features/onboarding/onboarding-screen.tsx
 #: src/features/profile/facts.tsx
@@ -6583,10 +6584,6 @@ msgstr "이력서와 일치"
 #: src/features/workspace/parts.tsx
 msgid "Matching your facts"
 msgstr "사실과 맞춰 보는 중"
-
-#: src/features/share/custom-domain.tsx
-msgid "May be available"
-msgstr "등록 가능할 수 있음"
 
 #: src/features/search/search-screen.tsx
 msgid "MCP"
@@ -6906,7 +6903,6 @@ msgid "Names, tags or applications"
 msgstr "이름, 태그 또는 지원 내역"
 
 #: src/features/design/preset-names.ts
-#: src/features/design/style-groups.tsx
 msgid "Narrow"
 msgstr "좁은"
 
@@ -7627,10 +7623,14 @@ msgstr "지금까지 하나의 버전만 있습니다. 모든 편집 세션마�
 msgid "Only providers that pass their test can be turned on."
 msgstr "테스트를 통과한 공급자만 켤 수 있습니다."
 
-#. placeholder {0}: report.document.pageCount
+#. placeholder {0}: report.document.checkedPageCount
 #: src/features/ats-checker/checker.tsx
 msgid "Only the first {0} pages were checked."
 msgstr "첫 번째 {0} 페이지만 확인되었습니다."
+
+#: src/features/ats-checker/original-page.tsx
+msgid "Only the first {MAX_PAGES} pages are shown."
+msgstr ""
 
 #: src/features/check/parser.tsx
 msgid "Only the first 30 pages were checked."
@@ -8824,10 +8824,6 @@ msgstr "당일 아침에 브리핑 새로 고침"
 msgid "Refund policy"
 msgstr ""
 
-#: src/features/share/custom-domain.tsx
-msgid "Register at OlaCV"
-msgstr "OlaCV에서 등록"
-
 #: src/features/workspace/tabs/prepare.tsx
 msgid "Rehearse aloud"
 msgstr "소리 내어 리허설"
@@ -8988,6 +8984,7 @@ msgstr "비밀번호를 삭제하시겠습니까?"
 msgid "Remove this file?"
 msgstr "이 파일을 삭제하시겠습니까?"
 
+#: src/features/entries/photo-field.tsx
 #: src/features/write/picture-screen.tsx
 msgid "Remove this photo?"
 msgstr "이 사진을 삭제하시겠습니까?"
@@ -9248,6 +9245,7 @@ msgstr "{1}를 사용하여 {0}를 검색했습니다. 검색 시간은 원본 �
 #: src/features/profile/preferences.tsx
 #: src/features/profile/save-note.tsx
 #: src/features/profile/stories.tsx
+#: src/features/share/custom-domain.tsx
 #: src/features/share/download.tsx
 #: src/features/share/export-screen.tsx
 #: src/features/share/link.tsx
@@ -9393,10 +9391,6 @@ msgstr ""
 
 #: src/shell/permissions.tsx
 msgid "Rezumi can't ask again. Turn it on for Rezumi in your device's Settings, then try again."
-msgstr ""
-
-#: src/shell/permissions.tsx
-msgid "Rezumi opens your photos only to pick the one you choose. You can change this any time in Settings."
 msgstr ""
 
 #: src/shell/permissions.tsx
@@ -9816,10 +9810,6 @@ msgstr "섹션 · 인쇄 주문"
 msgid "Sections use headings systems recognize, and work experience shows."
 msgstr "섹션에 시스템이 인식하는 제목이 사용되고, 경력이 표시됩니다."
 
-#: src/features/share/custom-domain.tsx
-msgid "See plans"
-msgstr ""
-
 #: src/features/onboarding/intro-screen.tsx
 msgid "See where each one stands, get new roles that fit you, and never miss an interview."
 msgstr ""
@@ -9850,10 +9840,6 @@ msgstr "항목 {0} 선택"
 #: src/features/applications/list-screen.tsx
 msgid "Select visible"
 msgstr "공개 선택"
-
-#: src/features/share/export-options.tsx
-msgid "Selected"
-msgstr ""
 
 #: src/preview/page.tsx
 msgid "Selected entry"
@@ -10246,6 +10232,7 @@ msgid "Sign in"
 msgstr "로그인"
 
 #: src/auth/session-gate.tsx
+#: src/features/auth/two-factor-screen.tsx
 #: src/features/check/screen.tsx
 msgid "Sign in again"
 msgstr "다시 로그인"
@@ -10630,10 +10617,6 @@ msgstr "당신의 이름으로 시작하세요. 거기에서 빌드하십시오.
 #: src/features/home/coming-up.tsx
 msgid "Started"
 msgstr "시작됨"
-
-#: src/features/home/coming-up.tsx
-msgid "Starts in {minutes} minutes"
-msgstr "{minutes}분 후 시작"
 
 #: src/features/workspace/tabs/prepare.tsx
 msgid "Starts now"
@@ -11162,6 +11145,10 @@ msgstr "끝은 시작 전입니다."
 msgid "The file couldn't be read as a resume."
 msgstr "파일을 이력서로 읽을 수 없습니다."
 
+#: src/features/entries/photo-field.tsx
+msgid "The file is deleted. Resumes that show this photo lose it too."
+msgstr ""
+
 #: src/features/onboarding/read-file.ts
 msgid "The file is too large. Choose one up to 10 MB."
 msgstr ""
@@ -11497,8 +11484,8 @@ msgid "This file couldn't be read. Choose a PDF, Word, JSON or LinkedIn export (
 msgstr "이 파일을 읽을 수 없습니다. PDF, Word, JSON 또는 LinkedIn 내보내기(.zip)를 선택합니다."
 
 #: src/features/ats-checker/original-page.tsx
-msgid "This file couldn't be shown as pages. The report above still applies."
-msgstr "이 파일을 페이지로 표시할 수 없습니다. 위의 보고서는 여전히 적용됩니다."
+msgid "This file couldn't be shown as pages. The report still applies."
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "This file declares no language."
@@ -11591,6 +11578,10 @@ msgstr "이 레터와 이력서를 이름이 맞춰진 PDF 두 개로."
 #: src/draft/conflict-sheet.tsx
 msgid "This letter changed elsewhere"
 msgstr "이 커버레터는 다른 곳에서 변경되었습니다"
+
+#: src/features/letters/share.tsx
+msgid "This letter has no resume anymore. Choose another format."
+msgstr ""
 
 #: src/features/letters/design.tsx
 #: src/features/letters/write.tsx
@@ -11871,6 +11862,10 @@ msgstr "요청이 너무 많습니다. 나중에 다시 시도하세요."
 msgid "Too many tries in a short time. Wait a minute, then try again."
 msgstr ""
 
+#: src/features/auth/errors.ts
+msgid "Too many wrong codes. Wait a few minutes, then sign in again."
+msgstr ""
+
 #: src/features/auth/create-account-screen.tsx
 msgid "Too short"
 msgstr ""
@@ -12010,10 +12005,6 @@ msgstr "이 오프닝을 시도해 보세요"
 #: src/features/documents/new-document.tsx
 msgid "Try with a sample resume"
 msgstr "샘플 이력서를 사용해 보세요"
-
-#: src/features/auth/welcome-screen.tsx
-msgid "Try without an account"
-msgstr ""
 
 #: src/features/settings/locale-names.ts
 msgid "Turkish"
@@ -12885,7 +12876,6 @@ msgid "Why do you want this role at {company}?"
 msgstr "{company}의 이 직무를 원하는 이유는 무엇인가요?"
 
 #: src/features/design/preset-names.ts
-#: src/features/design/style-groups.tsx
 msgid "Wide"
 msgstr "넓은"
 
@@ -13290,10 +13280,6 @@ msgstr ""
 msgid "Your name and contact details follow your Profile."
 msgstr ""
 
-#: src/features/share/custom-domain.tsx
-msgid "Your name as your address, from OlaCV, the .cv registry. Code {CODE} takes 50% off the first year."
-msgstr "내 이름을 그대로 주소로. .cv 레지스트리인 OlaCV에서 제공합니다. 코드 {CODE} 사용 시 첫해 50% 할인됩니다."
-
 #: src/features/check/issues.ts
 msgid "Your name is missing"
 msgstr "당신의 이름이 없습니다"
@@ -13350,10 +13336,6 @@ msgstr "전화번호가 특이한 형식으로 작성되어 있습니다."
 #: app/account/membership.tsx
 #: src/features/billing/plan-card.tsx
 msgid "Your plan"
-msgstr ""
-
-#: src/features/share/custom-domain.tsx
-msgid "Your plan no longer includes a custom domain. Renew it and the domain comes back by itself."
 msgstr ""
 
 #: app/(tabs)/portfolio/index.tsx

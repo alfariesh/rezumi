@@ -444,9 +444,15 @@ const toTokens = (response: AuthSession.TokenResponse, previousRefreshToken?: st
 	expiresAt: response.expiresIn ? response.issuedAt + response.expiresIn : undefined,
 });
 
-// kv-store prefixes other features keep per account (`<prefix><scope>:<id>`): application notes (M5-T2) and Career
-// workspace drafts (M6-T2). Resume and letter drafts are cleared by the draft runtime.
-const scopedStoragePrefixes = ["rezumi:application-notes:", "rezumi:career-draft:"];
+// kv-store prefixes other features keep per account (`<prefix><scope>:<id>`): application notes (M5-T2), Career
+// workspace drafts (M6-T2), an onboarding picked up again (features/onboarding/saved-run.ts) and Profile edits not
+// saved yet (features/profile/pending.ts). Resume and letter drafts are cleared by the draft runtime.
+const scopedStoragePrefixes = [
+	"rezumi:application-notes:",
+	"rezumi:career-draft:",
+	"rezumi:onboarding:",
+	"rezumi:profile-pending:",
+];
 
 /** Best-effort revocation of a refresh token on `server`, given up after `revokeTimeout`. */
 async function revoke(server: string, refreshToken: string | undefined): Promise<void> {

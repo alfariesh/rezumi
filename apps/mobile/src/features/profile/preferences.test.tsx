@@ -28,7 +28,10 @@ jest.mock("expo-router", () => ({ useRouter: () => ({ push: mockPush }) }));
 jest.mock("@/features/reminders/schedule", () => ({ deviceTimeZone: () => "UTC" }));
 jest.mock("@/auth/session", () => ({
 	useSession: () => ({ status: "signed-in", server: "https://rezumi.app" }),
+	getSession: () => ({ status: "signed-in", server: "https://rezumi.app" }),
 	getServer: () => "https://rezumi.app",
+	getAccountScope: () => '["https://rezumi.app","user-1"]',
+	subscribeSession: () => () => undefined,
 }));
 jest.mock("@/api/client", () => ({
 	client: { career: { saveProfile: (...args: unknown[]) => mockSaveProfile(...args) } },

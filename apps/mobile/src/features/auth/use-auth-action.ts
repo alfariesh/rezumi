@@ -5,7 +5,7 @@ import { authErrorMessage } from "./errors";
 import { haptics } from "@/ui";
 
 /**
- * Runs one sign-in step for a screen: `pending` while it runs (a second press is ignored), then `error` with the
+ * Runs one sign-in step for a screen: `pending` while it runs (a second press is ignored; see `isRunning`), then `error` with the
  * sentence to show. Development builds log the cause (codes only; requests never carry secrets into errors).
  */
 export function useAuthAction(step: AuthStep) {
@@ -32,5 +32,9 @@ export function useAuthAction(step: AuthStep) {
 		}
 	};
 
-	return { pending, error, setError, run };
+	// A screen that prepares state before `run` (a redirect, a busy label) checks this first: an ignored second press
+	// returns `undefined` too, which must not read as a failure.
+	const isRunning = () => running.current;
+
+	return { pending, error, setError, run, isRunning };
 }

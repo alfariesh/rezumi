@@ -2,9 +2,11 @@
 // plus a save that failed offline. The API is replaced; the store, the forms and their wording are the real ones.
 import type { ProfileData } from "@rezumi/schema/profile/data";
 import { act, fireEvent, screen, waitFor } from "@testing-library/react-native";
+import Storage from "expo-sqlite/kv-store";
 import { emptyProfileData } from "@rezumi/schema/profile/data";
 import { CareerPanel } from "./career";
 import { DetailsPanel } from "./details";
+import { clearPendingProfile } from "./pending";
 import { closeProfile, useProfileEditor } from "./store";
 import { renderScreen } from "@/test/render-screen";
 
@@ -14,7 +16,10 @@ const mockApi = { get: jest.fn(), update: jest.fn() };
 jest.mock("expo-router", () => ({ useRouter: () => mockRouter, Stack: { Screen: () => null } }));
 jest.mock("@/auth/session", () => ({
 	useSession: () => ({ status: "signed-in", server: "https://rezumi.app" }),
+	getSession: () => ({ status: "signed-in", server: "https://rezumi.app" }),
 	getServer: () => "https://rezumi.app",
+	getAccountScope: () => '["https://rezumi.app","user-1"]',
+	subscribeSession: () => () => undefined,
 }));
 jest.mock("@/api/client", () => ({
 	client: {
@@ -83,6 +88,7 @@ const withExperience = profile((data) => {
 beforeEach(() => {
 	jest.clearAllMocks();
 	closeProfile();
+	clearPendingProfile(Storage, '["https://rezumi.app","user-1"]');
 });
 
 describe("Profile → Details", () => {

@@ -1,6 +1,7 @@
 // Welcome (01-desain 3, K4): Continue with Apple (where the device offers it), Google, email, Create account, and the
-// other ways (GitHub, LinkedIn, passkey, a custom provider) in an in-app browser sheet. Guests when the server allows
-// them. Development builds add the Server row; people never see it.
+// other ways (GitHub, LinkedIn, passkey, a custom provider) in an in-app browser sheet. Development builds add the
+// Server row; people never see it. No guest option even where the server allows guests: the app has no way to move a
+// guest's work into a real account later (web keeps it through the guest's session cookie), so signing out would lose it.
 import type { IdTokenSignIn } from "@/auth/native-sign-in";
 import { useLingui } from "@lingui/react/macro";
 import { Image } from "expo-image";
@@ -14,7 +15,7 @@ import { useAuthAction } from "./use-auth-action";
 import { useAuthServer } from "./use-auth-server";
 import { getAppleIdToken } from "@/auth/apple";
 import { canUseGoogle, getGoogleIdToken } from "@/auth/google";
-import { signInAsGuest, signInWithIdToken } from "@/auth/native-sign-in";
+import { signInWithIdToken } from "@/auth/native-sign-in";
 import { signIn } from "@/auth/session";
 import { routes } from "@/routes";
 import {
@@ -32,7 +33,7 @@ import {
 	showToast,
 } from "@/ui";
 
-type Busy = "apple" | "google" | "guest" | "browser" | null;
+type Busy = "apple" | "google" | "browser" | null;
 
 // expo-image takes no className: the app mark is 80 pt with the icon's own rounding (radius 2xl).
 const appMark = { width: 80, height: 80, borderRadius: 16 };
@@ -41,7 +42,7 @@ export function WelcomeScreen() {
 	const { t } = useLingui();
 	const router = useRouter();
 	const { server, flags, options } = useAuthServer();
-	const { error, setError, run } = useAuthAction("social");
+	const { error, setError, run, isRunning } = useAuthAction("social");
 	const [busy, setBusy] = useState<Busy>(null);
 	const [moreOpen, setMoreOpen] = useState(false);
 
@@ -60,6 +61,7 @@ export function WelcomeScreen() {
 	).filter(([id]) => id in providers);
 
 	const withBusy = async (which: Exclude<Busy, null>, action: () => Promise<unknown>) => {
+		if (isRunning()) return;
 		setBusy(which);
 		try {
 			await run(action);
@@ -156,16 +158,6 @@ export function WelcomeScreen() {
 									<Button.Label>
 										{busy === "browser" ? t`Finish in the browser…` : t`More ways to sign in`}
 									</Button.Label>
-								</Button>
-							) : null}
-							{flags.data?.allowGuestLogin ? (
-								<Button
-									variant="tertiary"
-									isDisabled={busy !== null}
-									onPress={() => void withBusy("guest", () => signInAsGuest(server))}
-									testID="sign-in-guest"
-								>
-									<Button.Label>{busy === "guest" ? t`Signing in…` : t`Try without an account`}</Button.Label>
 								</Button>
 							) : null}
 							{!signUps ? (

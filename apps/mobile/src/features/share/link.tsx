@@ -8,16 +8,10 @@ import { useEffect, useEffectEvent, useRef, useState } from "react";
 import { Linking, Share, View } from "react-native";
 import QRCode from "react-native-qrcode-svg";
 import Svg, { Rect } from "react-native-svg";
-import {
-	formatTimeSince,
-	normalizeSlug,
-	publicResumeUrl,
-	isValidSlug,
-	MAX_SLUG_LENGTH,
-	summarizeViews,
-} from "@rezumi/resume/sharing";
+import { normalizeSlug, publicResumeUrl, isValidSlug, MAX_SLUG_LENGTH, summarizeViews } from "@rezumi/resume/sharing";
 import { ShareNotice } from "./custom-domain";
 import { flushResume } from "./document";
+import { formatTimeSince } from "./time-since";
 import { WebPageSettings } from "./web-page";
 import { client, orpc } from "@/api/client";
 import { useFlags } from "@/api/flags";
@@ -292,7 +286,7 @@ function Statistics({ id, isPublic, offline }: StatisticsProps) {
 		{ value: i18n.number(summary.views), label: t`views · 30 days` },
 		{ value: i18n.number(summary.downloads), label: t`downloads` },
 		{
-			value: total.data?.lastViewedAt ? formatTimeSince(total.data.lastViewedAt, i18n.locale) : "—",
+			value: total.data?.lastViewedAt ? formatTimeSince(total.data.lastViewedAt) : "—",
 			label: t`since last view`,
 		},
 	];

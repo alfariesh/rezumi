@@ -4,9 +4,48 @@
 // `showToast(...)`, which reaches the region through `ToastBridge`, mounted once at the root.
 import type { ToastManager } from "heroui-native";
 import { useToast } from "heroui-native";
-import { useEffect, useMemo } from "react";
-import { AccessibilityInfo } from "react-native";
+import { useEffect, useMemo, useSyncExternalStore } from "react";
+import { AccessibilityInfo, Platform } from "react-native";
 import { haptics } from "./motion";
+
+// The bottom bars showing now (the phone tab bar, the editor's pane bar) by source, with their heights: toasts sit
+// above the tallest, so an Undo never covers a tab.
+const bottomBars = new Map<string, number>();
+let barHeight = 0;
+const barListeners = new Set<() => void>();
+
+/**
+ * A bottom bar reports its laid-out height (bottom safe area included) under its own name, and 0 when it hides, is
+ * covered by another screen or unmounts.
+ */
+export function setToastBarHeight(source: string, height: number) {
+	const value = Math.max(0, Math.round(height));
+	if (value > 0) bottomBars.set(source, value);
+	else bottomBars.delete(source);
+	const next = Math.max(0, ...bottomBars.values());
+	if (next === barHeight) return;
+	barHeight = next;
+	for (const listener of barListeners) listener();
+}
+
+/** The bottom bar height toasts clear, 0 while no bar shows. */
+export function useToastBarHeight(): number {
+	return useSyncExternalStore(
+		(listener) => {
+			barListeners.add(listener);
+			return () => barListeners.delete(listener);
+		},
+		() => barHeight,
+	);
+}
+
+/**
+ * The toasts' distance from the bottom edge: 12 pt above a bottom bar while one shows, otherwise HeroUI's own default
+ * above the home indicator. HeroUI's region and the legacy Toaster both use it, so the two never sit apart.
+ */
+export function toastBottomOffset(bar: number, safeBottom: number): number {
+	return bar > 0 ? bar + 12 : safeBottom + (Platform.OS === "ios" ? 6 : 12);
+}
 
 export type AppToastVariant = "default" | "success" | "danger" | "warning";
 

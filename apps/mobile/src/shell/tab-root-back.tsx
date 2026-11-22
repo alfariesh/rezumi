@@ -3,20 +3,13 @@
 import type { Href } from "expo-router";
 import { useLingui } from "@lingui/react/macro";
 import { useRouter } from "expo-router";
-import { I18nManager } from "react-native";
 import { IconButton } from "@/ui";
 
 type TabRootBackProps = { to: Href; label: string };
 
 function TabRootBack({ to, label }: TabRootBackProps) {
 	const router = useRouter();
-	return (
-		<IconButton
-			icon={I18nManager.isRTL ? "arrow-right" : "arrow-left"}
-			label={label}
-			onPress={() => router.replace(to)}
-		/>
-	);
+	return <IconButton icon="arrow-left" label={label} onPress={() => router.replace(to)} />;
 }
 
 type Navigation = { canGoBack: () => boolean };

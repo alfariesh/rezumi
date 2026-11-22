@@ -29,10 +29,9 @@ import { createRequestLane, recoverRun } from "./recovery";
 import { ToolApprovals } from "./tool-approvals";
 import { client, orpc, SessionChangedError } from "@/api/client";
 import { getAccountScope, useSession } from "@/auth/session";
+import { usePullRefresh } from "@/ui";
 import { Button, Icon, Text, showToast, useTheme } from "@/ui-legacy";
-import { usePullRefresh } from "@/ui-legacy/use-pull-refresh";
 
-export type { ChatAttachment, MessageContext } from "./chat";
 export type { AssistantDocument } from "./document";
 
 export type ChatViewProps = {

@@ -42,7 +42,7 @@ const mocks = {
 	"react-native": native,
 	"react-native-safe-area-context": safe,
 	"@lingui/react/macro": { useLingui: () => ({ t: tag }) },
-	"expo-router": { useRouter: () => router, usePathname: () => "/documents" },
+	"expo-router": { useRouter: () => router, usePathname: () => "/documents", useIsFocused: () => true },
 	"react-native-keyboard-controller": { KeyboardAwareScrollView: "ScrollView", useKeyboardState: () => false },
 	"react-native-reanimated": { useAnimatedReaction: (prepare, react) => effects.push(() => react(prepare(), null)) },
 	"react-native-worklets": { scheduleOnRN: (run, ...args) => run(...args) },
@@ -88,17 +88,17 @@ mocks["@/ui-legacy"] = ui;
 mocks["./theme"] = ui;
 // Gesture state has its own timing regression; layout fixtures do not pull.
 const pullRefresh = { usePullRefresh: () => ({ refreshing: false, onRefresh() {} }) };
-mocks["./use-pull-refresh"] = pullRefresh;
-mocks["@/ui-legacy/use-pull-refresh"] = pullRefresh;
+mocks["@/ui/use-pull-refresh"] = pullRefresh;
 mocks["@/components/collection-header"] = { CollectionHeader: "CollectionHeader" };
 // The rebuilt tab chrome (Jest-tested in src/shell) only matters here as the old headers' outside-the-tabs default.
 mocks["@/shell/tab-chrome"] = { TabBarActions: "TabBarActions", useInTabs: () => false };
-mocks["@/ui"] = { size: { wide: 700 } };
+mocks["@/ui"] = { size: { wide: 700 }, ...pullRefresh };
+// Bottom bars report their height so toasts clear them; layout fixtures do not show toasts.
+mocks["@/ui/toast"] = { setToastBarHeight() {} };
 const { useIsTablet: isTablet } = load("shell/use-is-tablet.ts");
 mocks["./use-is-tablet"] = { useIsTablet: isTablet };
 const keyboardLayout = load("ui/keyboard.tsx");
-mocks["./keyboard"] = keyboardLayout;
-mocks["@/ui-legacy/keyboard"] = keyboardLayout;
+mocks["@/ui/keyboard"] = keyboardLayout;
 const resizedKeyboard = keyboardLayout.KeyboardFrame({}).type;
 for (const height of [0, 300, 200]) {
 	keyboardHeight = height;
@@ -195,6 +195,7 @@ react.useState = (initial) => {
 		},
 	];
 };
+react.useRef = (initial) => react.useState({ current: initial })[0];
 react.useEffect = (effect, deps) => {
 	const index = cursor++;
 	const previous = hooks[index];
@@ -306,7 +307,6 @@ for (const width of [443, 852, 443, 852]) {
 	}
 }
 hooks.length = 0;
-react.useRef = (initial) => react.useState({ current: initial })[0];
 react.useCallback = (callback) => callback;
 // The first focus must allow Improve for an existing line without requiring another caret tap.
 const richText = load("features/write/rich-text.ts");
@@ -379,7 +379,7 @@ const animation = {
 const componentFixtures = {
 	"./button": ui,
 	"./icon": ui,
-	"./motion": ui,
+	"@/ui/motion": ui,
 	"./pressable": { FeedbackPressable: "Pressable" },
 	"./text": ui,
 	"expo-image": { Image: "Image" },
@@ -400,10 +400,10 @@ const { DocumentsLibrary } = load("features/documents/library.tsx", {
 	"./pending": { usePendingDocuments: () => [] },
 	"./queries": { useDocuments: () => documentQuery, useDocumentOperations: () => ({ busy: false }) },
 	"./thumbnail": { Thumbnail: "Thumbnail" },
-	"@/api/client": { client: {}, orpc: { documents: { counts: { queryOptions: () => ({ queryKey: [] }) } } } },
+	"@/api/client": { client: {} },
 	"@/auth/session": { useSession: () => ({ status: "signed-in", server: "fixture" }) },
 	"@/components/collection-header": { CollectionHeader: "CollectionHeader" },
-	"@tanstack/react-query": { useQuery: () => ({ data: { trash: 0 }, refetch() {} }) },
+	"@/features/home/queries": { useDocumentCounts: () => ({ data: { trash: 0 }, refetch() {} }) },
 	"expo-haptics": {},
 	"expo-router": { ...mocks["expo-router"], useFocusEffect() {} },
 	"@lingui/core/macro": { plural: (count, options) => options[count === 1 ? "one" : "other"].replace("#", count) },

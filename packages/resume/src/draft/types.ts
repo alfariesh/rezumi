@@ -15,14 +15,14 @@ export type SaveStatus = "idle" | "saving" | "saved" | "offline" | "error";
  */
 export type ConflictChoice = "keep-mine" | "use-theirs" | "keep-both";
 
-export type DraftConflict<TDocument> = {
+type DraftConflict<TDocument> = {
 	/** The server copy at the time of the conflict. */
 	remote: TDocument;
 };
 
 export type UpdateOptions = EditOptions;
 
-export type DraftState<TDocument, TData> = {
+type DraftState<TDocument, TData> = {
 	/** The document with the draft's data; null until loaded. */
 	document: TDocument | null;
 	data: TData | null;
@@ -34,7 +34,7 @@ export type DraftState<TDocument, TData> = {
 	canRedo: boolean;
 };
 
-export type DraftActions<TDocument, TData> = {
+type DraftActions<TDocument, TData> = {
 	/** Loads the document (from the device's draft first, then the server) and starts syncing. */
 	open: (id: string) => Promise<void>;
 	/** Flushes pending changes and stops syncing. */

@@ -3,9 +3,10 @@
 import { useLingui } from "@lingui/react/macro";
 import { useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
+import { profileAccount } from "./account";
 import { openProfile, saveProfileNow } from "./store";
 import { client } from "@/api/client";
-import { getServer, useSession } from "@/auth/session";
+import { useSession } from "@/auth/session";
 import { useDocuments } from "@/features/documents/queries";
 import { storeSavedProfile } from "@/features/onboarding/queries";
 import { EmptyState, ListRow, ListSection, Sheet, Skeleton, Text, showToast } from "@/ui";
@@ -22,10 +23,12 @@ export function FillFromResumeSheet({ isOpen, onOpenChange }: FillSheetProps) {
 
 	const fill = async (resumeId: string, name: string) => {
 		setBusy(resumeId);
+		const scope = profileAccount();
 		try {
-			if (!(await saveProfileNow())) throw new Error("Unsaved");
-			const result = await client.profile.fillFromResume({ resumeId });
-			if (getServer() !== server) return;
+			if (!scope || !(await saveProfileNow())) throw new Error("Unsaved");
+			const result = await client.profile.fillFromResume({ resumeId }, { context: { scope } });
+			// Another account signed in meanwhile: the result is the first account's.
+			if (profileAccount() !== scope) return;
 			const profile = { data: result.data, updatedAt: result.updatedAt };
 			storeSavedProfile(queryClient, server, profile);
 			openProfile(profile, server, queryClient);

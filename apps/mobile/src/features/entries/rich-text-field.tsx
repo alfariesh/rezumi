@@ -27,6 +27,7 @@ import {
 	size,
 	space,
 	useKeyboardVisible,
+	useResolveClassNames,
 	useThemeColor,
 } from "@/ui";
 
@@ -98,6 +99,8 @@ export function RichTextField({
 		"accent-soft",
 		"surface-secondary",
 	]);
+	// The interface font and body size from the design system, the way a `Text` gets them.
+	const { fontFamily, fontSize } = useResolveClassNames("font-normal text-base");
 	const ref = useRef<EnrichedTextInputInstance>(null);
 	const [session] = useState(() => createRichTextSession(value));
 	const [focused, setFocused] = useState(false);
@@ -136,8 +139,8 @@ export function RichTextField({
 		paddingHorizontal: space[3],
 		paddingVertical: space[3],
 		color: foreground,
-		fontFamily: "GoogleSans-Regular",
-		fontSize: 16,
+		...(typeof fontFamily === "string" ? { fontFamily } : {}),
+		...(typeof fontSize === "number" ? { fontSize } : {}),
 	};
 	const htmlStyle = {
 		a: { color: accent, textDecorationLine: "underline" as const },

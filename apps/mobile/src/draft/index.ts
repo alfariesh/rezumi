@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 import { nativeEnvironment } from "./native";
 import { resume, letter, useResumeStore } from "./runtime";
 import { useSession } from "@/auth/session";
-export { useResumeStore, useLetterStore, clearDraftsFor, getDraftScope } from "./runtime";
+export { useResumeStore, useLetterStore, getDraftScope } from "./runtime";
 
 /** Call once in the builder owner, not once per pane. Token refresh preserves history; account switches do not. */
 function useDraftOwner(id: string, draft: typeof resume | typeof letter) {
@@ -60,5 +60,5 @@ export const useIsResumeLocked = () => useResumeStore((state) => state.locked);
 export const resumeFieldFocus = { onFocus: resume.focus, onBlur: () => void resume.blur() };
 export const letterFieldFocus = { onFocus: letter.focus, onBlur: () => void letter.blur() };
 
-export type { ResumeDraftStore, LetterDraftStore, SaveStatus, ConflictChoice, UpdateOptions } from "./types";
-export { DraftConflictSheet, ResumeConflictSheet, LetterConflictSheet } from "./conflict-sheet";
+export type { UpdateOptions } from "./types";
+export { ResumeConflictSheet, LetterConflictSheet } from "./conflict-sheet";

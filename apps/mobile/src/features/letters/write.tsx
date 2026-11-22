@@ -263,7 +263,7 @@ function ForSection({ application, applications, disabled }: ForSectionProps) {
 										title={item.role}
 										description={`${item.company} · ${getStageLabel(item.status)}`}
 										chevron={false}
-										trailing={item.id === application?.id ? <Icon name="check" tone="accent" /> : undefined}
+										isSelected={item.id === application?.id}
 										onPress={() => choose(item)}
 									/>
 								)),
@@ -348,7 +348,7 @@ const FROM_PROFILE = "profile";
 const FROM_OWN = "own";
 
 /** Which From choice a letter is on: its own copy, a linked resume, or (linked without a resume) the Profile. */
-export const fromChoice = (letter: Pick<LetterDocument, "senderLinked" | "sourceResumeId">) =>
+const fromChoice = (letter: Pick<LetterDocument, "senderLinked" | "sourceResumeId">) =>
 	!letter.senderLinked ? FROM_OWN : (letter.sourceResumeId ?? FROM_PROFILE);
 
 /**
@@ -434,7 +434,7 @@ function FromSection({ letter, disabled }: { letter: LetterDocument; disabled: b
 							icon={option.icon}
 							title={option.title}
 							chevron={false}
-							trailing={option.value === value ? <Icon name="check" tone="accent" /> : undefined}
+							isSelected={option.value === value}
 							onPress={() => choose(option.value)}
 							testID={`letter-from-${option.value === FROM_PROFILE || option.value === FROM_OWN ? option.value : "resume"}`}
 						/>

@@ -355,6 +355,117 @@ describe("draft engine: offline and reconnect", () => {
 	});
 });
 
+describe("draft engine: a write that landed without its response", () => {
+	async function lostResponse() {
+		const context = setup([doc("a"), doc("b")]);
+		await context.state().open("a");
+		context.server.failNextSave("lost-response");
+		type(context.engine, "Landed");
+		await vi.advanceTimersByTimeAsync(500);
+		expect(context.state().status).toBe("error");
+		expect(context.server.documents.get("a")?.version).toBe(2);
+		return context;
+	}
+
+	it("Retry sends the edits typed since, without a conflict", async () => {
+		const { engine, server, device, state } = await lostResponse();
+		type(engine, "Landed, then more");
+		state().retry();
+		await state().flush();
+		expect(state().conflict).toBeNull();
+		expect(server.saves.map((save) => save.text)).toEqual(["Landed", "Landed, then more"]);
+		expect(server.documents.get("a")?.data.text).toBe("Landed, then more");
+		expect(state().status).toBe("saved");
+		expect(device.items.size).toBe(0);
+		await vi.advanceTimersByTimeAsync(1000);
+		expect(server.saves).toHaveLength(2);
+	});
+
+	it("Retry with nothing new marks the draft saved without sending it again", async () => {
+		const { server, device, state } = await lostResponse();
+		state().retry();
+		await state().flush();
+		expect(state().conflict).toBeNull();
+		expect(state().status).toBe("saved");
+		expect(server.saves).toHaveLength(1);
+		expect(device.items.size).toBe(0);
+	});
+
+	it("still raises a real conflict when someone else changed the document after the landed write", async () => {
+		const { engine, server, state } = await lostResponse();
+		server.edit("a", { data: { text: "Edited on the web", items: [] } });
+		type(engine, "Landed, then more");
+		await state().flush();
+		expect(state().conflict?.remote.data.text).toBe("Edited on the web");
+		expect(state().data?.text).toBe("Landed, then more");
+	});
+
+	it("replay sends the edits typed since, without leaving the draft queued", async () => {
+		const { engine, server, device, state } = await lostResponse();
+		device.online = false;
+		type(engine, "Landed, typed offline");
+		await state().close();
+		await state().open("b");
+		device.online = true;
+		await engine.replay();
+		expect(server.documents.get("a")?.data.text).toBe("Landed, typed offline");
+		expect(await engine.listPending()).toEqual([]);
+	});
+
+	it("reopening after the app closed keeps the edits typed since, without a conflict", async () => {
+		const { engine, server, device, state } = await lostResponse();
+		device.online = false;
+		type(engine, "Landed, typed offline");
+		await vi.advanceTimersByTimeAsync(300);
+
+		const reopened = createDraftStore(createAdapter(server), device.env);
+		device.online = true;
+		await reopened.store.getState().open("a");
+		expect(reopened.store.getState().conflict).toBeNull();
+		expect(server.documents.get("a")?.data.text).toBe("Landed, typed offline");
+		expect(reopened.store.getState().status).toBe("saved");
+		expect(state().data?.text).toBe("Landed, typed offline");
+	});
+
+	it("a replayed write whose response was lost is not queued again", async () => {
+		const { engine, server, device, state } = setup([doc("a"), doc("b")]);
+		await state().open("a");
+		device.online = false;
+		type(engine, "Offline edit of A");
+		await state().close();
+		await state().open("b");
+		device.online = true;
+		server.failNextSave("lost-response");
+		await engine.replay();
+		expect(await engine.listPending()).toHaveLength(1);
+		await engine.replay();
+		expect(await engine.listPending()).toEqual([]);
+		expect(server.saves.map((save) => save.text)).toEqual(["Offline edit of A"]);
+	});
+});
+
+describe("draft engine: locks", () => {
+	it("stops showing a save in progress when a lock holds pending edits, and sends them once unlocked", async () => {
+		const { engine, server, state } = setup();
+		await state().open("a");
+		type(engine, "Before the lock");
+		server.edit("a", { isLocked: true });
+		await engine.refresh();
+		expect(state().locked).toBe(true);
+		await vi.advanceTimersByTimeAsync(500);
+		expect(state().status).toBe("error");
+		expect(server.saves).toHaveLength(0);
+
+		server.edit("a", { isLocked: false });
+		await engine.refresh();
+		await state().flush();
+		expect(state().locked).toBe(false);
+		expect(state().conflict).toBeNull();
+		expect(server.documents.get("a")?.data.text).toBe("Before the lock");
+		expect(state().status).toBe("saved");
+	});
+});
+
 describe("draft engine: conflicts", () => {
 	async function offlineEditThenRemoteChange() {
 		const context = setup();

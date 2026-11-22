@@ -27,6 +27,11 @@ export type ListRowProps = {
 	chevron?: boolean | undefined;
 	/** Destructive rows (Sign out, Delete account) read in the danger color, with no chevron. */
 	tone?: "default" | "danger" | undefined;
+	/**
+	 * The current choice in a list of options: a check at the end (unless `trailing` replaces it), and the selected
+	 * state for screen readers. Leave it out on rows that aren't choices.
+	 */
+	isSelected?: boolean | undefined;
 	isDisabled?: boolean | undefined;
 	accessibilityHint?: string | undefined;
 	testID?: string | undefined;
@@ -42,11 +47,13 @@ export function ListRow({
 	onPress,
 	chevron = !!onPress,
 	tone = "default",
+	isSelected,
 	isDisabled = false,
 	accessibilityHint,
 	testID,
 }: ListRowProps) {
 	const danger = tone === "danger";
+	const end = trailing ?? (isSelected ? <Icon name="check" tone="accent" /> : null);
 	return (
 		<ListGroup.Item
 			onPress={onPress}
@@ -57,7 +64,9 @@ export function ListRow({
 			accessibilityLabel={onPress ? [title, value, description].filter(Boolean).join(", ") : undefined}
 			accessibilityHint={accessibilityHint}
 			testID={testID}
-			accessibilityState={onPress ? { disabled: isDisabled } : undefined}
+			accessibilityState={
+				onPress ? { disabled: isDisabled, ...(isSelected === undefined ? {} : { selected: isSelected }) } : undefined
+			}
 			className={cx("min-h-14", isDisabled && "opacity-50")}
 		>
 			{leading || icon ? (
@@ -74,7 +83,7 @@ export function ListRow({
 				<ListGroup.ItemTitle className={cx(danger && "text-danger")}>{title}</ListGroup.ItemTitle>
 				{description ? <ListGroup.ItemDescription>{description}</ListGroup.ItemDescription> : null}
 			</ListGroup.ItemContent>
-			{value || trailing || (chevron && !danger) ? (
+			{value || end || (chevron && !danger) ? (
 				<ListGroup.ItemSuffix>
 					<View className="flex-row items-center gap-2">
 						{value ? (
@@ -82,8 +91,8 @@ export function ListRow({
 								{value}
 							</Text>
 						) : null}
-						{trailing}
-						{chevron && !danger && !trailing ? <Icon name="caret-right" size={16} tone="muted" /> : null}
+						{end}
+						{chevron && !danger && !end ? <Icon name="caret-right" size={16} tone="muted" /> : null}
 					</View>
 				</ListGroup.ItemSuffix>
 			) : null}

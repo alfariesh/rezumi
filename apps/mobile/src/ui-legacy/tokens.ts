@@ -157,9 +157,6 @@ export const type = {
 	},
 } satisfies Record<string, TextStyleToken>;
 
-/** `pageThumb`: The display face that scales with the letter card, 3.3% of its width. */
-export const pageThumb = { fontFamily: fonts.display[400], widthRatio: 0.033 } as const;
-
 // §3 Spacing, 4 pt grid.
 export const space = { s0: 2, s1: 4, s2: 8, s3: 12, s4: 16, s5: 20, s6: 24, s8: 32, s10: 40, s12: 48 } as const;
 
@@ -170,10 +167,8 @@ export const size = {
 	input: 46,
 	button: 48,
 	chip: 32,
-	tabBar: 52,
 	topBar: 44,
 	editorBar: 56,
-	newPill: { width: 34, height: 26 },
 	grabber: { width: 36, height: 5 },
 	sidebar: 240,
 	panel: 400,

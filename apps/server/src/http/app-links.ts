@@ -1,6 +1,9 @@
 import { env } from "@rezumi/env/server";
 
-/** Web pages under /dashboard that open their app screen in the mobile app. */
+/**
+ * Web pages under /dashboard that open their app screen in the mobile app. Keep in step with `appLinkPrefixes` in
+ * apps/mobile/app.config.ts and the app's deep-link map (apps/mobile/src/linking/app-links.test.ts checks both).
+ */
 const APP_LINK_PREFIXES = [
 	"/dashboard/career",
 	"/dashboard/documents",
@@ -14,9 +17,13 @@ const APP_LINK_PREFIXES = [
 	"/dashboard/portfolio",
 	"/dashboard/settings/account",
 	"/dashboard/settings/profile",
+	"/dashboard/settings/authentication",
 	"/dashboard/settings/preferences",
 	"/dashboard/settings/app",
+	"/dashboard/settings/job-search",
 	"/dashboard/settings/ai",
+	"/dashboard/settings/api-keys",
+	"/dashboard/settings/integrations",
 ];
 
 export function handleAppleAppSiteAssociation() {

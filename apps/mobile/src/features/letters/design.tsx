@@ -142,6 +142,12 @@ function OwnDesign({ letter, disabled }: OwnDesignProps) {
 	const metadata = letter.style.metadata;
 	const primary = rgbaToHex(metadata.design.colors.primary);
 	const [hex, setHex] = useState(primary ?? "");
+	// Undo, redo or another device can change the colour under the field: show it, unless the field already says it.
+	const [shownPrimary, setShownPrimary] = useState(primary);
+	if (primary !== shownPrimary) {
+		setShownPrimary(primary);
+		if (!isValidHex(hex) || rgbaToHex(hex.trim()) !== primary) setHex(primary ?? "");
+	}
 	const [picking, setPicking] = useState<"template" | "pairing" | null>(null);
 	const textSize = metadata.typography.body.fontSize;
 	const pairing = matchFontPairing(metadata);
@@ -296,7 +302,7 @@ function OwnDesign({ letter, disabled }: OwnDesignProps) {
 							title={templateName(template)}
 							description={isLabelledTemplate(plan, template) ? "Plus" : undefined}
 							chevron={false}
-							trailing={template === metadata.template ? <Icon name="check" tone="accent" /> : undefined}
+							isSelected={template === metadata.template}
 							onPress={() => chooseTemplate(template)}
 						/>
 					))}
@@ -315,7 +321,7 @@ function OwnDesign({ letter, disabled }: OwnDesignProps) {
 							title={i18n._(PAIRING_NAMES[option.id as FontPairingId])}
 							description={option.heading === option.body ? option.body : `${option.heading} · ${option.body}`}
 							chevron={false}
-							trailing={option.id === pairing ? <Icon name="check" tone="accent" /> : undefined}
+							isSelected={option.id === pairing}
 							onPress={() => {
 								setPicking(null);
 								design("pairing", (value) => applyFontPairing(value, option.id));

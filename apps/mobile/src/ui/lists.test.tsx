@@ -29,4 +29,19 @@ describe("ListRow", () => {
 		await fireEvent.press(screen.getByRole("button", { name: "Sync" }));
 		expect(onPress).not.toHaveBeenCalled();
 	});
+
+	it("tells screen readers which choice is current", async () => {
+		await renderUi(
+			<ListSection>
+				<ListRow title="PDF" isSelected chevron={false} onPress={jest.fn()} />
+				<ListRow title="Word" isSelected={false} chevron={false} onPress={jest.fn()} />
+				<ListRow title="Language" onPress={jest.fn()} />
+			</ListSection>,
+		);
+		expect(screen.getByRole("button", { name: "PDF" })).toBeSelected();
+		expect(screen.getByRole("button", { name: "Word" })).not.toBeSelected();
+		expect(screen.getByRole("button", { name: "Language" })).not.toBeSelected();
+		// The current choice carries a check; the others don't.
+		expect(screen.getAllByTestId("icon-check", { includeHiddenElements: true })).toHaveLength(1);
+	});
 });

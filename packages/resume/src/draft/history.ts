@@ -1,9 +1,9 @@
 /** Bounded undo/redo stacks. Entries share structure (Immer), so 200 steps stay cheap. */
 export const MAX_HISTORY_ENTRIES = 200;
 /** Edits without a field key (dragging, a slider) merge within this window. */
-export const HISTORY_COALESCE_MS = 500;
+const HISTORY_COALESCE_MS = 500;
 /** Edits to the same field (typing a sentence) merge within this window. */
-export const FIELD_COALESCE_MS = 1000;
+const FIELD_COALESCE_MS = 1000;
 
 /** Whether the next edit merges into the current undo step. Resumes, letters and the Profile keep history this way. */
 export function shouldCoalesceEdit(

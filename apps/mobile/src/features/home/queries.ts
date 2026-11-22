@@ -32,12 +32,15 @@ export function useOpportunities() {
 	});
 }
 
+/** The schedules' cache key. Home, its optimistic toggle and the application workspace share this one copy. */
+export const schedulesKey = (server: string) => [...orpc.career.schedules.key(), server];
+
 export function useSchedules() {
 	const { enabled, server } = useSignedIn();
 	return useQuery({
 		...orpc.career.schedules.queryOptions({ input: {} }),
 		enabled,
-		queryKey: [...orpc.career.schedules.key(), server],
+		queryKey: schedulesKey(server),
 	});
 }
 
@@ -67,14 +70,20 @@ export function usePortfolioEnabled() {
 	return status.data?.enabled === true;
 }
 
-/** The sidebar's quiet counts, as on the web: documents (not trashed) and open applications. */
-export function useSidebarCounts() {
+/** Document counts (resumes, letters, trash), one cache copy for the sidebar and the Documents library. */
+export function useDocumentCounts() {
 	const { enabled, server } = useSignedIn();
-	const documents = useQuery({
+	return useQuery({
 		...orpc.documents.counts.queryOptions(),
 		enabled,
 		queryKey: [...orpc.documents.counts.key(), server],
 	});
+}
+
+/** The sidebar's quiet counts, as on the web: documents (not trashed) and open applications. */
+export function useSidebarCounts() {
+	const { enabled, server } = useSignedIn();
+	const documents = useDocumentCounts();
 	const applications = useQuery({
 		...orpc.applications.stats.queryOptions({ input: {} }),
 		enabled,

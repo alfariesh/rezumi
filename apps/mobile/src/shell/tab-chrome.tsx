@@ -20,7 +20,7 @@ export function useInTabs() {
  * Opens Coach. Phase 11 turns this into the Coach sheet (phones) and side panel (tablets); until then it pushes the
  * existing Coach screen, so every caller already goes through the slot.
  */
-export function useOpenCoach() {
+function useOpenCoach() {
 	const router = useRouter();
 	return () => router.push(routes.coach());
 }

@@ -37,6 +37,7 @@ import { filterApplications } from "@/features/applications/list";
 import { useApplications } from "@/features/applications/queries";
 import { routes } from "@/routes";
 import { useIsTablet } from "@/shell/use-is-tablet";
+import { usePullRefresh } from "@/ui";
 import {
 	Banner,
 	Button,
@@ -50,7 +51,6 @@ import {
 	Text,
 	useTheme,
 } from "@/ui-legacy";
-import { usePullRefresh } from "@/ui-legacy/use-pull-refresh";
 
 // Chips per day cell on tablet before "+N more"; phone cells show up to this many dots.
 const MAX_PER_DAY = 3;

@@ -2,7 +2,7 @@ import type { PressableProps } from "react-native";
 import { useState } from "react";
 import { Pressable } from "react-native";
 import Animated, { cubicBezier } from "react-native-reanimated";
-import { useReducedMotion } from "./motion";
+import { useReducedMotion } from "@/ui/motion";
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 const easeOut = cubicBezier(0.23, 1, 0.32, 1);

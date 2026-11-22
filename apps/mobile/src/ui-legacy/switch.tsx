@@ -1,8 +1,8 @@
 import { useEffect } from "react";
 import { I18nManager, Platform, Pressable } from "react-native";
 import Animated, { interpolateColor, useAnimatedStyle, useSharedValue, withTiming } from "react-native-reanimated";
-import { haptics, useReducedMotion } from "./motion";
 import { useTheme } from "./theme";
+import { haptics, useReducedMotion } from "@/ui/motion";
 
 const android = Platform.OS === "android";
 

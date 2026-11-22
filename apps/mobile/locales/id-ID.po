@@ -454,12 +454,6 @@ msgstr "{0} mengembalikan “{1}”. Pesan Anda disimpan."
 msgid "{0} selected"
 msgstr "{0} dipilih"
 
-#. placeholder {0}: resume.data.basics.name || resume.name
-#: src/features/letters/share.tsx
-#: src/features/share/download.tsx
-msgid "{0}-Resume"
-msgstr "{0}-CV"
-
 #. placeholder {0}: title || t`Untitled`
 #. placeholder {1}: row.index + 1
 #. placeholder {2}: row.count
@@ -506,14 +500,6 @@ msgstr "{company} · {tabName}"
 msgid "{completed, plural, one {# document updated} other {# documents updated}}"
 msgstr "{completed, plural, one {# dokumen diperbarui} other {# dokumen diperbarui}}"
 
-#: src/features/share/custom-domain.tsx
-msgid "{cost} a year"
-msgstr "{cost} per tahun"
-
-#: src/features/share/custom-domain.tsx
-msgid "{cost} the first year"
-msgstr "{cost} untuk tahun pertama"
-
 #: src/features/write/section-sheet.tsx
 msgid "{count, plural, one {# column} other {# columns}}"
 msgstr "{count, plural, one {# kolom} other {# kolom}}"
@@ -530,6 +516,31 @@ msgstr "{count, plural, other {# wawancara}}"
 #: src/features/workspace/tabs/messages.tsx
 msgid "{count, plural, one {Apply # change} other {Apply # changes}}"
 msgstr "{count, plural, other {Terapkan # perubahan}}"
+
+#. Short time since, in days: 3d
+#: src/features/share/time-since.ts
+msgid "{count, plural, other {#d}}"
+msgstr "{count, plural, other {#h}}"
+
+#. Short time since, in hours: 2h
+#: src/features/share/time-since.ts
+msgid "{count, plural, other {#h}}"
+msgstr "{count, plural, other {#j}}"
+
+#. Short time since, in minutes: 5m
+#: src/features/share/time-since.ts
+msgid "{count, plural, other {#m}}"
+msgstr "{count, plural, other {#mnt}}"
+
+#. Short time since, in weeks: 6w
+#: src/features/share/time-since.ts
+msgid "{count, plural, other {#w}}"
+msgstr "{count, plural, other {#mgg}}"
+
+#. Short time since, in years: 1y
+#: src/features/share/time-since.ts
+msgid "{count, plural, other {#y}}"
+msgstr "{count, plural, other {#th}}"
 
 #: src/features/workspace/tabs/debrief.tsx
 msgid "{day} · {length}m"
@@ -651,6 +662,7 @@ msgstr "{level} dari 5"
 msgid "{minutes, plural, one {# minute in total} other {# minutes in total}}"
 msgstr "{minutes, plural, other {total # menit}}"
 
+#: src/features/home/coming-up.tsx
 #: src/features/workspace/tabs/prepare.tsx
 msgid "{minutes, plural, one {Starts in # minute} other {Starts in # minutes}}"
 msgstr "{minutes, plural, other {Dimulai dalam # menit}}"
@@ -697,10 +709,6 @@ msgstr "{name} berada di sidebar"
 msgid "{name} uses one column"
 msgstr "{name} menggunakan satu kolom"
 
-#: src/features/share/download.tsx
-msgid "{name}-Cover-Letter"
-msgstr "{name}-Surat-Lamaran"
-
 #: src/features/check/issues.ts
 msgid "{names} come last in the text. Most systems still find them; some don't."
 msgstr "{names} berada terakhir dalam teks. Kebanyakan sistem masih menemukannya; beberapa tidak."
@@ -720,10 +728,6 @@ msgstr "{role} · {company}"
 #: src/features/write/outline.tsx
 msgid "{sections, plural, one {# section} other {# sections}}"
 msgstr "{sections, plural, one {Bagian #} other {Bagian #}}"
-
-#: src/features/letters/share.tsx
-msgid "{sender}-Cover-Letter"
-msgstr "{sender}-Surat-Lamaran"
 
 #: src/features/assistant/messages.tsx
 msgid "{skipped, plural, one {# edit couldn't be placed: its text changed. Ask again to redo it.} other {# edits couldn't be placed: their text changed. Ask again to redo them.}}"
@@ -2003,10 +2007,6 @@ msgstr "Otomatis"
 msgid "Autosaves are grouped by session and kept for 90 days. Named versions are kept until you delete them. Restoring saves the current state first."
 msgstr "Penyimpanan otomatis dikelompokkan berdasarkan sesi dan disimpan selama 90 hari. Versi yang diberi nama disimpan sampai Anda menghapusnya. Memulihkan akan menyimpan keadaan saat ini terlebih dahulu."
 
-#: src/features/share/custom-domain.tsx
-msgid "Available"
-msgstr "Tersedia"
-
 #: src/features/ats-checker/messages.ts
 msgid "Avoid heavy letter-spacing effects, then re-export."
 msgstr "Hindari efek spasi antarhuruf yang berat, lalu ekspor ulang."
@@ -2574,10 +2574,6 @@ msgstr "Pilih file PDF. File yang dipilih tidak diunggah."
 msgid "Choose a PDF smaller than 10 MB. The selected file was not uploaded."
 msgstr "Pilih PDF yang lebih kecil dari 10 MB. File yang dipilih tidak diunggah."
 
-#: src/shell/permissions.tsx
-msgid "Choose a photo"
-msgstr "Pilih foto"
-
 #: src/features/entries/photo-field.tsx
 #: src/features/settings/profile.tsx
 #: src/features/write/picture-screen.tsx
@@ -2787,10 +2783,6 @@ msgstr "Coach"
 msgid "Coach memory"
 msgstr "Ingatan coach"
 
-#: src/features/share/custom-domain.tsx
-msgid "Code copied"
-msgstr "Kode disalin"
-
 #: src/features/auth/two-factor-screen.tsx
 msgid "Codes look like a1b2c-d3e4f."
 msgstr "Bentuk kodenya seperti a1b2c-d3e4f."
@@ -2890,10 +2882,6 @@ msgstr "Pastikan ini profil Anda sendiri."
 #: src/features/share/custom-domain.tsx
 msgid "Connect"
 msgstr "Hubungkan"
-
-#: src/features/share/custom-domain.tsx
-msgid "Connect {domain}"
-msgstr "Hubungkan {domain}"
 
 #: src/features/share/custom-domain.tsx
 msgid "Connect {hostname}"
@@ -3058,10 +3046,6 @@ msgstr "Salin resume untuk suatu pekerjaan"
 #: src/features/workspace/tabs/apply.tsx
 msgid "Copy answers"
 msgstr "Salin jawaban"
-
-#: src/features/share/custom-domain.tsx
-msgid "Copy code"
-msgstr "Salin kode"
 
 #: src/features/document-menu/index.tsx
 msgid "Copy created"
@@ -3303,6 +3287,10 @@ msgstr "Versi tidak bisa dimuat"
 #: src/features/history/history.tsx
 msgid "Couldn't load versions."
 msgstr "Tidak dapat memuat versi."
+
+#: src/features/share/custom-domain.tsx
+msgid "Couldn't load your custom domain."
+msgstr "Tidak dapat memuat domain Anda."
 
 #: src/features/onboarding/onboarding-screen.tsx
 msgid "Couldn't load your details"
@@ -3560,6 +3548,10 @@ msgstr "Tidak dapat membagikan gambarnya. Coba lagi."
 #: src/features/workspace/tabs/practise.tsx
 msgid "Couldn't share the recording. Try again."
 msgstr "Tidak dapat membagikan rekaman. Coba lagi."
+
+#: src/features/auth/errors.ts
+msgid "Couldn't sign in with this account. If you don't have a Rezumi account yet, sign-ups may be turned off."
+msgstr "Tidak bisa masuk dengan akun ini. Bila kamu belum punya akun Rezumi, pendaftaran mungkin sedang ditutup."
 
 #: src/features/settings/sign-out.tsx
 msgid "Couldn't sign out. Try again."
@@ -4468,6 +4460,10 @@ msgstr "Edit"
 #: src/features/assistant/messages.tsx
 msgid "Edit {0}: {1}"
 msgstr "Sunting {0}: {1}"
+
+#: src/features/home/schedules.tsx
+msgid "Edit {name}"
+msgstr "Sunting {name}"
 
 #: src/features/application-detail/sheets.tsx
 msgid "Edit date"
@@ -5903,6 +5899,10 @@ msgstr "Simpan perubahanku"
 msgid "Keep on one page"
 msgstr "Tetap di satu halaman"
 
+#: src/features/entries/photo-field.tsx
+msgid "Keep photo"
+msgstr "Tetap pakai foto"
+
 #: src/features/document-menu/index.tsx
 msgid "Keep private notes about this resume here. Nobody else can see them."
 msgstr "Simpan catatan pribadi tentang resume ini di sini. Tidak ada orang lain yang bisa melihatnya."
@@ -6301,6 +6301,7 @@ msgid "Live at {url}"
 msgstr "Tersedia di {url}"
 
 #: src/features/design/design-pane.tsx
+#: src/features/home/recent-documents.tsx
 #: src/features/home/section.tsx
 #: src/features/onboarding/onboarding-screen.tsx
 #: src/features/profile/facts.tsx
@@ -6583,10 +6584,6 @@ msgstr "Cocok dengan resume"
 #: src/features/workspace/parts.tsx
 msgid "Matching your facts"
 msgstr "Mencocokkan fakta Anda"
-
-#: src/features/share/custom-domain.tsx
-msgid "May be available"
-msgstr "Mungkin tersedia"
 
 #: src/features/search/search-screen.tsx
 msgid "MCP"
@@ -6906,7 +6903,6 @@ msgid "Names, tags or applications"
 msgstr "Nama, tag, atau lamaran pekerjaan"
 
 #: src/features/design/preset-names.ts
-#: src/features/design/style-groups.tsx
 msgid "Narrow"
 msgstr "Sempit"
 
@@ -7627,10 +7623,14 @@ msgstr "Hanya satu versi sejauh ini. Setiap sesi pengeditan menambahkan satu sec
 msgid "Only providers that pass their test can be turned on."
 msgstr "Hanya penyedia yang lulus tes yang dapat diaktifkan."
 
-#. placeholder {0}: report.document.pageCount
+#. placeholder {0}: report.document.checkedPageCount
 #: src/features/ats-checker/checker.tsx
 msgid "Only the first {0} pages were checked."
 msgstr "Hanya halaman {0} pertama yang diperiksa."
+
+#: src/features/ats-checker/original-page.tsx
+msgid "Only the first {MAX_PAGES} pages are shown."
+msgstr "Hanya {MAX_PAGES} halaman pertama yang ditampilkan."
 
 #: src/features/check/parser.tsx
 msgid "Only the first 30 pages were checked."
@@ -8824,10 +8824,6 @@ msgstr "Segarkan briefing pada pagi harinya"
 msgid "Refund policy"
 msgstr "Kebijakan Pengembalian Dana"
 
-#: src/features/share/custom-domain.tsx
-msgid "Register at OlaCV"
-msgstr "Daftarkan di OlaCV"
-
 #: src/features/workspace/tabs/prepare.tsx
 msgid "Rehearse aloud"
 msgstr "Latih dengan bersuara"
@@ -8988,6 +8984,7 @@ msgstr "Hapus kata sandi?"
 msgid "Remove this file?"
 msgstr "Hapus berkas ini?"
 
+#: src/features/entries/photo-field.tsx
 #: src/features/write/picture-screen.tsx
 msgid "Remove this photo?"
 msgstr "Hapus foto ini?"
@@ -9248,6 +9245,7 @@ msgstr "Mengambil {0} menggunakan {1}. Waktu pengambilan tidak menentukan kesega
 #: src/features/profile/preferences.tsx
 #: src/features/profile/save-note.tsx
 #: src/features/profile/stories.tsx
+#: src/features/share/custom-domain.tsx
 #: src/features/share/download.tsx
 #: src/features/share/export-screen.tsx
 #: src/features/share/link.tsx
@@ -9394,10 +9392,6 @@ msgstr "Rezumi AI: {0}, sisa {1}. Bila gagal, kredit dikembalikan."
 #: src/shell/permissions.tsx
 msgid "Rezumi can't ask again. Turn it on for Rezumi in your device's Settings, then try again."
 msgstr "Rezumi tidak bisa meminta lagi. Nyalakan untuk Rezumi di Pengaturan perangkatmu, lalu coba lagi."
-
-#: src/shell/permissions.tsx
-msgid "Rezumi opens your photos only to pick the one you choose. You can change this any time in Settings."
-msgstr "Rezumi membuka fotomu hanya untuk mengambil yang kamu pilih. Kamu bisa mengubahnya kapan saja di Pengaturan."
 
 #: src/shell/permissions.tsx
 msgid "Rezumi records only while you answer a practice question, to turn your answer into text. You can change this any time in Settings."
@@ -9816,10 +9810,6 @@ msgstr "Bagian · pesanan cetak"
 msgid "Sections use headings systems recognize, and work experience shows."
 msgstr "Bagian menggunakan judul yang dikenali sistem, dan pengalaman kerja ditampilkan."
 
-#: src/features/share/custom-domain.tsx
-msgid "See plans"
-msgstr "Lihat paket"
-
 #: src/features/onboarding/intro-screen.tsx
 msgid "See where each one stands, get new roles that fit you, and never miss an interview."
 msgstr "Lihat posisi tiap lamaran, dapatkan lowongan baru yang cocok, dan jangan lewatkan wawancara."
@@ -9850,10 +9840,6 @@ msgstr "Pilih entri {0}"
 #: src/features/applications/list-screen.tsx
 msgid "Select visible"
 msgstr "Pilih terlihat"
-
-#: src/features/share/export-options.tsx
-msgid "Selected"
-msgstr "Dipilih"
 
 #: src/preview/page.tsx
 msgid "Selected entry"
@@ -10246,6 +10232,7 @@ msgid "Sign in"
 msgstr "Masuk"
 
 #: src/auth/session-gate.tsx
+#: src/features/auth/two-factor-screen.tsx
 #: src/features/check/screen.tsx
 msgid "Sign in again"
 msgstr "Masuk lagi"
@@ -10630,10 +10617,6 @@ msgstr "Mulailah dengan nama Anda. Bangun dari sana."
 #: src/features/home/coming-up.tsx
 msgid "Started"
 msgstr "Sudah dimulai"
-
-#: src/features/home/coming-up.tsx
-msgid "Starts in {minutes} minutes"
-msgstr "Dimulai dalam {minutes} menit"
 
 #: src/features/workspace/tabs/prepare.tsx
 msgid "Starts now"
@@ -11162,6 +11145,10 @@ msgstr "Akhir adalah sebelum permulaan."
 msgid "The file couldn't be read as a resume."
 msgstr "File tidak dapat dibaca sebagai resume."
 
+#: src/features/entries/photo-field.tsx
+msgid "The file is deleted. Resumes that show this photo lose it too."
+msgstr "Filenya dihapus. CV yang menampilkan foto ini juga kehilangannya."
+
 #: src/features/onboarding/read-file.ts
 msgid "The file is too large. Choose one up to 10 MB."
 msgstr "File terlalu besar. Pilih yang maksimal 10 MB."
@@ -11497,8 +11484,8 @@ msgid "This file couldn't be read. Choose a PDF, Word, JSON or LinkedIn export (
 msgstr "File ini tidak dapat dibaca. Pilih ekspor PDF, Word, JSON atau LinkedIn (.zip)."
 
 #: src/features/ats-checker/original-page.tsx
-msgid "This file couldn't be shown as pages. The report above still applies."
-msgstr "File ini tidak dapat ditampilkan sebagai halaman. Laporan di atas masih berlaku."
+msgid "This file couldn't be shown as pages. The report still applies."
+msgstr "File ini tidak dapat ditampilkan sebagai halaman. Laporannya tetap berlaku."
 
 #: src/features/ats-checker/messages.ts
 msgid "This file declares no language."
@@ -11591,6 +11578,10 @@ msgstr "Surat ini dan CV Anda sebagai dua PDF, dengan nama yang serasi."
 #: src/draft/conflict-sheet.tsx
 msgid "This letter changed elsewhere"
 msgstr "Surat lamaran ini diubah di tempat lain"
+
+#: src/features/letters/share.tsx
+msgid "This letter has no resume anymore. Choose another format."
+msgstr "Surat ini tidak lagi punya CV. Pilih format lain."
 
 #: src/features/letters/design.tsx
 #: src/features/letters/write.tsx
@@ -11871,6 +11862,10 @@ msgstr "Terlalu banyak permintaan. Coba lagi nanti."
 msgid "Too many tries in a short time. Wait a minute, then try again."
 msgstr "Terlalu banyak percobaan dalam waktu singkat. Tunggu sebentar, lalu coba lagi."
 
+#: src/features/auth/errors.ts
+msgid "Too many wrong codes. Wait a few minutes, then sign in again."
+msgstr "Terlalu banyak kode yang salah. Tunggu beberapa menit, lalu masuk lagi."
+
 #: src/features/auth/create-account-screen.tsx
 msgid "Too short"
 msgstr "Terlalu pendek"
@@ -12010,10 +12005,6 @@ msgstr "Coba pembuka ini"
 #: src/features/documents/new-document.tsx
 msgid "Try with a sample resume"
 msgstr "Coba dengan contoh resume"
-
-#: src/features/auth/welcome-screen.tsx
-msgid "Try without an account"
-msgstr "Coba tanpa akun"
 
 #: src/features/settings/locale-names.ts
 msgid "Turkish"
@@ -12885,7 +12876,6 @@ msgid "Why do you want this role at {company}?"
 msgstr "Mengapa Anda menginginkan posisi ini di {company}?"
 
 #: src/features/design/preset-names.ts
-#: src/features/design/style-groups.tsx
 msgid "Wide"
 msgstr "Lebar"
 
@@ -13290,10 +13280,6 @@ msgstr "Nama dan kontak Anda mengikuti “{0}”."
 msgid "Your name and contact details follow your Profile."
 msgstr "Nama dan kontak Anda mengikuti Profil Anda."
 
-#: src/features/share/custom-domain.tsx
-msgid "Your name as your address, from OlaCV, the .cv registry. Code {CODE} takes 50% off the first year."
-msgstr "Nama Anda sebagai alamat Anda, dari OlaCV, registri .cv. Kode {CODE} memberi diskon 50% untuk tahun pertama."
-
 #: src/features/check/issues.ts
 msgid "Your name is missing"
 msgstr "Namamu hilang"
@@ -13351,10 +13337,6 @@ msgstr "Nomor telepon Anda ditulis dalam bentuk yang tidak biasa."
 #: src/features/billing/plan-card.tsx
 msgid "Your plan"
 msgstr "Paketmu"
-
-#: src/features/share/custom-domain.tsx
-msgid "Your plan no longer includes a custom domain. Renew it and the domain comes back by itself."
-msgstr "Paket Anda tidak lagi mencakup domain sendiri. Perpanjang paket dan domain aktif kembali dengan sendirinya."
 
 #: app/(tabs)/portfolio/index.tsx
 msgid "Your portfolio is coming to the app"

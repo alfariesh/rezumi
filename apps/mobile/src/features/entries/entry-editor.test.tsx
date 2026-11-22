@@ -3,9 +3,11 @@
 import type { ProfileData } from "@rezumi/schema/profile/data";
 import { fireEvent, screen } from "@testing-library/react-native";
 import { QueryClient } from "@tanstack/react-query";
+import Storage from "expo-sqlite/kv-store";
 import { emptyProfileData } from "@rezumi/schema/profile/data";
 import { EntryEditor } from "./entry-editor";
 import { WriteSourceProvider } from "./source";
+import { clearPendingProfile } from "@/features/profile/pending";
 import { profileWriteSource } from "@/features/profile/source";
 import { closeProfile, openProfile, useProfileEditor } from "@/features/profile/store";
 import { renderScreen } from "@/test/render-screen";
@@ -19,7 +21,10 @@ jest.mock("react-native-enriched-html", () => {
 });
 jest.mock("@/auth/session", () => ({
 	useSession: () => ({ status: "signed-in", server: "https://rezumi.app" }),
+	getSession: () => ({ status: "signed-in", server: "https://rezumi.app" }),
 	getServer: () => "https://rezumi.app",
+	getAccountScope: () => '["https://rezumi.app","user-1"]',
+	subscribeSession: () => () => undefined,
 }));
 jest.mock("@/api/client", () => ({
 	client: { profile: { get: jest.fn(), update: () => new Promise(() => undefined) } },
@@ -63,6 +68,7 @@ const companies = () => useProfileEditor.getState().data?.sections.experience.it
 beforeEach(() => {
 	jest.clearAllMocks();
 	closeProfile();
+	clearPendingProfile(Storage, '["https://rezumi.app","user-1"]');
 	open();
 });
 

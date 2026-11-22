@@ -23,7 +23,7 @@ import { getStageColor, getStageLabel } from "@/features/applications/stages";
 import { routes } from "@/routes";
 import { useWorkspaceChrome } from "@/shell/workspace-chrome";
 import { Banner, Button, EmptyState, Screen, Text, useTheme } from "@/ui-legacy";
-import { useKeyboardScrollSpace } from "@/ui-legacy/keyboard";
+import { useKeyboardScrollSpace } from "@/ui/keyboard";
 
 export type WorkspaceSearch = { version?: string; speak?: boolean; story?: string };
 

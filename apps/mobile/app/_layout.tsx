@@ -1,5 +1,6 @@
 import "../global.css";
 import type { DefaultTheme } from "expo-router";
+import type { ReactNode } from "react";
 import { I18nProvider } from "@lingui/react";
 import { useLingui } from "@lingui/react/macro";
 import { TrueSheetProvider } from "@lodev09/react-native-true-sheet";
@@ -9,7 +10,7 @@ import { Stack, ThemeProvider } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
 import { HeroUINativeProvider } from "heroui-native";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { KeyboardProvider } from "react-native-keyboard-controller";
 import { SafeAreaProvider } from "react-native-safe-area-context";
@@ -21,7 +22,15 @@ import { useReviewPrompt } from "@/features/reviews/use-review-prompt";
 import { i18n, initI18n } from "@/i18n";
 import { ErrorBoundary } from "@/shell/error-boundary";
 import { PermissionPrimerHost } from "@/shell/permissions";
-import { ToastBridge, WindowSafeAreaProvider, useColorSchemeValue, useReducedMotion, useThemeColor } from "@/ui";
+import {
+	ToastBridge,
+	WindowSafeAreaProvider,
+	toastBottomOffset,
+	useColorSchemeValue,
+	useReducedMotion,
+	useThemeColor,
+	useToastBarHeight,
+} from "@/ui";
 import { EmptyState, Screen, Toaster } from "@/ui-legacy";
 import { fontAssets } from "@/ui/fonts";
 import { initTheme } from "@/ui/theme";
@@ -110,6 +119,22 @@ function RootStack() {
 	);
 }
 
+type UiProviderProps = { children: ReactNode };
+
+// HeroUI's toast region clears the bottom bar that shows (tab bar, editor pane bar; the legacy Toaster reads the same
+// height), so an Undo toast never covers a tab. Only this wrapper re-renders when the height changes.
+function UiProvider({ children }: UiProviderProps) {
+	const bar = useToastBarHeight();
+	const config = useMemo(
+		() => ({
+			devInfo: { stylingPrinciples: false },
+			toast: bar > 0 ? { insets: { bottom: toastBottomOffset(bar, 0) } } : {},
+		}),
+		[bar],
+	);
+	return <HeroUINativeProvider config={config}>{children}</HeroUINativeProvider>;
+}
+
 function RootLayout() {
 	const [fontsLoaded, fontError] = useFonts(fontAssets);
 	const [ready, setReady] = useState(false);
@@ -131,7 +156,7 @@ function RootLayout() {
 
 	return (
 		<GestureHandlerRootView style={{ flex: 1 }}>
-			<HeroUINativeProvider config={{ devInfo: { stylingPrinciples: false } }}>
+			<UiProvider>
 				<SafeAreaProvider>
 					<WindowSafeAreaProvider>
 						<KeyboardProvider>
@@ -151,7 +176,7 @@ function RootLayout() {
 						</KeyboardProvider>
 					</WindowSafeAreaProvider>
 				</SafeAreaProvider>
-			</HeroUINativeProvider>
+			</UiProvider>
 		</GestureHandlerRootView>
 	);
 }

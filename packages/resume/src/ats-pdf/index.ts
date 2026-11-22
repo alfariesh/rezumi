@@ -124,6 +124,7 @@ export function analyzePdfResume(raw: RawExtraction, options: AnalyzePdfOptions 
 		file: raw.file,
 		document: {
 			pageCount: raw.pageCount,
+			checkedPageCount: raw.pages.length,
 			truncated: raw.truncated,
 			wordCount: doc.wordCount,
 			operatorsAvailable: raw.operatorsAvailable,

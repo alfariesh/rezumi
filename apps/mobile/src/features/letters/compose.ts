@@ -2,6 +2,7 @@ import type { LetterDocument } from "@/draft/types";
 import type { LetterWords } from "@rezumi/resume/cover-letter";
 import { useQuery } from "@tanstack/react-query";
 import { composeCoverLetter, createCoverLetterResumeData } from "@rezumi/resume/cover-letter";
+import { getDefaultFileName } from "@rezumi/utils/file-name";
 import { letterWords } from "@/features/share/letter";
 
 /** Greeting, sign-off and date in the letter's own language, independent of the app's. */
@@ -18,6 +19,10 @@ type ComposableLetter = Parameters<typeof composeCoverLetter>[0] & Pick<LetterDo
 /** The letter as a one-section document the PDF renderer draws: sender header, recipient, greeting, body, sign-off. */
 export const letterPageData = (letter: ComposableLetter, words: LetterWords) =>
 	createCoverLetterResumeData({ ...letter, ...composeCoverLetter(letter, words) });
+
+/** "First-Last-Cover-Letter" from the sender's name, as the web names it (`letterFileName`). */
+export const letterFileName = (letter: Pick<LetterDocument, "name" | "style">) =>
+	getDefaultFileName({ name: letter.name, data: { basics: letter.style.basics } }, "cover-letter");
 
 /** Renders the sender's details above the letter, as web's `includeCoverLetterHeader`. Stable for the scheduler. */
 export const LETTER_RENDER_OPTIONS = { includeCoverLetterHeader: true } as const;

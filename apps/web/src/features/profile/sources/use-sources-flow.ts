@@ -90,7 +90,7 @@ export function useSourcesFlow({ base, availability, accountImage, github = "" }
 	};
 }
 
-export type SourcesFlow = ReturnType<typeof useSourcesFlow>;
+type SourcesFlow = ReturnType<typeof useSourcesFlow>;
 
 /** The reviewed Profile with the kept photo copied into the account's uploads (`withKeptPhoto`). */
 export const finishReview = (flow: SourcesFlow, copied: Map<string, string>) =>

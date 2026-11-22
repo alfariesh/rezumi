@@ -146,7 +146,7 @@ export function WebPageSettings({ resume, offline, username, origin, flags, oper
 					/>
 				) : null}
 			</ListSection>
-			{flags?.customDomains ? <CustomDomain offline={offline} suggest={flags.olacvSuggestion ?? false} /> : null}
+			{flags?.customDomains ? <CustomDomain offline={offline} /> : null}
 
 			<ListSection
 				title={t`Web page`}

@@ -401,6 +401,8 @@ export type PdfAtsReport = {
 	file: RawExtraction["file"];
 	document: {
 		pageCount: number;
+		/** The pages this report covers: all of them, or the first ones when `truncated`. */
+		checkedPageCount: number;
 		truncated: boolean;
 		wordCount: number;
 		operatorsAvailable: boolean;

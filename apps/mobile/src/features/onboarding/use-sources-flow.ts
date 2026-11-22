@@ -14,7 +14,7 @@ import type {
 } from "@rezumi/resume/profile-sources";
 import type { ProfileData } from "@rezumi/schema/profile/data";
 import type { SourceResult } from "@rezumi/schema/profile/sources";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
 	applyReview,
 	clearEditedProblems,
@@ -78,6 +78,22 @@ export function useSourcesFlow({ base, availability, accountImage, github, aiAva
 	// This render's reader: a connection set up meanwhile counts for the next run or retry.
 	const read = (request: SourceRequest<PickedFile>) => fetchSource(request, aiAvailable);
 
+	// The restored file's result is asked for again under its own key, so the runner keeps it as found.
+	const restoredFileRequest = (): SourceRequest<PickedFile>[] =>
+		restoredFile && !inputs.file && runs.file ? [{ id: "file", key: runs.file.key, file: { name: "", uri: "" } }] : [];
+
+	// A run picked up again: sources still being read when the app closed are read again from what was entered
+	// (alongside the finished ones, which the runner keeps). A file can't be: it's chosen again on the first step.
+	useEffect(() => {
+		if (!restore?.rerun.length) return;
+		const { requests } = readSourceInputs(inputs, availability);
+		const again = requests.filter((request) => request.id !== "file" && restore.rerun.includes(request.id));
+		if (again.length === 0) return;
+		const kept = requests.filter((request) => restore.runs[request.id]?.status === "done");
+		runner.run([...restoredFileRequest(), ...kept, ...again], read);
+		// oxlint-disable-next-line react-hooks/exhaustive-deps -- once, for the run as it was restored
+	}, []);
+
 	const merged = mergeSourceResults(base, runs);
 	const groups = reviewGroups(base, merged);
 	const photos = photoCandidates(base, runs, accountImage);
@@ -109,12 +125,7 @@ export function useSourcesFlow({ base, availability, accountImage, github, aiAva
 			const { requests, problems: found } = readSourceInputs(inputs, availability);
 			setProblems(found);
 			if (Object.keys(found).length > 0) return found;
-			// The restored file's result is asked for again under its own key, so the runner keeps it as found.
-			const restored: SourceRequest<PickedFile>[] =
-				restoredFile && !inputs.file && runs.file
-					? [{ id: "file", key: runs.file.key, file: { name: "", uri: "" } }]
-					: [];
-			runner.run([...restored, ...requests], read);
+			runner.run([...restoredFileRequest(), ...requests], read);
 			return null;
 		},
 		/** Goes on with no source: nothing runs or gets merged. */
@@ -125,15 +136,19 @@ export function useSourcesFlow({ base, availability, accountImage, github, aiAva
 		retry: (id: SourceId) => runner.retry(id, read),
 		setExcluded,
 		setPhoto: setPhotoChoice,
-		/** The reviewed Profile with the kept photo copied into the account's uploads. */
-		finish: (copied: Map<string, string>) =>
+		/**
+		 * The reviewed Profile with the kept photo copied into the account's uploads. `onto` is the Profile to add to
+		 * when it changed since the review was built (saved elsewhere meanwhile): what was found and kept goes onto it, so
+		 * nothing saved in between is lost, and a photo set in between stays.
+		 */
+		finish: (copied: Map<string, string>, onto: ProfileData = base) =>
 			withKeptPhoto(
-				applyReview(base, merged, excluded),
-				photos.find((candidate: PhotoCandidate) => candidate.url === photo) ?? null,
+				applyReview(onto, onto === base ? merged : mergeSourceResults(onto, runs), excluded),
+				onto.picture.url === base.picture.url
+					? (photos.find((candidate: PhotoCandidate) => candidate.url === photo) ?? null)
+					: null,
 				copied,
 				async (url) => (await client.profile.sources.adoptPhoto({ url })).url,
 			),
 	};
 }
-
-export type SourcesFlow = ReturnType<typeof useSourcesFlow>;

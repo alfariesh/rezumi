@@ -28,7 +28,7 @@ import {
 import { entryHeaderLayouts, entryHeaderOf, iconDesignOf } from "@rezumi/schema/resume/data";
 import { localeSchema } from "@rezumi/utils/locale";
 import { Field, Slider, SwitchRow } from "./controls";
-import { ACCENT_NAMES, PAIRING_NAMES } from "./preset-names";
+import { ACCENT_NAMES, MARGIN_NAMES, PAIRING_NAMES } from "./preset-names";
 import { canShowPlans, hasPlanFeature, showPlanAlert, usePlan } from "@/features/billing/plan";
 import { localeMap } from "@/features/settings/locale-names";
 import { Button, Icon, IconButton, Segmented, Text, haptics, listLayout, useTheme } from "@/ui-legacy";
@@ -545,11 +545,10 @@ export function PageGroup({ data, write, disabled, pick }: GroupProps) {
 				<Segmented<MarginId | "">
 					label={t`Margins`}
 					value={margins ?? ""}
-					options={[
-						{ value: "narrow", label: t`Narrow` },
-						{ value: "normal", label: t`Normal` },
-						{ value: "wide", label: t`Wide` },
-					]}
+					options={(["narrow", "normal", "wide"] as const).map((id) => ({
+						value: id,
+						label: i18n._(MARGIN_NAMES[id]),
+					}))}
 					onChange={(value) => {
 						if (!disabled && value) write("margins", (draft) => applyMargins(draft.metadata, value), true);
 					}}

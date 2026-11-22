@@ -24,10 +24,10 @@ import * as schema from "@rezumi/db/schema";
 import { env } from "@rezumi/env/server";
 
 /** The host the official apps are associated with (Universal Links / App Links). */
-export const OFFICIAL_APP_HOST = "rezumi.app";
+const OFFICIAL_APP_HOST = "rezumi.app";
 
 /** The path the apps receive OAuth redirects on. */
-export const NATIVE_CALLBACK_PATH = "/auth/native-callback";
+const NATIVE_CALLBACK_PATH = "/auth/native-callback";
 
 /**
  * The redirect URIs Rezumi's mobile apps register (apps/mobile/src/auth/oauth.ts): the official host's callback, this
@@ -47,20 +47,12 @@ export function nativeAppRedirectUris(
 }
 
 /** The scopes the app asks for; consent covers no more than the client registered. */
-export const NATIVE_APP_SCOPES = [
-	"openid",
-	"profile",
-	"email",
-	"offline_access",
-	"api:read",
-	"api:write",
-	"api:delete",
-];
+const NATIVE_APP_SCOPES = ["openid", "profile", "email", "offline_access", "api:read", "api:write", "api:delete"];
 
 /** A session older than this cannot be turned into app tokens: sign in again. */
-export const NATIVE_SESSION_MAX_AGE_MS = 10 * 60 * 1000;
+const NATIVE_SESSION_MAX_AGE_MS = 10 * 60 * 1000;
 
-export const nativeAppRateLimit = { window: 60, max: 10 } as const;
+const nativeAppRateLimit = { window: 60, max: 10 } as const;
 
 type NativeAppOptions = {
 	/** The OAuth resources (audiences) the server accepts; consent may name only these. */

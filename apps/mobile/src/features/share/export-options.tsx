@@ -3,7 +3,7 @@
 import type { IconName } from "@/ui";
 import { useLingui } from "@lingui/react/macro";
 import { View } from "react-native";
-import { Alert, Description, Icon, Input, Label, ListRow, ListSection, Text, TextField } from "@/ui";
+import { Alert, Description, Input, Label, ListRow, ListSection, Text, TextField } from "@/ui";
 
 export type FormatOption<Id extends string> = {
 	id: Id;
@@ -31,23 +31,19 @@ export function FormatList<Id extends string>({ title, options, value, disabled,
 	const { t } = useLingui();
 	return (
 		<ListSection title={title}>
-			{options.map((option) => {
-				const selected = option.id === value;
-				return (
-					<ListRow
-						key={option.id}
-						testID={`export-format-${option.id}`}
-						icon={option.locked ? "lock" : option.icon}
-						title={option.locked ? t`${option.label} · Plus` : option.label}
-						description={`${option.description} (${option.extension})`}
-						isDisabled={disabled || option.unavailable}
-						chevron={false}
-						trailing={selected ? <Icon name="check" tone="accent" /> : undefined}
-						accessibilityHint={selected ? t`Selected` : undefined}
-						onPress={() => onChange(option.id)}
-					/>
-				);
-			})}
+			{options.map((option) => (
+				<ListRow
+					key={option.id}
+					testID={`export-format-${option.id}`}
+					icon={option.locked ? "lock" : option.icon}
+					title={option.locked ? t`${option.label} · Plus` : option.label}
+					description={`${option.description} (${option.extension})`}
+					isDisabled={disabled || option.unavailable}
+					chevron={false}
+					isSelected={option.id === value}
+					onPress={() => onChange(option.id)}
+				/>
+			))}
 		</ListSection>
 	);
 }

@@ -13,7 +13,7 @@ import { describeEntry, getSectionKind, getSectionType, getPrimaryField, isDraft
 import { RichTextField, RichTextToolbar } from "./rich-text-field";
 import { useIsResumeLocked, useResumeStore } from "@/draft";
 import { Banner, EmptyState, IconButton, Text, useTheme } from "@/ui-legacy";
-import { useKeyboardScrollSpace } from "@/ui-legacy/keyboard";
+import { useKeyboardScrollSpace } from "@/ui/keyboard";
 
 type EditorScreenProps = { title: string; backTitle?: string | undefined; right?: ReactNode; children: ReactNode };
 

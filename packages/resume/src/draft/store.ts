@@ -7,7 +7,17 @@ import { generateId } from "@rezumi/utils/string";
 import { joinsUndoStep, MAX_HISTORY_ENTRIES, pushBounded } from "./history";
 
 type Document = { id: string; isLocked: boolean };
-type Record<D> = { baseline: D; document: D; sessionId: string; copyId?: string };
+type Record<D> = {
+	baseline: D;
+	document: D;
+	sessionId: string;
+	copyId?: string;
+	/**
+	 * Documents sent whose outcome is unknown (the request failed without an answer), oldest first. A write can land
+	 * without its response; these recognise it afterwards instead of reporting the user's own text as a conflict.
+	 */
+	sent?: D[] | undefined;
+};
 
 export type DraftAdapter<D extends Document, T> = {
 	kind: "resume" | "letter";
@@ -38,6 +48,9 @@ export type DraftEnvironment = {
 	online: () => boolean;
 	focused: () => boolean;
 };
+
+/** Unanswered submissions kept to recognise a landed write; older ones are superseded by later typing anyway. */
+const MAX_UNCONFIRMED = 3;
 
 const emptyState = {
 	document: null,
@@ -177,11 +190,20 @@ export function createDraftStore<D extends Document, T>(
 			const document = adapter.parse(value.document);
 			if (baseline.id !== document.id || !storageKey.endsWith(`:${adapter.kind}:${document.id}`))
 				throw new Error("Invalid draft identity.");
+			let sent: D[] | undefined;
+			try {
+				sent = Array.isArray(value.sent) ? value.sent.map((entry) => adapter.parse(entry)) : undefined;
+				if (sent?.some((entry) => entry.id !== document.id)) sent = undefined;
+			} catch {
+				// Only a hint for recognising a landed write; an unreadable one must not discard the draft.
+				sent = undefined;
+			}
 			return {
 				baseline,
 				document,
 				sessionId: value.sessionId,
 				...(typeof value.copyId === "string" ? { copyId: value.copyId } : {}),
+				...(sent ? { sent } : {}),
 			};
 		} catch {
 			// A corrupt record cannot be restored; it must not permanently block the server copy.
@@ -192,6 +214,17 @@ export function createDraftStore<D extends Document, T>(
 			}
 			return null;
 		}
+	}
+
+	/**
+	 * When the server copy equals what this draft last sent (or holds now), an earlier write landed without its
+	 * response. Returns the draft rebased on that copy, keeping anything typed since; null for a real conflict.
+	 */
+	function rebaseOnLanded(draft: Record<D>, remote: D): D | null {
+		const submitted = [...[...(draft.sent ?? [])].reverse(), draft.document].find((candidate) =>
+			adapter.matches(remote, candidate),
+		);
+		return submitted ? adapter.merge(remote, submitted, draft.document) : null;
 	}
 
 	async function currentOwner() {
@@ -231,12 +264,19 @@ export function createDraftStore<D extends Document, T>(
 			if (!record) {
 				record = { document: remote, baseline: remote, sessionId: generateId() };
 				publish(remote);
-			} else if (adapter.version(remote) < adapter.version(record.baseline)) {
 				return;
-			} else if (adapter.matches(remote, record.document) || (restored && adapter.matches(remote, restored))) {
-				// The write may have succeeded without its response. Keep anything typed during this read.
-				record.document = adapter.merge(remote, restored ?? record.document, record.document);
+			}
+			// The write may have succeeded without its response: the server copy equals what was sent or restored.
+			const landed = [restored, ...[...(record.sent ?? [])].reverse(), record.document].find(
+				(candidate) => candidate !== undefined && adapter.matches(remote, candidate),
+			);
+			if (adapter.version(remote) < adapter.version(record.baseline)) {
+				return;
+			} else if (landed) {
+				// Keep anything typed during this read.
+				record.document = adapter.merge(remote, landed, record.document);
 				record.baseline = remote;
+				record.sent = undefined;
 				dirty = !adapter.matches(remote, record.document);
 				publish(record.document);
 				store.setState({ conflict: null, status: dirty ? "saving" : "saved" });
@@ -336,7 +376,12 @@ export function createDraftStore<D extends Document, T>(
 			await inflight;
 			return flush();
 		}
-		if (!record || !dirty || state().conflict || state().locked) return;
+		if (!record || !dirty || state().conflict) return;
+		if (state().locked) {
+			// The edits can't be sent while the document is locked; they stay on the device and go out on unlock.
+			store.setState({ status: "error" });
+			return;
+		}
 		if (!env.online()) {
 			store.setState({ status: durable ? "offline" : "error" });
 			return;
@@ -344,40 +389,66 @@ export function createDraftStore<D extends Document, T>(
 		const active = record;
 		const visit = generation;
 		inflight = (async () => {
-			try {
-				if (!(await currentOwner()) || visit !== generation) return;
-				store.setState({ status: "saving" });
-				while (dirty && record === active && !state().conflict && !state().locked) {
-					const submitted = active.document;
-					const saved = await adapter.save(submitted, active.baseline, active.sessionId, force, scope ?? "");
+			// Runs again only after recognising a landed write, which always advances the baseline.
+			for (let rebased = true; rebased;) {
+				rebased = false;
+				try {
 					if (!(await currentOwner()) || visit !== generation) return;
-					force = false;
-					active.baseline = saved;
-					dirty = active.document !== submitted;
-					// Only local fields changed since submission overlay the server echo. Server-owned
-					// revision/lock metadata always comes from the save, and typing keeps its references.
-					active.document = adapter.merge(saved, submitted, active.document);
-					publish(active.document);
-					if (dirty) persist();
-					else {
-						removeStored(key());
-						store.setState({ status: "saved" });
+					store.setState({ status: "saving" });
+					while (dirty && record === active && !state().conflict && !state().locked) {
+						const submitted = active.document;
+						active.sent = [...(active.sent ?? []).slice(-(MAX_UNCONFIRMED - 1)), submitted];
+						persist();
+						const saved = await adapter.save(submitted, active.baseline, active.sessionId, force, scope ?? "");
+						if (!(await currentOwner()) || visit !== generation) return;
+						force = false;
+						active.baseline = saved;
+						active.sent = undefined;
+						dirty = active.document !== submitted;
+						// Only local fields changed since submission overlay the server echo. Server-owned
+						// revision/lock metadata always comes from the save, and typing keeps its references.
+						active.document = adapter.merge(saved, submitted, active.document);
+						publish(active.document);
+						if (dirty) persist();
+						else {
+							removeStored(key());
+							store.setState({ status: "saved" });
+						}
+						if (!env.online()) break;
 					}
-					if (!env.online()) break;
-				}
-			} catch (error) {
-				if (record !== active || visit !== generation) return;
-				store.setState({ status: env.online() ? "error" : "offline" });
-				if (adapter.isConflict(error)) {
-					try {
-						const remote = await adapter.read(active.document.id);
-						if ((await currentOwner()) && record === active && visit === generation)
-							store.setState({ conflict: { remote }, locked: remote.isLocked });
-					} catch {
-						/* Retry fetches the conflict again; the local draft stays intact. */
+					if (dirty && record === active && state().locked) store.setState({ status: "error" });
+				} catch (error) {
+					if (record !== active || visit !== generation) return;
+					store.setState({ status: env.online() ? "error" : "offline" });
+					if (adapter.isConflict(error)) {
+						// The version check rejected this submission, so it certainly did not land.
+						active.sent = active.sent?.slice(0, -1);
+						try {
+							const remote = await adapter.read(active.document.id);
+							if (!(await currentOwner()) || record !== active || visit !== generation) return;
+							const document =
+								adapter.version(remote) > adapter.version(active.baseline) ? rebaseOnLanded(active, remote) : null;
+							if (document) {
+								// An earlier write landed without its response (the version check fails on its stale
+								// baseline): adopt the server copy and send only what was typed since.
+								active.baseline = remote;
+								active.document = document;
+								active.sent = undefined;
+								dirty = !adapter.matches(remote, document);
+								publish(document);
+								if (dirty) rebased = true;
+								else {
+									removeStored(key());
+									store.setState({ status: "saved" });
+									return;
+								}
+							} else store.setState({ conflict: { remote }, locked: remote.isLocked });
+						} catch {
+							/* Retry fetches the conflict again; the local draft stays intact. */
+						}
 					}
+					persist();
 				}
-				persist();
 			}
 		})().finally(() => {
 			inflight = null;
@@ -440,7 +511,14 @@ export function createDraftStore<D extends Document, T>(
 		if (adapter.version(remote) <= adapter.version(active.baseline)) return;
 		// Never advance the baseline of unsaved data in response to SSE (including our own echo).
 		if (dirty || inflight) {
+			const unlocked = state().locked && !remote.isLocked;
 			store.setState({ locked: remote.isLocked });
+			if (unlocked && dirty && !inflight) {
+				// Edits held back by the lock go out now. When only the lock changed on the server, the newer copy is
+				// the same content this draft started from, so the save must not fail its version check.
+				if (adapter.matches(remote, active.baseline)) active.baseline = remote;
+				void flush();
+			}
 			return;
 		}
 		if (editing || env.focused()) {
@@ -473,16 +551,40 @@ export function createDraftStore<D extends Document, T>(
 		if (visit !== queueGeneration) return;
 		for (const storageKey of new Set([...env.storage.getAllKeysSync(), ...pending.keys()])) {
 			if (!storageKey.startsWith(prefix(owner)) || storageKey === (record && scope ? key() : null)) continue;
+			let queued: Record<D> | null = null;
 			try {
-				const queued = readStored(storageKey);
+				queued = readStored(storageKey);
 				if (!queued) continue;
 				if ((await env.scope()) !== owner || visit !== queueGeneration) return;
 				await adapter.save(queued.document, queued.baseline, queued.sessionId, false, owner);
 				if (visit !== queueGeneration) return;
 				removeStored(storageKey);
-			} catch {
+			} catch (error) {
+				if (queued && adapter.isConflict(error) && visit === queueGeneration) {
+					const outcome = await replayLanded(storageKey, queued, owner, visit);
+					if (outcome === "stop") return;
+				}
 				/* Conflicts, locked documents and failures stay queued until opened. */
 			}
+		}
+	}
+
+	/** A replayed draft hit a version conflict: if its earlier write landed, send what was typed since and drop it. */
+	async function replayLanded(storageKey: string, queued: Record<D>, owner: string, visit: number) {
+		try {
+			const remote = await adapter.read(queued.document.id);
+			if ((await env.scope()) !== owner || visit !== queueGeneration) return "stop";
+			if (adapter.version(remote) <= adapter.version(queued.baseline)) return "kept";
+			const document = rebaseOnLanded(queued, remote);
+			if (!document) return "kept";
+			if (!adapter.matches(remote, document)) {
+				await adapter.save(document, remote, queued.sessionId, false, owner);
+				if (visit !== queueGeneration) return "stop";
+			}
+			removeStored(storageKey);
+			return "sent";
+		} catch {
+			return "kept";
 		}
 	}
 

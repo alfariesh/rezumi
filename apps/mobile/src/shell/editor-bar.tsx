@@ -1,8 +1,10 @@
 // The editor's bottom bar (Write / Page / Design / Check): the cells and the stretching marker on its top rule. Kept
-// from the old tab bar for the builder chrome until the builder is rebuilt (Phase 07).
+// from the old tab bar for the builder chrome until Phase 07 step 8 rebuilds it on src/ui (design-guard.legacy.json
+// lists it until then).
 import type { IconName } from "@/ui-legacy";
 import type { ReactNode } from "react";
-import { Children, useEffect, useState } from "react";
+import { useIsFocused } from "expo-router";
+import { Children, useEffect, useRef, useState } from "react";
 import { I18nManager, Platform, Pressable, View } from "react-native";
 import Animated, {
 	useAnimatedStyle,
@@ -13,31 +15,23 @@ import Animated, {
 } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Icon, Text, haptics, useReducedMotion, useTheme } from "@/ui-legacy";
-import { useKeyboardVisible } from "@/ui-legacy/keyboard";
+import { useKeyboardVisible } from "@/ui/keyboard";
+import { setToastBarHeight } from "@/ui/toast";
 
-// The active-tab marker on the bar's top rule; Android tab cells are 64 tall.
+// The active-tab marker on the bar's top rule; tab cells are 52 tall on iOS and 64 on Android, the glyph row 26.
 const railMarker = { width: 28, height: 3 };
 // The edge moving toward the new tab arrives first; the other catches up with a little overshoot, so the marker stretches.
 const leadingEdge = { duration: 260, dampingRatio: 0.8 };
 const trailingEdge = { duration: 420, dampingRatio: 0.62 };
+const iosTabHeight = 52;
 const androidTabHeight = 64;
+const glyphRowHeight = 26;
 const badgeMinWidth = 18;
 
-/** `quiet`: a grey count. `accent`: unread. `warn`: open issues on Check. */
-type BadgeTone = "quiet" | "accent" | "warn";
+type BadgeProps = { value: string | number };
 
-const badgeColors = {
-	quiet: { background: "sunken", text: "ink2" },
-	accent: { background: "accent", text: "onAccent" },
-	warn: { background: "warnSoft", text: "warnText" },
-} as const;
-
-type BadgeProps = {
-	value: string | number;
-	tone: BadgeTone;
-};
-
-function TabBadge({ value, tone }: BadgeProps) {
+/** Open issues on a pane (Check), in the warning colors. */
+function TabBadge({ value }: BadgeProps) {
 	const { colors, radius, size, space } = useTheme();
 	return (
 		<View
@@ -51,11 +45,11 @@ function TabBadge({ value, tone }: BadgeProps) {
 				borderRadius: radius.rLg,
 				borderWidth: space.s0,
 				borderColor: colors.surface,
-				backgroundColor: colors[badgeColors[tone].background],
+				backgroundColor: colors.warnSoft,
 				alignItems: "center",
 			}}
 		>
-			<Text variant="micro" color={badgeColors[tone].text}>
+			<Text variant="micro" color="warnText">
 				{value}
 			</Text>
 		</View>
@@ -64,32 +58,31 @@ function TabBadge({ value, tone }: BadgeProps) {
 
 type BarItemProps = {
 	label: string;
-	/** Omitted for the raised "+" pill. */
-	icon?: IconName | undefined;
+	icon: IconName;
 	focused: boolean;
 	onPress: () => void;
+	/** Open issues on the pane, shown as a warning count. */
 	badge?: string | number | undefined;
-	badgeTone?: BadgeTone | undefined;
 };
 
-/** One cell of a bottom bar: the app tab bar and the editor's Write / Page / Design / Check bar share it. */
-export function BarItem({ label, icon, focused, onPress, badge, badgeTone = "accent" }: BarItemProps) {
-	const { colors, radius, size, space } = useTheme();
+/** One cell of the editor's Write / Page / Design / Check bar. */
+export function BarItem({ label, icon, focused, onPress, badge }: BarItemProps) {
+	const { colors, size, space } = useTheme();
 	const android = Platform.OS === "android";
 
 	return (
 		<Pressable
-			accessibilityRole={icon ? "tab" : "button"}
-			accessibilityState={icon ? { selected: focused } : {}}
+			accessibilityRole="tab"
+			accessibilityState={{ selected: focused }}
 			accessibilityLabel={badge === undefined ? label : `${label}, ${badge}`}
 			onPress={() => {
-				if (icon && !focused) haptics.selection();
+				if (!focused) haptics.selection();
 				onPress();
 			}}
 			android_ripple={{ color: colors.press, borderless: false }}
 			style={({ pressed }) => ({
 				flex: 1,
-				minHeight: android ? androidTabHeight : size.tabBar,
+				minHeight: android ? androidTabHeight : iosTabHeight,
 				alignItems: "center",
 				justifyContent: "flex-start",
 				gap: space.s0,
@@ -99,24 +92,10 @@ export function BarItem({ label, icon, focused, onPress, badge, badgeTone = "acc
 				backgroundColor: pressed && !android ? colors.press : "transparent",
 			})}
 		>
-			{icon ? (
-				<View style={{ height: size.newPill.height, alignItems: "center", justifyContent: "center" }}>
-					<Icon name={icon} filled={focused} color={focused ? colors.ink : colors.ink2} size={size.icon.bar} />
-					{badge === undefined ? null : <TabBadge value={badge} tone={badgeTone} />}
-				</View>
-			) : (
-				<View
-					style={{
-						...size.newPill,
-						borderRadius: radius.rLg,
-						backgroundColor: colors.accent,
-						alignItems: "center",
-						justifyContent: "center",
-					}}
-				>
-					<Icon name="plus" color={colors.onAccent} size={size.icon.row} />
-				</View>
-			)}
+			<View style={{ height: glyphRowHeight, alignItems: "center", justifyContent: "center" }}>
+				<Icon name={icon} filled={focused} color={focused ? colors.ink : colors.ink2} size={size.icon.bar} />
+				{badge === undefined ? null : <TabBadge value={badge} />}
+			</View>
 			<Text
 				variant="micro"
 				color={focused ? "ink" : "ink2"}
@@ -198,19 +177,31 @@ type BarProps = {
 	activeIndex?: number | undefined;
 };
 
-/** A bottom bar on `surface` with a top rule, padding the bottom and side safe areas. Hidden while the keyboard is up. */
+/**
+ * A bottom bar on `surface` with a top rule, padding the bottom and side safe areas. Hidden while the keyboard is up.
+ * While it shows (its screen in front), toasts sit above it.
+ */
 export function Bar({ children, activeIndex }: BarProps) {
 	const insets = useSafeAreaInsets();
 	const { colors } = useTheme();
 	const keyboardVisible = useKeyboardVisible();
+	const front = useIsFocused();
 	const [width, setWidth] = useState(0);
+	const height = useRef(0);
 	const count = Children.count(children);
+	const showing = front && !keyboardVisible;
+	useEffect(() => setToastBarHeight("editor", showing ? height.current : 0), [showing]);
+	useEffect(() => () => setToastBarHeight("editor", 0), []);
 
 	if (keyboardVisible) return null;
 
 	return (
 		<View
 			accessibilityRole="tablist"
+			onLayout={(event) => {
+				height.current = event.nativeEvent.layout.height;
+				if (showing) setToastBarHeight("editor", height.current);
+			}}
 			style={{
 				flexDirection: "row",
 				paddingBottom: insets.bottom,

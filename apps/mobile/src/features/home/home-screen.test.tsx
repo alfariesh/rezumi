@@ -17,10 +17,13 @@ const query = (data: unknown, state: Partial<Query> = {}): Query => ({
 
 const mockReads: Record<string, Query> = {};
 const mockPush = jest.fn();
+const mockSetParams = jest.fn();
+const mockShowToast = jest.fn();
 
 jest.mock("expo-router", () => ({
-	useRouter: () => ({ push: mockPush, navigate: mockPush, setParams: jest.fn() }),
+	useRouter: () => ({ push: mockPush, navigate: mockPush, setParams: mockSetParams }),
 }));
+jest.mock("@/ui", () => ({ ...jest.requireActual("@/ui"), showToast: (options: unknown) => mockShowToast(options) }));
 jest.mock("@/auth/session", () => ({
 	useSession: () => ({ status: "signed-in", server: "https://rezumi.app" }),
 	getServer: () => "https://rezumi.app",
@@ -41,6 +44,7 @@ jest.mock("./queries", () => ({
 	useNotifications: () => mockReads.notifications,
 	useOpportunities: () => mockReads.opportunities,
 	useSchedules: () => mockReads.schedules,
+	schedulesKey: (server: string) => ["s", server],
 	useBriefings: () => mockReads.briefings,
 }));
 jest.mock("@/features/applications/queries", () => ({ useApplications: () => mockReads.applications }));
@@ -48,7 +52,10 @@ jest.mock("@/features/documents/queries", () => ({ useDocuments: () => mockReads
 jest.mock("@/features/settings/queries", () => ({ useProfile: () => ({ data: { timezone: "UTC" } }) }));
 jest.mock("@/features/career/hooks", () => ({ useNow: () => mockNow }));
 jest.mock("@/features/career/schedule-sheet", () => ({
-	ScheduleSheet: () => null,
+	ScheduleSheet: ({ schedule, kind }: { schedule: { id: string } | null; kind: string }) => {
+		const { Text } = jest.requireActual("react-native");
+		return <Text>{`Schedule sheet: ${schedule?.id ?? `new ${kind}`}`}</Text>;
+	},
 	scheduleTitle: (kind: string) => (kind === "discovery" ? "Opportunity discovery" : "Interview preparation"),
 }));
 jest.mock("@/features/documents/thumbnail", () => ({ Thumbnail: () => null }));
@@ -121,8 +128,19 @@ function setReads(values: Partial<Record<string, Query>>) {
 	});
 }
 
+const allLoaded = (values: Partial<Record<string, Query>> = {}) =>
+	setReads({
+		notifications: query([]),
+		opportunities: query([]),
+		schedules: query([schedule]),
+		briefings: query([]),
+		applications: query([]),
+		documents: query([document]),
+		...values,
+	});
+
 describe("HomeScreen", () => {
-	beforeEach(() => mockPush.mockClear());
+	beforeEach(() => jest.clearAllMocks());
 
 	it("shows skeletons in the shape of each block while loading", async () => {
 		setReads({});
@@ -207,5 +225,63 @@ describe("HomeScreen", () => {
 		await renderScreen(<HomeScreen />);
 		expect(screen.getByText("Posting closed")).toBeOnTheScreen();
 		expect(screen.queryAllByLabelText("Loading")).toHaveLength(0);
+	});
+
+	it("opens a linked schedule's sheet once schedules are in, then clears the link", async () => {
+		allLoaded();
+		await renderScreen(<HomeScreen schedule="s_1" />);
+		expect(screen.getByText("Schedule sheet: s_1")).toBeOnTheScreen();
+		expect(mockSetParams).toHaveBeenCalledWith({ schedule: undefined });
+	});
+
+	it("opens a new schedule of the linked kind", async () => {
+		allLoaded();
+		await renderScreen(<HomeScreen schedule="new:follow-up" />);
+		expect(screen.getByText("Schedule sheet: new follow-up")).toBeOnTheScreen();
+	});
+
+	it("says a linked schedule is gone instead of opening an empty sheet", async () => {
+		allLoaded();
+		await renderScreen(<HomeScreen schedule="s_gone" />);
+		expect(screen.queryByText(/Schedule sheet/)).toBeNull();
+		expect(mockShowToast).toHaveBeenCalledWith({ title: "That schedule no longer exists." });
+		expect(mockSetParams).toHaveBeenCalledWith({ schedule: undefined });
+	});
+
+	it("waits for schedules before acting on a link", async () => {
+		allLoaded({ schedules: query(undefined) });
+		await renderScreen(<HomeScreen schedule="s_1" />);
+		expect(screen.queryByText(/Schedule sheet/)).toBeNull();
+		expect(mockSetParams).not.toHaveBeenCalled();
+	});
+
+	it("opens a notification's schedule on this Home instead of pushing another Home", async () => {
+		allLoaded({
+			notifications: query([
+				{ ...notification, id: "n_s", title: "Schedule failed", url: "/dashboard/career?schedule=s_1" },
+				{ ...notification, id: "n_e", title: "Empty schedule", url: "/dashboard/career?schedule=" },
+				{ ...notification, id: "n_h", title: "Just Home", url: "/dashboard" },
+			]),
+		});
+		await renderScreen(<HomeScreen />);
+		// Only the schedule link has somewhere to go; an empty id or bare Home would reopen this screen.
+		expect(screen.getAllByText("Open")).toHaveLength(1);
+		await fireEvent.press(screen.getByText("Open"));
+		expect(mockSetParams).toHaveBeenCalledWith({ schedule: "s_1" });
+		expect(mockPush).not.toHaveBeenCalled();
+	});
+
+	it("counts down an interview that starts within the hour in minutes, singular and plural", async () => {
+		const soon = (minutes: number) => ({
+			...application,
+			activity: [{ ...application.activity[0], at: new Date(mockNow.getTime() + minutes * 60_000).toISOString() }],
+		});
+		allLoaded({ applications: query([soon(1)]) });
+		const first = await renderScreen(<HomeScreen />);
+		expect(screen.getByText("Starts in 1 minute")).toBeOnTheScreen();
+		await first.unmount();
+		allLoaded({ applications: query([soon(30)]) });
+		await renderScreen(<HomeScreen />);
+		expect(screen.getByText("Starts in 30 minutes")).toBeOnTheScreen();
 	});
 });

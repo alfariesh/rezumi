@@ -8,10 +8,10 @@ import Animated, { useAnimatedStyle, useSharedValue, withTiming } from "react-na
 import { filterOptions } from "@rezumi/utils/string";
 import { Icon } from "./icon";
 import { ListRow } from "./layout";
-import { haptics } from "./motion";
 import { Sheet } from "./overlays";
 import { Text } from "./text";
 import { useTheme } from "./theme";
+import { haptics } from "@/ui/motion";
 
 const android = Platform.OS === "android";
 

@@ -454,12 +454,6 @@ msgstr "{0} “{1}” ଫେରସ୍ତ କଲା | ତୁମର ବାର୍�
 msgid "{0} selected"
 msgstr "{0} ବଛାଗଲା"
 
-#. placeholder {0}: resume.data.basics.name || resume.name
-#: src/features/letters/share.tsx
-#: src/features/share/download.tsx
-msgid "{0}-Resume"
-msgstr "{0}-ରେଜ୍ୟୁମେ"
-
 #. placeholder {0}: title || t`Untitled`
 #. placeholder {1}: row.index + 1
 #. placeholder {2}: row.count
@@ -506,14 +500,6 @@ msgstr "{company} · {tabName}"
 msgid "{completed, plural, one {# document updated} other {# documents updated}}"
 msgstr "{completed, plural, one {# ଡକ୍ୟୁମେଣ୍ଟ୍ ଅପଡେଟ୍ ହେଲା} other {# ଡକ୍ୟୁମେଣ୍ଟ୍ ଅପଡେଟ୍ ହେଲା}}"
 
-#: src/features/share/custom-domain.tsx
-msgid "{cost} a year"
-msgstr "ବର୍ଷକୁ {cost}"
-
-#: src/features/share/custom-domain.tsx
-msgid "{cost} the first year"
-msgstr "ପ୍ରଥମ ବର୍ଷ ପାଇଁ {cost}"
-
 #: src/features/write/section-sheet.tsx
 msgid "{count, plural, one {# column} other {# columns}}"
 msgstr "{count, plural, one {# ସ୍ତମ୍ଭ} other {# ସ୍ତମ୍ଭ}}"
@@ -530,6 +516,31 @@ msgstr ""
 #: src/features/workspace/tabs/messages.tsx
 msgid "{count, plural, one {Apply # change} other {Apply # changes}}"
 msgstr "{count, plural, one {#ଟି ପରିବର୍ତ୍ତନ ପ୍ରୟୋଗ କରନ୍ତୁ} other {#ଟି ପରିବର୍ତ୍ତନ ପ୍ରୟୋଗ କରନ୍ତୁ}}"
+
+#. Short time since, in days: 3d
+#: src/features/share/time-since.ts
+msgid "{count, plural, other {#d}}"
+msgstr ""
+
+#. Short time since, in hours: 2h
+#: src/features/share/time-since.ts
+msgid "{count, plural, other {#h}}"
+msgstr ""
+
+#. Short time since, in minutes: 5m
+#: src/features/share/time-since.ts
+msgid "{count, plural, other {#m}}"
+msgstr ""
+
+#. Short time since, in weeks: 6w
+#: src/features/share/time-since.ts
+msgid "{count, plural, other {#w}}"
+msgstr ""
+
+#. Short time since, in years: 1y
+#: src/features/share/time-since.ts
+msgid "{count, plural, other {#y}}"
+msgstr ""
 
 #: src/features/workspace/tabs/debrief.tsx
 msgid "{day} · {length}m"
@@ -651,6 +662,7 @@ msgstr ""
 msgid "{minutes, plural, one {# minute in total} other {# minutes in total}}"
 msgstr "{minutes, plural, one {ମୋଟ # ମିନିଟ୍} other {ମୋଟ # ମିନିଟ୍}}"
 
+#: src/features/home/coming-up.tsx
 #: src/features/workspace/tabs/prepare.tsx
 msgid "{minutes, plural, one {Starts in # minute} other {Starts in # minutes}}"
 msgstr "{minutes, plural, one {# ମିନିଟରେ ଆରମ୍ଭ} other {# ମିନିଟରେ ଆରମ୍ଭ}}"
@@ -697,10 +709,6 @@ msgstr "{name} ପାର୍ଶ୍ୱ ପଟିରେ ବସିଥାଏ |"
 msgid "{name} uses one column"
 msgstr "{name} ଗୋଟିଏ ସ୍ତମ୍ଭ ବ୍ୟବହାର କରେ |"
 
-#: src/features/share/download.tsx
-msgid "{name}-Cover-Letter"
-msgstr "{name}-କଭର୍-ଚିଠି"
-
 #: src/features/check/issues.ts
 msgid "{names} come last in the text. Most systems still find them; some don't."
 msgstr "{names} ପାଠ୍ୟରେ ଶେଷରେ ଆସେ | ଅଧିକାଂଶ ସିଷ୍ଟମ୍ ତଥାପି ସେମାନଙ୍କୁ ଖୋଜନ୍ତି; କେତେକ କରନ୍ତି ନାହିଁ |"
@@ -720,10 +728,6 @@ msgstr "{role} · {company}"
 #: src/features/write/outline.tsx
 msgid "{sections, plural, one {# section} other {# sections}}"
 msgstr "{sections, plural, one {# ବିଭାଗ |} other {# ବିଭାଗଗୁଡିକ |}}"
-
-#: src/features/letters/share.tsx
-msgid "{sender}-Cover-Letter"
-msgstr "{sender}-କଭର୍-ଚିଠି"
 
 #: src/features/assistant/messages.tsx
 msgid "{skipped, plural, one {# edit couldn't be placed: its text changed. Ask again to redo it.} other {# edits couldn't be placed: their text changed. Ask again to redo them.}}"
@@ -2005,10 +2009,6 @@ msgstr "ସ୍ୱୟଂଚାଳିତ ଭାବେ"
 msgid "Autosaves are grouped by session and kept for 90 days. Named versions are kept until you delete them. Restoring saves the current state first."
 msgstr "ଅଟୋସେଭ୍ ଅଧିବେଶନ ଦ୍ group ାରା ଗୋଷ୍ଠୀଭୁକ୍ତ ହୋଇ 90 ଦିନ ପାଇଁ ରଖାଯାଏ | ନାମିତ ସଂସ୍କରଣଗୁଡିକ ତୁମେ ବିଲୋପ ନକରିବା ପର୍ଯ୍ୟନ୍ତ ରଖାଯାଏ | ପୁନରୁଦ୍ଧାର ବର୍ତ୍ତମାନ ସାମ୍ପ୍ରତିକ ସ୍ଥିତିକୁ ସଞ୍ଚୟ କରେ |"
 
-#: src/features/share/custom-domain.tsx
-msgid "Available"
-msgstr "ଉପଲବ୍ଧ"
-
 #: src/features/ats-checker/messages.ts
 msgid "Avoid heavy letter-spacing effects, then re-export."
 msgstr "ଭାରୀ ଅକ୍ଷର-ବ୍ୟବଧାନ ପ୍ରଭାବ ଏଡାନ୍ତୁ, ତାପରେ ପୁନଃ-ରପ୍ତାନି କରନ୍ତୁ।"
@@ -2577,10 +2577,6 @@ msgstr "ଏକ PDF ଫାଇଲ୍ ବାଛନ୍ତୁ। ମନୋନୀତ �
 msgid "Choose a PDF smaller than 10 MB. The selected file was not uploaded."
 msgstr "10 MB ରୁ ଛୋଟ PDF ବାଛନ୍ତୁ। ମନୋନୀତ ଫାଇଲ୍ ଅପଲୋଡ୍ ହୋଇନାହିଁ।"
 
-#: src/shell/permissions.tsx
-msgid "Choose a photo"
-msgstr ""
-
 #: src/features/entries/photo-field.tsx
 #: src/features/settings/profile.tsx
 #: src/features/write/picture-screen.tsx
@@ -2793,10 +2789,6 @@ msgstr "କୋଚ୍"
 msgid "Coach memory"
 msgstr ""
 
-#: src/features/share/custom-domain.tsx
-msgid "Code copied"
-msgstr "କୋଡ୍ କପି ହୋଇଛି"
-
 #: src/features/auth/two-factor-screen.tsx
 msgid "Codes look like a1b2c-d3e4f."
 msgstr ""
@@ -2896,10 +2888,6 @@ msgstr ""
 #: src/features/share/custom-domain.tsx
 msgid "Connect"
 msgstr "ଯୋଡନ୍ତୁ"
-
-#: src/features/share/custom-domain.tsx
-msgid "Connect {domain}"
-msgstr "{domain} ଯୋଡନ୍ତୁ"
 
 #: src/features/share/custom-domain.tsx
 msgid "Connect {hostname}"
@@ -3066,10 +3054,6 @@ msgstr "ଏକ ଚାକିରି ପାଇଁ ଏକ ରେଜୁମ୍ କପ�
 #: src/features/workspace/tabs/apply.tsx
 msgid "Copy answers"
 msgstr "ଉତ୍ତରଗୁଡ଼ିକ କପି କରନ୍ତୁ"
-
-#: src/features/share/custom-domain.tsx
-msgid "Copy code"
-msgstr "କୋଡ୍ କପି କରନ୍ତୁ"
 
 #: src/features/document-menu/index.tsx
 msgid "Copy created"
@@ -3311,6 +3295,10 @@ msgstr ""
 #: src/features/history/history.tsx
 msgid "Couldn't load versions."
 msgstr "ସଂସ୍କରଣ ଲୋଡ୍ ହୋଇପାରିଲା ନାହିଁ।"
+
+#: src/features/share/custom-domain.tsx
+msgid "Couldn't load your custom domain."
+msgstr ""
 
 #: src/features/onboarding/onboarding-screen.tsx
 msgid "Couldn't load your details"
@@ -3569,6 +3557,10 @@ msgstr "ଛବି ଅଂଶୀଦାର କରିପାରିଲା ନାହି
 #: src/features/workspace/tabs/practise.tsx
 msgid "Couldn't share the recording. Try again."
 msgstr "ରେକର୍ଡିଂ ସେୟାର୍ କରିହେଲା ନାହିଁ। ପୁଣି ଚେଷ୍ଟା କରନ୍ତୁ।"
+
+#: src/features/auth/errors.ts
+msgid "Couldn't sign in with this account. If you don't have a Rezumi account yet, sign-ups may be turned off."
+msgstr ""
 
 #: src/features/settings/sign-out.tsx
 msgid "Couldn't sign out. Try again."
@@ -4483,6 +4475,10 @@ msgstr "ସମ୍ପାଦନ କରନ୍ତୁ"
 #: src/features/assistant/messages.tsx
 msgid "Edit {0}: {1}"
 msgstr "{0} ସମ୍ପାଦନା କରନ୍ତୁ: {1}"
+
+#: src/features/home/schedules.tsx
+msgid "Edit {name}"
+msgstr ""
 
 #: src/features/application-detail/sheets.tsx
 msgid "Edit date"
@@ -5921,6 +5917,10 @@ msgstr ""
 msgid "Keep on one page"
 msgstr "ଗୋଟିଏ ପୃଷ୍ଠାରେ ରଖ |"
 
+#: src/features/entries/photo-field.tsx
+msgid "Keep photo"
+msgstr ""
+
 #: src/features/document-menu/index.tsx
 msgid "Keep private notes about this resume here. Nobody else can see them."
 msgstr "ଏହି ରେଜ୍ୟୁମେ ବିଷୟରେ ବ୍ୟକ୍ତିଗତ ଟିପ୍ପଣୀ ଏଠାରେ ରଖନ୍ତୁ। ଅନ୍ୟ କେହି ସେଗୁଡିକ ଦେଖିପାରିବେ ନାହିଁ।"
@@ -6319,6 +6319,7 @@ msgid "Live at {url}"
 msgstr "{url}ରେ ଉପଲବ୍ଧ"
 
 #: src/features/design/design-pane.tsx
+#: src/features/home/recent-documents.tsx
 #: src/features/home/section.tsx
 #: src/features/onboarding/onboarding-screen.tsx
 #: src/features/profile/facts.tsx
@@ -6601,10 +6602,6 @@ msgstr "ରେଜୁମ୍ ସହିତ ମେଳ ଖାଉଛି |"
 #: src/features/workspace/parts.tsx
 msgid "Matching your facts"
 msgstr "ଆପଣଙ୍କ ତଥ୍ୟ ସହ ମିଳାଉଛି"
-
-#: src/features/share/custom-domain.tsx
-msgid "May be available"
-msgstr "ଉପଲବ୍ଧ ହୋଇପାରେ"
 
 #: src/features/search/search-screen.tsx
 msgid "MCP"
@@ -6925,7 +6922,6 @@ msgid "Names, tags or applications"
 msgstr "ନାମ, ଟ୍ୟାଗ୍ କିମ୍ବା ଆବେଦନ"
 
 #: src/features/design/preset-names.ts
-#: src/features/design/style-groups.tsx
 msgid "Narrow"
 msgstr "ସଂକୀର୍ଣ୍ଣ |"
 
@@ -7647,10 +7643,14 @@ msgstr "ବର୍ତ୍ତମାନ ପର୍ଯ୍ୟନ୍ତ କେବଳ ଗ
 msgid "Only providers that pass their test can be turned on."
 msgstr "କେବଳ ପ୍ରଦାନକାରୀ ଯେଉଁମାନେ ସେମାନଙ୍କର ପରୀକ୍ଷାରେ ଉତ୍ତୀର୍ଣ୍ଣ ହୋଇପାରିବେ |"
 
-#. placeholder {0}: report.document.pageCount
+#. placeholder {0}: report.document.checkedPageCount
 #: src/features/ats-checker/checker.tsx
 msgid "Only the first {0} pages were checked."
 msgstr "କେବଳ ପ୍ରଥମ {0} ପୃଷ୍ଠାଗୁଡ଼ିକୁ ଯାଞ୍ଚ କରାଯାଇଥିଲା |"
+
+#: src/features/ats-checker/original-page.tsx
+msgid "Only the first {MAX_PAGES} pages are shown."
+msgstr ""
 
 #: src/features/check/parser.tsx
 msgid "Only the first 30 pages were checked."
@@ -8851,10 +8851,6 @@ msgstr "ସେହି ଦିନ ସକାଳେ ବ୍ରିଫିଂ ରିଫ�
 msgid "Refund policy"
 msgstr ""
 
-#: src/features/share/custom-domain.tsx
-msgid "Register at OlaCV"
-msgstr "OlaCV ରେ ପଞ୍ଜୀକରଣ କରନ୍ତୁ"
-
 #: src/features/workspace/tabs/prepare.tsx
 msgid "Rehearse aloud"
 msgstr "ଜୋରରେ ରିହର୍ସାଲ୍ କରନ୍ତୁ"
@@ -9015,6 +9011,7 @@ msgstr "ପାସୱାର୍ଡ ହଟାନ୍ତୁ?"
 msgid "Remove this file?"
 msgstr "ଏହି ଫାଇଲ୍ ହଟାଇବେ?"
 
+#: src/features/entries/photo-field.tsx
 #: src/features/write/picture-screen.tsx
 msgid "Remove this photo?"
 msgstr "ଏହି ଫଟୋ ହଟାନ୍ତୁ?"
@@ -9277,6 +9274,7 @@ msgstr "{1} ବ୍ୟବହାର କରି {0} ଉଦ୍ଧାର କରାଯ�
 #: src/features/profile/preferences.tsx
 #: src/features/profile/save-note.tsx
 #: src/features/profile/stories.tsx
+#: src/features/share/custom-domain.tsx
 #: src/features/share/download.tsx
 #: src/features/share/export-screen.tsx
 #: src/features/share/link.tsx
@@ -9423,10 +9421,6 @@ msgstr ""
 
 #: src/shell/permissions.tsx
 msgid "Rezumi can't ask again. Turn it on for Rezumi in your device's Settings, then try again."
-msgstr ""
-
-#: src/shell/permissions.tsx
-msgid "Rezumi opens your photos only to pick the one you choose. You can change this any time in Settings."
 msgstr ""
 
 #: src/shell/permissions.tsx
@@ -9847,10 +9841,6 @@ msgstr "ବିଭାଗଗୁଡିକ · ମୁଦ୍ରଣ କ୍ରମ |"
 msgid "Sections use headings systems recognize, and work experience shows."
 msgstr "ବିଭାଗଗୁଡିକ ହେଡିଙ୍ଗ୍ ସିଷ୍ଟମ୍ ବ୍ୟବହାର କରେ, ଏବଂ କାର୍ଯ୍ୟ ଅଭିଜ୍ଞତା ଦେଖାଏ |"
 
-#: src/features/share/custom-domain.tsx
-msgid "See plans"
-msgstr ""
-
 #: src/features/onboarding/intro-screen.tsx
 msgid "See where each one stands, get new roles that fit you, and never miss an interview."
 msgstr ""
@@ -9881,10 +9871,6 @@ msgstr "ଏଣ୍ଟ୍ରି {0} ବାଛନ୍ତୁ"
 #: src/features/applications/list-screen.tsx
 msgid "Select visible"
 msgstr "ଦେଖାଯାଉଥିବାଗୁଡ଼ିକ ବାଛନ୍ତୁ"
-
-#: src/features/share/export-options.tsx
-msgid "Selected"
-msgstr ""
 
 #: src/preview/page.tsx
 msgid "Selected entry"
@@ -10284,6 +10270,7 @@ msgid "Sign in"
 msgstr "ସାଇନ୍ ଇନ୍ କରନ୍ତୁ"
 
 #: src/auth/session-gate.tsx
+#: src/features/auth/two-factor-screen.tsx
 #: src/features/check/screen.tsx
 msgid "Sign in again"
 msgstr "ପୁଣି ସାଇନ୍ ଇନ୍ କରନ୍ତୁ"
@@ -10668,10 +10655,6 @@ msgstr "ନିଜ ନାମରୁ ଆରମ୍ଭ କରନ୍ତୁ। ସେ�
 #: src/features/home/coming-up.tsx
 msgid "Started"
 msgstr "ଆରମ୍ଭ ହେଲା"
-
-#: src/features/home/coming-up.tsx
-msgid "Starts in {minutes} minutes"
-msgstr "{minutes} ମିନିଟରେ ଆରମ୍ଭ"
 
 #: src/features/workspace/tabs/prepare.tsx
 msgid "Starts now"
@@ -11201,6 +11184,10 @@ msgstr "ଶେଷ ଆରମ୍ଭ ପୂର୍ବରୁ |"
 msgid "The file couldn't be read as a resume."
 msgstr "ଫାଇଲ୍ ରେଜୁମ୍ ଭାବରେ ପ read ିହେଲା ନାହିଁ |"
 
+#: src/features/entries/photo-field.tsx
+msgid "The file is deleted. Resumes that show this photo lose it too."
+msgstr ""
+
 #: src/features/onboarding/read-file.ts
 msgid "The file is too large. Choose one up to 10 MB."
 msgstr ""
@@ -11537,8 +11524,8 @@ msgid "This file couldn't be read. Choose a PDF, Word, JSON or LinkedIn export (
 msgstr "ଏହି ଫାଇଲ୍ ପଢ଼ାଯାଇପାରିଲା ନାହିଁ। PDF, Word, JSON କିମ୍ବା LinkedIn ରପ୍ତାନି (.zip) ବାଛନ୍ତୁ।"
 
 #: src/features/ats-checker/original-page.tsx
-msgid "This file couldn't be shown as pages. The report above still applies."
-msgstr "ଏହି ଫାଇଲ୍ ପେଜ୍ ଭାବେ ଦେଖାଯାଇପାରିଲା ନାହିଁ। ଉପର ରିପୋର୍ଟ ତଥାପି ପ୍ରଯୁଜ୍ୟ।"
+msgid "This file couldn't be shown as pages. The report still applies."
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "This file declares no language."
@@ -11631,6 +11618,10 @@ msgstr "ଏହି ଚିଠି ଏବଂ ଆପଣଙ୍କ ରେଜ୍ୟୁ�
 #: src/draft/conflict-sheet.tsx
 msgid "This letter changed elsewhere"
 msgstr "ଏହି ଚିଠି ଅନ୍ୟ ସ୍ଥାନରେ ବଦଳିଛି"
+
+#: src/features/letters/share.tsx
+msgid "This letter has no resume anymore. Choose another format."
+msgstr ""
 
 #: src/features/letters/design.tsx
 #: src/features/letters/write.tsx
@@ -11911,6 +11902,10 @@ msgstr "ବହୁତ ଅନୁରୋଧ | ପରେ ପୁନର୍ବାର ଚ
 msgid "Too many tries in a short time. Wait a minute, then try again."
 msgstr ""
 
+#: src/features/auth/errors.ts
+msgid "Too many wrong codes. Wait a few minutes, then sign in again."
+msgstr ""
+
 #: src/features/auth/create-account-screen.tsx
 msgid "Too short"
 msgstr ""
@@ -12050,10 +12045,6 @@ msgstr "ଏହି ଆରମ୍ଭ ଚେଷ୍ଟା କରନ୍ତୁ"
 #: src/features/documents/new-document.tsx
 msgid "Try with a sample resume"
 msgstr "ଏକ ନମୁନା ରେଜୁମ୍ ସହିତ ଚେଷ୍ଟା କରନ୍ତୁ |"
-
-#: src/features/auth/welcome-screen.tsx
-msgid "Try without an account"
-msgstr ""
 
 #: src/features/settings/locale-names.ts
 msgid "Turkish"
@@ -12931,7 +12922,6 @@ msgid "Why do you want this role at {company}?"
 msgstr "ଆପଣ {company}ରେ ଏହି ଭୂମିକା କାହିଁକି ଚାହାଁନ୍ତି?"
 
 #: src/features/design/preset-names.ts
-#: src/features/design/style-groups.tsx
 msgid "Wide"
 msgstr "ବ୍ୟାପକ"
 
@@ -13337,10 +13327,6 @@ msgstr ""
 msgid "Your name and contact details follow your Profile."
 msgstr ""
 
-#: src/features/share/custom-domain.tsx
-msgid "Your name as your address, from OlaCV, the .cv registry. Code {CODE} takes 50% off the first year."
-msgstr "ଆପଣଙ୍କ ନାମ ହିଁ ଆପଣଙ୍କ ଠିକଣା, .cv ରେଜିଷ୍ଟ୍ରି OlaCV ଠାରୁ। {CODE} କୋଡ୍ ପ୍ରଥମ ବର୍ଷରେ 50% ରିହାତି ଦିଏ।"
-
 #: src/features/check/issues.ts
 msgid "Your name is missing"
 msgstr "ତୁମର ନାମ ହଜିଯାଇଛି |"
@@ -13397,10 +13383,6 @@ msgstr "ଆପଣଙ୍କ ଫୋନ୍ ନମ୍ବର ଏକ ଅସାଧା�
 #: app/account/membership.tsx
 #: src/features/billing/plan-card.tsx
 msgid "Your plan"
-msgstr ""
-
-#: src/features/share/custom-domain.tsx
-msgid "Your plan no longer includes a custom domain. Renew it and the domain comes back by itself."
 msgstr ""
 
 #: app/(tabs)/portfolio/index.tsx

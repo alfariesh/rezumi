@@ -4,13 +4,14 @@ import type { AppTab } from "@/routes";
 import type { IconName } from "@/ui";
 import type { BottomTabBarProps } from "expo-router/tabs";
 import { useLingui } from "@lingui/react/macro";
-import { useRouter } from "expo-router";
+import { useIsFocused, useRouter } from "expo-router";
+import { useEffect, useRef } from "react";
 import { Platform, Pressable, ScrollView, View, useWindowDimensions } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { AccountButton } from "./account-menu";
 import { useUnreadCount, useSidebarCounts } from "@/features/home/queries";
 import { routes } from "@/routes";
-import { Button, Icon, Text, cx, haptics, useThemeColor } from "@/ui";
+import { Button, Icon, Text, cx, haptics, setToastBarHeight, useThemeColor } from "@/ui";
 import { useKeyboardVisible } from "@/ui/keyboard";
 
 const tabIcons: Record<AppTab, IconName> = {
@@ -68,7 +69,7 @@ type BadgeProps = { count: number | undefined };
 function Badge({ count }: BadgeProps) {
 	if (!count) return null;
 	return (
-		<View className="absolute -end-3 -top-1 h-[18px] min-w-[18px] items-center justify-center rounded-full bg-accent px-1">
+		<View className="absolute -end-3 -top-1 h-4.5 min-w-4.5 items-center justify-center rounded-full bg-accent px-1">
 			<Text size="xs" weight="semibold" className="text-accent-foreground" tabular>
 				{count > 99 ? "99+" : String(count)}
 			</Text>
@@ -78,7 +79,8 @@ function Badge({ count }: BadgeProps) {
 
 /**
  * The phone tab bar: a bar on `surface` with a hairline on top, the selected tab in accent with its duotone glyph,
- * the Home badge for unread notifications. Hidden while the keyboard is up.
+ * the Home badge for unread notifications. Hidden while the keyboard is up. While it shows (the tabs are the screen in
+ * front), toasts sit above it.
  */
 export function PhoneTabBar(props: BottomTabBarProps) {
 	const { t } = useLingui();
@@ -88,11 +90,26 @@ export function PhoneTabBar(props: BottomTabBarProps) {
 	const keyboard = useKeyboardVisible();
 	const ripple = useThemeColor("default");
 	const { visible, focusedKey, press } = useTabs(props);
+	// False while a screen is pushed or presented over the tabs: the bar is then covered and toasts drop to the bottom.
+	const front = useIsFocused();
+	const height = useRef(0);
+	const showing = front && !keyboard;
+	useEffect(() => setToastBarHeight("tabs", showing ? height.current : 0), [showing]);
+	useEffect(() => () => setToastBarHeight("tabs", 0), []);
 	if (keyboard) return null;
 	const frame = { paddingBottom: insets.bottom, paddingLeft: insets.left, paddingRight: insets.right };
 
 	return (
-		<View accessibilityRole="tablist" className="flex-row border-t border-separator bg-surface" style={frame}>
+		<View
+			accessibilityRole="tablist"
+			className="flex-row border-t border-separator bg-surface"
+			style={frame}
+			testID="phone-tab-bar"
+			onLayout={(event) => {
+				height.current = event.nativeEvent.layout.height;
+				if (showing) setToastBarHeight("tabs", height.current);
+			}}
+		>
 			{visible.map((route) => {
 				const name = route.name as AppTab;
 				const label = labels[name];

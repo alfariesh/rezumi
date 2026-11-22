@@ -65,19 +65,6 @@
 	}
 }
 
-/* Paragraph leading (the web's text-body utilities): anything that can wrap; one-line text keeps the step's own. */
-@utility text-body {
-	@apply text-base leading-7;
-}
-
-@utility text-body-sm {
-	@apply text-sm leading-6;
-}
-
-@utility text-body-xs {
-	@apply text-xs leading-5;
-}
-
 @layer components {
 	/* Touch inputs read at 16 pt (web DESIGN.md → Typography), not React Native's 14 default. */
 	.input__input,

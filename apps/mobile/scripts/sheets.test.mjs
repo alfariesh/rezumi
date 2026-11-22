@@ -42,8 +42,9 @@ const mocks = {
 	"@lingui/react/macro": { useLingui: () => ({ t: tag }) },
 	"@lodev09/react-native-true-sheet": { TrueSheet: "TrueSheet" },
 	"./button": { Button: "Button" },
-	"./motion": { haptics: { selection() {} }, useIsWide: () => false, useReducedMotion: () => false },
-	"./safe-area": { useWindowSafeAreaInsets: () => ({ top: 44, bottom: 34 }) },
+	"@/ui/motion": { haptics: { selection() {} }, useIsWide: () => false, useReducedMotion: () => false },
+	"@/ui/safe-area": { useWindowSafeAreaInsets: () => ({ top: 44, bottom: 34 }) },
+	"@/ui/toast": { toastBottomOffset: (bar, bottom) => (bar > 0 ? bar + 12 : bottom + 6), useToastBarHeight: () => 0 },
 	"./text": { Text: "Text" },
 	"./theme": { useTheme: () => theme },
 };

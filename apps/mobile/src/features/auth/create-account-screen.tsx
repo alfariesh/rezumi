@@ -1,11 +1,12 @@
-// Create account (01-desain 3): name, email and a new password with a strength meter. The username is made from the
-// email (usernameFromEmail) and can be changed later in Account; the person never has to invent one here. The account
-// is signed in at once, as on the web, and the next screen asks them to confirm their email.
 import type { PasswordStrength } from "./password-strength";
 import { useLingui } from "@lingui/react/macro";
 import { useRouter } from "expo-router";
 import { useRef, useState } from "react";
 import { View } from "react-native";
+// Create account (01-desain 3): name, email and a new password with a strength meter. The username is made from the
+// email (usernameFromEmail) and can be changed later in Account; the person never has to invent one here. The account
+// is signed in at once, as on the web, and the next screen asks them to confirm their email.
+import { isEmailAddress } from "./email";
 import { ErrorAlert } from "./error-alert";
 import { AuthFrame } from "./frame";
 import { passwordLimits, passwordStrength } from "./password-strength";
@@ -15,8 +16,6 @@ import { setAfterSignIn } from "@/auth/after-sign-in";
 import { signUpWithEmail } from "@/auth/native-sign-in";
 import { routes } from "@/routes";
 import { Button, Description, FieldError, Input, Label, ProgressBar, Text, TextField, type InputRef } from "@/ui";
-
-const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export function CreateAccountScreen() {
 	const { t } = useLingui();
@@ -28,7 +27,7 @@ export function CreateAccountScreen() {
 	const [submitted, setSubmitted] = useState(false);
 	const emailRef = useRef<InputRef>(null);
 	const passwordRef = useRef<InputRef>(null);
-	const { pending, error, run } = useAuthAction("sign-up");
+	const { pending, error, run, isRunning } = useAuthAction("sign-up");
 	const strength = passwordStrength(password);
 
 	const nameError = !name.trim()
@@ -36,7 +35,7 @@ export function CreateAccountScreen() {
 		: name.trim().length > 64
 			? t`Use 64 characters or fewer.`
 			: null;
-	const emailError = emailPattern.test(email.trim()) ? null : t`Enter an email like name@example.com.`;
+	const emailError = isEmailAddress(email.trim()) ? null : t`Enter an email like name@example.com.`;
 	const passwordError =
 		password.length < passwordLimits.min
 			? t`Use at least ${passwordLimits.min} characters.`
@@ -45,6 +44,7 @@ export function CreateAccountScreen() {
 				: null;
 
 	const submit = async () => {
+		if (isRunning()) return;
 		setSubmitted(true);
 		if (nameError || emailError || passwordError) return;
 		const address = email.trim().toLowerCase();

@@ -20,10 +20,10 @@ import Animated, {
 } from "react-native-reanimated";
 import { Button, IconButton } from "./button";
 import { Icon } from "./icon";
-import { haptics, useReducedMotion } from "./motion";
 import { FeedbackPressable } from "./pressable";
 import { Text } from "./text";
 import { useTheme } from "./theme";
+import { haptics, useReducedMotion } from "@/ui/motion";
 
 const android = Platform.OS === "android";
 

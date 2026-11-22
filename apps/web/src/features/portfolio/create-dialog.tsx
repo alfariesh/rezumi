@@ -5,6 +5,7 @@ import { Trans } from "@lingui/react/macro";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 import { useId, useRef, useState } from "react";
+import { profileHasCareer } from "@rezumi/resume/profile";
 import { PORTFOLIO_LIMITS } from "@rezumi/schema/portfolio/limits";
 import { defaultPortfolioTheme } from "@rezumi/schema/portfolio/themes";
 import { toast } from "@rezumi/ui/components/toast";
@@ -16,7 +17,7 @@ import { invalidatePortfolioQueries } from "./status";
 import { ThemeGallery } from "./theme-gallery";
 import { useAiSource } from "@/features/billing/ai-source";
 import { AiSourceMenu } from "@/features/billing/ai-source-menu";
-import { profileHasCareer, profileQueryOptions } from "@/features/profile/queries";
+import { profileQueryOptions } from "@/features/profile/queries";
 import { authClient } from "@/libs/auth/client";
 import { client, orpc } from "@/libs/orpc/client";
 

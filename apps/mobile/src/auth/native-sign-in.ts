@@ -3,7 +3,7 @@ import { usernameFromEmail } from "@rezumi/utils/string";
  * Native sign-in (K4, 02-teknis.md §4 and §16): the app's own screens call the server's Better Auth endpoints, then
  * turn the fresh Better Auth session into the same OAuth token pair the browser flow issues, without a browser:
  *
- * 1. Sign in (email, sign-up, two-factor, Apple or Google ID token, guest). Cookies stay in this attempt's
+ * 1. Sign in (email, sign-up, two-factor, Apple or Google ID token). Cookies stay in this attempt's
  *    `AuthCookies` jar, sent back by hand with the server's `Origin` (auth-http.ts); nothing reaches the platform
  *    cookie store.
  * 2. `POST /native-app/consent` records consent for this device's OAuth client (public, redirects only to the app).
@@ -165,13 +165,6 @@ export async function signInWithIdToken(origin: string, sign: IdTokenSignIn): Pr
 		},
 		cookies,
 	);
-	return connect(origin, cookies);
-}
-
-/** A guest account, when the server allows it (`flags.allowGuestLogin`). */
-export async function signInAsGuest(origin: string): Promise<SignInResult> {
-	const cookies = new AuthCookies();
-	await post(origin, "/sign-in/anonymous", {}, cookies);
 	return connect(origin, cookies);
 }
 

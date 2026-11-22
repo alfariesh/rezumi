@@ -81,7 +81,8 @@ export function createProfileSaver(options: ProfileSaverOptions): ProfileSaver {
 
 	const saveNow = (): Promise<boolean> => {
 		cancelTimer();
-		if (saving) return saving.then(() => (unsent ? saveNow() : true));
+		// A save on its way that failed or hit a conflict answers for this call too: nothing more goes out after it.
+		if (saving) return saving.then((saved) => (saved ? (unsent ? saveNow() : true) : false));
 		const snapshot = options.read();
 		if (!unsent || !snapshot) return Promise.resolve(true);
 

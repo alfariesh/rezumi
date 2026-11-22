@@ -19,7 +19,6 @@ const mockEngine = {
 	hasPendingTwoFactor: jest.fn(() => true),
 	requestPasswordReset: jest.fn(),
 	resetPassword: jest.fn(),
-	signInAsGuest: jest.fn(),
 	signInWithIdToken: jest.fn(),
 };
 const mockServer = {
@@ -42,7 +41,6 @@ jest.mock("@/auth/native-sign-in", () =>
 			"hasPendingTwoFactor",
 			"requestPasswordReset",
 			"resetPassword",
-			"signInAsGuest",
 			"signInWithIdToken",
 		].map((name) => [name, (...args: unknown[]) => (mockEngine as Record<string, jest.Mock>)[name]?.(...args)]),
 	),
@@ -139,6 +137,20 @@ describe("Create account", () => {
 		expect(mockSetAfterSignIn).toHaveBeenLastCalledWith(null);
 	});
 
+	it("ignores a second press while the first sign-up runs, keeping Check your email as the destination", async () => {
+		let finish: (value: { status: "signed-in" }) => void = () => undefined;
+		mockEngine.signUpWithEmail.mockReturnValueOnce(new Promise((resolve) => (finish = resolve)));
+		await renderScreen(<CreateAccountScreen />);
+		await fireEvent.changeText(screen.getByTestId("name"), "Ana");
+		await fireEvent.changeText(screen.getByTestId("email"), "ana@example.com");
+		await fireEvent.changeText(screen.getByTestId("password"), "long-enough-password");
+		await fireEvent(screen.getByTestId("password"), "submitEditing");
+		await fireEvent(screen.getByTestId("password"), "submitEditing");
+		finish({ status: "signed-in" });
+		await waitFor(() => expect(mockEngine.signUpWithEmail).toHaveBeenCalledTimes(1));
+		expect(mockSetAfterSignIn).not.toHaveBeenCalledWith(null);
+	});
+
 	it("says so when the server turned sign-ups off", async () => {
 		mockServer.flags.disableSignups = true;
 		await renderScreen(<CreateAccountScreen />);
@@ -160,6 +172,29 @@ describe("Two-step verification", () => {
 		expect(await screen.findByText("That code didn't work. Check it and try again.")).toBeOnTheScreen();
 	});
 
+	it("offers to sign in again when the code was accepted but the connection failed", async () => {
+		mockEngine.verifyTwoFactor.mockImplementationOnce(() => {
+			mockEngine.hasPendingTwoFactor.mockReturnValue(false);
+			return Promise.reject(new AuthError("NETWORK", 0));
+		});
+		await renderScreen(<TwoFactorScreen />);
+		await fireEvent.press(screen.getByText("Use a backup code instead"));
+		await fireEvent.changeText(screen.getByTestId("backup-code"), "a1b2c-d3e4f");
+		await fireEvent.press(screen.getByTestId("two-factor-submit"));
+		await fireEvent.press(await screen.findByTestId("two-factor-restart"));
+		expect(screen.queryByTestId("two-factor-submit")).toBeNull();
+		expect(mockReplace).toHaveBeenCalledWith("/sign-in/email");
+	});
+
+	it("explains too many wrong codes", async () => {
+		mockEngine.verifyTwoFactor.mockRejectedValueOnce(new AuthError("TOO_MANY_ATTEMPTS_REQUEST_NEW_CODE", 429));
+		await renderScreen(<TwoFactorScreen />);
+		await fireEvent.press(screen.getByText("Use a backup code instead"));
+		await fireEvent.changeText(screen.getByTestId("backup-code"), "a1b2c-d3e4f");
+		await fireEvent.press(screen.getByTestId("two-factor-submit"));
+		expect(await screen.findByText("Too many wrong codes. Wait a few minutes, then sign in again.")).toBeOnTheScreen();
+	});
+
 	it("starts again when no sign-in is waiting for a code", async () => {
 		mockEngine.hasPendingTwoFactor.mockReturnValue(false);
 		await renderScreen(<TwoFactorScreen />);
@@ -177,13 +212,13 @@ describe("Welcome", () => {
 		expect(screen.queryByTestId("sign-in-guest")).toBeNull();
 	});
 
-	it("shows Google and guests when the server offers them, and no Create account when sign-ups are off", async () => {
+	it("shows Google, never a guest option, and no Create account when sign-ups are off", async () => {
 		mockServer.native = { apple: false, google: { webClientId: "web", iosClientId: "ios" } };
 		mockServer.flags = { disableSignups: true, disableEmailAuth: false, allowGuestLogin: true };
 		mockServer.providers = { credential: "Password" };
 		await renderScreen(<WelcomeScreen />);
 		expect(screen.getByTestId("sign-in-google")).toBeOnTheScreen();
-		expect(screen.getByTestId("sign-in-guest")).toBeOnTheScreen();
+		expect(screen.queryByTestId("sign-in-guest")).toBeNull();
 		expect(screen.queryByTestId("create-account-link")).toBeNull();
 		expect(screen.queryByText("More ways to sign in")).toBeNull();
 		expect(screen.getByText("New account sign-ups are turned off on this server.")).toBeOnTheScreen();

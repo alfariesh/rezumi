@@ -511,11 +511,17 @@ const getAuthConfig = () => {
 			maxPasswordLength: 64,
 			requireEmailVerification: false,
 			disableSignUp: env.FLAG_DISABLE_SIGNUPS || env.FLAG_DISABLE_EMAIL_AUTH,
-			sendResetPassword: async ({ user, url }) => {
+			// Mail the page link itself, not Better Auth's `/api/auth/reset-password/:token` hop: universal and app
+			// links never open the app on a redirect inside the browser, and `/api/*` is outside the app's link paths.
+			// Web and app both ask for `/auth/reset-password`, and both send the token to `POST /reset-password`,
+			// which checks it.
+			sendResetPassword: async ({ user, token }) => {
+				const url = new URL("/auth/reset-password", authBaseUrl);
+				url.searchParams.set("token", token);
 				await sendEmail({
 					to: user.email,
 					subject: "Reset your password",
-					react: createElement(ResetPasswordEmail, { url }),
+					react: createElement(ResetPasswordEmail, { url: url.toString() }),
 				});
 			},
 			revokeSessionsOnPasswordReset: true,

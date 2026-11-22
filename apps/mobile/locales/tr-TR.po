@@ -454,12 +454,6 @@ msgstr "{0}, “{1}” değerini döndürdü. Mesajınız saklanmaktadır."
 msgid "{0} selected"
 msgstr "{0} seçildi"
 
-#. placeholder {0}: resume.data.basics.name || resume.name
-#: src/features/letters/share.tsx
-#: src/features/share/download.tsx
-msgid "{0}-Resume"
-msgstr "{0}-Özgeçmiş"
-
 #. placeholder {0}: title || t`Untitled`
 #. placeholder {1}: row.index + 1
 #. placeholder {2}: row.count
@@ -506,14 +500,6 @@ msgstr "{company} · {tabName}"
 msgid "{completed, plural, one {# document updated} other {# documents updated}}"
 msgstr "{completed, plural, one {# belge güncellendi} other {# belge güncellendi}}"
 
-#: src/features/share/custom-domain.tsx
-msgid "{cost} a year"
-msgstr "Yıllık {cost}"
-
-#: src/features/share/custom-domain.tsx
-msgid "{cost} the first year"
-msgstr "İlk yıl {cost}"
-
 #: src/features/write/section-sheet.tsx
 msgid "{count, plural, one {# column} other {# columns}}"
 msgstr "{count, plural, one {# sütun} other {# sütun}}"
@@ -530,6 +516,31 @@ msgstr ""
 #: src/features/workspace/tabs/messages.tsx
 msgid "{count, plural, one {Apply # change} other {Apply # changes}}"
 msgstr "{count, plural, one {# değişikliği uygula} other {# değişikliği uygula}}"
+
+#. Short time since, in days: 3d
+#: src/features/share/time-since.ts
+msgid "{count, plural, other {#d}}"
+msgstr ""
+
+#. Short time since, in hours: 2h
+#: src/features/share/time-since.ts
+msgid "{count, plural, other {#h}}"
+msgstr ""
+
+#. Short time since, in minutes: 5m
+#: src/features/share/time-since.ts
+msgid "{count, plural, other {#m}}"
+msgstr ""
+
+#. Short time since, in weeks: 6w
+#: src/features/share/time-since.ts
+msgid "{count, plural, other {#w}}"
+msgstr ""
+
+#. Short time since, in years: 1y
+#: src/features/share/time-since.ts
+msgid "{count, plural, other {#y}}"
+msgstr ""
 
 #: src/features/workspace/tabs/debrief.tsx
 msgid "{day} · {length}m"
@@ -651,6 +662,7 @@ msgstr ""
 msgid "{minutes, plural, one {# minute in total} other {# minutes in total}}"
 msgstr "{minutes, plural, one {Toplam # dakika} other {Toplam # dakika}}"
 
+#: src/features/home/coming-up.tsx
 #: src/features/workspace/tabs/prepare.tsx
 msgid "{minutes, plural, one {Starts in # minute} other {Starts in # minutes}}"
 msgstr "{minutes, plural, one {# dakika içinde başlıyor} other {# dakika içinde başlıyor}}"
@@ -697,10 +709,6 @@ msgstr "{name} kenar çubuğunda bulunur"
 msgid "{name} uses one column"
 msgstr "{name} bir sütun kullanır"
 
-#: src/features/share/download.tsx
-msgid "{name}-Cover-Letter"
-msgstr "{name}-Ön-Yazı"
-
 #: src/features/check/issues.ts
 msgid "{names} come last in the text. Most systems still find them; some don't."
 msgstr "{names} metinde en sonda gelir. Çoğu sistem hâlâ onları buluyor; bazıları bunu yapmıyor."
@@ -720,10 +728,6 @@ msgstr "{role} · {company}"
 #: src/features/write/outline.tsx
 msgid "{sections, plural, one {# section} other {# sections}}"
 msgstr "{sections, plural, one {# bölümü} other {# bölümleri}}"
-
-#: src/features/letters/share.tsx
-msgid "{sender}-Cover-Letter"
-msgstr "{sender}-Ön-Yazı"
 
 #: src/features/assistant/messages.tsx
 msgid "{skipped, plural, one {# edit couldn't be placed: its text changed. Ask again to redo it.} other {# edits couldn't be placed: their text changed. Ask again to redo them.}}"
@@ -2003,10 +2007,6 @@ msgstr "Otomatik olarak"
 msgid "Autosaves are grouped by session and kept for 90 days. Named versions are kept until you delete them. Restoring saves the current state first."
 msgstr "Otomatik kaydetmeler oturuma göre gruplandırılır ve 90 gün boyunca saklanır. Adlandırılmış sürümler siz silene kadar saklanır. Geri yükleme işlemi öncelikle mevcut durumu kaydeder."
 
-#: src/features/share/custom-domain.tsx
-msgid "Available"
-msgstr "Müsait"
-
 #: src/features/ats-checker/messages.ts
 msgid "Avoid heavy letter-spacing effects, then re-export."
 msgstr "Yoğun harf aralığı efektlerinden kaçının, ardından yeniden dışa aktarın."
@@ -2574,10 +2574,6 @@ msgstr "Bir PDF dosyası seçin. Seçilen dosya yüklenmedi."
 msgid "Choose a PDF smaller than 10 MB. The selected file was not uploaded."
 msgstr "10 MB'tan küçük bir PDF seçin. Seçilen dosya yüklenmedi."
 
-#: src/shell/permissions.tsx
-msgid "Choose a photo"
-msgstr ""
-
 #: src/features/entries/photo-field.tsx
 #: src/features/settings/profile.tsx
 #: src/features/write/picture-screen.tsx
@@ -2787,10 +2783,6 @@ msgstr "Koç"
 msgid "Coach memory"
 msgstr ""
 
-#: src/features/share/custom-domain.tsx
-msgid "Code copied"
-msgstr "Kod kopyalandı"
-
 #: src/features/auth/two-factor-screen.tsx
 msgid "Codes look like a1b2c-d3e4f."
 msgstr ""
@@ -2890,10 +2882,6 @@ msgstr ""
 #: src/features/share/custom-domain.tsx
 msgid "Connect"
 msgstr "Bağlan"
-
-#: src/features/share/custom-domain.tsx
-msgid "Connect {domain}"
-msgstr "{domain} alan adını bağla"
 
 #: src/features/share/custom-domain.tsx
 msgid "Connect {hostname}"
@@ -3058,10 +3046,6 @@ msgstr "Bir iş için özgeçmişi kopyalama"
 #: src/features/workspace/tabs/apply.tsx
 msgid "Copy answers"
 msgstr "Cevapları kopyala"
-
-#: src/features/share/custom-domain.tsx
-msgid "Copy code"
-msgstr "Kodu kopyala"
 
 #: src/features/document-menu/index.tsx
 msgid "Copy created"
@@ -3303,6 +3287,10 @@ msgstr ""
 #: src/features/history/history.tsx
 msgid "Couldn't load versions."
 msgstr "Sürümler yüklenemedi."
+
+#: src/features/share/custom-domain.tsx
+msgid "Couldn't load your custom domain."
+msgstr ""
 
 #: src/features/onboarding/onboarding-screen.tsx
 msgid "Couldn't load your details"
@@ -3560,6 +3548,10 @@ msgstr "Resim paylaşılamadı. Tekrar deneyin."
 #: src/features/workspace/tabs/practise.tsx
 msgid "Couldn't share the recording. Try again."
 msgstr "Kayıt paylaşılamadı. Tekrar deneyin."
+
+#: src/features/auth/errors.ts
+msgid "Couldn't sign in with this account. If you don't have a Rezumi account yet, sign-ups may be turned off."
+msgstr ""
 
 #: src/features/settings/sign-out.tsx
 msgid "Couldn't sign out. Try again."
@@ -4468,6 +4460,10 @@ msgstr "Düzenlemek"
 #: src/features/assistant/messages.tsx
 msgid "Edit {0}: {1}"
 msgstr "{0}'ı düzenleyin: {1}"
+
+#: src/features/home/schedules.tsx
+msgid "Edit {name}"
+msgstr ""
 
 #: src/features/application-detail/sheets.tsx
 msgid "Edit date"
@@ -5903,6 +5899,10 @@ msgstr ""
 msgid "Keep on one page"
 msgstr "Tek sayfada devam et"
 
+#: src/features/entries/photo-field.tsx
+msgid "Keep photo"
+msgstr ""
+
 #: src/features/document-menu/index.tsx
 msgid "Keep private notes about this resume here. Nobody else can see them."
 msgstr "Bu özgeçmişle ilgili özel notlarınızı burada tutun. Başka kimse göremez."
@@ -6301,6 +6301,7 @@ msgid "Live at {url}"
 msgstr "{url} adresinde yayında"
 
 #: src/features/design/design-pane.tsx
+#: src/features/home/recent-documents.tsx
 #: src/features/home/section.tsx
 #: src/features/onboarding/onboarding-screen.tsx
 #: src/features/profile/facts.tsx
@@ -6583,10 +6584,6 @@ msgstr "Özgeçmişin eşleştirilmesi"
 #: src/features/workspace/parts.tsx
 msgid "Matching your facts"
 msgstr "Bilgileriniz eşleştiriliyor"
-
-#: src/features/share/custom-domain.tsx
-msgid "May be available"
-msgstr "Müsait olabilir"
 
 #: src/features/search/search-screen.tsx
 msgid "MCP"
@@ -6906,7 +6903,6 @@ msgid "Names, tags or applications"
 msgstr "İsimler, etiketler veya başvurular"
 
 #: src/features/design/preset-names.ts
-#: src/features/design/style-groups.tsx
 msgid "Narrow"
 msgstr "Dar"
 
@@ -7627,10 +7623,14 @@ msgstr "Şu ana kadar sadece bir versiyon. Her düzenleme oturumunda otomatik ol
 msgid "Only providers that pass their test can be turned on."
 msgstr "Yalnızca testi geçen sağlayıcılar etkinleştirilebilir."
 
-#. placeholder {0}: report.document.pageCount
+#. placeholder {0}: report.document.checkedPageCount
 #: src/features/ats-checker/checker.tsx
 msgid "Only the first {0} pages were checked."
 msgstr "Yalnızca ilk {0} sayfaları kontrol edildi."
+
+#: src/features/ats-checker/original-page.tsx
+msgid "Only the first {MAX_PAGES} pages are shown."
+msgstr ""
 
 #: src/features/check/parser.tsx
 msgid "Only the first 30 pages were checked."
@@ -8824,10 +8824,6 @@ msgstr "Brifingi görüşme günü sabahı yenile"
 msgid "Refund policy"
 msgstr ""
 
-#: src/features/share/custom-domain.tsx
-msgid "Register at OlaCV"
-msgstr "OlaCV'de tescil et"
-
 #: src/features/workspace/tabs/prepare.tsx
 msgid "Rehearse aloud"
 msgstr "Sesli prova yap"
@@ -8988,6 +8984,7 @@ msgstr "Şifre kaldırılsın mı?"
 msgid "Remove this file?"
 msgstr "Bu dosya kaldırılsın mı?"
 
+#: src/features/entries/photo-field.tsx
 #: src/features/write/picture-screen.tsx
 msgid "Remove this photo?"
 msgstr "Bu fotoğraf kaldırılsın mı?"
@@ -9248,6 +9245,7 @@ msgstr "{1} kullanılarak {0} alındı. Geri alma süresi menşe tazeliğini sa�
 #: src/features/profile/preferences.tsx
 #: src/features/profile/save-note.tsx
 #: src/features/profile/stories.tsx
+#: src/features/share/custom-domain.tsx
 #: src/features/share/download.tsx
 #: src/features/share/export-screen.tsx
 #: src/features/share/link.tsx
@@ -9393,10 +9391,6 @@ msgstr ""
 
 #: src/shell/permissions.tsx
 msgid "Rezumi can't ask again. Turn it on for Rezumi in your device's Settings, then try again."
-msgstr ""
-
-#: src/shell/permissions.tsx
-msgid "Rezumi opens your photos only to pick the one you choose. You can change this any time in Settings."
 msgstr ""
 
 #: src/shell/permissions.tsx
@@ -9816,10 +9810,6 @@ msgstr "Bölümler · yazdırma sırası"
 msgid "Sections use headings systems recognize, and work experience shows."
 msgstr "Bölümler, sistemlerin tanıdığı başlıkları kullanır ve iş deneyimini gösterir."
 
-#: src/features/share/custom-domain.tsx
-msgid "See plans"
-msgstr ""
-
 #: src/features/onboarding/intro-screen.tsx
 msgid "See where each one stands, get new roles that fit you, and never miss an interview."
 msgstr ""
@@ -9850,10 +9840,6 @@ msgstr "{0} girişini seçin"
 #: src/features/applications/list-screen.tsx
 msgid "Select visible"
 msgstr "Görünür olanı seç"
-
-#: src/features/share/export-options.tsx
-msgid "Selected"
-msgstr ""
 
 #: src/preview/page.tsx
 msgid "Selected entry"
@@ -10246,6 +10232,7 @@ msgid "Sign in"
 msgstr "Giriş yap"
 
 #: src/auth/session-gate.tsx
+#: src/features/auth/two-factor-screen.tsx
 #: src/features/check/screen.tsx
 msgid "Sign in again"
 msgstr "Tekrar oturum açın"
@@ -10630,10 +10617,6 @@ msgstr "İsminizle başlayın. Oradan inşa edin."
 #: src/features/home/coming-up.tsx
 msgid "Started"
 msgstr "Başladı"
-
-#: src/features/home/coming-up.tsx
-msgid "Starts in {minutes} minutes"
-msgstr "{minutes} dakika içinde başlıyor"
 
 #: src/features/workspace/tabs/prepare.tsx
 msgid "Starts now"
@@ -11162,6 +11145,10 @@ msgstr "Son, başlangıçtan öncedir."
 msgid "The file couldn't be read as a resume."
 msgstr "Dosya özgeçmiş olarak okunamadı."
 
+#: src/features/entries/photo-field.tsx
+msgid "The file is deleted. Resumes that show this photo lose it too."
+msgstr ""
+
 #: src/features/onboarding/read-file.ts
 msgid "The file is too large. Choose one up to 10 MB."
 msgstr ""
@@ -11497,8 +11484,8 @@ msgid "This file couldn't be read. Choose a PDF, Word, JSON or LinkedIn export (
 msgstr "Bu dosya okunamadı. Bir PDF, Word, JSON veya LinkedIn dışa aktarma (.zip) seçin."
 
 #: src/features/ats-checker/original-page.tsx
-msgid "This file couldn't be shown as pages. The report above still applies."
-msgstr "Bu dosya sayfalar halinde gösterilemedi. Yukarıdaki rapor halen geçerlidir."
+msgid "This file couldn't be shown as pages. The report still applies."
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "This file declares no language."
@@ -11591,6 +11578,10 @@ msgstr "Bu mektup ve özgeçmişiniz, eşleşen adlarla iki PDF olarak."
 #: src/draft/conflict-sheet.tsx
 msgid "This letter changed elsewhere"
 msgstr "Bu mektup başka yerde değişti"
+
+#: src/features/letters/share.tsx
+msgid "This letter has no resume anymore. Choose another format."
+msgstr ""
 
 #: src/features/letters/design.tsx
 #: src/features/letters/write.tsx
@@ -11871,6 +11862,10 @@ msgstr "Çok fazla istek var. Daha sonra tekrar deneyin."
 msgid "Too many tries in a short time. Wait a minute, then try again."
 msgstr ""
 
+#: src/features/auth/errors.ts
+msgid "Too many wrong codes. Wait a few minutes, then sign in again."
+msgstr ""
+
 #: src/features/auth/create-account-screen.tsx
 msgid "Too short"
 msgstr ""
@@ -12010,10 +12005,6 @@ msgstr "Bu açılışı deneyin"
 #: src/features/documents/new-document.tsx
 msgid "Try with a sample resume"
 msgstr "Örnek bir özgeçmişle deneyin"
-
-#: src/features/auth/welcome-screen.tsx
-msgid "Try without an account"
-msgstr ""
 
 #: src/features/settings/locale-names.ts
 msgid "Turkish"
@@ -12885,7 +12876,6 @@ msgid "Why do you want this role at {company}?"
 msgstr "{company} şirketindeki bu pozisyonu neden istiyorsunuz?"
 
 #: src/features/design/preset-names.ts
-#: src/features/design/style-groups.tsx
 msgid "Wide"
 msgstr "Geniş"
 
@@ -13290,10 +13280,6 @@ msgstr ""
 msgid "Your name and contact details follow your Profile."
 msgstr ""
 
-#: src/features/share/custom-domain.tsx
-msgid "Your name as your address, from OlaCV, the .cv registry. Code {CODE} takes 50% off the first year."
-msgstr "Adresiniz olarak adınız, .cv kayıt kuruluşu OlaCV'den. {CODE} kodu ilk yıl için %50 indirim sağlar."
-
 #: src/features/check/issues.ts
 msgid "Your name is missing"
 msgstr "Adınız eksik"
@@ -13350,10 +13336,6 @@ msgstr "Telefon numaranız alışılmadık bir biçimde yazılmış."
 #: app/account/membership.tsx
 #: src/features/billing/plan-card.tsx
 msgid "Your plan"
-msgstr ""
-
-#: src/features/share/custom-domain.tsx
-msgid "Your plan no longer includes a custom domain. Renew it and the domain comes back by itself."
 msgstr ""
 
 #: app/(tabs)/portfolio/index.tsx

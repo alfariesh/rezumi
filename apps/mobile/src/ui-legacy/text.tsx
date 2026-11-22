@@ -4,9 +4,9 @@ import type { TextProps as NativeTextProps, StyleProp, ViewProps, ViewStyle } fr
 import { RefreshControl, Text as NativeText, View } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { useKeyboardScrollSpace } from "./keyboard";
 import { useTheme } from "./theme";
-import { usePullRefresh } from "./use-pull-refresh";
+import { useKeyboardScrollSpace } from "@/ui/keyboard";
+import { usePullRefresh } from "@/ui/use-pull-refresh";
 
 export type TextVariant = keyof typeof typeScale;
 

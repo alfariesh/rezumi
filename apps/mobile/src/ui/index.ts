@@ -107,9 +107,12 @@ export { motion, size, space } from "./tokens";
 export {
 	ToastBridge,
 	hideToast,
+	setToastBarHeight,
 	showToast,
+	toastBottomOffset,
 	toastLifetime,
 	useAppToast,
+	useToastBarHeight,
 	type AppToast,
 	type AppToastOptions,
 	type AppToastVariant,
@@ -117,6 +120,8 @@ export {
 export { TopBar, type TopBarProps } from "./top-bar";
 export { usePullRefresh } from "./use-pull-refresh";
 export { useThemeColor, type ThemeColor } from "heroui-native";
+// Token class names as a style object, for native inputs that take no `className` (the rich-text editors).
+export { useResolveClassNames } from "uniwind";
 export { ChipInput, addChips, type ChipInputProps } from "./chip-input";
 export { PermissionPrimer, type PermissionPrimerProps } from "./permission-primer";
 export { MonthPicker, type MonthPickerProps } from "./month-picker";

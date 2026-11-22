@@ -1,8 +1,9 @@
 // An onboarding picked up again: the app can be closed at any step (a call, a crash, the system freeing memory), and
 // the next launch opens it where it was. Kept per account on this device only; what a source found stays here until
 // the person reviews it, as the web keeps it in the page. The chosen file itself isn't kept, only what it gave.
+// Sign-out removes it with the account's other data on this device (`scopedStoragePrefixes` in src/auth/session.ts).
 import type { OnboardingAnswers, OnboardingStep } from "@rezumi/career/onboarding";
-import type { SourceRun, SourceRuns } from "@rezumi/resume/profile-sources";
+import type { SourceId, SourceRun, SourceRuns } from "@rezumi/resume/profile-sources";
 import type { Template } from "@rezumi/schema/templates";
 import { isOnboardingStep } from "@rezumi/career/onboarding";
 import { SOURCE_IDS } from "@rezumi/resume/profile-sources";
@@ -12,8 +13,13 @@ export type SavedOnboarding = {
 	step: OnboardingStep;
 	inputs: { linkedin: string; linkedinOwn: boolean; github: string; website: string };
 	answers: OnboardingAnswers;
-	/** Only finished sources: one still loading or failed is run again from its field. */
+	/** Only finished sources: a failed one is run again from its field. */
 	runs: SourceRuns;
+	/**
+	 * Sources still being read when the run was kept, read again when it's picked up (use-sources-flow.ts); a file
+	 * among them is chosen again on the first step. Worked out from `runs` when stored.
+	 */
+	rerun: SourceId[];
 	excluded: string[];
 	/** The photo picked in review: undefined until picked, null for none. */
 	photo?: string | null | undefined;
@@ -28,7 +34,9 @@ export type KeyValueStorage = {
 	removeItemSync: (key: string) => void;
 };
 
-const keyOf = (scope: string) => `onboarding:${scope}`;
+const SAVED_ONBOARDING_PREFIX = "rezumi:onboarding:";
+
+const keyOf = (scope: string) => `${SAVED_ONBOARDING_PREFIX}${scope}:run`;
 
 const strings = (value: unknown): string[] =>
 	Array.isArray(value) ? value.filter((item): item is string => typeof item === "string") : [];
@@ -45,6 +53,11 @@ const finished = (runs: unknown): SourceRuns => {
 	return kept;
 };
 
+const loading = (runs: SourceRuns): SourceId[] => SOURCE_IDS.filter((id) => runs[id]?.status === "loading");
+
+const sourceIds = (value: unknown): SourceId[] =>
+	strings(value).filter((id): id is SourceId => (SOURCE_IDS as readonly string[]).includes(id));
+
 /** Reads a saved run back, or null when there is none or it can't be trusted (another version, damaged). */
 export function parseSavedOnboarding(raw: string | null): SavedOnboarding | null {
 	if (!raw) return null;
@@ -60,8 +73,10 @@ export function parseSavedOnboarding(raw: string | null): SavedOnboarding | null
 	const template = templateSchema.safeParse(value.template);
 	if (!template.success) return null;
 	const days = answers.maxOfficeDays;
+	const rerun = sourceIds(value.rerun);
 	return {
-		step: value.step,
+		// A file that was still being read is gone: pick the run up where it can be chosen again.
+		step: rerun.includes("file") && value.step !== "resume" ? "bring" : value.step,
 		inputs: {
 			linkedin: text(inputs.linkedin),
 			linkedinOwn: inputs.linkedinOwn === true,
@@ -74,6 +89,7 @@ export function parseSavedOnboarding(raw: string | null): SavedOnboarding | null
 			maxOfficeDays: typeof days === "number" && Number.isInteger(days) && days >= 0 && days <= 5 ? days : null,
 		},
 		runs: finished(value.runs),
+		rerun,
 		excluded: strings(value.excluded),
 		...(value.photo === null || typeof value.photo === "string" ? { photo: value.photo } : {}),
 		template: template.data,
@@ -91,10 +107,17 @@ export function loadSavedOnboarding(storage: KeyValueStorage, scope: string | nu
 }
 
 /** Saves the run; a full or failing store only means it can't be picked up again. */
-export function storeSavedOnboarding(storage: KeyValueStorage, scope: string | null, saved: SavedOnboarding) {
+export function storeSavedOnboarding(
+	storage: KeyValueStorage,
+	scope: string | null,
+	saved: Omit<SavedOnboarding, "rerun">,
+) {
 	if (!scope) return;
 	try {
-		storage.setItemSync(keyOf(scope), JSON.stringify({ v: 1, ...saved, runs: finished(saved.runs) }));
+		storage.setItemSync(
+			keyOf(scope),
+			JSON.stringify({ v: 1, ...saved, runs: finished(saved.runs), rerun: loading(saved.runs) }),
+		);
 	} catch {
 		// Nothing to do: the run goes on, it just won't come back after a restart.
 	}

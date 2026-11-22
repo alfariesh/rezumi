@@ -1,6 +1,7 @@
-// Permission prompts (K5): never at launch; the first time a feature needs notifications, the camera, the microphone or
-// photos, one sheet says what for (PermissionPrimer), and only "Continue" opens the system dialog. Once the system
-// says no for good, a short alert points to Settings instead of asking again.
+// Permission prompts (K5): never at launch; the first time a feature needs notifications, the camera or the microphone,
+// one sheet says what for (PermissionPrimer), and only "Continue" opens the system dialog. Once the system says no for
+// good, a short alert points to Settings instead of asking again. Choosing a photo needs no prompt: the system picker
+// runs outside the app.
 import type { IconName } from "@/ui";
 import { t as translate } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react/macro";
@@ -8,7 +9,7 @@ import { Alert, Linking } from "react-native";
 import { create } from "zustand";
 import { PermissionPrimer } from "@/ui";
 
-export type PermissionKind = "notifications" | "camera" | "microphone" | "photos";
+export type PermissionKind = "notifications" | "camera" | "microphone";
 
 /** The shape every Expo permission API answers with. */
 export type PermissionAnswer = { granted: boolean; canAskAgain: boolean; status: string };
@@ -74,11 +75,6 @@ export function PermissionPrimerHost() {
 			icon: "microphone",
 			title: t`Practise out loud`,
 			description: t`Rezumi records only while you answer a practice question, to turn your answer into text. You can change this any time in Settings.`,
-		},
-		photos: {
-			icon: "image",
-			title: t`Choose a photo`,
-			description: t`Rezumi opens your photos only to pick the one you choose. You can change this any time in Settings.`,
 		},
 	};
 	const current = kind ? texts[kind] : texts.notifications;

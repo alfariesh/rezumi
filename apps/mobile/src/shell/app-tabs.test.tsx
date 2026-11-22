@@ -2,17 +2,20 @@
 // unread notifications, the sidebar in the web's order, and a press on another tab switching to it.
 import type { BottomTabBarProps } from "expo-router/tabs";
 import { fireEvent, screen } from "@testing-library/react-native";
+import { Text } from "react-native";
 import { AppSidebar, PhoneTabBar } from "./app-tabs";
 import { renderScreen } from "@/test/render-screen";
+import { useToastBarHeight } from "@/ui";
 
 let mockUnread: number | undefined = 3;
+let mockFocused = true;
 
 jest.mock("@/features/home/queries", () => ({
 	useUnreadCount: () => mockUnread,
 	useSidebarCounts: () => ({ documents: 4, applications: 2 }),
 }));
 jest.mock("./account-menu", () => ({ AccountButton: () => null }));
-jest.mock("expo-router", () => ({ useRouter: () => ({ push: jest.fn() }) }));
+jest.mock("expo-router", () => ({ useRouter: () => ({ push: jest.fn() }), useIsFocused: () => mockFocused }));
 
 const names = ["home", "documents", "applications", "portfolio", "profile"] as const;
 
@@ -33,6 +36,7 @@ function tabProps(hidden: readonly string[] = []) {
 describe("PhoneTabBar", () => {
 	beforeEach(() => {
 		mockUnread = 3;
+		mockFocused = true;
 	});
 
 	it("shows the five tabs, Home selected with its unread count", async () => {
@@ -62,6 +66,32 @@ describe("PhoneTabBar", () => {
 		await fireEvent.press(screen.getByTestId("tab-home"));
 		expect(navigateToTab).toHaveBeenCalledTimes(1);
 		expect(props.emitter.emit).toHaveBeenCalledTimes(2);
+	});
+
+	it("lifts toasts above itself while it is in front, and lets them down when it goes", async () => {
+		function ToastOffset() {
+			return <Text testID="toast-offset">{String(useToastBarHeight())}</Text>;
+		}
+		const height = () => screen.getByTestId("toast-offset");
+		// A new element each time, so the bar renders again and reads its focus.
+		const ui = () => (
+			<>
+				<PhoneTabBar {...tabProps().props} />
+				<ToastOffset />
+			</>
+		);
+		const { rerender, unmount } = await renderScreen(ui());
+		await fireEvent(screen.getByTestId("phone-tab-bar"), "layout", { nativeEvent: { layout: { height: 83 } } });
+		expect(height()).toHaveTextContent("83");
+		mockFocused = false;
+		await rerender(ui());
+		expect(height()).toHaveTextContent("0");
+		mockFocused = true;
+		await rerender(ui());
+		expect(height()).toHaveTextContent("83");
+		await unmount();
+		await renderScreen(<ToastOffset />);
+		expect(height()).toHaveTextContent("0");
 	});
 });
 

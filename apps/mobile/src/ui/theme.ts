@@ -41,7 +41,7 @@ export function useThemePreference(): ThemePreference {
 	return useSyncExternalStore(subscribe, () => preference);
 }
 
-export const resolveScheme = (value: ThemePreference, system: ColorSchemeName | null): ColorScheme =>
+const resolveScheme = (value: ThemePreference, system: ColorSchemeName | null): ColorScheme =>
 	(value === "system" ? system : value) === "dark" ? "dark" : "light";
 
 /** The effective color scheme, for the rare JavaScript decision that depends on it (status bar, native views). */

@@ -3,6 +3,7 @@
 import { useLingui } from "@lingui/react/macro";
 import { useRouter } from "expo-router";
 import { useState } from "react";
+import { isEmailAddress } from "./email";
 import { ErrorAlert } from "./error-alert";
 import { AuthFrame } from "./frame";
 import { useAuthAction } from "./use-auth-action";
@@ -10,8 +11,6 @@ import { useAuthServer } from "./use-auth-server";
 import { requestPasswordReset } from "@/auth/native-sign-in";
 import { routes } from "@/routes";
 import { Alert, Button, FieldError, Input, Label, TextField } from "@/ui";
-
-const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 type ForgotPasswordScreenProps = { email?: string | undefined };
 
@@ -23,12 +22,12 @@ export function ForgotPasswordScreen({ email: initialEmail = "" }: ForgotPasswor
 	const [submitted, setSubmitted] = useState(false);
 	const [sentTo, setSentTo] = useState<string | null>(null);
 	const { pending, error, run } = useAuthAction("reset");
-	const invalid = submitted && !emailPattern.test(email.trim());
+	const invalid = submitted && !isEmailAddress(email.trim());
 
 	const submit = async () => {
 		setSubmitted(true);
 		const address = email.trim().toLowerCase();
-		if (!emailPattern.test(address)) return;
+		if (!isEmailAddress(address)) return;
 		const done = await run(async () => {
 			await requestPasswordReset(server, address);
 			return true;

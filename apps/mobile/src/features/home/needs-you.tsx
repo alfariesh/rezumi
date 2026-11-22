@@ -2,6 +2,7 @@
 // each with its action, marked read with an Undo toast. Read ones come back with "Show read".
 import type { Notification } from "./queries";
 import type { HomeTime } from "./time";
+import type { AppHref } from "@/routes";
 import type { IconName, ThemeColor } from "@/ui";
 import { useLingui } from "@lingui/react/macro";
 import { useQueryClient } from "@tanstack/react-query";
@@ -15,13 +16,26 @@ import { getServer, useSession } from "@/auth/session";
 import { useApplications } from "@/features/applications/queries";
 import { withUndo } from "@/features/career/undo";
 import { parseDeepLink } from "@/linking/parse";
+import { routes } from "@/routes";
 import { Button, EmptyState, Icon, IconButton, Text, Typography, showToast } from "@/ui";
 
 type Kind = { icon: IconName; tone: ThemeColor; action: string };
 
-type NeedsYouProps = { now: Date; time: HomeTime; onReview: () => void };
+type NeedsYouProps = {
+	now: Date;
+	time: HomeTime;
+	onReview: () => void;
+	/** A notification's schedule link (an id, "new" or "new:<kind>"): Home opens its sheet in place. */
+	onOpenSchedule: (schedule: string) => void;
+};
 
-export function NeedsYou({ now, time, onReview }: NeedsYouProps) {
+/** Where a notification's action goes: an app screen, or a schedule's sheet on this Home. */
+type Target = { href: AppHref } | { schedule: string };
+
+/** `/home?schedule=<id>` from the deep-link map: the schedule, decoded. */
+const homeSchedule = /^\/home\?schedule=([^&#]+)$/;
+
+export function NeedsYou({ now, time, onReview, onOpenSchedule }: NeedsYouProps) {
 	const { t } = useLingui();
 	const router = useRouter();
 	const queryClient = useQueryClient();
@@ -58,11 +72,19 @@ export function NeedsYou({ now, time, onReview }: NeedsYouProps) {
 		});
 	};
 
-	// In-app paths only (the server writes `/dashboard/...`); the deep-link map turns them into app screens.
-	const hrefOf = (row: Notification) => {
+	// In-app paths only (the server writes `/dashboard/...`); the deep-link map turns them into app screens. Home is
+	// this screen: its schedule links open the sheet here instead of pushing a second Home, and bare Home links do
+	// nothing.
+	const targetOf = (row: Notification): Target | null => {
 		if (!row.url || !/^\/(?!\/)/.test(row.url)) return null;
 		const link = parseDeepLink(row.url, getServer());
-		return link?.kind === "target" ? link.href : null;
+		if (link?.kind !== "target" || link.href === routes.home()) return null;
+		const schedule = homeSchedule.exec(link.href)?.[1];
+		return schedule === undefined ? { href: link.href } : { schedule: decodeURIComponent(schedule) };
+	};
+	const open = (target: Target) => {
+		if ("schedule" in target) onOpenSchedule(target.schedule);
+		else router.push(target.href);
 	};
 
 	const companies = new Map(applications.data?.map((application) => [application.id, application.company]));
@@ -110,8 +132,8 @@ export function NeedsYou({ now, time, onReview }: NeedsYouProps) {
 				<View className="gap-4">
 					{rows.map((row) => {
 						const kind = kindOf(row.notice.type);
-						const href = hrefOf(row);
-						const actionable = row.notice.type === "opportunities" || href !== null;
+						const target = targetOf(row);
+						const actionable = row.notice.type === "opportunities" || target !== null;
 						return (
 							<View key={row.id} className="flex-row items-start gap-3" testID={`notification-${row.id}`}>
 								<RowTile>
@@ -134,7 +156,7 @@ export function NeedsYou({ now, time, onReview }: NeedsYouProps) {
 											size="sm"
 											variant="secondary"
 											className="self-start"
-											onPress={() => (row.notice.type === "opportunities" ? onReview() : href && router.push(href))}
+											onPress={() => (row.notice.type === "opportunities" ? onReview() : target && open(target))}
 										>
 											<Button.Label>{kind.action}</Button.Label>
 										</Button>

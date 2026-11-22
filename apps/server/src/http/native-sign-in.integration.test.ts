@@ -165,7 +165,7 @@ describe.skipIf(!databaseURL)("native app sign-in with PostgreSQL", () => {
 		const { origin, post, register, signUp } = await setup();
 		const clientId = await register();
 		const thirdParty = await register(["http://127.0.0.1:33931/callback"]);
-		const mixed = await register([redirectFor(origin), "http://127.0.0.1:33931/callback"]);
+		const mixed = await register([NATIVE_REDIRECT, "http://127.0.0.1:33931/callback"]);
 		const { cookie } = await signUp();
 		const consent = (body: object, sent = cookie, requestOrigin: string | null = origin) =>
 			post("native-app/consent", body, sent, requestOrigin);
@@ -195,6 +195,55 @@ describe.skipIf(!databaseURL)("native app sign-in with PostgreSQL", () => {
 		const stale = await consent({ client_id: clientId, resource: origin });
 		expect(stale.status).toBe(401);
 		await expect(stale.json()).resolves.toMatchObject({ code: "SESSION_NOT_FRESH" });
+	}, 30_000);
+
+	it("refuses disabled or confidential clients, the development scheme and banned accounts", async () => {
+		const { origin, post, register, signUp } = await setup();
+		const { db } = await import("@rezumi/db/client");
+		const schema = await import("@rezumi/db/schema");
+		const { eq } = await import("drizzle-orm");
+		const { cookie, email } = await signUp();
+		const consent = (clientId: string) => post("native-app/consent", { client_id: clientId, resource: origin }, cookie);
+		const expectRefused = async (clientId: string) => {
+			const response = await consent(clientId);
+			expect(response.status).toBe(400);
+			await expect(response.json()).resolves.toMatchObject({ code: "INVALID_CLIENT" });
+		};
+
+		const disabled = await register();
+		await db.update(schema.oauthClient).set({ disabled: true }).where(eq(schema.oauthClient.clientId, disabled));
+		await expectRefused(disabled);
+
+		const withSecret = await register();
+		await db
+			.update(schema.oauthClient)
+			.set({ clientSecret: "hashed-secret" })
+			.where(eq(schema.oauthClient.clientId, withSecret));
+		await expectRefused(withSecret);
+
+		const basicAuth = await register();
+		await db
+			.update(schema.oauthClient)
+			.set({ tokenEndpointAuthMethod: "client_secret_basic" })
+			.where(eq(schema.oauthClient.clientId, basicAuth));
+		await expectRefused(basicAuth);
+
+		// Any app can claim the private-use scheme, so it counts only with FLAG_ALLOW_UNSAFE_OAUTH_REDIRECT_URI.
+		if (!process.env.FLAG_ALLOW_UNSAFE_OAUTH_REDIRECT_URI) {
+			const devScheme = await register();
+			await db
+				.update(schema.oauthClient)
+				.set({ redirectUris: ["app.rezumi:/auth/native-callback"] })
+				.where(eq(schema.oauthClient.clientId, devScheme));
+			await expectRefused(devScheme);
+		}
+
+		const clientId = await register();
+		await db.update(schema.user).set({ banned: true }).where(eq(schema.user.email, email));
+		const banned = await consent(clientId);
+		expect(banned.status).toBeGreaterThanOrEqual(401);
+		expect(banned.status).toBeLessThan(500);
+		expect(banned.ok).toBe(false);
 	}, 30_000);
 
 	it("keeps two-step verification and rejects replayed codes", async () => {
@@ -249,4 +298,4 @@ describe.skipIf(!databaseURL)("native app sign-in with PostgreSQL", () => {
 	}, 30_000);
 });
 
-const redirectFor = (_origin: string) => "https://rezumi.app/auth/native-callback";
+const NATIVE_REDIRECT = "https://rezumi.app/auth/native-callback";

@@ -17,8 +17,8 @@ import { filterApplications } from "@/features/applications/list";
 import { useApplications } from "@/features/applications/queries";
 import { getStageColor, getStageLabel } from "@/features/applications/stages";
 import { useIsTablet } from "@/shell/use-is-tablet";
+import { usePullRefresh } from "@/ui";
 import { Banner, Button, Card, Skeleton, Text, showToast, useTheme } from "@/ui-legacy";
-import { usePullRefresh } from "@/ui-legacy/use-pull-refresh";
 
 const BAR_HEIGHT = 18;
 const WEEK_CHART_HEIGHT = 112;

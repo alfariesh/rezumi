@@ -1,5 +1,6 @@
 import type { ProfileDto, ProfileSaveResult } from "./queries";
 import type { WriteSource, WriteUpdateOptions } from "@/features/resume/editor/write/source";
+import type { LastEdit } from "@rezumi/resume/draft";
 import type { ProfileDraftStatus } from "@rezumi/resume/profile-draft";
 import type { ResumeData } from "@rezumi/schema/resume/data";
 import type { QueryClient } from "@tanstack/react-query";
@@ -9,7 +10,7 @@ import { t } from "@lingui/core/macro";
 import { ORPCError } from "@orpc/client";
 import { immer } from "zustand/middleware/immer";
 import { create } from "zustand/react";
-import { MAX_HISTORY_ENTRIES, shouldCoalesceEdit } from "@rezumi/resume/draft";
+import { joinsUndoStep, MAX_HISTORY_ENTRIES } from "@rezumi/resume/draft";
 import { profileFromResume, resumeDataFromProfile } from "@rezumi/resume/profile";
 import { createProfileSaver, mergeFollowed } from "@rezumi/resume/profile-draft";
 import { syncResumeDates } from "@rezumi/schema/resume/dates";
@@ -46,14 +47,10 @@ type ProfileDraftActions = {
 type ProfileDraftStore = ProfileDraftState & ProfileDraftActions;
 
 let boundQueryClient: QueryClient | undefined;
-let lastEditAt = 0;
-let lastKey: string | undefined;
-let canCoalesce = false;
+let lastEdit: LastEdit | null = null;
 
 function resetHistoryRuntime() {
-	lastEditAt = 0;
-	lastKey = undefined;
-	canCoalesce = false;
+	lastEdit = null;
 }
 
 const saver = createProfileSaver({
@@ -101,18 +98,10 @@ export const useProfileDraftStore = create<ProfileDraftStore>()(
 			const current = get().data;
 			if (!current) return;
 
+			// The same undo-step rule as resumes and the app.
 			const now = Date.now();
-			const newStep = options.newStep ?? false;
-			const coalesce =
-				options.sameStep && options.coalesceKey !== undefined && lastKey === options.coalesceKey
-					? true
-					: shouldCoalesceEdit(
-							{ at: lastEditAt, key: lastKey, canCoalesce },
-							{ at: now, key: options.coalesceKey, newStep },
-						);
-			lastEditAt = now;
-			lastKey = options.coalesceKey;
-			canCoalesce = !newStep;
+			const coalesce = joinsUndoStep(lastEdit, options, now);
+			lastEdit = { at: now, key: options.coalesceKey, coalesce: !options.newStep };
 
 			set((state) => {
 				if (!state.data) return;

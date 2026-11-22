@@ -107,7 +107,15 @@ export function HomeScreen({ schedule }: HomeScreenProps) {
 		]);
 
 	const comingUp = <ComingUp now={now} time={time} />;
-	const needsYou = <NeedsYou now={now} time={time} onReview={reviewRoles} />;
+	// A notification's schedule goes through the same parameter as a link, so the effect above opens it.
+	const needsYou = (
+		<NeedsYou
+			now={now}
+			time={time}
+			onReview={reviewRoles}
+			onOpenSchedule={(value) => router.setParams({ schedule: value })}
+		/>
+	);
 	const recent = firstRun ? null : <RecentDocuments />;
 	const roles = (
 		<NewRoles

@@ -4,6 +4,7 @@ import { useLingui } from "@lingui/react/macro";
 import { useRouter } from "expo-router";
 import { useRef, useState } from "react";
 import { View } from "react-native";
+import { isEmailAddress } from "./email";
 import { ErrorAlert } from "./error-alert";
 import { AuthFrame } from "./frame";
 import { useAuthAction } from "./use-auth-action";
@@ -11,8 +12,6 @@ import { useAuthServer } from "./use-auth-server";
 import { signInWithEmail } from "@/auth/native-sign-in";
 import { routes } from "@/routes";
 import { Button, FieldError, Input, Label, LinkButton, TextField, type InputRef } from "@/ui";
-
-const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 type EmailSignInScreenProps = {
 	/** Prefills the address, e.g. after Create account found an existing account. */
@@ -29,12 +28,12 @@ export function EmailSignInScreen({ email: initialEmail = "" }: EmailSignInScree
 	const passwordRef = useRef<InputRef>(null);
 	const { pending, error, run } = useAuthAction("sign-in");
 
-	const emailInvalid = submitted && !emailPattern.test(email.trim());
+	const emailInvalid = submitted && !isEmailAddress(email.trim());
 	const passwordInvalid = submitted && password.length === 0;
 
 	const submit = async () => {
 		setSubmitted(true);
-		if (!emailPattern.test(email.trim()) || password.length === 0) return;
+		if (!isEmailAddress(email.trim()) || password.length === 0) return;
 		const result = await run(() => signInWithEmail(server, email.trim().toLowerCase(), password));
 		// Signed in: the session gate leaves the auth screens by itself.
 		if (result?.status === "two-factor") router.push(routes.twoFactor());

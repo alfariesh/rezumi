@@ -85,8 +85,6 @@ export const ENTRY_FIELDS: Record<CustomSectionType, readonly EntryField[]> = {
 	"cover-letter": [],
 };
 
-export { getPrimaryField } from "./model";
-
 /** Shown on a draft entry, keyed by its primary field. */
 export const DRAFT_HINTS: Record<string, MessageDescriptor> = {
 	company: msg`Appears on the page once it has a company.`,

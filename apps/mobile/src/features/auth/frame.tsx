@@ -3,7 +3,7 @@
 import type { ReactNode } from "react";
 import { useLingui } from "@lingui/react/macro";
 import { useRouter } from "expo-router";
-import { I18nManager, View } from "react-native";
+import { View } from "react-native";
 import { routes } from "@/routes";
 import { IconButton, Screen, Typography } from "@/ui";
 
@@ -26,7 +26,8 @@ export function AuthFrame({ title, description, back = true, children, footer, t
 			<Screen edges={["top", "bottom"]}>
 				{back ? (
 					<IconButton
-						icon={I18nManager.isRTL ? "arrow-right" : "arrow-left"}
+						// `Icon` mirrors arrows in right-to-left languages itself.
+						icon="arrow-left"
 						label={t`Back`}
 						// Always drawn, so the layout never shifts; a screen opened from a link goes back to Welcome.
 						onPress={() => (router.canGoBack() ? router.back() : router.replace(routes.signIn()))}

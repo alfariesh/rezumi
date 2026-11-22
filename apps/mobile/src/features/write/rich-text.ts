@@ -252,11 +252,6 @@ const decode = (text: string) =>
 const encode = (text: string) =>
 	text.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;");
 
-/** The editor's lines (paragraphs, list items, headings), as the plain text it reports joins them with "\n". */
-export function getLines(html: string): string[] {
-	return [...html.matchAll(BLOCK)].map((match) => decode(match[3] ?? ""));
-}
-
 /** The line holding the caret in the editor's plain text, or null on an empty line. */
 export function lineAtCaret(plain: string, caret: number): { index: number; text: string } | null {
 	const before = plain.slice(0, caret);

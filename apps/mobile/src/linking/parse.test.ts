@@ -52,6 +52,9 @@ describe("parseDeepLink: web pages to app screens", () => {
 		["/dashboard/settings/app", "/account/preferences"],
 		["/dashboard/settings/ai", "/account/ai"],
 		["/dashboard/settings/api-keys", "/account/ai"],
+		["/dashboard/settings/integrations", "/account/ai"],
+		["/dashboard/settings/authentication", "/account/account"],
+		["/dashboard/settings/job-search", "/applications"],
 		["/dashboard/settings/billing", "/account"],
 	])("%s opens %s", (path, expected) => {
 		expect(href(path)).toBe(expected);

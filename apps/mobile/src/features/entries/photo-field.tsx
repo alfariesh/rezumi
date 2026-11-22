@@ -1,5 +1,7 @@
 // The photo: taken with the camera or chosen from the library, cropped square, uploaded, then written to the source.
-// The previous photo stays until an upload succeeds. How the photo looks on a page is the CV builder's business.
+// The previous photo stays until an upload succeeds. Removing asks first, as on the web: the file is deleted from the
+// server, and resumes copied from the Profile may show the same one. How the photo looks on a page is the CV builder's
+// business.
 import { useLingui } from "@lingui/react/macro";
 import { useMutation } from "@tanstack/react-query";
 import { File } from "expo-file-system";
@@ -11,7 +13,7 @@ import { client, rest } from "@/api/client";
 import { getServer, useSession } from "@/auth/session";
 import { initialsOf, photoUrl } from "@/features/onboarding/photo-url";
 import { askPermission } from "@/shell/permissions";
-import { Avatar, Button, ListRow, ListSection, Sheet, Text, showToast } from "@/ui";
+import { Avatar, Button, ConfirmDialog, ListRow, ListSection, Sheet, Text, showToast } from "@/ui";
 
 const MAX_UPLOAD = 10 * 1024 * 1024;
 
@@ -39,6 +41,7 @@ export function PhotoField({ disabled = false }: PhotoFieldProps) {
 	const url = useWriteData((data) => data.picture.url, "");
 	const name = useWriteData((data) => data.basics.name, "");
 	const [choosing, setChoosing] = useState(false);
+	const [confirmRemove, setConfirmRemove] = useState(false);
 	const shown = resolvePictureUrl(url, server);
 
 	const setUrl = (next: string) =>
@@ -97,7 +100,6 @@ export function PhotoField({ disabled = false }: PhotoFieldProps) {
 	});
 
 	const remove = () => {
-		setChoosing(false);
 		if (!url) return;
 		try {
 			const parsed = new URL(photoUrl(server, url));
@@ -143,9 +145,29 @@ export function PhotoField({ disabled = false }: PhotoFieldProps) {
 				<ListSection>
 					<ListRow title={t`Take photo`} icon="camera" chevron={false} onPress={() => pick("camera")} />
 					<ListRow title={t`Choose from library`} icon="image" chevron={false} onPress={() => pick("library")} />
-					{url ? <ListRow title={t`Remove photo`} icon="trash" tone="danger" onPress={remove} /> : null}
+					{url ? (
+						<ListRow
+							title={t`Remove photo`}
+							icon="trash"
+							tone="danger"
+							onPress={() => {
+								setChoosing(false);
+								setConfirmRemove(true);
+							}}
+						/>
+					) : null}
 				</ListSection>
 			</Sheet>
+			<ConfirmDialog
+				isOpen={confirmRemove}
+				onOpenChange={setConfirmRemove}
+				title={t`Remove this photo?`}
+				message={t`The file is deleted. Resumes that show this photo lose it too.`}
+				confirmLabel={t`Remove photo`}
+				cancelLabel={t`Keep photo`}
+				destructive
+				onConfirm={remove}
+			/>
 		</View>
 	);
 }

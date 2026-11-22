@@ -109,6 +109,39 @@ describe("createProfileSaver", () => {
 		expect(saver.hasUnsavedChanges()).toBe(false);
 	});
 
+	it("answers false to a second saveNow while a save that hits a conflict is on its way", async () => {
+		const { saver, send, onConflict, edit } = setup();
+		let reject: (error: unknown) => void = () => undefined;
+		send.mockReturnValueOnce(new Promise((_, fail) => (reject = fail)));
+
+		edit("Dana here");
+		const first = saver.saveNow();
+		// Leaving the screen, or an action that needs the saved Profile, asks while the first save is out.
+		const second = saver.saveNow();
+		reject(new ConflictError());
+
+		await expect(first).resolves.toBe(false);
+		await expect(second).resolves.toBe(false);
+		expect(onConflict).toHaveBeenCalledOnce();
+		expect(send).toHaveBeenCalledOnce();
+	});
+
+	it("answers false to a second saveNow while a save that fails is on its way, sending nothing more", async () => {
+		const { saver, send, edit } = setup();
+		let reject: (error: unknown) => void = () => undefined;
+		send.mockReturnValueOnce(new Promise((_, fail) => (reject = fail)));
+
+		edit("Dana offline");
+		const first = saver.saveNow();
+		const second = saver.saveNow();
+		reject(new TypeError("Network request failed"));
+
+		await expect(first).resolves.toBe(false);
+		await expect(second).resolves.toBe(false);
+		expect(send).toHaveBeenCalledOnce();
+		expect(saver.hasUnsavedChanges()).toBe(true);
+	});
+
 	it("keeps the edits when offline and sends them on retry", async () => {
 		const { saver, send, statuses, edit } = setup();
 		send.mockRejectedValueOnce(new TypeError("Network request failed"));

@@ -12,7 +12,7 @@ const memory = (): KeyValueStorage & { map: Map<string, string> } => {
 	};
 };
 
-const run: SavedOnboarding = {
+const run: Omit<SavedOnboarding, "rerun"> = {
 	step: "review",
 	inputs: { linkedin: "", linkedinOwn: false, github: "dewi-dev", website: "" },
 	answers: { targetRoles: ["Product designer"], locations: ["Bandung"], maxOfficeDays: 2 },
@@ -33,10 +33,30 @@ describe("a saved onboarding", () => {
 		const back = loadSavedOnboarding(storage, "account-a");
 		expect(back?.step).toBe("review");
 		expect(Object.keys(back?.runs ?? {})).toEqual(["github"]);
+		// The source still loading is read again when the run is picked up.
+		expect(back?.rerun).toEqual(["website"]);
 		expect(back?.answers).toEqual(run.answers);
 		expect(back?.photo).toBeNull();
 		expect(loadSavedOnboarding(storage, "account-b")).toBeNull();
 		expect(loadSavedOnboarding(storage, null)).toBeNull();
+	});
+
+	it("is kept under the account's prefix, so signing out removes it", () => {
+		const storage = memory();
+		storeSavedOnboarding(storage, "account-a", run);
+		expect([...storage.map.keys()]).toEqual(["rezumi:onboarding:account-a:run"]);
+	});
+
+	it("goes back to the first step when a file was still being read", () => {
+		const storage = memory();
+		storeSavedOnboarding(storage, "account-a", {
+			...run,
+			step: "questions",
+			runs: { file: { status: "loading", key: "cv.pdf:1" } },
+		});
+		const back = loadSavedOnboarding(storage, "account-a");
+		expect(back?.step).toBe("bring");
+		expect(back?.rerun).toEqual(["file"]);
 	});
 
 	it("is forgotten when cleared", () => {

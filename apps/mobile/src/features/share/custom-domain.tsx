@@ -10,9 +10,10 @@ import { ORPCError } from "@orpc/client";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import * as Clipboard from "expo-clipboard";
 import { useState } from "react";
-import { Linking, View } from "react-native";
+import { View } from "react-native";
 import { DOMAIN_SETTLING_REFRESH_MS, domainSteps, isDomainSettling, isRootDomain } from "@rezumi/resume/custom-domain";
-import { cvDomainRegistrationUrl, formatTimeSince, portfolioHoldsShortLink } from "@rezumi/resume/sharing";
+import { portfolioHoldsShortLink } from "@rezumi/resume/sharing";
+import { formatTimeSince } from "./time-since";
 import { orpc } from "@/api/client";
 import { canShowPlans, hasPlanFeature, showPlanAlert, usePlan } from "@/features/billing/plan";
 import { showPlanAlertForError } from "@/features/billing/plan-alert";
@@ -36,10 +37,7 @@ import {
 	showToast,
 } from "@/ui";
 
-const CODE = "RX";
-
 type Domain = NonNullable<RouterOutput["customDomain"]["get"]>;
-type Suggestion = NonNullable<RouterOutput["customDomain"]["suggestion"]>;
 
 type ShareNoticeProps = {
 	status: "default" | "accent" | "success" | "warning" | "danger";
@@ -78,34 +76,32 @@ function domainError(error: unknown) {
 	showToast({ title: message, variant: "danger" });
 }
 
-type CustomDomainProps = {
-	offline: boolean;
-	/** Suggest a `.cv` domain from OlaCV while none is connected (`FLAG_OLACV_SUGGESTION`). */
-	suggest: boolean;
-};
+/**
+ * The server's answer when custom domains aren't open to the account (not set up on this server, or portfolios not open
+ * to it): the field stays away. Any other failure (a timeout, the server down) says so and offers a retry.
+ */
+const isUnavailable = (error: unknown) =>
+	error instanceof ORPCError && ["PRECONDITION_FAILED", "FORBIDDEN", "NOT_FOUND"].includes(error.code);
 
-/** Connects the account's own domain: the domain, the DNS records to add in a sheet, a check, and the result. */
-export function CustomDomain({ offline, suggest }: CustomDomainProps) {
+type CustomDomainProps = { offline: boolean };
+
+/**
+ * Connects the account's own domain: the domain, the DNS records to add in a sheet, a check, and the result. The web's
+ * `.cv` suggestion from OlaCV (a price, a discount code and a link to buy) has no place in the app (K6).
+ */
+export function CustomDomain({ offline }: CustomDomainProps) {
 	const { t } = useLingui();
 	const queryClient = useQueryClient();
 	const domain = useQuery({
 		...orpc.customDomain.get.queryOptions(),
 		enabled: !offline,
-		// A refusal means the feature isn't open to this account; the field stays away instead of retrying.
-		retry: false,
+		// The app's default retries a timeout or a server error, never a refusal (4xx).
 		refetchInterval: (query) => (isDomainSettling(query.state.data) ? DOMAIN_SETTLING_REFRESH_MS : false),
 	});
 	const plan = usePlan();
 	// Connecting needs the plan from the day portfolios open to the account; the server decides the same way.
 	const portfolio = useQuery({ ...orpc.portfolio.status.queryOptions(), enabled: !offline });
 	const locked = Boolean(portfolio.data?.enabled) && !hasPlanFeature(plan, "customDomain");
-	// No offer to buy a domain the plan can't connect.
-	const offerDomain = suggest && !locked;
-	const suggestion = useQuery({
-		...orpc.customDomain.suggestion.queryOptions(),
-		enabled: offerDomain && !offline && domain.isSuccess && !domain.data,
-		staleTime: 15 * 60_000,
-	});
 	const [hostname, setHostname] = useState("");
 	const [recordsOpen, setRecordsOpen] = useState(false);
 	const [confirmRemove, setConfirmRemove] = useState(false);
@@ -155,7 +151,25 @@ export function CustomDomain({ offline, suggest }: CustomDomainProps) {
 			},
 		);
 
-	if (domain.isPending || domain.isError) return null;
+	if (domain.isPending) return null;
+	if (domain.isError) {
+		if (isUnavailable(domain.error)) return null;
+		return (
+			<View className="gap-2" testID="custom-domain-error">
+				<ShareNotice status="danger">{t`Couldn't load your custom domain.`}</ShareNotice>
+				<Button
+					variant="secondary"
+					size="sm"
+					className="self-start"
+					isDisabled={domain.isFetching}
+					onPress={() => void domain.refetch()}
+				>
+					{domain.isFetching ? <Spinner size="sm" /> : null}
+					<Button.Label>{t`Retry`}</Button.Label>
+				</Button>
+			</View>
+		);
+	}
 	const current = domain.data;
 
 	if (!current)
@@ -194,14 +208,6 @@ export function CustomDomain({ offline, suggest }: CustomDomainProps) {
 					{set.isPending ? <Spinner size="sm" /> : null}
 					<Button.Label>{t`Connect`}</Button.Label>
 				</Button>
-				{offerDomain && suggestion.data ? (
-					<CvDomainCard
-						suggestion={suggestion.data}
-						connecting={set.isPending}
-						disabled={offline}
-						onConnect={connect}
-					/>
-				) : null}
 			</View>
 		);
 
@@ -341,11 +347,10 @@ function DomainSteps({ steps }: { steps: DomainStep[] }) {
 	);
 }
 
+/** A plan that no longer includes the domain: neutral on both platforms, with no call to buy (K6). */
 function PlanNotice({ plan }: { plan: Domain["plan"] }) {
 	const { t, i18n } = useLingui();
 	const until = plan.until?.toLocaleDateString(i18n.locale, { day: "numeric", month: "long" }) ?? "";
-	// iOS says nothing about plans (K6); Android explains and points to where plans are sold, without a link.
-	const plans = canShowPlans();
 	return (
 		<Alert status="warning">
 			<Alert.Indicator />
@@ -355,21 +360,7 @@ function PlanNotice({ plan }: { plan: Domain["plan"] }) {
 						? t`Your domain stops working on ${until}`
 						: t`Your domain now goes to your Rezumi address`}
 				</Alert.Title>
-				<Alert.Description>
-					{plans
-						? t`Your plan no longer includes a custom domain. Renew it and the domain comes back by itself.`
-						: t`Your page keeps its address on Rezumi.`}
-				</Alert.Description>
-				{plans ? (
-					<Button
-						size="sm"
-						variant="secondary"
-						className="mt-2 self-start"
-						onPress={() => showPlanAlert({ kind: "feature", feature: "customDomain" })}
-					>
-						<Button.Label>{t`See plans`}</Button.Label>
-					</Button>
-				) : null}
+				<Alert.Description>{t`Your page keeps its address on Rezumi.`}</Alert.Description>
 			</Alert.Content>
 		</Alert>
 	);
@@ -398,65 +389,6 @@ const copy = async (value: string, message: string) => {
 	showToast({ title: message });
 };
 
-type CvDomainCardProps = {
-	suggestion: Suggestion;
-	connecting: boolean;
-	disabled: boolean;
-	onConnect: (domain: string) => void;
-};
-
-/** A quiet suggestion under the domain field: the account's name as a `.cv` domain, OlaCV's price and its code. */
-function CvDomainCard({ suggestion: { domain, checked, price }, connecting, disabled, onConnect }: CvDomainCardProps) {
-	const { t, i18n } = useLingui();
-	const [visited, setVisited] = useState(false);
-	const money = (amount: number, currency: string) =>
-		i18n.number(amount, { style: "currency", currency, maximumFractionDigits: Number.isInteger(amount) ? 0 : 2 });
-	const cost = price ? money(price.amount, price.currency) : null;
-	const yearly = price?.renewal === price?.amount;
-	const availability = checked
-		? [t`Available`, cost ? (yearly ? t`${cost} a year` : t`${cost} the first year`) : null].filter(Boolean).join(" · ")
-		: t`May be available`;
-
-	return (
-		<View className="gap-3 rounded-2xl bg-surface-secondary p-4">
-			<View className="gap-0.5">
-				<Typography.Heading type="h6" numberOfLines={1}>
-					{domain}
-				</Typography.Heading>
-				<Text size="xs" tone={checked ? "success" : "muted"}>
-					{availability}
-				</Text>
-			</View>
-			<Typography type="body-xs" className="text-muted">
-				{t`Your name as your address, from OlaCV, the .cv registry. Code ${CODE} takes 50% off the first year.`}
-			</Typography>
-			<View className="flex-row flex-wrap gap-2">
-				<Button
-					variant="secondary"
-					size="sm"
-					onPress={() => {
-						setVisited(true);
-						void Linking.openURL(cvDomainRegistrationUrl(domain));
-					}}
-				>
-					<Icon name="arrow-square-out" size={16} />
-					<Button.Label>{t`Register at OlaCV`}</Button.Label>
-				</Button>
-				<Button variant="ghost" size="sm" onPress={() => void copy(CODE, t`Code copied`)}>
-					<Icon name="copy" size={16} />
-					<Button.Label>{t`Copy code`}</Button.Label>
-				</Button>
-				{visited ? (
-					<Button variant="ghost" size="sm" isDisabled={disabled || connecting} onPress={() => onConnect(domain)}>
-						{connecting ? <Spinner size="sm" /> : null}
-						<Button.Label>{t`Connect ${domain}`}</Button.Label>
-					</Button>
-				) : null}
-			</View>
-		</View>
-	);
-}
-
 type DnsRecordsSheetProps = {
 	domain: Domain;
 	isOpen: boolean;
@@ -478,10 +410,10 @@ function DnsRecordsSheet({
 	onCheck,
 	onUseWww,
 }: DnsRecordsSheetProps) {
-	const { t, i18n } = useLingui();
+	const { t } = useLingui();
 	const hostname = domain.hostname;
 	const target = domain.target;
-	const lastChecked = domain.lastCheckedAt ? formatTimeSince(domain.lastCheckedAt, i18n.locale) : null;
+	const lastChecked = domain.lastCheckedAt ? formatTimeSince(domain.lastCheckedAt) : null;
 	const hasCname = domain.records.some((record) => record.type === "CNAME");
 
 	return (

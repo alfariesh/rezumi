@@ -1,7 +1,7 @@
 // The bar at the top of a screen that has no native stack header: an optional back button, the page title and up to
 // three actions. Tabs get their own bar (title · Coach · Search · avatar) in Phase 03; it builds on this one.
 import type { ReactNode } from "react";
-import { I18nManager, View } from "react-native";
+import { View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { IconButton } from "./button";
 import { Typography } from "./text";
@@ -23,14 +23,7 @@ export function TopBar({ title, back, actions, large = false, safeTop = true }: 
 	return (
 		<View className="bg-background px-4 pb-2" style={{ paddingTop: safeTop ? insets.top : 0 }}>
 			<View className="min-h-11 flex-row items-center gap-2">
-				{back ? (
-					<IconButton
-						icon={I18nManager.isRTL ? "arrow-right" : "arrow-left"}
-						label={back.label}
-						onPress={back.onPress}
-						className="-ms-2"
-					/>
-				) : null}
+				{back ? <IconButton icon="arrow-left" label={back.label} onPress={back.onPress} className="-ms-2" /> : null}
 				<View className="flex-1">
 					{large ? null : (
 						<Typography.Heading type="h6" numberOfLines={1}>

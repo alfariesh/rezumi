@@ -454,12 +454,6 @@ msgstr "{0} \"{1}\"ని తిరిగి ఇచ్చింది. మీ �
 msgid "{0} selected"
 msgstr "{0} ఎంచుకోబడింది"
 
-#. placeholder {0}: resume.data.basics.name || resume.name
-#: src/features/letters/share.tsx
-#: src/features/share/download.tsx
-msgid "{0}-Resume"
-msgstr "{0}-రెజ్యూమ్"
-
 #. placeholder {0}: title || t`Untitled`
 #. placeholder {1}: row.index + 1
 #. placeholder {2}: row.count
@@ -506,14 +500,6 @@ msgstr "{company} · {tabName}"
 msgid "{completed, plural, one {# document updated} other {# documents updated}}"
 msgstr "{completed, plural, one {# పత్రం నవీకరించబడింది} other {# పత్రాలు నవీకరించబడ్డాయి}}"
 
-#: src/features/share/custom-domain.tsx
-msgid "{cost} a year"
-msgstr "సంవత్సరానికి {cost}"
-
-#: src/features/share/custom-domain.tsx
-msgid "{cost} the first year"
-msgstr "మొదటి సంవత్సరానికి {cost}"
-
 #: src/features/write/section-sheet.tsx
 msgid "{count, plural, one {# column} other {# columns}}"
 msgstr "{count, plural, one {# నిలువు వరుస} other {# నిలువు వరుసలు}}"
@@ -530,6 +516,31 @@ msgstr ""
 #: src/features/workspace/tabs/messages.tsx
 msgid "{count, plural, one {Apply # change} other {Apply # changes}}"
 msgstr "{count, plural, one {# మార్పును వర్తింపజేయి} other {# మార్పులను వర్తింపజేయి}}"
+
+#. Short time since, in days: 3d
+#: src/features/share/time-since.ts
+msgid "{count, plural, other {#d}}"
+msgstr ""
+
+#. Short time since, in hours: 2h
+#: src/features/share/time-since.ts
+msgid "{count, plural, other {#h}}"
+msgstr ""
+
+#. Short time since, in minutes: 5m
+#: src/features/share/time-since.ts
+msgid "{count, plural, other {#m}}"
+msgstr ""
+
+#. Short time since, in weeks: 6w
+#: src/features/share/time-since.ts
+msgid "{count, plural, other {#w}}"
+msgstr ""
+
+#. Short time since, in years: 1y
+#: src/features/share/time-since.ts
+msgid "{count, plural, other {#y}}"
+msgstr ""
 
 #: src/features/workspace/tabs/debrief.tsx
 msgid "{day} · {length}m"
@@ -651,6 +662,7 @@ msgstr ""
 msgid "{minutes, plural, one {# minute in total} other {# minutes in total}}"
 msgstr "{minutes, plural, one {మొత్తం # నిమిషం} other {మొత్తం # నిమిషాలు}}"
 
+#: src/features/home/coming-up.tsx
 #: src/features/workspace/tabs/prepare.tsx
 msgid "{minutes, plural, one {Starts in # minute} other {Starts in # minutes}}"
 msgstr "{minutes, plural, one {# నిమిషంలో ప్రారంభమవుతుంది} other {# నిమిషాల్లో ప్రారంభమవుతుంది}}"
@@ -697,10 +709,6 @@ msgstr "{name} సైడ్‌బార్‌లో కూర్చుంది"
 msgid "{name} uses one column"
 msgstr "{name} ఒక నిలువు వరుసను ఉపయోగిస్తుంది"
 
-#: src/features/share/download.tsx
-msgid "{name}-Cover-Letter"
-msgstr "{name}-కవర్-లెటర్"
-
 #: src/features/check/issues.ts
 msgid "{names} come last in the text. Most systems still find them; some don't."
 msgstr "{names} వచనంలో చివరిగా వస్తుంది. చాలా సిస్టమ్‌లు ఇప్పటికీ వాటిని కనుగొంటాయి; కొన్ని చేయవు."
@@ -720,10 +728,6 @@ msgstr "{role} · {company}"
 #: src/features/write/outline.tsx
 msgid "{sections, plural, one {# section} other {# sections}}"
 msgstr "{sections, plural, one {# విభాగం} other {# విభాగాలు}}"
-
-#: src/features/letters/share.tsx
-msgid "{sender}-Cover-Letter"
-msgstr "{sender}-కవర్-లెటర్"
 
 #: src/features/assistant/messages.tsx
 msgid "{skipped, plural, one {# edit couldn't be placed: its text changed. Ask again to redo it.} other {# edits couldn't be placed: their text changed. Ask again to redo them.}}"
@@ -2003,10 +2007,6 @@ msgstr "ఆటోమేటిక్‌గా"
 msgid "Autosaves are grouped by session and kept for 90 days. Named versions are kept until you delete them. Restoring saves the current state first."
 msgstr "ఆటోసేవ్‌లు సెషన్‌ల వారీగా సమూహం చేయబడతాయి మరియు 90 రోజుల పాటు ఉంచబడతాయి. పేరు పెట్టబడిన సంస్కరణలు మీరు వాటిని తొలగించే వరకు ఉంచబడతాయి. పునరుద్ధరించడం ప్రస్తుత స్థితిని ముందుగా సేవ్ చేస్తుంది."
 
-#: src/features/share/custom-domain.tsx
-msgid "Available"
-msgstr "అందుబాటులో ఉంది"
-
 #: src/features/ats-checker/messages.ts
 msgid "Avoid heavy letter-spacing effects, then re-export."
 msgstr "భారీ లెటర్-స్పేసింగ్ ఎఫెక్ట్‌లను నివారించి, తిరిగి ఎగుమతి చేయండి."
@@ -2574,10 +2574,6 @@ msgstr "PDF ఫైల్‌ని ఎంచుకోండి. ఎంచుక�
 msgid "Choose a PDF smaller than 10 MB. The selected file was not uploaded."
 msgstr "10 MB కంటే చిన్న PDFని ఎంచుకోండి. ఎంచుకున్న ఫైల్ అప్‌లోడ్ చేయబడలేదు."
 
-#: src/shell/permissions.tsx
-msgid "Choose a photo"
-msgstr ""
-
 #: src/features/entries/photo-field.tsx
 #: src/features/settings/profile.tsx
 #: src/features/write/picture-screen.tsx
@@ -2787,10 +2783,6 @@ msgstr "కోచ్"
 msgid "Coach memory"
 msgstr ""
 
-#: src/features/share/custom-domain.tsx
-msgid "Code copied"
-msgstr "కోడ్ కాపీ చేయబడింది"
-
 #: src/features/auth/two-factor-screen.tsx
 msgid "Codes look like a1b2c-d3e4f."
 msgstr ""
@@ -2890,10 +2882,6 @@ msgstr ""
 #: src/features/share/custom-domain.tsx
 msgid "Connect"
 msgstr "కనెక్ట్ చేయండి"
-
-#: src/features/share/custom-domain.tsx
-msgid "Connect {domain}"
-msgstr "{domain}ను కనెక్ట్ చేయండి"
 
 #: src/features/share/custom-domain.tsx
 msgid "Connect {hostname}"
@@ -3058,10 +3046,6 @@ msgstr "ఉద్యోగం కోసం రెజ్యూమేని కా
 #: src/features/workspace/tabs/apply.tsx
 msgid "Copy answers"
 msgstr "సమాధానాలను కాపీ చేయి"
-
-#: src/features/share/custom-domain.tsx
-msgid "Copy code"
-msgstr "కోడ్‌ను కాపీ చేయండి"
 
 #: src/features/document-menu/index.tsx
 msgid "Copy created"
@@ -3303,6 +3287,10 @@ msgstr ""
 #: src/features/history/history.tsx
 msgid "Couldn't load versions."
 msgstr "సంస్కరణలను లోడ్ చేయడం సాధ్యపడలేదు."
+
+#: src/features/share/custom-domain.tsx
+msgid "Couldn't load your custom domain."
+msgstr ""
 
 #: src/features/onboarding/onboarding-screen.tsx
 msgid "Couldn't load your details"
@@ -3560,6 +3548,10 @@ msgstr "చిత్రాన్ని భాగస్వామ్యం చే�
 #: src/features/workspace/tabs/practise.tsx
 msgid "Couldn't share the recording. Try again."
 msgstr "రికార్డింగ్‌ను షేర్ చేయడం సాధ్యపడలేదు. మళ్ళీ ప్రయత్నించండి."
+
+#: src/features/auth/errors.ts
+msgid "Couldn't sign in with this account. If you don't have a Rezumi account yet, sign-ups may be turned off."
+msgstr ""
 
 #: src/features/settings/sign-out.tsx
 msgid "Couldn't sign out. Try again."
@@ -4468,6 +4460,10 @@ msgstr "సవరించు"
 #: src/features/assistant/messages.tsx
 msgid "Edit {0}: {1}"
 msgstr "సవరించు {0}: {1}"
+
+#: src/features/home/schedules.tsx
+msgid "Edit {name}"
+msgstr ""
 
 #: src/features/application-detail/sheets.tsx
 msgid "Edit date"
@@ -5903,6 +5899,10 @@ msgstr ""
 msgid "Keep on one page"
 msgstr "ఒక పేజీలో ఉంచండి"
 
+#: src/features/entries/photo-field.tsx
+msgid "Keep photo"
+msgstr ""
+
 #: src/features/document-menu/index.tsx
 msgid "Keep private notes about this resume here. Nobody else can see them."
 msgstr "ఈ రెజ్యూమ్ గురించి మీ వ్యక్తిగత నోట్స్‌ను ఇక్కడ ఉంచుకోండి. వాటిని మరెవరూ చూడలేరు."
@@ -6301,6 +6301,7 @@ msgid "Live at {url}"
 msgstr "{url}లో అందుబాటులో ఉంది"
 
 #: src/features/design/design-pane.tsx
+#: src/features/home/recent-documents.tsx
 #: src/features/home/section.tsx
 #: src/features/onboarding/onboarding-screen.tsx
 #: src/features/profile/facts.tsx
@@ -6583,10 +6584,6 @@ msgstr "రెజ్యూమేతో సరిపోలుతోంది"
 #: src/features/workspace/parts.tsx
 msgid "Matching your facts"
 msgstr "మీ వాస్తవాలను సరిపోలుస్తోంది"
-
-#: src/features/share/custom-domain.tsx
-msgid "May be available"
-msgstr "అందుబాటులో ఉండవచ్చు"
 
 #: src/features/search/search-screen.tsx
 msgid "MCP"
@@ -6906,7 +6903,6 @@ msgid "Names, tags or applications"
 msgstr "పేర్లు, ట్యాగ్‌లు లేదా ఉద్యోగ దరఖాస్తులు"
 
 #: src/features/design/preset-names.ts
-#: src/features/design/style-groups.tsx
 msgid "Narrow"
 msgstr "ఇరుకైన"
 
@@ -7627,10 +7623,14 @@ msgstr "ఇప్పటివరకు ఒక వెర్షన్ మాత్
 msgid "Only providers that pass their test can be turned on."
 msgstr "వారి పరీక్షలో ఉత్తీర్ణులైన ప్రొవైడర్లు మాత్రమే ఆన్ చేయబడతారు."
 
-#. placeholder {0}: report.document.pageCount
+#. placeholder {0}: report.document.checkedPageCount
 #: src/features/ats-checker/checker.tsx
 msgid "Only the first {0} pages were checked."
 msgstr "మొదటి {0} పేజీలు మాత్రమే తనిఖీ చేయబడ్డాయి."
+
+#: src/features/ats-checker/original-page.tsx
+msgid "Only the first {MAX_PAGES} pages are shown."
+msgstr ""
 
 #: src/features/check/parser.tsx
 msgid "Only the first 30 pages were checked."
@@ -8824,10 +8824,6 @@ msgstr "ఇంటర్వ్యూ రోజు ఉదయం బ్రీఫి
 msgid "Refund policy"
 msgstr ""
 
-#: src/features/share/custom-domain.tsx
-msgid "Register at OlaCV"
-msgstr "OlaCVలో రిజిస్టర్ చేయండి"
-
 #: src/features/workspace/tabs/prepare.tsx
 msgid "Rehearse aloud"
 msgstr "బిగ్గరగా రిహార్సల్ చేయి"
@@ -8988,6 +8984,7 @@ msgstr "పాస్‌వర్డ్‌ని తీసివేయాలా?"
 msgid "Remove this file?"
 msgstr "ఈ ఫైల్‌ని తీసివేయాలా?"
 
+#: src/features/entries/photo-field.tsx
 #: src/features/write/picture-screen.tsx
 msgid "Remove this photo?"
 msgstr "ఈ ఫోటోను తీసివేయాలా?"
@@ -9248,6 +9245,7 @@ msgstr "{1}ని ఉపయోగించి {0} తిరిగి పొం�
 #: src/features/profile/preferences.tsx
 #: src/features/profile/save-note.tsx
 #: src/features/profile/stories.tsx
+#: src/features/share/custom-domain.tsx
 #: src/features/share/download.tsx
 #: src/features/share/export-screen.tsx
 #: src/features/share/link.tsx
@@ -9393,10 +9391,6 @@ msgstr ""
 
 #: src/shell/permissions.tsx
 msgid "Rezumi can't ask again. Turn it on for Rezumi in your device's Settings, then try again."
-msgstr ""
-
-#: src/shell/permissions.tsx
-msgid "Rezumi opens your photos only to pick the one you choose. You can change this any time in Settings."
 msgstr ""
 
 #: src/shell/permissions.tsx
@@ -9816,10 +9810,6 @@ msgstr "విభాగాలు · ప్రింట్ ఆర్డర్"
 msgid "Sections use headings systems recognize, and work experience shows."
 msgstr "విభాగాలు గుర్తించే శీర్షికల వ్యవస్థలను ఉపయోగిస్తాయి మరియు పని అనుభవం చూపిస్తుంది."
 
-#: src/features/share/custom-domain.tsx
-msgid "See plans"
-msgstr ""
-
 #: src/features/onboarding/intro-screen.tsx
 msgid "See where each one stands, get new roles that fit you, and never miss an interview."
 msgstr ""
@@ -9850,10 +9840,6 @@ msgstr "ఎంట్రీని ఎంచుకోండి {0}"
 #: src/features/applications/list-screen.tsx
 msgid "Select visible"
 msgstr "కనిపించే అంశాలను ఎంచుకోండి"
-
-#: src/features/share/export-options.tsx
-msgid "Selected"
-msgstr ""
 
 #: src/preview/page.tsx
 msgid "Selected entry"
@@ -10246,6 +10232,7 @@ msgid "Sign in"
 msgstr "సైన్ ఇన్ చేయండి"
 
 #: src/auth/session-gate.tsx
+#: src/features/auth/two-factor-screen.tsx
 #: src/features/check/screen.tsx
 msgid "Sign in again"
 msgstr "మళ్లీ సైన్ ఇన్ చేయండి"
@@ -10630,10 +10617,6 @@ msgstr "మీ పేరుతో ప్రారంభించండి. అ�
 #: src/features/home/coming-up.tsx
 msgid "Started"
 msgstr "ప్రారంభమైంది"
-
-#: src/features/home/coming-up.tsx
-msgid "Starts in {minutes} minutes"
-msgstr "{minutes} నిమిషాల్లో ప్రారంభమవుతుంది"
 
 #: src/features/workspace/tabs/prepare.tsx
 msgid "Starts now"
@@ -11162,6 +11145,10 @@ msgstr "ముగింపు ప్రారంభానికి ముంద�
 msgid "The file couldn't be read as a resume."
 msgstr "ఫైల్‌ను రెజ్యూమ్‌గా చదవడం సాధ్యపడలేదు."
 
+#: src/features/entries/photo-field.tsx
+msgid "The file is deleted. Resumes that show this photo lose it too."
+msgstr ""
+
 #: src/features/onboarding/read-file.ts
 msgid "The file is too large. Choose one up to 10 MB."
 msgstr ""
@@ -11497,8 +11484,8 @@ msgid "This file couldn't be read. Choose a PDF, Word, JSON or LinkedIn export (
 msgstr "ఈ ఫైల్‌ని చదవడం సాధ్యపడలేదు. PDF, Word, JSON లేదా LinkedIn ఎగుమతి (.zip)ని ఎంచుకోండి."
 
 #: src/features/ats-checker/original-page.tsx
-msgid "This file couldn't be shown as pages. The report above still applies."
-msgstr "ఈ ఫైల్‌ని పేజీలుగా చూపడం సాధ్యపడలేదు. పై నివేదిక ఇప్పటికీ వర్తిస్తుంది."
+msgid "This file couldn't be shown as pages. The report still applies."
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "This file declares no language."
@@ -11591,6 +11578,10 @@ msgstr "ఈ లేఖ మరియు మీ రెజ్యూమ్ రెం�
 #: src/draft/conflict-sheet.tsx
 msgid "This letter changed elsewhere"
 msgstr "ఈ కవర్ లెటర్ వేరే చోట మార్చబడింది"
+
+#: src/features/letters/share.tsx
+msgid "This letter has no resume anymore. Choose another format."
+msgstr ""
 
 #: src/features/letters/design.tsx
 #: src/features/letters/write.tsx
@@ -11871,6 +11862,10 @@ msgstr "చాలా ఎక్కువ అభ్యర్థనలు. తర�
 msgid "Too many tries in a short time. Wait a minute, then try again."
 msgstr ""
 
+#: src/features/auth/errors.ts
+msgid "Too many wrong codes. Wait a few minutes, then sign in again."
+msgstr ""
+
 #: src/features/auth/create-account-screen.tsx
 msgid "Too short"
 msgstr ""
@@ -12010,10 +12005,6 @@ msgstr "ఈ ప్రారంభాన్ని ప్రయత్నించ�
 #: src/features/documents/new-document.tsx
 msgid "Try with a sample resume"
 msgstr "నమూనా రెజ్యూమేతో ప్రయత్నించండి"
-
-#: src/features/auth/welcome-screen.tsx
-msgid "Try without an account"
-msgstr ""
 
 #: src/features/settings/locale-names.ts
 msgid "Turkish"
@@ -12885,7 +12876,6 @@ msgid "Why do you want this role at {company}?"
 msgstr "{company}లో ఈ పదవి మీకు ఎందుకు కావాలి?"
 
 #: src/features/design/preset-names.ts
-#: src/features/design/style-groups.tsx
 msgid "Wide"
 msgstr "వెడల్పు"
 
@@ -13290,10 +13280,6 @@ msgstr ""
 msgid "Your name and contact details follow your Profile."
 msgstr ""
 
-#: src/features/share/custom-domain.tsx
-msgid "Your name as your address, from OlaCV, the .cv registry. Code {CODE} takes 50% off the first year."
-msgstr "మీ పేరే మీ చిరునామా, .cv రిజిస్ట్రీ అయిన OlaCV నుండి. {CODE} కోడ్ మొదటి సంవత్సరానికి 50% తగ్గింపు ఇస్తుంది."
-
 #: src/features/check/issues.ts
 msgid "Your name is missing"
 msgstr "మీ పేరు లేదు"
@@ -13350,10 +13336,6 @@ msgstr "మీ ఫోన్ నంబర్ అసాధారణ రూపం�
 #: app/account/membership.tsx
 #: src/features/billing/plan-card.tsx
 msgid "Your plan"
-msgstr ""
-
-#: src/features/share/custom-domain.tsx
-msgid "Your plan no longer includes a custom domain. Renew it and the domain comes back by itself."
 msgstr ""
 
 #: app/(tabs)/portfolio/index.tsx

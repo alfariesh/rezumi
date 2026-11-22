@@ -3,8 +3,8 @@ import { Host, Switch as NativeSwitch } from "@expo/ui";
 import { semantics } from "@expo/ui/jetpack-compose/modifiers";
 import { accessibilityLabel, labelsHidden, tint } from "@expo/ui/swift-ui/modifiers";
 import { Platform } from "react-native";
-import { haptics } from "./motion";
 import { useTheme } from "./theme";
+import { haptics } from "@/ui/motion";
 
 export type { SwitchProps } from "./switch";
 

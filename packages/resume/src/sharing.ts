@@ -41,11 +41,22 @@ const UNITS = [
 	{ unit: "year", ms: 365 * DAY_MS, below: Number.POSITIVE_INFINITY },
 ] as const;
 
-/** Time since a moment in the largest whole unit, written short: "5m", "2h", "3d", "6w", "1y". */
-export function formatTimeSince(date: Date, locale: string, now = Date.now()) {
+export type TimeSinceUnit = (typeof UNITS)[number]["unit"];
+
+/**
+ * Time since a moment in the largest whole unit: `{ count: 5, unit: "minute" }`. Pure, so each app writes it its own
+ * way (the native app with Lingui plurals, since Hermes prints `Intl.NumberFormat` units wrong).
+ */
+export function timeSinceParts(date: Date, now = Date.now()): { count: number; unit: TimeSinceUnit } {
 	const elapsed = Math.max(0, now - date.getTime());
 	const { unit, ms } = UNITS.find(({ ms, below }) => elapsed / ms < below) ?? UNITS[4];
-	return new Intl.NumberFormat(locale, { style: "unit", unit, unitDisplay: "narrow" }).format(Math.floor(elapsed / ms));
+	return { count: Math.floor(elapsed / ms), unit };
+}
+
+/** Time since a moment in the largest whole unit, written short: "5m", "2h", "3d", "6w", "1y". Not for Hermes. */
+export function formatTimeSince(date: Date, locale: string, now = Date.now()) {
+	const { count, unit } = timeSinceParts(date, now);
+	return new Intl.NumberFormat(locale, { style: "unit", unit, unitDisplay: "narrow" }).format(count);
 }
 
 type PortfolioVisibility = { isPublic: boolean; suspendedAt: Date | string | null };

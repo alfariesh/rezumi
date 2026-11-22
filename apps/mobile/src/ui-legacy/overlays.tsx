@@ -27,10 +27,11 @@ import Animated, {
 } from "react-native-reanimated";
 import { scheduleOnRN } from "react-native-worklets";
 import { Button } from "./button";
-import { haptics, useIsWide, useReducedMotion } from "./motion";
-import { useWindowSafeAreaInsets } from "./safe-area";
 import { Text } from "./text";
 import { useTheme } from "./theme";
+import { haptics, useIsWide, useReducedMotion } from "@/ui/motion";
+import { useWindowSafeAreaInsets } from "@/ui/safe-area";
+import { toastBottomOffset, useToastBarHeight } from "@/ui/toast";
 
 const android = Platform.OS === "android";
 
@@ -623,6 +624,7 @@ export function Toaster() {
 	const { t } = useLingui();
 	const { colors, motion, radius, shadows, size, space } = useTheme();
 	const insets = useWindowSafeAreaInsets();
+	const bar = useToastBarHeight();
 	const wide = useIsWide();
 	const reduced = useReducedMotion();
 	const active = useSyncExternalStore(
@@ -649,7 +651,8 @@ export function Toaster() {
 				position: "absolute",
 				start: space.s2,
 				end: space.s2,
-				bottom: insets.bottom + (wide ? space.s8 : size.tabBar + space.s3),
+				// The same offset as HeroUI's toasts (src/ui/toast.tsx): above the bottom bar that shows.
+				bottom: toastBottomOffset(bar, insets.bottom),
 				alignItems: android ? "stretch" : "center",
 			}}
 		>

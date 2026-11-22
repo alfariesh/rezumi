@@ -15,10 +15,6 @@ import { usePageZoom, ZoomViewport } from "@/preview/use-page-zoom";
 import { usePreview } from "@/preview/usePreview";
 import { Alert, Button, IconButton, Skeleton, Text, size, space, useReducedMotion } from "@/ui";
 
-/** A rendered page at its display size, on paper white (never inverts) with the surface shadow. */
-const pageStyle = (width: number, height: number) => [{ width, height }, PAPER] as const;
-const PAPER = { backgroundColor: "white", boxShadow: "0 1px 3px rgba(0, 0, 0, 0.12)" };
-
 /** A4 in PDF points, the size to lay out before the first render lands. */
 const A4 = { width: 595.28, height: 841.89 };
 
@@ -112,11 +108,14 @@ export function LetterPages({ data, zoomBar = true }: LetterPagesProps) {
 						result.pages.map((page) => (
 							<View key={page.index} className="gap-2">
 								<Text size="xs" tone="muted" className="text-center">{t`Page ${page.index + 1}`}</Text>
-								<PageImage
-									uri={page.uri}
-									accessibilityLabel={t`Letter page ${page.index + 1}`}
-									style={pageStyle(page.width * displayScale, page.height * displayScale)}
-								/>
+								{/* Paper white (never inverts) with the surface shadow, at the page's display size. */}
+								<View className="bg-paper shadow-surface">
+									<PageImage
+										uri={page.uri}
+										accessibilityLabel={t`Letter page ${page.index + 1}`}
+										style={[{ width: page.width * displayScale, height: page.height * displayScale }]}
+									/>
+								</View>
 							</View>
 						))
 					)}

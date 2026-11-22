@@ -9,10 +9,10 @@ import { plural } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react/macro";
 import { memo, useState } from "react";
 import { Pressable, View } from "react-native";
+import { useProfileAccount } from "./account";
 import { StoryEditorFields, storyPayload, storyProblem } from "./stories-editor";
 import { emptyStory, factChanged, filledParts } from "./stories-parts";
 import { ChangedNotice, PartTiles, StoryReader } from "./stories-reader";
-import { useSession } from "@/auth/session";
 import { client, useCareerAction, useCareerQueries, useUndoRows } from "@/features/career/hooks";
 import { useIsTablet } from "@/shell/use-is-tablet";
 import {
@@ -38,9 +38,9 @@ import {
 type Pane = { id: string | null; key: number };
 
 export function StoriesPanel() {
-	const { server } = useSession();
-	// A server switch starts over: no open story, draft or pending Undo carries across accounts.
-	return <StoriesContent key={server ?? "signed-out"} />;
+	const account = useProfileAccount();
+	// Another account starts over: no open story, draft or pending Undo carries across accounts.
+	return <StoriesContent key={account ?? "signed-out"} />;
 }
 
 function StoriesContent() {

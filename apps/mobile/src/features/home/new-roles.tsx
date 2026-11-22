@@ -268,7 +268,7 @@ function RoleCard({ row, found, tracked, pending, onTrack, onUndo, onDismiss }: 
 				) : null}
 				{tracked ? (
 					<View className="min-h-8 flex-row items-center gap-2">
-						<Icon name="check-circle" size={18} tone="success" />
+						<Icon name="check-circle" size={16} tone="success" />
 						<Text tone="success" className="flex-1">
 							{t`Saved to Applications with the posting`}
 						</Text>
