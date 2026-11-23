@@ -1,6 +1,6 @@
 import type { AdminCustomer, AdminPayment } from "./labels";
 import type { DataGridColumn } from "@heroui-pro/react";
-import type { PaidPlanId } from "@rezumi/schema/billing";
+import type { LimitOverrideKey, PaidPlanId } from "@rezumi/schema/billing";
 import { DataGrid, Timeline } from "@heroui-pro/react";
 import {
 	Avatar,
@@ -21,6 +21,7 @@ import { Trans } from "@lingui/react/macro";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
 import { useState } from "react";
+import { LIMIT_OVERRIDE_MAX } from "@rezumi/schema/billing";
 import { Icon } from "@rezumi/ui/components/icon";
 import { toast } from "@rezumi/ui/components/toast";
 import { getInitials } from "@rezumi/utils/string";
@@ -67,9 +68,13 @@ type Dialog =
 	| { kind: "revoke-period"; periodId: string }
 	| { kind: "grant-period" }
 	| { kind: "adjust-credits" }
+	| { kind: "set-limit"; current: number | null }
+	| { kind: "clear-limit"; limitKey: LimitOverrideKey; value: number }
 	| null;
 
 type DialogsProps = { userId: string; dialog: Dialog; onClose: () => void; onDone: () => void };
+
+const MAX_SEARCHES = LIMIT_OVERRIDE_MAX.jobSearchesPerDay;
 
 function Dialogs({ userId, dialog, onClose, onDone }: DialogsProps) {
 	const [amount, setAmount] = useState("");
@@ -78,7 +83,11 @@ function Dialogs({ userId, dialog, onClose, onDone }: DialogsProps) {
 	const [planId, setPlanId] = useState<PaidPlanId>("plus");
 	const [days, setDays] = useState("30");
 	const [expiresIn, setExpiresIn] = useState("30");
+	const [searches, setSearches] = useState("");
+	const [limitDays, setLimitDays] = useState("");
 	const reset = () => {
+		setSearches("");
+		setLimitDays("");
 		setAmount("");
 		setRevoke(false);
 		setEndSubscription(false);
@@ -109,6 +118,13 @@ function Dialogs({ userId, dialog, onClose, onDone }: DialogsProps) {
 
 	// A QRIS pass is refunded by hand (Sumopod has no refund API): the owner sends the money, then records it here.
 	const qris = payment?.method === "qris";
+
+	const searchCount = wholeNumber(searches);
+	const searchDays = wholeNumber(limitDays);
+	const limitOk =
+		searchCount !== null &&
+		searchCount <= MAX_SEARCHES &&
+		(limitDays.trim() === "" || (searchDays !== null && searchDays >= 1 && searchDays <= 366));
 
 	const revokeBox = partial && (
 		<Checkbox variant="secondary" isSelected={revoke} onChange={setRevoke}>
@@ -270,6 +286,61 @@ function Dialogs({ userId, dialog, onClose, onDone }: DialogsProps) {
 					<NumberInput label={t`Added credits expire in (days)`} value={expiresIn} onChange={setExpiresIn} />
 				)}
 			</ReasonDialog>
+
+			<ReasonDialog
+				{...props("set-limit")}
+				title={<Trans>Set job searches a day</Trans>}
+				description={
+					dialog?.kind === "set-limit" && dialog.current !== null ? (
+						<Trans>
+							Replaces the {dialog.current} a day set by hand now. The plan's number comes back when it ends or is
+							removed.
+						</Trans>
+					) : (
+						<Trans>
+							Replaces the plan's number for this account, higher or lower, even while plans don't apply to it. The
+							plan's number comes back when it ends or is removed.
+						</Trans>
+					)
+				}
+				canSubmit={limitOk}
+				submitLabel={<Trans>Set limit</Trans>}
+				onSubmit={async (reason) => {
+					await client.billing.admin.setLimit({
+						userId,
+						limitKey: "jobSearchesPerDay",
+						value: searchCount ?? 0,
+						...(limitDays.trim() === "" ? {} : { expiresInDays: searchDays ?? 1 }),
+						reason,
+					});
+					done(t`Job search limit set.`);
+				}}
+			>
+				<NumberInput label={t`Searches a day (0–${MAX_SEARCHES})`} value={searches} onChange={setSearches} />
+				<NumberInput
+					label={t`Ends after (days, 1–366)`}
+					value={limitDays}
+					onChange={setLimitDays}
+					placeholder={t`Empty: no end`}
+				/>
+			</ReasonDialog>
+
+			<ReasonDialog
+				{...props("clear-limit")}
+				danger
+				title={<Trans>Remove the job search limit set by hand</Trans>}
+				description={
+					dialog?.kind === "clear-limit" && (
+						<Trans>{dialog.value} a day is removed; the plan's number applies again from now.</Trans>
+					)
+				}
+				submitLabel={<Trans>Remove</Trans>}
+				onSubmit={async (reason) => {
+					if (dialog?.kind !== "clear-limit") return;
+					await client.billing.admin.clearLimit({ userId, limitKey: dialog.limitKey, reason });
+					done(t`Job search limit removed.`);
+				}}
+			/>
 		</>
 	);
 }
@@ -382,7 +453,10 @@ type CustomerBodyProps = { data: AdminCustomer; onDialog: (dialog: Dialog) => vo
 function CustomerBody({ data, onDialog, onDone }: CustomerBodyProps) {
 	const { formatShort, formatDate } = usePlanDates();
 	const [now] = useState(() => Date.now());
-	const { plan, credits } = data;
+	const { plan, credits, jobSearch } = data;
+	const searchOverride = data.limitOverrides.find(
+		(override) => override.limitKey === "jobSearchesPerDay" && override.live,
+	);
 	// Money that stayed, per currency: a payment the bank reversed is gone with its refunds.
 	const paid = data.payments.filter((payment) => payment.paidAt && payment.status !== "reversed");
 	const totalPaid: Record<string, number> = {};
@@ -513,7 +587,7 @@ function CustomerBody({ data, onDialog, onDone }: CustomerBodyProps) {
 
 	return (
 		<>
-			<div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
+			<div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-5">
 				<StatWidget
 					icon={<Icon name="seal-check" size={16} />}
 					title={<Trans>Plan now</Trans>}
@@ -536,6 +610,20 @@ function CustomerBody({ data, onDialog, onDone }: CustomerBodyProps) {
 							: credits.trial.grantedAt
 								? t`Trial given ${formatShort(credits.trial.grantedAt)}`
 								: t`Trial not given yet`
+					}
+				/>
+				<StatWidget
+					icon={<Icon name="magnifying-glass" size={16} />}
+					title={<Trans>Job searches today</Trans>}
+					value={jobSearch ? `${jobSearch.used} / ${jobSearch.max}` : "—"}
+					footer={
+						searchOverride
+							? searchOverride.expiresAt
+								? t`set by hand until ${formatShort(searchOverride.expiresAt)}`
+								: t`set by hand, no end`
+							: jobSearch
+								? t`plan's limit, resets ${formatShort(jobSearch.resetsAt)}`
+								: t`counts couldn't be read`
 					}
 				/>
 				<StatWidget
@@ -657,6 +745,40 @@ function CustomerBody({ data, onDialog, onDone }: CustomerBodyProps) {
 							},
 						]}
 					/>
+				</AdminCard>
+			)}
+
+			{data.limitOverrides.length > 0 && (
+				<AdminCard
+					icon="sliders-horizontal"
+					title={<Trans>Limits set by hand</Trans>}
+					description={<Trans>Each replaces the plan's number for this account while it lasts.</Trans>}
+				>
+					<ul className="grid gap-3">
+						{data.limitOverrides.map((override) => (
+							<li key={override.id} className="flex items-start justify-between gap-3">
+								<div className="grid min-w-0 gap-0.5">
+									<span className="flex items-center gap-2 text-sm font-medium">
+										{plural(override.value, { one: "# job search a day", other: "# job searches a day" })}
+										<Chip size="sm" variant="soft" color={override.live ? "success" : "default"}>
+											<Chip.Label>{override.live ? t`Active` : t`Ended`}</Chip.Label>
+										</Chip>
+									</span>
+									<span className="text-xs text-muted">
+										{override.expiresAt ? t`until ${formatShort(override.expiresAt)}` : t`no end`}
+										{` · “${override.reason}”`}
+									</span>
+								</div>
+								<Button
+									size="sm"
+									variant="ghost"
+									onPress={() => onDialog({ kind: "clear-limit", limitKey: override.limitKey, value: override.value })}
+								>
+									<Trans>Remove</Trans>
+								</Button>
+							</li>
+						))}
+					</ul>
 				</AdminCard>
 			)}
 
@@ -892,6 +1014,19 @@ export function CustomerBillingPage({ userId }: CustomerBillingPageProps) {
 				</div>
 				{customer.data && (
 					<div className="flex flex-wrap gap-2">
+						<Button
+							size="sm"
+							variant="tertiary"
+							onPress={() => {
+								const current = customer.data?.limitOverrides.find(
+									(override) => override.limitKey === "jobSearchesPerDay" && override.live,
+								);
+								setDialog({ kind: "set-limit", current: current?.value ?? null });
+							}}
+						>
+							<Icon name="magnifying-glass" size={16} />
+							<Trans>Job search limit</Trans>
+						</Button>
 						<Button size="sm" variant="tertiary" onPress={() => setDialog({ kind: "adjust-credits" })}>
 							<Icon name="sparkle" size={16} />
 							<Trans>Adjust credits</Trans>
@@ -911,8 +1046,8 @@ export function CustomerBillingPage({ userId }: CustomerBillingPageProps) {
 					{getReadableErrorMessage(customer.error, t`This customer couldn't load.`)}
 				</p>
 			) : (
-				<div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
-					{[0, 1, 2, 3].map((index) => (
+				<div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-5">
+					{[0, 1, 2, 3, 4].map((index) => (
 						<Skeleton key={index} className="h-28 rounded-2xl" />
 					))}
 				</div>

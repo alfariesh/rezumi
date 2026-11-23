@@ -227,6 +227,11 @@ msgstr "{0, plural, one {# field is flagged for a quick look in the editor.} oth
 msgid "{0, plural, one {# issue is ignored.} other {# issues are ignored.}}"
 msgstr "{0, plural, one {# issue is ignored.} other {# issues are ignored.}}"
 
+#. placeholder {0}: override.value
+#: src/features/billing/admin/customer.tsx
+msgid "{0, plural, one {# job search a day} other {# job searches a day}}"
+msgstr "{0, plural, one {# job search a day} other {# job searches a day}}"
+
 #. placeholder {0}: block.pages
 #: src/features/portfolio/blocks/pdf-block.tsx
 msgid "{0, plural, one {# page} other {# pages}}"
@@ -407,6 +412,11 @@ msgstr "{0} (hidden on your resume)"
 #: src/features/portfolio/editor/design-panel.tsx
 msgid "{0} (theme default)"
 msgstr "{0} (theme default)"
+
+#. placeholder {0}: dialog.value
+#: src/features/billing/admin/customer.tsx
+msgid "{0} a day is removed; the plan's number applies again from now."
+msgstr "{0} a day is removed; the plan's number applies again from now."
 
 #. placeholder {0}: monthlyOfYearly(id, currency)
 #: src/features/billing/buy-plans.tsx
@@ -1913,6 +1923,7 @@ msgstr "Actions for {0}"
 msgid "active"
 msgstr "active"
 
+#: src/features/billing/admin/customer.tsx
 #: src/features/billing/admin/labels.ts
 #: src/features/resume/share/custom-domain-field.tsx
 msgid "Active"
@@ -5941,6 +5952,10 @@ msgstr "Countries, devices, linking sites and works by day"
 msgid "Country"
 msgstr "Country"
 
+#: src/features/billing/admin/customer.tsx
+msgid "counts couldn't be read"
+msgstr "counts couldn't be read"
+
 #: src/features/applications/components/insights-view.tsx
 msgid "Counts every application that reached each stage, including ones now closed."
 msgstr "Counts every application that reached each stage, including ones now closed."
@@ -7136,6 +7151,10 @@ msgstr "e.g. UX researcher"
 msgid "Each answer you get feedback on is kept here, newest first."
 msgstr "Each answer you get feedback on is kept here, newest first."
 
+#: src/features/billing/admin/customer.tsx
+msgid "Each replaces the plan's number for this account while it lasts."
+msgstr "Each replaces the plan's number for this account while it lasts."
+
 #: src/features/career/workspace/fit.tsx
 msgid "Each requirement in the posting is checked against the facts and stories in your Profile. Gaps show as missing evidence, never missing ability."
 msgstr "Each requirement in the posting is checked against the facts and stories in your Profile. Gaps show as missing evidence, never missing ability."
@@ -7431,6 +7450,10 @@ msgstr "Empty for now. Type your name below, or fill in your Profile."
 msgid "Empty uses a default"
 msgstr "Empty uses a default"
 
+#: src/features/billing/admin/customer.tsx
+msgid "Empty: no end"
+msgstr "Empty: no end"
+
 #. placeholder {0}: formatPrice(left, currency)
 #: src/features/billing/admin/customer.tsx
 msgid "Empty: the rest, {0}"
@@ -7445,6 +7468,10 @@ msgstr "End"
 #: src/features/billing/admin/overview.tsx
 msgid "Ended"
 msgstr "Ended"
+
+#: src/features/billing/admin/customer.tsx
+msgid "Ends after (days, 1–366)"
+msgstr "Ends after (days, 1–366)"
 
 #: src/libs/locale.ts
 msgid "English"
@@ -9814,6 +9841,26 @@ msgstr "Job search costs"
 msgid "Job search isn't available here yet"
 msgstr "Job search isn't available here yet"
 
+#: src/features/billing/admin/customer.tsx
+msgid "Job search limit"
+msgstr "Job search limit"
+
+#: src/features/billing/admin/customer.tsx
+msgid "Job search limit removed."
+msgstr "Job search limit removed."
+
+#: src/features/billing/admin/labels.ts
+msgid "Job search limit set by an admin"
+msgstr "Job search limit set by an admin"
+
+#: src/features/billing/admin/labels.ts
+msgid "Job search limit set by hand removed"
+msgstr "Job search limit set by hand removed"
+
+#: src/features/billing/admin/customer.tsx
+msgid "Job search limit set."
+msgstr "Job search limit set."
+
 #: src/features/billing/admin/labels.ts
 msgid "Job search passed 80% of today's budget"
 msgstr "Job search passed 80% of today's budget"
@@ -9821,6 +9868,14 @@ msgstr "Job search passed 80% of today's budget"
 #: src/features/applications/components/insights-view.tsx
 msgid "Job search pipeline"
 msgstr "Job search pipeline"
+
+#: src/features/billing/admin/labels.ts
+msgid "Job searches set to {value} a day by an admin"
+msgstr "Job searches set to {value} a day by an admin"
+
+#: src/features/billing/admin/customer.tsx
+msgid "Job searches today"
+msgstr "Job searches today"
 
 #: src/features/applications/components/detail/contacts.tsx
 msgid "Job title (optional)"
@@ -10387,6 +10442,10 @@ msgstr "Light theme"
 #: src/features/assistant/assistant-panel.tsx
 msgid "Likely questions, from the posting and your resume"
 msgstr "Likely questions, from the posting and your resume"
+
+#: src/features/billing/admin/customer.tsx
+msgid "Limits set by hand"
+msgstr "Limits set by hand"
 
 #: src/routes/builder/$resumeId/-sidebar/right/sections/typography.tsx
 msgid "Line height"
@@ -11730,6 +11789,10 @@ msgstr "No email address"
 #: src/features/ats-checker/messages.ts
 msgid "No email address was found."
 msgstr "No email address was found."
+
+#: src/features/billing/admin/customer.tsx
+msgid "no end"
+msgstr "no end"
 
 #: src/features/billing/plan-page.tsx
 msgid "No end date"
@@ -13540,6 +13603,11 @@ msgstr "Plan now"
 msgid "Plan what to ask"
 msgstr "Plan what to ask"
 
+#. placeholder {0}: formatShort(jobSearch.resetsAt)
+#: src/features/billing/admin/customer.tsx
+msgid "plan's limit, resets {0}"
+msgstr "plan's limit, resets {0}"
+
 #: src/features/career/shared.tsx
 msgid "Planning your week"
 msgstr "Planning your week"
@@ -14856,6 +14924,7 @@ msgstr "Remote in this country"
 msgid "Remote, Hybrid, a city…"
 msgstr "Remote, Hybrid, a city…"
 
+#: src/features/billing/admin/customer.tsx
 #: src/features/resume/share/custom-domain-field.tsx
 #: src/features/settings/account/security.tsx
 msgid "Remove"
@@ -14967,6 +15036,10 @@ msgstr "Remove the {0} block"
 #: src/features/portfolio/location/location-fields.tsx
 msgid "Remove the city and map"
 msgstr "Remove the city and map"
+
+#: src/features/billing/admin/customer.tsx
+msgid "Remove the job search limit set by hand"
+msgstr "Remove the job search limit set by hand"
 
 #: src/features/portfolio/editor/password-group.tsx
 #: src/features/resume/share/share-panel.tsx
@@ -15185,6 +15258,15 @@ msgstr "Replace the PDF"
 #: src/features/career/workspace/messages.tsx
 msgid "Replaces “{current}” on the application."
 msgstr "Replaces “{current}” on the application."
+
+#. placeholder {0}: dialog.current
+#: src/features/billing/admin/customer.tsx
+msgid "Replaces the {0} a day set by hand now. The plan's number comes back when it ends or is removed."
+msgstr "Replaces the {0} a day set by hand now. The plan's number comes back when it ends or is removed."
+
+#: src/features/billing/admin/customer.tsx
+msgid "Replaces the plan's number for this account, higher or lower, even while plans don't apply to it. The plan's number comes back when it ends or is removed."
+msgstr "Replaces the plan's number for this account, higher or lower, even while plans don't apply to it. The plan's number comes back when it ends or is removed."
 
 #: src/features/portfolio/editor/preview.tsx
 msgid "Replay intro"
@@ -16199,6 +16281,10 @@ msgstr "Search…"
 msgid "Searched the web"
 msgstr "Searched the web"
 
+#: src/features/billing/admin/customer.tsx
+msgid "Searches a day (0–{MAX_SEARCHES})"
+msgstr "Searches a day (0–{MAX_SEARCHES})"
+
 #: src/features/career/coach-chat.tsx
 msgid "Searching the web"
 msgstr "Searching the web"
@@ -16491,6 +16577,23 @@ msgstr "Set a follow-up…"
 #: src/features/settings/account/security.tsx
 msgid "Set a password"
 msgstr "Set a password"
+
+#. placeholder {0}: formatShort(searchOverride.expiresAt)
+#: src/features/billing/admin/customer.tsx
+msgid "set by hand until {0}"
+msgstr "set by hand until {0}"
+
+#: src/features/billing/admin/customer.tsx
+msgid "set by hand, no end"
+msgstr "set by hand, no end"
+
+#: src/features/billing/admin/customer.tsx
+msgid "Set job searches a day"
+msgstr "Set job searches a day"
+
+#: src/features/billing/admin/customer.tsx
+msgid "Set limit"
+msgstr "Set limit"
 
 #: src/features/portfolio/editor/password-group.tsx
 #: src/features/resume/builder/password-dialog.tsx
@@ -20091,6 +20194,7 @@ msgid "Untick anything you'd rather leave out. You can change it all later in yo
 msgstr "Untick anything you'd rather leave out. You can change it all later in your Profile."
 
 #. placeholder {0}: formatDate(plan.currentPeriodEndsAt)
+#. placeholder {0}: formatShort(override.expiresAt)
 #: src/features/billing/admin/customer.tsx
 msgid "until {0}"
 msgstr "until {0}"

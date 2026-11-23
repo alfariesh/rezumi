@@ -232,6 +232,11 @@ msgstr "{0, plural, one {# поле позначено для швидкої п�
 msgid "{0, plural, one {# issue is ignored.} other {# issues are ignored.}}"
 msgstr "{0, plural, one {Проблема # ігнорується.} other {Проблеми # ігноруються.}}"
 
+#. placeholder {0}: override.value
+#: src/features/billing/admin/customer.tsx
+msgid "{0, plural, one {# job search a day} other {# job searches a day}}"
+msgstr ""
+
 #. placeholder {0}: block.pages
 #: src/features/portfolio/blocks/pdf-block.tsx
 msgid "{0, plural, one {# page} other {# pages}}"
@@ -411,6 +416,11 @@ msgstr ""
 #. placeholder {0}: variantLabel(value)
 #: src/features/portfolio/editor/design-panel.tsx
 msgid "{0} (theme default)"
+msgstr ""
+
+#. placeholder {0}: dialog.value
+#: src/features/billing/admin/customer.tsx
+msgid "{0} a day is removed; the plan's number applies again from now."
 msgstr ""
 
 #. placeholder {0}: monthlyOfYearly(id, currency)
@@ -1918,6 +1928,7 @@ msgstr ""
 msgid "active"
 msgstr ""
 
+#: src/features/billing/admin/customer.tsx
 #: src/features/billing/admin/labels.ts
 #: src/features/resume/share/custom-domain-field.tsx
 msgid "Active"
@@ -5946,6 +5957,10 @@ msgstr ""
 msgid "Country"
 msgstr ""
 
+#: src/features/billing/admin/customer.tsx
+msgid "counts couldn't be read"
+msgstr ""
+
 #: src/features/applications/components/insights-view.tsx
 msgid "Counts every application that reached each stage, including ones now closed."
 msgstr "Підраховує всі заявки на роботу, які досягли кожного етапу, включно з тими, які зараз закриті."
@@ -7141,6 +7156,10 @@ msgstr ""
 msgid "Each answer you get feedback on is kept here, newest first."
 msgstr "Кожна відповідь, на яку ви отримали відгук, зберігається тут, від найновіших."
 
+#: src/features/billing/admin/customer.tsx
+msgid "Each replaces the plan's number for this account while it lasts."
+msgstr ""
+
 #: src/features/career/workspace/fit.tsx
 msgid "Each requirement in the posting is checked against the facts and stories in your Profile. Gaps show as missing evidence, never missing ability."
 msgstr ""
@@ -7436,6 +7455,10 @@ msgstr ""
 msgid "Empty uses a default"
 msgstr ""
 
+#: src/features/billing/admin/customer.tsx
+msgid "Empty: no end"
+msgstr ""
+
 #. placeholder {0}: formatPrice(left, currency)
 #: src/features/billing/admin/customer.tsx
 msgid "Empty: the rest, {0}"
@@ -7449,6 +7472,10 @@ msgstr "Кінець"
 #: src/features/billing/admin/labels.ts
 #: src/features/billing/admin/overview.tsx
 msgid "Ended"
+msgstr ""
+
+#: src/features/billing/admin/customer.tsx
+msgid "Ends after (days, 1–366)"
 msgstr ""
 
 #: src/libs/locale.ts
@@ -9819,6 +9846,26 @@ msgstr ""
 msgid "Job search isn't available here yet"
 msgstr ""
 
+#: src/features/billing/admin/customer.tsx
+msgid "Job search limit"
+msgstr ""
+
+#: src/features/billing/admin/customer.tsx
+msgid "Job search limit removed."
+msgstr ""
+
+#: src/features/billing/admin/labels.ts
+msgid "Job search limit set by an admin"
+msgstr ""
+
+#: src/features/billing/admin/labels.ts
+msgid "Job search limit set by hand removed"
+msgstr ""
+
+#: src/features/billing/admin/customer.tsx
+msgid "Job search limit set."
+msgstr ""
+
 #: src/features/billing/admin/labels.ts
 msgid "Job search passed 80% of today's budget"
 msgstr ""
@@ -9826,6 +9873,14 @@ msgstr ""
 #: src/features/applications/components/insights-view.tsx
 msgid "Job search pipeline"
 msgstr "Воронка пошуку роботи"
+
+#: src/features/billing/admin/labels.ts
+msgid "Job searches set to {value} a day by an admin"
+msgstr ""
+
+#: src/features/billing/admin/customer.tsx
+msgid "Job searches today"
+msgstr ""
 
 #: src/features/applications/components/detail/contacts.tsx
 msgid "Job title (optional)"
@@ -10392,6 +10447,10 @@ msgstr "Світла тема"
 #: src/features/assistant/assistant-panel.tsx
 msgid "Likely questions, from the posting and your resume"
 msgstr "Ймовірні запитання з оголошення про роботу та вашого резюме"
+
+#: src/features/billing/admin/customer.tsx
+msgid "Limits set by hand"
+msgstr ""
 
 #: src/routes/builder/$resumeId/-sidebar/right/sections/typography.tsx
 msgid "Line height"
@@ -11735,6 +11794,10 @@ msgstr "Немає електронної адреси"
 #: src/features/ats-checker/messages.ts
 msgid "No email address was found."
 msgstr "Електронну адресу не знайдено."
+
+#: src/features/billing/admin/customer.tsx
+msgid "no end"
+msgstr ""
 
 #: src/features/billing/plan-page.tsx
 msgid "No end date"
@@ -13545,6 +13608,11 @@ msgstr ""
 msgid "Plan what to ask"
 msgstr "Спланувати запитання"
 
+#. placeholder {0}: formatShort(jobSearch.resetsAt)
+#: src/features/billing/admin/customer.tsx
+msgid "plan's limit, resets {0}"
+msgstr ""
+
 #: src/features/career/shared.tsx
 msgid "Planning your week"
 msgstr "Планую ваш тиждень"
@@ -14861,6 +14929,7 @@ msgstr ""
 msgid "Remote, Hybrid, a city…"
 msgstr "Віддалено, гібридно, місто…"
 
+#: src/features/billing/admin/customer.tsx
 #: src/features/resume/share/custom-domain-field.tsx
 #: src/features/settings/account/security.tsx
 msgid "Remove"
@@ -14971,6 +15040,10 @@ msgstr ""
 
 #: src/features/portfolio/location/location-fields.tsx
 msgid "Remove the city and map"
+msgstr ""
+
+#: src/features/billing/admin/customer.tsx
+msgid "Remove the job search limit set by hand"
 msgstr ""
 
 #: src/features/portfolio/editor/password-group.tsx
@@ -15190,6 +15263,15 @@ msgstr ""
 #: src/features/career/workspace/messages.tsx
 msgid "Replaces “{current}” on the application."
 msgstr "Замінює «{current}» у заявці."
+
+#. placeholder {0}: dialog.current
+#: src/features/billing/admin/customer.tsx
+msgid "Replaces the {0} a day set by hand now. The plan's number comes back when it ends or is removed."
+msgstr ""
+
+#: src/features/billing/admin/customer.tsx
+msgid "Replaces the plan's number for this account, higher or lower, even while plans don't apply to it. The plan's number comes back when it ends or is removed."
+msgstr ""
 
 #: src/features/portfolio/editor/preview.tsx
 msgid "Replay intro"
@@ -16204,6 +16286,10 @@ msgstr "Пошук…"
 msgid "Searched the web"
 msgstr "Шукав в Інтернеті"
 
+#: src/features/billing/admin/customer.tsx
+msgid "Searches a day (0–{MAX_SEARCHES})"
+msgstr ""
+
 #: src/features/career/coach-chat.tsx
 msgid "Searching the web"
 msgstr "Шукаю в інтернеті"
@@ -16496,6 +16582,23 @@ msgstr "Встановити наступні дії…"
 #: src/features/settings/account/security.tsx
 msgid "Set a password"
 msgstr "Встановіть пароль"
+
+#. placeholder {0}: formatShort(searchOverride.expiresAt)
+#: src/features/billing/admin/customer.tsx
+msgid "set by hand until {0}"
+msgstr ""
+
+#: src/features/billing/admin/customer.tsx
+msgid "set by hand, no end"
+msgstr ""
+
+#: src/features/billing/admin/customer.tsx
+msgid "Set job searches a day"
+msgstr ""
+
+#: src/features/billing/admin/customer.tsx
+msgid "Set limit"
+msgstr ""
 
 #: src/features/portfolio/editor/password-group.tsx
 #: src/features/resume/builder/password-dialog.tsx
@@ -20096,6 +20199,7 @@ msgid "Untick anything you'd rather leave out. You can change it all later in yo
 msgstr ""
 
 #. placeholder {0}: formatDate(plan.currentPeriodEndsAt)
+#. placeholder {0}: formatShort(override.expiresAt)
 #: src/features/billing/admin/customer.tsx
 msgid "until {0}"
 msgstr ""
