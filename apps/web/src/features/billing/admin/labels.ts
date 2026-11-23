@@ -10,6 +10,8 @@ export type AdminMetrics = RouterOutput["billing"]["admin"]["metrics"];
 export type AdminPaymentRow = RouterOutput["billing"]["admin"]["payments"]["items"][number];
 
 export type AdminSubscription = AdminCustomer["subscriptions"][number];
+export type AdminAccountMetrics = RouterOutput["billing"]["admin"]["accountMetrics"];
+export type AdminAccountRow = RouterOutput["billing"]["admin"]["accounts"]["accounts"][number];
 
 /** What each alert kind means, in a line. Unknown kinds show their code. */
 export function getAlertLabel(kind: string) {

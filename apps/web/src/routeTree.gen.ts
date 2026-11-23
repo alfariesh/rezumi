@@ -47,6 +47,7 @@ import { Route as HomeExtensionRemovedRouteImport } from "./routes/_home/extensi
 import { Route as BuilderResumeIdIndexRouteImport } from "./routes/builder/$resumeId/index";
 import { Route as BuilderLetterCoverLetterIdRouteImport } from "./routes/builder/letter/$coverLetterId";
 import { Route as BuilderPortfolioIndexRouteImport } from "./routes/builder/portfolio/index";
+import { Route as DashboardAdminAccountsRouteImport } from "./routes/dashboard/admin/accounts";
 import { Route as DashboardAdminJobsRouteImport } from "./routes/dashboard/admin/jobs";
 import { Route as DashboardApplicationsIndexRouteImport } from "./routes/dashboard/applications/index";
 import { Route as DashboardApplicationsJobsRouteImport } from "./routes/dashboard/applications/jobs";
@@ -274,6 +275,11 @@ const BuilderPortfolioIndexRoute = BuilderPortfolioIndexRouteImport.update({
   id: "/builder/portfolio/",
   path: "/builder/portfolio/",
   getParentRoute: () => rootRouteImport,
+} as any);
+const DashboardAdminAccountsRoute = DashboardAdminAccountsRouteImport.update({
+  id: "/accounts",
+  path: "/accounts",
+  getParentRoute: () => DashboardAdminRouteRoute,
 } as any);
 const DashboardAdminJobsRoute = DashboardAdminJobsRouteImport.update({
   id: "/jobs",
@@ -524,6 +530,7 @@ export interface FileRoutesByFullPath {
   "/dashboard/settings/integrations": typeof DashboardSettingsIntegrationsRouteRoute;
   "/extension/removed": typeof HomeExtensionRemovedRoute;
   "/builder/letter/$coverLetterId": typeof BuilderLetterCoverLetterIdRoute;
+  "/dashboard/admin/accounts": typeof DashboardAdminAccountsRoute;
   "/dashboard/admin/jobs": typeof DashboardAdminJobsRoute;
   "/dashboard/applications/jobs": typeof DashboardApplicationsJobsRoute;
   "/dashboard/applications/offers": typeof DashboardApplicationsOffersRoute;
@@ -593,6 +600,7 @@ export interface FileRoutesByTo {
   "/dashboard/settings/integrations": typeof DashboardSettingsIntegrationsRouteRoute;
   "/extension/removed": typeof HomeExtensionRemovedRoute;
   "/builder/letter/$coverLetterId": typeof BuilderLetterCoverLetterIdRoute;
+  "/dashboard/admin/accounts": typeof DashboardAdminAccountsRoute;
   "/dashboard/admin/jobs": typeof DashboardAdminJobsRoute;
   "/dashboard/applications/jobs": typeof DashboardApplicationsJobsRoute;
   "/dashboard/applications/offers": typeof DashboardApplicationsOffersRoute;
@@ -671,6 +679,7 @@ export interface FileRoutesById {
   "/dashboard/settings/integrations": typeof DashboardSettingsIntegrationsRouteRoute;
   "/_home/extension/removed": typeof HomeExtensionRemovedRoute;
   "/builder/letter/$coverLetterId": typeof BuilderLetterCoverLetterIdRoute;
+  "/dashboard/admin/accounts": typeof DashboardAdminAccountsRoute;
   "/dashboard/admin/jobs": typeof DashboardAdminJobsRoute;
   "/dashboard/applications/jobs": typeof DashboardApplicationsJobsRoute;
   "/dashboard/applications/offers": typeof DashboardApplicationsOffersRoute;
@@ -749,6 +758,7 @@ export interface FileRouteTypes {
     | "/dashboard/settings/integrations"
     | "/extension/removed"
     | "/builder/letter/$coverLetterId"
+    | "/dashboard/admin/accounts"
     | "/dashboard/admin/jobs"
     | "/dashboard/applications/jobs"
     | "/dashboard/applications/offers"
@@ -818,6 +828,7 @@ export interface FileRouteTypes {
     | "/dashboard/settings/integrations"
     | "/extension/removed"
     | "/builder/letter/$coverLetterId"
+    | "/dashboard/admin/accounts"
     | "/dashboard/admin/jobs"
     | "/dashboard/applications/jobs"
     | "/dashboard/applications/offers"
@@ -895,6 +906,7 @@ export interface FileRouteTypes {
     | "/dashboard/settings/integrations"
     | "/_home/extension/removed"
     | "/builder/letter/$coverLetterId"
+    | "/dashboard/admin/accounts"
     | "/dashboard/admin/jobs"
     | "/dashboard/applications/jobs"
     | "/dashboard/applications/offers"
@@ -1214,6 +1226,13 @@ declare module "@tanstack/react-router" {
       fullPath: "/builder/portfolio/";
       preLoaderRoute: typeof BuilderPortfolioIndexRouteImport;
       parentRoute: typeof rootRouteImport;
+    };
+    "/dashboard/admin/accounts": {
+      id: "/dashboard/admin/accounts";
+      path: "/accounts";
+      fullPath: "/dashboard/admin/accounts";
+      preLoaderRoute: typeof DashboardAdminAccountsRouteImport;
+      parentRoute: typeof DashboardAdminRouteRoute;
     };
     "/dashboard/admin/jobs": {
       id: "/dashboard/admin/jobs";
@@ -1542,6 +1561,7 @@ const AuthRouteRouteWithChildren = AuthRouteRoute._addFileChildren(
 );
 
 interface DashboardAdminRouteRouteChildren {
+  DashboardAdminAccountsRoute: typeof DashboardAdminAccountsRoute;
   DashboardAdminJobsRoute: typeof DashboardAdminJobsRoute;
   DashboardAdminBillingUserIdRoute: typeof DashboardAdminBillingUserIdRoute;
   DashboardAdminPortfoliosPortfolioIdRoute: typeof DashboardAdminPortfoliosPortfolioIdRoute;
@@ -1550,6 +1570,7 @@ interface DashboardAdminRouteRouteChildren {
 }
 
 const DashboardAdminRouteRouteChildren: DashboardAdminRouteRouteChildren = {
+  DashboardAdminAccountsRoute: DashboardAdminAccountsRoute,
   DashboardAdminJobsRoute: DashboardAdminJobsRoute,
   DashboardAdminBillingUserIdRoute: DashboardAdminBillingUserIdRoute,
   DashboardAdminPortfoliosPortfolioIdRoute:

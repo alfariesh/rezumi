@@ -283,7 +283,13 @@ function useCrumbs(): Crumb[] {
 				{ label: t`Settings`, href: "/dashboard/settings" },
 				{
 					label:
-						page === "portfolios" ? t`Portfolio reports` : page === "jobs" ? t`Job search costs` : t`Billing admin`,
+						page === "portfolios"
+							? t`Portfolio reports`
+							: page === "jobs"
+								? t`Job search costs`
+								: page === "accounts"
+									? t`Accounts`
+									: t`Billing admin`,
 				},
 			];
 		default:

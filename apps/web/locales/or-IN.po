@@ -542,6 +542,12 @@ msgstr "{1}ରେ {0} ଆପଣଙ୍କ ସମୟ ଅଞ୍ଚଳରେ ({prefe
 msgid "{0} in a free trial · {1} set to end · {2} payment failed"
 msgstr ""
 
+#. placeholder {0}: formatCount(active.week)
+#. placeholder {1}: formatShare(active.month, metrics.accounts)
+#: src/features/billing/admin/accounts.tsx
+msgid "{0} in the last 7 days · {1} of accounts"
+msgstr ""
+
 #. placeholder {0}: usage.used
 #: src/features/billing/plan-page.tsx
 msgid "{0} in use"
@@ -728,9 +734,17 @@ msgstr "{0}ଟି ଠିକ୍ କରିବାକୁ ଅଛି"
 msgid "{0} until {1}"
 msgstr ""
 
+#. placeholder {0}: formatCount(signups.verified)
 #. placeholder {0}: metrics.signups.verified
+#: src/features/billing/admin/accounts.tsx
 #: src/features/billing/admin/overview.tsx
 msgid "{0} verified their email"
+msgstr ""
+
+#. placeholder {0}: formatCount(metrics.verified)
+#. placeholder {1}: formatCount(metrics.guests)
+#: src/features/billing/admin/accounts.tsx
+msgid "{0} verified their email · {1} guests not counted"
 msgstr ""
 
 #. placeholder {0}: title || t`Untitled`
@@ -928,8 +942,8 @@ msgstr ""
 msgid "{filled} of 5 parts"
 msgstr "5ଟି ମଧ୍ୟରୁ {filled}ଟି ଅଂଶ"
 
-#. placeholder {0}: Math.min(page * PAGE_SIZE, total)
-#: src/features/billing/admin/overview.tsx
+#. placeholder {0}: Math.min(page * pageSize, total)
+#: src/features/billing/admin/parts.tsx
 msgid "{first}–{0} of {total}"
 msgstr ""
 
@@ -1431,7 +1445,7 @@ msgstr ""
 msgid "3 of 5 keywords on your resume"
 msgstr ""
 
-#: src/features/billing/admin/overview.tsx
+#: src/features/billing/admin/parts.tsx
 #: src/features/billing/buy-plans.tsx
 #: src/features/jobs/admin/costs-page.tsx
 #: src/features/settings/ai/api-keys.tsx
@@ -1446,12 +1460,12 @@ msgstr ""
 msgid "5 credits"
 msgstr ""
 
-#: src/features/billing/admin/overview.tsx
+#: src/features/billing/admin/parts.tsx
 #: src/features/jobs/admin/costs-page.tsx
 msgid "7 days"
 msgstr ""
 
-#: src/features/billing/admin/overview.tsx
+#: src/features/billing/admin/parts.tsx
 #: src/features/settings/ai/api-keys.tsx
 msgid "90 days"
 msgstr "90 ଦିନ"
@@ -1863,6 +1877,7 @@ msgstr "ଆକ୍ସେସିବିଲିଟି"
 msgid "Accomplishment"
 msgstr "ସଫଳତା"
 
+#: src/features/billing/admin/accounts.tsx
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/portfolio/admin/review-page.tsx
 #: src/features/settings/account/page.tsx
@@ -1892,7 +1907,9 @@ msgstr ""
 msgid "Account details"
 msgstr ""
 
+#: src/features/billing/admin/accounts.tsx
 #: src/features/billing/admin/overview.tsx
+#: src/features/settings/settings-section.tsx
 msgid "Accounts"
 msgstr ""
 
@@ -1936,6 +1953,10 @@ msgstr "ସକ୍ରିୟ |"
 
 #: src/features/billing/plan-page.tsx
 msgid "Active cover letters"
+msgstr ""
+
+#: src/features/billing/admin/accounts.tsx
+msgid "Active in the last 30 days"
 msgstr ""
 
 #: src/features/billing/plan-page.tsx
@@ -2607,6 +2628,7 @@ msgstr ""
 msgid "Adjust Rezumi AI credits"
 msgstr ""
 
+#: src/features/billing/admin/accounts.tsx
 #: src/features/billing/admin/customer.tsx
 msgid "admin"
 msgstr ""
@@ -2765,6 +2787,10 @@ msgstr "ସମସ୍ତ"
 msgid "All {templateCount} templates"
 msgstr ""
 
+#: src/features/billing/admin/accounts.tsx
+msgid "All accounts"
+msgstr ""
+
 #: src/features/career/knowledge/facts.tsx
 msgid "All applications"
 msgstr "ସମସ୍ତ ଆବେଦନ"
@@ -2784,6 +2810,10 @@ msgstr ""
 #: src/features/resume/editor/design/template-group.tsx
 #: src/features/templates/gallery.tsx
 msgid "All fields"
+msgstr ""
+
+#: src/features/billing/admin/accounts.tsx
+msgid "All plans"
 msgstr ""
 
 #: src/features/portfolio/admin/review-page.tsx
@@ -3561,6 +3591,10 @@ msgstr ""
 #: src/features/portfolio/editor/intro-form.tsx
 #: src/features/portfolio/location/location-fields.tsx
 msgid "Bandung, Indonesia"
+msgstr ""
+
+#: src/features/billing/admin/accounts.tsx
+msgid "banned"
 msgstr ""
 
 #: src/features/portfolio/admin/labels.ts
@@ -7409,6 +7443,7 @@ msgstr ""
 msgid "Email delivery isn't set up on this server, so the address isn't verified."
 msgstr "ଇମେଲ ବିତରଣ ଏହି ସର୍ଭରରେ ସେଟ୍ ହୋଇନାହିଁ, ତେଣୁ ଠିକଣା ଯାଞ୍ଚ ହୋଇନାହିଁ |"
 
+#: src/features/billing/admin/accounts.tsx
 #: src/features/billing/admin/customer.tsx
 msgid "email not verified"
 msgstr ""
@@ -8029,6 +8064,10 @@ msgstr ""
 
 #: src/features/billing/admin/overview.tsx
 msgid "Find a customer"
+msgstr ""
+
+#: src/features/billing/admin/accounts.tsx
+msgid "Find an account"
 msgstr ""
 
 #: src/features/applications/components/add-application-dialog.tsx
@@ -9920,6 +9959,10 @@ msgstr "John Doe"
 msgid "john.doe"
 msgstr "john.doe"
 
+#: src/features/billing/admin/accounts.tsx
+msgid "Joined"
+msgstr ""
+
 #: src/features/resume/import/read-file.ts
 msgid "JSON read"
 msgstr "JSON ପ read ଼ନ୍ତୁ |"
@@ -10172,8 +10215,12 @@ msgstr ""
 msgid "Last edited"
 msgstr "ଶେଷ ସମ୍ପାଦିତ |"
 
-#: src/features/billing/admin/overview.tsx
+#: src/features/billing/admin/parts.tsx
 msgid "Last month"
+msgstr ""
+
+#: src/features/billing/admin/accounts.tsx
+msgid "Last signed in"
 msgstr ""
 
 #: src/features/settings/ai/api-keys.tsx
@@ -11446,6 +11493,10 @@ msgstr "ଏହି ସଂସ୍କରଣର ନାମ ଦିଅ |"
 msgid "Name this work"
 msgstr ""
 
+#: src/features/billing/admin/accounts.tsx
+msgid "Name, email or username"
+msgstr ""
+
 #: src/features/resume/editor/check/issues.ts
 msgid "Name, email, phone and location are found, and links are full addresses."
 msgstr "ନାମ, ଇମେଲ୍, ଫୋନ୍ ଏବଂ ଅବସ୍ଥାନ ମିଳିଲା, ଏବଂ ଲିଙ୍କଗୁଡ଼ିକ ହେଉଛି ସମ୍ପୂର୍ଣ୍ଣ ଠିକଣା |"
@@ -11587,6 +11638,7 @@ msgstr ""
 msgid "New section"
 msgstr "ନୂତନ ବିଭାଗ"
 
+#: src/features/billing/admin/accounts.tsx
 #: src/features/billing/admin/overview.tsx
 msgid "New sign-ups"
 msgstr ""
@@ -11597,6 +11649,10 @@ msgstr ""
 
 #: src/features/billing/purchase.ts
 msgid "New subscription"
+msgstr ""
+
+#: src/features/billing/admin/accounts.tsx
+msgid "Newest first, guests left out. A row opens the account's billing page."
 msgstr ""
 
 #: src/features/billing/admin/customer.tsx
@@ -11659,6 +11715,14 @@ msgstr ""
 
 #: src/features/jobs/admin/costs-page.tsx
 msgid "Nightly upkeep hasn't run"
+msgstr ""
+
+#: src/features/billing/admin/accounts.tsx
+msgid "No accounts match."
+msgstr ""
+
+#: src/features/billing/admin/accounts.tsx
+msgid "No accounts yet."
 msgstr ""
 
 #: src/features/applications/components/interview-dialog.tsx
@@ -12511,6 +12575,10 @@ msgstr "ଅଫଲାଇନ୍ · ଏହି ଡିଭାଇସରେ ସେଭ୍
 
 #: src/features/career/coach.tsx
 msgid "Older"
+msgstr ""
+
+#: src/features/billing/admin/accounts.tsx
+msgid "On a paid plan now"
 msgstr ""
 
 #: src/features/docs/toc.tsx
@@ -13402,7 +13470,7 @@ msgid "Percent (2.8%)"
 msgstr ""
 
 #: src/features/billing/admin/customer.tsx
-#: src/features/billing/admin/overview.tsx
+#: src/features/billing/admin/parts.tsx
 #: src/features/jobs/admin/costs-page.tsx
 msgid "Period"
 msgstr ""
@@ -13568,6 +13636,7 @@ msgstr "ସାଧାରଣ ଟେକ୍ସଟ୍ (.txt)"
 msgid "Plain text with headings. Paste into application forms and notes."
 msgstr "ହେଡିଙ୍ଗ୍ ସହିତ ସାଧା ପାଠ | ଚାକିରି ଆବେଦନ ଫର୍ମ ଏବଂ ନୋଟରେ ଲେପନ କରନ୍ତୁ |"
 
+#: src/features/billing/admin/accounts.tsx
 #: src/features/billing/admin/customer.tsx
 #: src/features/billing/admin/overview.tsx
 #: src/features/billing/back-link.tsx
@@ -13646,6 +13715,13 @@ msgstr ""
 #. placeholder {0}: plus.payments
 #: src/features/billing/admin/overview.tsx
 msgid "Plus · {0} paid"
+msgstr ""
+
+#. placeholder {0}: formatCount(paying.plus)
+#. placeholder {1}: formatCount(paying.proAi)
+#. placeholder {2}: formatShare(paying.total, metrics.accounts)
+#: src/features/billing/admin/accounts.tsx
+msgid "Plus {0} · Pro AI {1} · {2} of accounts"
 msgstr ""
 
 #: src/features/templates/gallery.tsx
@@ -14768,6 +14844,7 @@ msgstr "ଦ୍ fer ାରା ସୂଚିତ, ଜୋର ଦେବା ପାଇ�
 msgid "Reflection"
 msgstr "ପ୍ରତିଫଳନ"
 
+#: src/features/billing/admin/accounts.tsx
 #: src/features/billing/admin/overview.tsx
 #: src/features/jobs/admin/costs-page.tsx
 msgid "Refresh"
@@ -17500,6 +17577,7 @@ msgstr "ଏବେ ଆରମ୍ଭ"
 msgid "Statistics"
 msgstr "ସଂଖ୍ୟାତ୍ମକ ତଥ୍ୟ"
 
+#: src/features/billing/admin/accounts.tsx
 #: src/features/billing/admin/customer.tsx
 #: src/features/billing/admin/overview.tsx
 #: src/features/billing/payment-history.tsx
@@ -18275,6 +18353,10 @@ msgstr ""
 msgid "The {label} file couldn't be generated. Try again, or download PDF instead."
 msgstr "{label} ଫାଇଲ ସୃଷ୍ଟି ହୋଇପାରିବ ନାହିଁ | ପୁନର୍ବାର ଚେଷ୍ଟା କରନ୍ତୁ, କିମ୍ବା ଏହା ପରିବର୍ତ୍ତେ PDF ଡାଉନଲୋଡ୍ କରନ୍ତୁ |"
 
+#: src/features/billing/admin/accounts.tsx
+msgid "The accounts couldn't load."
+msgstr ""
+
 #: src/libs/error-message.ts
 msgid "The address must contain only lowercase letters and numbers, separated by single dashes."
 msgstr "ଠିକଣାରେ କେବଳ ଛୋଟ ଅକ୍ଷର ଏବଂ ସଂଖ୍ୟା ରହିବା ଉଚିତ, ଯାହା ଏକକ ଡ୍ୟାସ୍ ଦ୍ୱାରା ପୃଥକ ହୋଇଥିବ।"
@@ -18537,6 +18619,7 @@ msgstr ""
 msgid "The numbers couldn't be loaded."
 msgstr ""
 
+#: src/features/billing/admin/accounts.tsx
 #: src/features/billing/admin/overview.tsx
 #: src/features/jobs/admin/costs-page.tsx
 msgid "The numbers couldn't load."
@@ -18613,6 +18696,10 @@ msgstr ""
 
 #: src/features/portfolio/media/pdf.ts
 msgid "The PDF couldn't be uploaded. Check your connection and try again."
+msgstr ""
+
+#: src/features/billing/admin/accounts.tsx
+msgid "The period applies to new sign-ups (days in WIB). Activity counts sign-ins used, refreshed about once a day."
 msgstr ""
 
 #: src/features/portfolio/assistant/labels.ts
@@ -19224,7 +19311,7 @@ msgstr "ଏହି ଫାଇଲର ପାଠ୍ୟକୁ ସଫ୍ଟୱେୟା
 msgid "This message was already deleted."
 msgstr ""
 
-#: src/features/billing/admin/overview.tsx
+#: src/features/billing/admin/parts.tsx
 msgid "This month"
 msgstr ""
 
@@ -20674,6 +20761,10 @@ msgstr "ମୌଖିକ ଅଫର୍"
 #: src/features/auth/pages/verify-2fa.tsx
 msgid "Verification code"
 msgstr "ଯାଞ୍ଚ କୋଡ୍ |"
+
+#: src/features/billing/admin/accounts.tsx
+msgid "verified"
+msgstr ""
 
 #. Primary action button to submit 2FA code
 #. Primary action button to submit backup code
