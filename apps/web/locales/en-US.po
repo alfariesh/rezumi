@@ -537,6 +537,12 @@ msgstr "{0} in {1} is {2} in your timezone ({preferredZone})."
 msgid "{0} in a free trial · {1} set to end · {2} payment failed"
 msgstr "{0} in a free trial · {1} set to end · {2} payment failed"
 
+#. placeholder {0}: formatCount(active.week)
+#. placeholder {1}: formatShare(active.month, metrics.accounts)
+#: src/features/billing/admin/accounts.tsx
+msgid "{0} in the last 7 days · {1} of accounts"
+msgstr "{0} in the last 7 days · {1} of accounts"
+
 #. placeholder {0}: usage.used
 #: src/features/billing/plan-page.tsx
 msgid "{0} in use"
@@ -723,10 +729,18 @@ msgstr "{0} to fix"
 msgid "{0} until {1}"
 msgstr "{0} until {1}"
 
+#. placeholder {0}: formatCount(signups.verified)
 #. placeholder {0}: metrics.signups.verified
+#: src/features/billing/admin/accounts.tsx
 #: src/features/billing/admin/overview.tsx
 msgid "{0} verified their email"
 msgstr "{0} verified their email"
+
+#. placeholder {0}: formatCount(metrics.verified)
+#. placeholder {1}: formatCount(metrics.guests)
+#: src/features/billing/admin/accounts.tsx
+msgid "{0} verified their email · {1} guests not counted"
+msgstr "{0} verified their email · {1} guests not counted"
 
 #. placeholder {0}: title || t`Untitled`
 #. placeholder {1}: index + 1
@@ -923,8 +937,8 @@ msgstr "{family} is ready. Choose it under Font family."
 msgid "{filled} of 5 parts"
 msgstr "{filled} of 5 parts"
 
-#. placeholder {0}: Math.min(page * PAGE_SIZE, total)
-#: src/features/billing/admin/overview.tsx
+#. placeholder {0}: Math.min(page * pageSize, total)
+#: src/features/billing/admin/parts.tsx
 msgid "{first}–{0} of {total}"
 msgstr "{first}–{0} of {total}"
 
@@ -1426,7 +1440,7 @@ msgstr "3 new messages"
 msgid "3 of 5 keywords on your resume"
 msgstr "3 of 5 keywords on your resume"
 
-#: src/features/billing/admin/overview.tsx
+#: src/features/billing/admin/parts.tsx
 #: src/features/billing/buy-plans.tsx
 #: src/features/jobs/admin/costs-page.tsx
 #: src/features/settings/ai/api-keys.tsx
@@ -1441,12 +1455,12 @@ msgstr "30-day pass"
 msgid "5 credits"
 msgstr "5 credits"
 
-#: src/features/billing/admin/overview.tsx
+#: src/features/billing/admin/parts.tsx
 #: src/features/jobs/admin/costs-page.tsx
 msgid "7 days"
 msgstr "7 days"
 
-#: src/features/billing/admin/overview.tsx
+#: src/features/billing/admin/parts.tsx
 #: src/features/settings/ai/api-keys.tsx
 msgid "90 days"
 msgstr "90 days"
@@ -1858,6 +1872,7 @@ msgstr "Accessibility"
 msgid "Accomplishment"
 msgstr "Accomplishment"
 
+#: src/features/billing/admin/accounts.tsx
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/portfolio/admin/review-page.tsx
 #: src/features/settings/account/page.tsx
@@ -1887,7 +1902,9 @@ msgstr "Account deleted"
 msgid "Account details"
 msgstr "Account details"
 
+#: src/features/billing/admin/accounts.tsx
 #: src/features/billing/admin/overview.tsx
+#: src/features/settings/settings-section.tsx
 msgid "Accounts"
 msgstr "Accounts"
 
@@ -1932,6 +1949,10 @@ msgstr "Active"
 #: src/features/billing/plan-page.tsx
 msgid "Active cover letters"
 msgstr "Active cover letters"
+
+#: src/features/billing/admin/accounts.tsx
+msgid "Active in the last 30 days"
+msgstr "Active in the last 30 days"
 
 #: src/features/billing/plan-page.tsx
 msgid "Active resumes"
@@ -2602,6 +2623,7 @@ msgstr "Adjust fonts, colors, spacing and sections in the resume builder. Downlo
 msgid "Adjust Rezumi AI credits"
 msgstr "Adjust Rezumi AI credits"
 
+#: src/features/billing/admin/accounts.tsx
 #: src/features/billing/admin/customer.tsx
 msgid "admin"
 msgstr "admin"
@@ -2760,6 +2782,10 @@ msgstr "All"
 msgid "All {templateCount} templates"
 msgstr "All {templateCount} templates"
 
+#: src/features/billing/admin/accounts.tsx
+msgid "All accounts"
+msgstr "All accounts"
+
 #: src/features/career/knowledge/facts.tsx
 msgid "All applications"
 msgstr "All applications"
@@ -2780,6 +2806,10 @@ msgstr "All documents"
 #: src/features/templates/gallery.tsx
 msgid "All fields"
 msgstr "All fields"
+
+#: src/features/billing/admin/accounts.tsx
+msgid "All plans"
+msgstr "All plans"
 
 #: src/features/portfolio/admin/review-page.tsx
 msgid "All reports"
@@ -3557,6 +3587,10 @@ msgstr "Band"
 #: src/features/portfolio/location/location-fields.tsx
 msgid "Bandung, Indonesia"
 msgstr "Bandung, Indonesia"
+
+#: src/features/billing/admin/accounts.tsx
+msgid "banned"
+msgstr "banned"
 
 #: src/features/portfolio/admin/labels.ts
 msgid "Banned the account"
@@ -7404,6 +7438,7 @@ msgstr "Email delivery isn't set up on this server, so the address can't be veri
 msgid "Email delivery isn't set up on this server, so the address isn't verified."
 msgstr "Email delivery isn't set up on this server, so the address isn't verified."
 
+#: src/features/billing/admin/accounts.tsx
 #: src/features/billing/admin/customer.tsx
 msgid "email not verified"
 msgstr "email not verified"
@@ -8025,6 +8060,10 @@ msgstr "Finance Analyst"
 #: src/features/billing/admin/overview.tsx
 msgid "Find a customer"
 msgstr "Find a customer"
+
+#: src/features/billing/admin/accounts.tsx
+msgid "Find an account"
+msgstr "Find an account"
 
 #: src/features/applications/components/add-application-dialog.tsx
 msgid "Find jobs"
@@ -9914,6 +9953,10 @@ msgstr "John Doe"
 msgid "john.doe"
 msgstr "john.doe"
 
+#: src/features/billing/admin/accounts.tsx
+msgid "Joined"
+msgstr "Joined"
+
 #: src/features/resume/import/read-file.ts
 msgid "JSON read"
 msgstr "JSON read"
@@ -10166,9 +10209,13 @@ msgstr "Last day"
 msgid "Last edited"
 msgstr "Last edited"
 
-#: src/features/billing/admin/overview.tsx
+#: src/features/billing/admin/parts.tsx
 msgid "Last month"
 msgstr "Last month"
+
+#: src/features/billing/admin/accounts.tsx
+msgid "Last signed in"
+msgstr "Last signed in"
 
 #: src/features/settings/ai/api-keys.tsx
 msgid "Last used"
@@ -11440,6 +11487,10 @@ msgstr "Name this version"
 msgid "Name this work"
 msgstr "Name this work"
 
+#: src/features/billing/admin/accounts.tsx
+msgid "Name, email or username"
+msgstr "Name, email or username"
+
 #: src/features/resume/editor/check/issues.ts
 msgid "Name, email, phone and location are found, and links are full addresses."
 msgstr "Name, email, phone and location are found, and links are full addresses."
@@ -11581,6 +11632,7 @@ msgstr "New searches are limited right now. These are results saved earlier; try
 msgid "New section"
 msgstr "New section"
 
+#: src/features/billing/admin/accounts.tsx
 #: src/features/billing/admin/overview.tsx
 msgid "New sign-ups"
 msgstr "New sign-ups"
@@ -11592,6 +11644,10 @@ msgstr "New story"
 #: src/features/billing/purchase.ts
 msgid "New subscription"
 msgstr "New subscription"
+
+#: src/features/billing/admin/accounts.tsx
+msgid "Newest first, guests left out. A row opens the account's billing page."
+msgstr "Newest first, guests left out. A row opens the account's billing page."
 
 #: src/features/billing/admin/customer.tsx
 msgid "Newest first. The menu at the end of a row checks with the provider (Dodo Payments or Sumopod) or refunds."
@@ -11654,6 +11710,14 @@ msgstr "Nightly upkeep"
 #: src/features/jobs/admin/costs-page.tsx
 msgid "Nightly upkeep hasn't run"
 msgstr "Nightly upkeep hasn't run"
+
+#: src/features/billing/admin/accounts.tsx
+msgid "No accounts match."
+msgstr "No accounts match."
+
+#: src/features/billing/admin/accounts.tsx
+msgid "No accounts yet."
+msgstr "No accounts yet."
 
 #: src/features/applications/components/interview-dialog.tsx
 msgid "No active applications."
@@ -12506,6 +12570,10 @@ msgstr "Offline · saved on this device"
 #: src/features/career/coach.tsx
 msgid "Older"
 msgstr "Older"
+
+#: src/features/billing/admin/accounts.tsx
+msgid "On a paid plan now"
+msgstr "On a paid plan now"
 
 #: src/features/docs/toc.tsx
 msgid "On this page"
@@ -13395,7 +13463,7 @@ msgid "Percent (2.8%)"
 msgstr "Percent (2.8%)"
 
 #: src/features/billing/admin/customer.tsx
-#: src/features/billing/admin/overview.tsx
+#: src/features/billing/admin/parts.tsx
 #: src/features/jobs/admin/costs-page.tsx
 msgid "Period"
 msgstr "Period"
@@ -13561,6 +13629,7 @@ msgstr "Plain text (.txt)"
 msgid "Plain text with headings. Paste into application forms and notes."
 msgstr "Plain text with headings. Paste into application forms and notes."
 
+#: src/features/billing/admin/accounts.tsx
 #: src/features/billing/admin/customer.tsx
 #: src/features/billing/admin/overview.tsx
 #: src/features/billing/back-link.tsx
@@ -13640,6 +13709,13 @@ msgstr "Plays on"
 #: src/features/billing/admin/overview.tsx
 msgid "Plus · {0} paid"
 msgstr "Plus · {0} paid"
+
+#. placeholder {0}: formatCount(paying.plus)
+#. placeholder {1}: formatCount(paying.proAi)
+#. placeholder {2}: formatShare(paying.total, metrics.accounts)
+#: src/features/billing/admin/accounts.tsx
+msgid "Plus {0} · Pro AI {1} · {2} of accounts"
+msgstr "Plus {0} · Pro AI {1} · {2} of accounts"
 
 #: src/features/templates/gallery.tsx
 msgid "Plus / Pro AI"
@@ -14761,6 +14837,7 @@ msgstr "Referred by…, things to emphasize, etc."
 msgid "Reflection"
 msgstr "Reflection"
 
+#: src/features/billing/admin/accounts.tsx
 #: src/features/billing/admin/overview.tsx
 #: src/features/jobs/admin/costs-page.tsx
 msgid "Refresh"
@@ -17493,6 +17570,7 @@ msgstr "Starts now"
 msgid "Statistics"
 msgstr "Statistics"
 
+#: src/features/billing/admin/accounts.tsx
 #: src/features/billing/admin/customer.tsx
 #: src/features/billing/admin/overview.tsx
 #: src/features/billing/payment-history.tsx
@@ -18268,6 +18346,10 @@ msgstr "The {0} days are added after your current {name}, so no day is lost."
 msgid "The {label} file couldn't be generated. Try again, or download PDF instead."
 msgstr "The {label} file couldn't be generated. Try again, or download PDF instead."
 
+#: src/features/billing/admin/accounts.tsx
+msgid "The accounts couldn't load."
+msgstr "The accounts couldn't load."
+
 #: src/libs/error-message.ts
 msgid "The address must contain only lowercase letters and numbers, separated by single dashes."
 msgstr "The address must contain only lowercase letters and numbers, separated by single dashes."
@@ -18530,6 +18612,7 @@ msgstr "The name leads the main column from the top of the page, and the right c
 msgid "The numbers couldn't be loaded."
 msgstr "The numbers couldn't be loaded."
 
+#: src/features/billing/admin/accounts.tsx
 #: src/features/billing/admin/overview.tsx
 #: src/features/jobs/admin/costs-page.tsx
 msgid "The numbers couldn't load."
@@ -18607,6 +18690,10 @@ msgstr "The payments couldn't load."
 #: src/features/portfolio/media/pdf.ts
 msgid "The PDF couldn't be uploaded. Check your connection and try again."
 msgstr "The PDF couldn't be uploaded. Check your connection and try again."
+
+#: src/features/billing/admin/accounts.tsx
+msgid "The period applies to new sign-ups (days in WIB). Activity counts sign-ins used, refreshed about once a day."
+msgstr "The period applies to new sign-ups (days in WIB). Activity counts sign-ins used, refreshed about once a day."
 
 #: src/features/portfolio/assistant/labels.ts
 #: src/features/portfolio/editor/intro-form.tsx
@@ -19217,7 +19304,7 @@ msgstr "This measures how faithfully software can extract this file's text. It d
 msgid "This message was already deleted."
 msgstr "This message was already deleted."
 
-#: src/features/billing/admin/overview.tsx
+#: src/features/billing/admin/parts.tsx
 msgid "This month"
 msgstr "This month"
 
@@ -20666,6 +20753,10 @@ msgstr "Verbal offer"
 #: src/features/auth/pages/verify-2fa.tsx
 msgid "Verification code"
 msgstr "Verification code"
+
+#: src/features/billing/admin/accounts.tsx
+msgid "verified"
+msgstr "verified"
 
 #. Primary action button to submit 2FA code
 #. Primary action button to submit backup code

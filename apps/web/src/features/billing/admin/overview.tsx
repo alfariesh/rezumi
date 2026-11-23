@@ -5,18 +5,7 @@ import { ChartTooltip, DataGrid } from "@heroui-pro/react";
 import { BarChart } from "@heroui-pro/react/bar-chart";
 import { LineChart } from "@heroui-pro/react/line-chart";
 import { PieChart } from "@heroui-pro/react/pie-chart";
-import {
-	Button,
-	Chip,
-	Dropdown,
-	Label,
-	Pagination,
-	SearchField,
-	Skeleton,
-	Spinner,
-	Table,
-	Typography,
-} from "@heroui/react";
+import { Button, Chip, Dropdown, Label, SearchField, Skeleton, Spinner, Table, Typography } from "@heroui/react";
 import { i18n } from "@lingui/core";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
@@ -36,19 +25,21 @@ import {
 	usePlanDates,
 } from "../purchase";
 import { formatMoney, formatUsdMicros, getAlertLabel, reportRange } from "./labels";
-import { AdminCard, CHART_COLORS, IconButton, LegendDot, MiniStat, StatWidget, trendOf } from "./parts";
+import {
+	AdminCard,
+	CHART_COLORS,
+	IconButton,
+	LegendDot,
+	MiniStat,
+	PageNav,
+	PeriodMenu,
+	StatWidget,
+	trendOf,
+} from "./parts";
 import { EmptyBlock } from "@/components/layout/empty-block";
 import { getReadableErrorMessage } from "@/libs/error-message";
 import { client, orpc } from "@/libs/orpc/client";
 import { renderAsH1 } from "@/libs/typography";
-
-const PRESETS = (): { id: ReportPreset; label: string }[] => [
-	{ id: "7d", label: t`7 days` },
-	{ id: "30d", label: t`30 days` },
-	{ id: "90d", label: t`90 days` },
-	{ id: "month", label: t`This month` },
-	{ id: "last-month", label: t`Last month` },
-];
 
 const PLUS_COLOR = "var(--chart-4)";
 const PRO_AI_COLOR = "var(--chart-2)";
@@ -467,19 +458,6 @@ const STATUS_FILTERS = (): { id: StatusFilter; label: string }[] => [
 	{ id: "refunded", label: t`Refunded or reversed` },
 ];
 
-/** Page numbers to show: the first, the last, and the ones around the current page, with gaps between. */
-function pageNumbers(page: number, pages: number): (number | "ellipsis")[] {
-	if (pages <= 7) return Array.from({ length: pages }, (_, index) => index + 1);
-	const middle = [page - 1, page, page + 1].filter((entry) => entry > 1 && entry < pages);
-	return [
-		1,
-		...((middle[0] ?? pages) > 2 ? ["ellipsis" as const] : []),
-		...middle,
-		...((middle.at(-1) ?? 1) < pages - 1 ? ["ellipsis" as const] : []),
-		pages,
-	];
-}
-
 type PaymentsCardProps = { range: { from: Date; to: Date }; query: string };
 
 /** The period's newest payments, or what a search found; a row opens its customer. */
@@ -517,8 +495,6 @@ function PaymentsCard({ range, query }: PaymentsCardProps) {
 	const error = searching ? found.error : recent.error;
 	const customers = searching ? (found.data?.customers ?? []) : [];
 	const total = searching ? rows.length : (recent.data?.total ?? 0);
-	const pages = Math.max(1, Math.ceil(total / PAGE_SIZE));
-	const first = (page - 1) * PAGE_SIZE + 1;
 
 	const columns: DataGridColumn<AdminPaymentRow>[] = [
 		{
@@ -708,36 +684,7 @@ function PaymentsCard({ range, query }: PaymentsCardProps) {
 					}
 				/>
 			)}
-			{!searching && total > PAGE_SIZE && (
-				<Pagination size="sm" className="w-full">
-					<Pagination.Summary>{t`${first}–${Math.min(page * PAGE_SIZE, total)} of ${total}`}</Pagination.Summary>
-					<Pagination.Content>
-						<Pagination.Item>
-							<Pagination.Previous isDisabled={page === 1} onPress={() => setPage(page - 1)}>
-								<Pagination.PreviousIcon />
-							</Pagination.Previous>
-						</Pagination.Item>
-						{pageNumbers(page, pages).map((entry, index) =>
-							entry === "ellipsis" ? (
-								<Pagination.Item key={`ellipsis-${index}`}>
-									<Pagination.Ellipsis />
-								</Pagination.Item>
-							) : (
-								<Pagination.Item key={entry}>
-									<Pagination.Link isActive={entry === page} onPress={() => setPage(entry)}>
-										{entry}
-									</Pagination.Link>
-								</Pagination.Item>
-							),
-						)}
-						<Pagination.Item>
-							<Pagination.Next isDisabled={page === pages} onPress={() => setPage(page + 1)}>
-								<Pagination.NextIcon />
-							</Pagination.Next>
-						</Pagination.Item>
-					</Pagination.Content>
-				</Pagination>
-			)}
+			{!searching && total > PAGE_SIZE && <PageNav page={page} pageSize={PAGE_SIZE} total={total} onChange={setPage} />}
 		</AdminCard>
 	);
 }
@@ -777,30 +724,13 @@ export function BillingAdminPage({ query }: BillingAdminPageProps) {
 					</p>
 				</div>
 				<div className="flex flex-wrap items-center gap-2 lg:flex-nowrap">
-					<Dropdown>
-						<Button size="sm" variant="tertiary" aria-label={t`Period`}>
-							<Icon name="calendar-blank" size={16} />
-							{PRESETS().find((option) => option.id === preset)?.label}
-							<Icon name="caret-down" size={14} className="text-muted" />
-						</Button>
-						<Dropdown.Popover placement="bottom end" className="min-w-44">
-							<Dropdown.Menu
-								selectionMode="single"
-								selectedKeys={[preset]}
-								onAction={(key) => {
-									setPreset(key as ReportPreset);
-									setRange(reportRange(key as ReportPreset));
-								}}
-							>
-								{PRESETS().map((option) => (
-									<Dropdown.Item key={option.id} id={option.id} textValue={option.label}>
-										<Label>{option.label}</Label>
-										<Dropdown.ItemIndicator />
-									</Dropdown.Item>
-								))}
-							</Dropdown.Menu>
-						</Dropdown.Popover>
-					</Dropdown>
+					<PeriodMenu
+						preset={preset}
+						onChange={(next) => {
+							setPreset(next);
+							setRange(reportRange(next));
+						}}
+					/>
 					<IconButton
 						label={t`Refresh`}
 						onPress={() => void queryClient.invalidateQueries({ queryKey: orpc.billing.admin.key() })}

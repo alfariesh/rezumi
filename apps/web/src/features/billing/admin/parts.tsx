@@ -1,8 +1,9 @@
+import type { ReportPreset } from "./labels";
 import type { IconName } from "@rezumi/ui/components/icon";
 import type { ReactNode } from "react";
 import { TrendChip, Widget } from "@heroui-pro/react";
 import { AreaChart } from "@heroui-pro/react/area-chart";
-import { Button, Tooltip } from "@heroui/react";
+import { Button, Dropdown, Label, Pagination, Tooltip } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { useId } from "react";
 import { Icon } from "@rezumi/ui/components/icon";
@@ -209,5 +210,89 @@ export function StatWidget({
 				{footer && <p className="text-body-xs text-muted">{footer}</p>}
 			</Widget.Content>
 		</Widget>
+	);
+}
+
+const REPORT_PRESETS = (): { id: ReportPreset; label: string }[] => [
+	{ id: "7d", label: t`7 days` },
+	{ id: "30d", label: t`30 days` },
+	{ id: "90d", label: t`90 days` },
+	{ id: "month", label: t`This month` },
+	{ id: "last-month", label: t`Last month` },
+];
+
+type PeriodMenuProps = { preset: ReportPreset; onChange: (preset: ReportPreset) => void };
+
+/** The report period, as a button with a menu of presets. */
+export function PeriodMenu({ preset, onChange }: PeriodMenuProps) {
+	return (
+		<Dropdown>
+			<Button size="sm" variant="tertiary" aria-label={t`Period`}>
+				<Icon name="calendar-blank" size={16} />
+				{REPORT_PRESETS().find((option) => option.id === preset)?.label}
+				<Icon name="caret-down" size={14} className="text-muted" />
+			</Button>
+			<Dropdown.Popover placement="bottom end" className="min-w-44">
+				<Dropdown.Menu selectionMode="single" selectedKeys={[preset]} onAction={(key) => onChange(key as ReportPreset)}>
+					{REPORT_PRESETS().map((option) => (
+						<Dropdown.Item key={option.id} id={option.id} textValue={option.label}>
+							<Label>{option.label}</Label>
+							<Dropdown.ItemIndicator />
+						</Dropdown.Item>
+					))}
+				</Dropdown.Menu>
+			</Dropdown.Popover>
+		</Dropdown>
+	);
+}
+
+/** Page numbers to show: the first, the last, and the ones around the current page, with gaps between. */
+function pageNumbers(page: number, pages: number): (number | "ellipsis")[] {
+	if (pages <= 7) return Array.from({ length: pages }, (_, index) => index + 1);
+	const middle = [page - 1, page, page + 1].filter((entry) => entry > 1 && entry < pages);
+	return [
+		1,
+		...((middle[0] ?? pages) > 2 ? ["ellipsis" as const] : []),
+		...middle,
+		...((middle.at(-1) ?? 1) < pages - 1 ? ["ellipsis" as const] : []),
+		pages,
+	];
+}
+
+type PageNavProps = { page: number; pageSize: number; total: number; onChange: (page: number) => void };
+
+/** "21–40 of 95" with page links, under a table that has more than one page. */
+export function PageNav({ page, pageSize, total, onChange }: PageNavProps) {
+	const pages = Math.max(1, Math.ceil(total / pageSize));
+	const first = (page - 1) * pageSize + 1;
+	return (
+		<Pagination size="sm" className="w-full">
+			<Pagination.Summary>{t`${first}–${Math.min(page * pageSize, total)} of ${total}`}</Pagination.Summary>
+			<Pagination.Content>
+				<Pagination.Item>
+					<Pagination.Previous isDisabled={page === 1} onPress={() => onChange(page - 1)}>
+						<Pagination.PreviousIcon />
+					</Pagination.Previous>
+				</Pagination.Item>
+				{pageNumbers(page, pages).map((entry, index) =>
+					entry === "ellipsis" ? (
+						<Pagination.Item key={`ellipsis-${index}`}>
+							<Pagination.Ellipsis />
+						</Pagination.Item>
+					) : (
+						<Pagination.Item key={entry}>
+							<Pagination.Link isActive={entry === page} onPress={() => onChange(entry)}>
+								{entry}
+							</Pagination.Link>
+						</Pagination.Item>
+					),
+				)}
+				<Pagination.Item>
+					<Pagination.Next isDisabled={page === pages} onPress={() => onChange(page + 1)}>
+						<Pagination.NextIcon />
+					</Pagination.Next>
+				</Pagination.Item>
+			</Pagination.Content>
+		</Pagination>
 	);
 }

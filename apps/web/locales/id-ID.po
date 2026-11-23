@@ -542,6 +542,12 @@ msgstr "{0} di {1} adalah {2} di zona waktu Anda ({preferredZone})."
 msgid "{0} in a free trial · {1} set to end · {2} payment failed"
 msgstr "{0} dalam masa coba gratis · {1} akan berhenti · {2} gagal bayar"
 
+#. placeholder {0}: formatCount(active.week)
+#. placeholder {1}: formatShare(active.month, metrics.accounts)
+#: src/features/billing/admin/accounts.tsx
+msgid "{0} in the last 7 days · {1} of accounts"
+msgstr "{0} dalam 7 hari terakhir · {1} dari semua akun"
+
 #. placeholder {0}: usage.used
 #: src/features/billing/plan-page.tsx
 msgid "{0} in use"
@@ -728,10 +734,18 @@ msgstr "{0} untuk diperbaiki"
 msgid "{0} until {1}"
 msgstr "{0} sampai {1}"
 
+#. placeholder {0}: formatCount(signups.verified)
 #. placeholder {0}: metrics.signups.verified
+#: src/features/billing/admin/accounts.tsx
 #: src/features/billing/admin/overview.tsx
 msgid "{0} verified their email"
 msgstr "{0} memverifikasi email"
+
+#. placeholder {0}: formatCount(metrics.verified)
+#. placeholder {1}: formatCount(metrics.guests)
+#: src/features/billing/admin/accounts.tsx
+msgid "{0} verified their email · {1} guests not counted"
+msgstr "{0} sudah verifikasi email · {1} tamu tidak dihitung"
 
 #. placeholder {0}: title || t`Untitled`
 #. placeholder {1}: index + 1
@@ -928,8 +942,8 @@ msgstr "{family} siap dipakai. Pilih di Keluarga font."
 msgid "{filled} of 5 parts"
 msgstr "{filled} dari 5 bagian"
 
-#. placeholder {0}: Math.min(page * PAGE_SIZE, total)
-#: src/features/billing/admin/overview.tsx
+#. placeholder {0}: Math.min(page * pageSize, total)
+#: src/features/billing/admin/parts.tsx
 msgid "{first}–{0} of {total}"
 msgstr "{first}–{0} dari {total}"
 
@@ -1431,7 +1445,7 @@ msgstr "3 pesan baru"
 msgid "3 of 5 keywords on your resume"
 msgstr "3 dari 5 kata kunci ada di CV Anda"
 
-#: src/features/billing/admin/overview.tsx
+#: src/features/billing/admin/parts.tsx
 #: src/features/billing/buy-plans.tsx
 #: src/features/jobs/admin/costs-page.tsx
 #: src/features/settings/ai/api-keys.tsx
@@ -1446,12 +1460,12 @@ msgstr "Pass 30 hari"
 msgid "5 credits"
 msgstr "5 kredit"
 
-#: src/features/billing/admin/overview.tsx
+#: src/features/billing/admin/parts.tsx
 #: src/features/jobs/admin/costs-page.tsx
 msgid "7 days"
 msgstr "7 hari"
 
-#: src/features/billing/admin/overview.tsx
+#: src/features/billing/admin/parts.tsx
 #: src/features/settings/ai/api-keys.tsx
 msgid "90 days"
 msgstr "90 hari"
@@ -1863,6 +1877,7 @@ msgstr "Aksesibilitas"
 msgid "Accomplishment"
 msgstr "Pencapaian"
 
+#: src/features/billing/admin/accounts.tsx
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/portfolio/admin/review-page.tsx
 #: src/features/settings/account/page.tsx
@@ -1892,7 +1907,9 @@ msgstr "Akun sudah dihapus"
 msgid "Account details"
 msgstr "Detail akun"
 
+#: src/features/billing/admin/accounts.tsx
 #: src/features/billing/admin/overview.tsx
+#: src/features/settings/settings-section.tsx
 msgid "Accounts"
 msgstr "Akun"
 
@@ -1937,6 +1954,10 @@ msgstr "Aktif"
 #: src/features/billing/plan-page.tsx
 msgid "Active cover letters"
 msgstr "Surat lamaran aktif"
+
+#: src/features/billing/admin/accounts.tsx
+msgid "Active in the last 30 days"
+msgstr "Aktif dalam 30 hari terakhir"
 
 #: src/features/billing/plan-page.tsx
 msgid "Active resumes"
@@ -2607,6 +2628,7 @@ msgstr ""
 msgid "Adjust Rezumi AI credits"
 msgstr "Sesuaikan kredit Rezumi AI"
 
+#: src/features/billing/admin/accounts.tsx
 #: src/features/billing/admin/customer.tsx
 msgid "admin"
 msgstr "admin"
@@ -2765,6 +2787,10 @@ msgstr "Semua"
 msgid "All {templateCount} templates"
 msgstr "Semua {templateCount} template"
 
+#: src/features/billing/admin/accounts.tsx
+msgid "All accounts"
+msgstr "Semua akun"
+
 #: src/features/career/knowledge/facts.tsx
 msgid "All applications"
 msgstr "Semua lamaran"
@@ -2785,6 +2811,10 @@ msgstr "Semua dokumen"
 #: src/features/templates/gallery.tsx
 msgid "All fields"
 msgstr "Semua bidang"
+
+#: src/features/billing/admin/accounts.tsx
+msgid "All plans"
+msgstr "Semua paket"
 
 #: src/features/portfolio/admin/review-page.tsx
 msgid "All reports"
@@ -3562,6 +3592,10 @@ msgstr ""
 #: src/features/portfolio/location/location-fields.tsx
 msgid "Bandung, Indonesia"
 msgstr "Bandung, Indonesia"
+
+#: src/features/billing/admin/accounts.tsx
+msgid "banned"
+msgstr "diblokir"
 
 #: src/features/portfolio/admin/labels.ts
 msgid "Banned the account"
@@ -7409,6 +7443,7 @@ msgstr "Pengiriman email belum diatur di server ini, jadi alamat email belum bis
 msgid "Email delivery isn't set up on this server, so the address isn't verified."
 msgstr "Pengiriman email tidak diatur di server ini, sehingga alamatnya tidak terverifikasi."
 
+#: src/features/billing/admin/accounts.tsx
 #: src/features/billing/admin/customer.tsx
 msgid "email not verified"
 msgstr "email belum terverifikasi"
@@ -8030,6 +8065,10 @@ msgstr "Finance Analyst"
 #: src/features/billing/admin/overview.tsx
 msgid "Find a customer"
 msgstr "Cari pelanggan"
+
+#: src/features/billing/admin/accounts.tsx
+msgid "Find an account"
+msgstr "Cari akun"
 
 #: src/features/applications/components/add-application-dialog.tsx
 msgid "Find jobs"
@@ -9919,6 +9958,10 @@ msgstr "John Doe"
 msgid "john.doe"
 msgstr "john.doe"
 
+#: src/features/billing/admin/accounts.tsx
+msgid "Joined"
+msgstr "Bergabung"
+
 #: src/features/resume/import/read-file.ts
 msgid "JSON read"
 msgstr "JSON dibaca"
@@ -10171,9 +10214,13 @@ msgstr "1 hari terakhir"
 msgid "Last edited"
 msgstr "Terakhir diedit"
 
-#: src/features/billing/admin/overview.tsx
+#: src/features/billing/admin/parts.tsx
 msgid "Last month"
 msgstr "Bulan lalu"
+
+#: src/features/billing/admin/accounts.tsx
+msgid "Last signed in"
+msgstr "Terakhir masuk"
 
 #: src/features/settings/ai/api-keys.tsx
 msgid "Last used"
@@ -11445,6 +11492,10 @@ msgstr "Beri nama versi ini"
 msgid "Name this work"
 msgstr "Beri nama karya ini"
 
+#: src/features/billing/admin/accounts.tsx
+msgid "Name, email or username"
+msgstr "Nama, email, atau username"
+
 #: src/features/resume/editor/check/issues.ts
 msgid "Name, email, phone and location are found, and links are full addresses."
 msgstr "Nama, email, telepon dan lokasi ditemukan, dan tautan adalah alamat lengkap."
@@ -11586,6 +11637,7 @@ msgstr "Pencarian baru sedang dibatasi. Ini hasil yang tersimpan sebelumnya; cob
 msgid "New section"
 msgstr "Bagian baru"
 
+#: src/features/billing/admin/accounts.tsx
 #: src/features/billing/admin/overview.tsx
 msgid "New sign-ups"
 msgstr "Pendaftar baru"
@@ -11597,6 +11649,10 @@ msgstr "Cerita baru"
 #: src/features/billing/purchase.ts
 msgid "New subscription"
 msgstr "Langganan baru"
+
+#: src/features/billing/admin/accounts.tsx
+msgid "Newest first, guests left out. A row opens the account's billing page."
+msgstr "Terbaru di atas, akun tamu tidak ditampilkan. Klik baris untuk membuka halaman billing akun itu."
 
 #: src/features/billing/admin/customer.tsx
 msgid "Newest first. The menu at the end of a row checks with the provider (Dodo Payments or Sumopod) or refunds."
@@ -11659,6 +11715,14 @@ msgstr "Pemeliharaan malam"
 #: src/features/jobs/admin/costs-page.tsx
 msgid "Nightly upkeep hasn't run"
 msgstr "Pemeliharaan malam belum berjalan"
+
+#: src/features/billing/admin/accounts.tsx
+msgid "No accounts match."
+msgstr "Tidak ada akun yang cocok."
+
+#: src/features/billing/admin/accounts.tsx
+msgid "No accounts yet."
+msgstr "Belum ada akun."
 
 #: src/features/applications/components/interview-dialog.tsx
 msgid "No active applications."
@@ -12511,6 +12575,10 @@ msgstr "Offline · disimpan di perangkat ini"
 #: src/features/career/coach.tsx
 msgid "Older"
 msgstr ""
+
+#: src/features/billing/admin/accounts.tsx
+msgid "On a paid plan now"
+msgstr "Sedang di paket berbayar"
 
 #: src/features/docs/toc.tsx
 msgid "On this page"
@@ -13400,7 +13468,7 @@ msgid "Percent (2.8%)"
 msgstr "Persen (2,8%)"
 
 #: src/features/billing/admin/customer.tsx
-#: src/features/billing/admin/overview.tsx
+#: src/features/billing/admin/parts.tsx
 #: src/features/jobs/admin/costs-page.tsx
 msgid "Period"
 msgstr "Periode"
@@ -13566,6 +13634,7 @@ msgstr "Teks biasa (.txt)"
 msgid "Plain text with headings. Paste into application forms and notes."
 msgstr "Teks biasa dengan judul. Tempelkan ke formulir dan catatan lamaran pekerjaan."
 
+#: src/features/billing/admin/accounts.tsx
 #: src/features/billing/admin/customer.tsx
 #: src/features/billing/admin/overview.tsx
 #: src/features/billing/back-link.tsx
@@ -13645,6 +13714,13 @@ msgstr "Berlaku pada"
 #: src/features/billing/admin/overview.tsx
 msgid "Plus · {0} paid"
 msgstr "Plus · {0} lunas"
+
+#. placeholder {0}: formatCount(paying.plus)
+#. placeholder {1}: formatCount(paying.proAi)
+#. placeholder {2}: formatShare(paying.total, metrics.accounts)
+#: src/features/billing/admin/accounts.tsx
+msgid "Plus {0} · Pro AI {1} · {2} of accounts"
+msgstr "Plus {0} · Pro AI {1} · {2} dari semua akun"
 
 #: src/features/templates/gallery.tsx
 msgid "Plus / Pro AI"
@@ -14766,6 +14842,7 @@ msgstr "Dirujuk oleh…, hal yang perlu ditekankan, dll."
 msgid "Reflection"
 msgstr "Refleksi"
 
+#: src/features/billing/admin/accounts.tsx
 #: src/features/billing/admin/overview.tsx
 #: src/features/jobs/admin/costs-page.tsx
 msgid "Refresh"
@@ -17498,6 +17575,7 @@ msgstr "Dimulai sekarang"
 msgid "Statistics"
 msgstr "Statistik"
 
+#: src/features/billing/admin/accounts.tsx
 #: src/features/billing/admin/customer.tsx
 #: src/features/billing/admin/overview.tsx
 #: src/features/billing/payment-history.tsx
@@ -18273,6 +18351,10 @@ msgstr "{0} hari ini ditambahkan setelah {name}-mu yang sekarang, jadi tidak ada
 msgid "The {label} file couldn't be generated. Try again, or download PDF instead."
 msgstr "File {label} tidak dapat dibuat. Coba lagi, atau unduh PDF."
 
+#: src/features/billing/admin/accounts.tsx
+msgid "The accounts couldn't load."
+msgstr "Daftar akun tidak dapat dimuat."
+
 #: src/libs/error-message.ts
 msgid "The address must contain only lowercase letters and numbers, separated by single dashes."
 msgstr "Alamat hanya boleh berisi huruf kecil dan angka, dipisahkan oleh tanda hubung tunggal."
@@ -18535,6 +18617,7 @@ msgstr "Nama memimpin kolom utama dari atas halaman, dan kolom kanan berdiri di 
 msgid "The numbers couldn't be loaded."
 msgstr "Angka-angkanya gagal dimuat."
 
+#: src/features/billing/admin/accounts.tsx
 #: src/features/billing/admin/overview.tsx
 #: src/features/jobs/admin/costs-page.tsx
 msgid "The numbers couldn't load."
@@ -18612,6 +18695,10 @@ msgstr "Pembayaran gagal dimuat."
 #: src/features/portfolio/media/pdf.ts
 msgid "The PDF couldn't be uploaded. Check your connection and try again."
 msgstr "PDF gagal diunggah. Periksa koneksi Anda, lalu coba lagi."
+
+#: src/features/billing/admin/accounts.tsx
+msgid "The period applies to new sign-ups (days in WIB). Activity counts sign-ins used, refreshed about once a day."
+msgstr "Periode berlaku untuk pendaftar baru (hari dalam WIB). Aktivitas dihitung dari sesi masuk yang dipakai, diperbarui sekitar sekali sehari."
 
 #: src/features/portfolio/assistant/labels.ts
 #: src/features/portfolio/editor/intro-form.tsx
@@ -19222,7 +19309,7 @@ msgstr "Ini mengukur seberapa setia perangkat lunak dapat mengekstrak teks dari 
 msgid "This message was already deleted."
 msgstr "Pesan ini sudah dihapus."
 
-#: src/features/billing/admin/overview.tsx
+#: src/features/billing/admin/parts.tsx
 msgid "This month"
 msgstr "Bulan ini"
 
@@ -20671,6 +20758,10 @@ msgstr "Penawaran lisan"
 #: src/features/auth/pages/verify-2fa.tsx
 msgid "Verification code"
 msgstr "Kode verifikasi"
+
+#: src/features/billing/admin/accounts.tsx
+msgid "verified"
+msgstr "terverifikasi"
 
 #. Primary action button to submit 2FA code
 #. Primary action button to submit backup code

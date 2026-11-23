@@ -43,11 +43,17 @@ export function SettingsSection({ children }: SettingsSectionProps) {
 		...(session.user.role === "admin"
 			? [
 					{
+						link: { to: "/dashboard/admin/accounts", search: {} },
+						match: { to: "/dashboard/admin/accounts", fuzzy: true },
+						icon: "rows",
+						label: t`Accounts`,
+						group: t`Admin`,
+					} satisfies SectionNavItem,
+					{
 						link: { to: "/dashboard/admin/billing" },
 						match: { to: "/dashboard/admin/billing", fuzzy: true },
 						icon: "shield-check",
 						label: t`Billing admin`,
-						group: t`Admin`,
 					} satisfies SectionNavItem,
 					{
 						link: { to: "/dashboard/admin/portfolios", search: {} },

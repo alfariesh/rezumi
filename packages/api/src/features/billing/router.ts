@@ -18,6 +18,7 @@ import {
 import { protectedProcedure } from "../../context";
 import { checkoutRateLimit } from "../../middleware/rate-limit";
 import { adminProcedure } from "../auth/admin-session";
+import { accountMetrics, listAccounts } from "./accounts";
 import { billingAdmin } from "./admin";
 import { listRecentAlerts } from "./alerts";
 import {
@@ -569,6 +570,26 @@ export const billingRouter = {
 			.route({ ...route, method: "GET", path: "/billing/admin/customers/{userId}" })
 			.input(z.object({ userId: z.string().min(1).max(100) }))
 			.handler(({ input }) => billingAdmin.customer(input)),
+
+		// Every account, with sign-up, activity and paid-plan numbers: read only.
+		accountMetrics: adminProcedure
+			.route({ ...route, method: "GET", path: "/billing/admin/accounts/metrics" })
+			.input(reportRange)
+			.handler(({ input }) => accountMetrics(input)),
+
+		accounts: adminProcedure
+			.route({ ...route, method: "GET", path: "/billing/admin/accounts" })
+			.input(
+				z.object({
+					query: z.string().trim().max(200).optional(),
+					plan: z.enum(["all", "free", "plus", "pro-ai"]).optional(),
+					limit: z.number().int().min(1).max(100).optional(),
+					offset: z.number().int().min(0).max(1_000_000).optional(),
+				}),
+			)
+			.handler(({ input }) =>
+				listAccounts({ query: input.query, plan: input.plan, limit: input.limit ?? 20, offset: input.offset ?? 0 }),
+			),
 
 		alerts: adminProcedure
 			.route({ ...route, method: "GET", path: "/billing/admin/alerts" })
