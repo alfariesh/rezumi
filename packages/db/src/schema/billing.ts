@@ -1,4 +1,4 @@
-import type { BillingInterval, CreditSource, PaidPlanId } from "@rezumi/schema/billing";
+import type { BillingInterval, CreditSource, LimitOverrideKey, PaidPlanId } from "@rezumi/schema/billing";
 import { sql } from "drizzle-orm";
 import * as pg from "drizzle-orm/pg-core";
 import { generateId } from "@rezumi/utils/string";
@@ -95,6 +95,41 @@ export const billingAuditLog = pg.pgTable(
 		createdAt: pg.timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
 	},
 	(t) => [pg.index().on(t.targetUserId, t.createdAt)],
+);
+
+/**
+ * A plan limit an administrator set for one account (`LIMIT_OVERRIDE_KEYS`): it replaces the plan's number until
+ * `expiresAt`, or for good when that is null. One per account and limit; setting it again replaces it, clearing deletes
+ * it. Every change is in `billing_audit_log` with its reason.
+ */
+export const billingLimitOverride = pg.pgTable(
+	"billing_limit_override",
+	{
+		id: pg
+			.text("id")
+			.notNull()
+			.primaryKey()
+			.$defaultFn(() => generateId()),
+		userId: pg
+			.text("user_id")
+			.notNull()
+			.references(() => user.id, { onDelete: "cascade" }),
+		limitKey: pg.text("limit_key").notNull().$type<LimitOverrideKey>(),
+		value: pg.integer("value").notNull(),
+		expiresAt: pg.timestamp("expires_at", { withTimezone: true }),
+		reason: pg.text("reason").notNull(),
+		grantedBy: pg.text("granted_by").references(() => user.id, { onDelete: "set null" }),
+		createdAt: pg.timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+		updatedAt: pg
+			.timestamp("updated_at", { withTimezone: true })
+			.notNull()
+			.defaultNow()
+			.$onUpdate(() => /* @__PURE__ */ new Date()),
+	},
+	(t) => [
+		pg.uniqueIndex().on(t.userId, t.limitKey),
+		pg.check("billing_limit_override_value_not_negative", sql`${t.value} >= 0`),
+	],
 );
 
 /** Rezumi AI credits that came in: the trial, a month of Pro AI, or an administrator. Spent soonest-expiring first. */

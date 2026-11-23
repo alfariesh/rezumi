@@ -1,11 +1,13 @@
-import type { PaidPlanId } from "@rezumi/schema/billing";
+import type { LimitOverrideKey, PaidPlanId } from "@rezumi/schema/billing";
 import { ORPCError } from "@orpc/server";
-import { desc, eq, inArray, or, sql } from "drizzle-orm";
+import { and, desc, eq, inArray, or, sql } from "drizzle-orm";
 import { db } from "@rezumi/db/client";
 import * as schema from "@rezumi/db/schema";
+import { jobSearchService } from "../jobs/service";
 import { lockBillingAccount } from "./account";
 import { deductCredits, getCreditBalance, grantCredits } from "./credits";
 import { isBillingAppliedTo, resolveEntitlements } from "./entitlements";
+import { listLimitOverrides } from "./limit-overrides";
 import { grantMembershipPeriod, revokeMembershipPeriod } from "./periods";
 import { syncPaymentWithProvider } from "./reconcile";
 import { recordQrisRefund, requestRefund } from "./refunds";
@@ -299,6 +301,11 @@ async function customer(input: { userId: string }) {
 		})),
 		credits: await getCreditBalance(input.userId, now),
 		grants,
+		limitOverrides: (await listLimitOverrides(input.userId)).map((override) => ({
+			...override,
+			live: !override.expiresAt || override.expiresAt > now,
+		})),
+		jobSearch: await jobSearchToday(input.userId),
 		payments: payments.map((payment) => ({
 			...adminPayment(payment),
 			refunds: refunds.filter((refund) => refund.paymentId === payment.id),
@@ -307,6 +314,23 @@ async function customer(input: { userId: string }) {
 		audit,
 	};
 }
+
+/** Today's job searches as the account sees them; null when the shared counters can't be read right now. */
+async function jobSearchToday(userId: string) {
+	try {
+		const { quota } = await jobSearchService.status(userId);
+		return { used: quota.used, max: quota.max, resetsAt: new Date(quota.resetsAt) };
+	} catch {
+		return null;
+	}
+}
+
+const overrideSummary = (row: typeof schema.billingLimitOverride.$inferSelect) => ({
+	userId: row.userId,
+	limitKey: row.limitKey,
+	value: row.value,
+	expiresAt: row.expiresAt,
+});
 
 /** Writes an admin action to the audit log, outside any transaction. */
 function audit(input: {
@@ -453,6 +477,83 @@ export const billingAdmin = {
 			return { userId, amount: input.amount, balance, expiresAt };
 		});
 	},
+
+	/**
+	 * Sets one of an account's plan limits by hand (`LIMIT_OVERRIDE_KEYS`), replacing its plan's number until it expires
+	 * after `expiresInDays`, or for good without it. Setting it again replaces the last one. Recorded with its reason.
+	 */
+	setLimitOverride: async (input: {
+		actorUserId: string;
+		userId?: string | undefined;
+		email?: string | undefined;
+		limitKey: LimitOverrideKey;
+		value: number;
+		expiresInDays?: number | undefined;
+		reason: string;
+	}) => {
+		const userId = await findUserId(input);
+		const now = new Date();
+		const expiresAt = input.expiresInDays ? new Date(+now + input.expiresInDays * DAY_MS) : null;
+		return db.transaction(async (tx) => {
+			const [before] = await tx
+				.select({ value: schema.billingLimitOverride.value, expiresAt: schema.billingLimitOverride.expiresAt })
+				.from(schema.billingLimitOverride)
+				.where(
+					and(eq(schema.billingLimitOverride.userId, userId), eq(schema.billingLimitOverride.limitKey, input.limitKey)),
+				);
+			const values = {
+				value: input.value,
+				expiresAt,
+				reason: input.reason,
+				grantedBy: input.actorUserId,
+			};
+			const [row] = await tx
+				.insert(schema.billingLimitOverride)
+				.values({ userId, limitKey: input.limitKey, ...values })
+				.onConflictDoUpdate({
+					target: [schema.billingLimitOverride.userId, schema.billingLimitOverride.limitKey],
+					set: { ...values, updatedAt: now },
+				})
+				.returning();
+			if (!row) throw new ORPCError("INTERNAL_SERVER_ERROR", { message: "The limit couldn't be saved." });
+			await tx.insert(schema.billingAuditLog).values({
+				actorUserId: input.actorUserId,
+				targetUserId: userId,
+				action: "limit.set",
+				reason: input.reason,
+				details: {
+					limitKey: input.limitKey,
+					value: input.value,
+					expiresAt: expiresAt?.toISOString() ?? null,
+					before: before ? { value: before.value, expiresAt: before.expiresAt?.toISOString() ?? null } : null,
+				},
+			});
+			return overrideSummary(row);
+		});
+	},
+
+	/** Removes a limit set by hand, so the plan's number applies again. */
+	clearLimitOverride: (input: { actorUserId: string; userId: string; limitKey: LimitOverrideKey; reason: string }) =>
+		db.transaction(async (tx) => {
+			const [row] = await tx
+				.delete(schema.billingLimitOverride)
+				.where(
+					and(
+						eq(schema.billingLimitOverride.userId, input.userId),
+						eq(schema.billingLimitOverride.limitKey, input.limitKey),
+					),
+				)
+				.returning();
+			if (!row) throw new ORPCError("NOT_FOUND", { message: "This account has no limit set by hand for that." });
+			await tx.insert(schema.billingAuditLog).values({
+				actorUserId: input.actorUserId,
+				targetUserId: input.userId,
+				action: "limit.cleared",
+				reason: input.reason,
+				details: { limitKey: row.limitKey, value: row.value, expiresAt: row.expiresAt?.toISOString() ?? null },
+			});
+			return overrideSummary(row);
+		}),
 
 	/** Takes a pass away: a running one ends now, a queued one is dropped, and later passes move up. */
 	revokePeriod: async (input: { actorUserId: string; periodId: string; reason: string }) => {

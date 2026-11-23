@@ -232,6 +232,11 @@ msgstr "{0, plural, one {# kolom ditandai untuk diperiksa sekilas di editor.} ot
 msgid "{0, plural, one {# issue is ignored.} other {# issues are ignored.}}"
 msgstr "{0, plural, one {Masalah # diabaikan.} other {Masalah # diabaikan.}}"
 
+#. placeholder {0}: override.value
+#: src/features/billing/admin/customer.tsx
+msgid "{0, plural, one {# job search a day} other {# job searches a day}}"
+msgstr "{0, plural, other {# pencarian lowongan per hari}}"
+
 #. placeholder {0}: block.pages
 #: src/features/portfolio/blocks/pdf-block.tsx
 msgid "{0, plural, one {# page} other {# pages}}"
@@ -412,6 +417,11 @@ msgstr "{0} (disembunyikan di CV Anda)"
 #: src/features/portfolio/editor/design-panel.tsx
 msgid "{0} (theme default)"
 msgstr "{0} (bawaan tema)"
+
+#. placeholder {0}: dialog.value
+#: src/features/billing/admin/customer.tsx
+msgid "{0} a day is removed; the plan's number applies again from now."
+msgstr "{0} per hari dihapus; batas dari paket berlaku lagi mulai sekarang."
 
 #. placeholder {0}: monthlyOfYearly(id, currency)
 #: src/features/billing/buy-plans.tsx
@@ -1918,6 +1928,7 @@ msgstr "Tindakan untuk {0}"
 msgid "active"
 msgstr "aktif"
 
+#: src/features/billing/admin/customer.tsx
 #: src/features/billing/admin/labels.ts
 #: src/features/resume/share/custom-domain-field.tsx
 msgid "Active"
@@ -5946,6 +5957,10 @@ msgstr "Negara, perangkat, situs yang menautkan, dan karya per hari"
 msgid "Country"
 msgstr "Negara"
 
+#: src/features/billing/admin/customer.tsx
+msgid "counts couldn't be read"
+msgstr "hitungan tidak dapat dibaca"
+
 #: src/features/applications/components/insights-view.tsx
 msgid "Counts every application that reached each stage, including ones now closed."
 msgstr "Menghitung setiap lamaran pekerjaan yang mencapai setiap tahap, termasuk yang sekarang sudah ditutup."
@@ -7141,6 +7156,10 @@ msgstr "mis. UX researcher"
 msgid "Each answer you get feedback on is kept here, newest first."
 msgstr "Setiap jawaban yang mendapat masukan disimpan di sini, yang terbaru di atas."
 
+#: src/features/billing/admin/customer.tsx
+msgid "Each replaces the plan's number for this account while it lasts."
+msgstr "Masing-masing menggantikan batas paket untuk akun ini selama masih berlaku."
+
 #: src/features/career/workspace/fit.tsx
 msgid "Each requirement in the posting is checked against the facts and stories in your Profile. Gaps show as missing evidence, never missing ability."
 msgstr "Setiap persyaratan dalam lowongan diperiksa terhadap fakta dan cerita di Profil Anda. Kekurangan ditampilkan sebagai bukti yang belum ada, bukan kemampuan yang kurang."
@@ -7436,6 +7455,10 @@ msgstr "Masih kosong. Ketik nama Anda di bawah, atau isi Profil Anda."
 msgid "Empty uses a default"
 msgstr "Kosong memakai teks bawaan"
 
+#: src/features/billing/admin/customer.tsx
+msgid "Empty: no end"
+msgstr "Kosong: tanpa batas waktu"
+
 #. placeholder {0}: formatPrice(left, currency)
 #: src/features/billing/admin/customer.tsx
 msgid "Empty: the rest, {0}"
@@ -7450,6 +7473,10 @@ msgstr "Akhir"
 #: src/features/billing/admin/overview.tsx
 msgid "Ended"
 msgstr "Berakhir"
+
+#: src/features/billing/admin/customer.tsx
+msgid "Ends after (days, 1–366)"
+msgstr "Berakhir setelah (hari, 1–366)"
 
 #: src/libs/locale.ts
 msgid "English"
@@ -9819,6 +9846,26 @@ msgstr "Biaya pencarian lowongan"
 msgid "Job search isn't available here yet"
 msgstr "Pencarian lowongan belum tersedia di sini"
 
+#: src/features/billing/admin/customer.tsx
+msgid "Job search limit"
+msgstr "Batas pencarian lowongan"
+
+#: src/features/billing/admin/customer.tsx
+msgid "Job search limit removed."
+msgstr "Batas pencarian lowongan dihapus."
+
+#: src/features/billing/admin/labels.ts
+msgid "Job search limit set by an admin"
+msgstr "Batas pencarian lowongan diatur oleh admin"
+
+#: src/features/billing/admin/labels.ts
+msgid "Job search limit set by hand removed"
+msgstr "Batas pencarian lowongan manual dihapus"
+
+#: src/features/billing/admin/customer.tsx
+msgid "Job search limit set."
+msgstr "Batas pencarian lowongan diatur."
+
 #: src/features/billing/admin/labels.ts
 msgid "Job search passed 80% of today's budget"
 msgstr "Pencarian lowongan lewat 80% anggaran hari ini"
@@ -9826,6 +9873,14 @@ msgstr "Pencarian lowongan lewat 80% anggaran hari ini"
 #: src/features/applications/components/insights-view.tsx
 msgid "Job search pipeline"
 msgstr "Alur pencarian kerja"
+
+#: src/features/billing/admin/labels.ts
+msgid "Job searches set to {value} a day by an admin"
+msgstr "Pencarian lowongan diatur menjadi {value} per hari oleh admin"
+
+#: src/features/billing/admin/customer.tsx
+msgid "Job searches today"
+msgstr "Pencarian lowongan hari ini"
 
 #: src/features/applications/components/detail/contacts.tsx
 msgid "Job title (optional)"
@@ -10392,6 +10447,10 @@ msgstr "Tema terang"
 #: src/features/assistant/assistant-panel.tsx
 msgid "Likely questions, from the posting and your resume"
 msgstr "Kemungkinan pertanyaan, dari lowongan pekerjaan dan resume Anda"
+
+#: src/features/billing/admin/customer.tsx
+msgid "Limits set by hand"
+msgstr "Batas yang diatur manual"
 
 #: src/routes/builder/$resumeId/-sidebar/right/sections/typography.tsx
 msgid "Line height"
@@ -11735,6 +11794,10 @@ msgstr "Tidak ada alamat email"
 #: src/features/ats-checker/messages.ts
 msgid "No email address was found."
 msgstr "Tidak ditemukan alamat email."
+
+#: src/features/billing/admin/customer.tsx
+msgid "no end"
+msgstr "tanpa batas waktu"
 
 #: src/features/billing/plan-page.tsx
 msgid "No end date"
@@ -13545,6 +13608,11 @@ msgstr "Paket sekarang"
 msgid "Plan what to ask"
 msgstr "Rencanakan yang perlu ditanyakan"
 
+#. placeholder {0}: formatShort(jobSearch.resetsAt)
+#: src/features/billing/admin/customer.tsx
+msgid "plan's limit, resets {0}"
+msgstr "batas paket, direset {0}"
+
 #: src/features/career/shared.tsx
 msgid "Planning your week"
 msgstr "Merencanakan minggu Anda"
@@ -14861,6 +14929,7 @@ msgstr "Remote di negara ini"
 msgid "Remote, Hybrid, a city…"
 msgstr "Remote, Hybrid, kota…"
 
+#: src/features/billing/admin/customer.tsx
 #: src/features/resume/share/custom-domain-field.tsx
 #: src/features/settings/account/security.tsx
 msgid "Remove"
@@ -14972,6 +15041,10 @@ msgstr "Hapus blok {0}"
 #: src/features/portfolio/location/location-fields.tsx
 msgid "Remove the city and map"
 msgstr "Hapus kota dan peta"
+
+#: src/features/billing/admin/customer.tsx
+msgid "Remove the job search limit set by hand"
+msgstr "Hapus batas pencarian lowongan manual"
 
 #: src/features/portfolio/editor/password-group.tsx
 #: src/features/resume/share/share-panel.tsx
@@ -15190,6 +15263,15 @@ msgstr "Ganti PDF"
 #: src/features/career/workspace/messages.tsx
 msgid "Replaces “{current}” on the application."
 msgstr "Menggantikan “{current}” pada lamaran."
+
+#. placeholder {0}: dialog.current
+#: src/features/billing/admin/customer.tsx
+msgid "Replaces the {0} a day set by hand now. The plan's number comes back when it ends or is removed."
+msgstr "Menggantikan {0} per hari yang diatur manual saat ini. Batas paket berlaku lagi saat berakhir atau dihapus."
+
+#: src/features/billing/admin/customer.tsx
+msgid "Replaces the plan's number for this account, higher or lower, even while plans don't apply to it. The plan's number comes back when it ends or is removed."
+msgstr "Menggantikan batas paket untuk akun ini, lebih tinggi atau lebih rendah, bahkan saat paket belum berlaku untuknya. Batas paket berlaku lagi saat berakhir atau dihapus."
 
 #: src/features/portfolio/editor/preview.tsx
 msgid "Replay intro"
@@ -16204,6 +16286,10 @@ msgstr "Cari…"
 msgid "Searched the web"
 msgstr "Mencari di web"
 
+#: src/features/billing/admin/customer.tsx
+msgid "Searches a day (0–{MAX_SEARCHES})"
+msgstr "Pencarian per hari (0–{MAX_SEARCHES})"
+
 #: src/features/career/coach-chat.tsx
 msgid "Searching the web"
 msgstr "Mencari di web"
@@ -16496,6 +16582,23 @@ msgstr "Tetapkan tindak lanjut…"
 #: src/features/settings/account/security.tsx
 msgid "Set a password"
 msgstr "Tetapkan kata sandi"
+
+#. placeholder {0}: formatShort(searchOverride.expiresAt)
+#: src/features/billing/admin/customer.tsx
+msgid "set by hand until {0}"
+msgstr "diatur manual sampai {0}"
+
+#: src/features/billing/admin/customer.tsx
+msgid "set by hand, no end"
+msgstr "diatur manual, tanpa batas waktu"
+
+#: src/features/billing/admin/customer.tsx
+msgid "Set job searches a day"
+msgstr "Atur pencarian lowongan per hari"
+
+#: src/features/billing/admin/customer.tsx
+msgid "Set limit"
+msgstr "Atur batas"
 
 #: src/features/portfolio/editor/password-group.tsx
 #: src/features/resume/builder/password-dialog.tsx
@@ -20096,6 +20199,7 @@ msgid "Untick anything you'd rather leave out. You can change it all later in yo
 msgstr "Hapus centang pada yang tidak ingin Anda masukkan. Semuanya bisa diubah nanti di Profil."
 
 #. placeholder {0}: formatDate(plan.currentPeriodEndsAt)
+#. placeholder {0}: formatShort(override.expiresAt)
 #: src/features/billing/admin/customer.tsx
 msgid "until {0}"
 msgstr "sampai {0}"

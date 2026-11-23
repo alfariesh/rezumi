@@ -10,6 +10,7 @@ import { rateLimitConfig } from "@rezumi/utils/rate-limit";
 import { createRateLimiter } from "../../redis";
 import { raiseBillingAlertQuietly } from "../billing/alerts";
 import { getEntitlements } from "../billing/entitlements";
+import { activeLimitOverride } from "../billing/limit-overrides";
 import { dayInTimeZone, startOfDayInTimeZone } from "../portfolio/traffic";
 
 /**
@@ -61,18 +62,23 @@ export type QuotaDay = {
 	resetsAt: Date;
 };
 
-/** The plan's searches a day; while plans don't apply to the account, Pro AI's. */
+/**
+ * The plan's searches a day; while plans don't apply to the account, Pro AI's. A number an administrator set for the
+ * account replaces either while it lasts.
+ */
 export async function quotaDay(userId: string, now: Date): Promise<QuotaDay> {
-	const [entitlements, [owner]] = await Promise.all([
+	const [entitlements, [owner], override] = await Promise.all([
 		getEntitlements(userId, now),
 		db.select({ timezone: schema.user.timezone }).from(schema.user).where(eq(schema.user.id, userId)),
+		activeLimitOverride(userId, "jobSearchesPerDay", now),
 	]);
 	const timeZone = owner?.timezone ?? "UTC";
 	const day = dayInTimeZone(now, timeZone);
 	const next = new Date(Date.parse(`${day}T00:00:00Z`) + DAY_MS).toISOString().slice(0, 10);
-	const max = entitlements.enabled
+	const planMax = entitlements.enabled
 		? (entitlements.limits.jobSearchesPerDay ?? PLANS["pro-ai"].limits.jobSearchesPerDay)
 		: PLANS["pro-ai"].limits.jobSearchesPerDay;
+	const max = override ?? planMax;
 	return { max, planId: entitlements.planId, day, resetsAt: startOfDayInTimeZone(next, timeZone) };
 }
 

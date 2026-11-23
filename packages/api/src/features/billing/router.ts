@@ -6,6 +6,8 @@ import {
 	billingCurrencySchema,
 	billingIntervalSchema,
 	creditSourceSchema,
+	LIMIT_OVERRIDE_KEYS,
+	LIMIT_OVERRIDE_MAX,
 	paidPlanIdSchema,
 	PASS_DAYS,
 	paymentMethodSchema,
@@ -54,6 +56,13 @@ const period = z.object({
 	planId: paidPlanIdSchema,
 	startsAt: z.date(),
 	endsAt: z.date(),
+});
+
+const limitOverride = z.object({
+	userId: z.string(),
+	limitKey: z.enum(LIMIT_OVERRIDE_KEYS),
+	value: z.number().int(),
+	expiresAt: z.date().nullable(),
 });
 
 const credits = z.object({
@@ -509,6 +518,40 @@ export const billingRouter = {
 				}),
 			)
 			.handler(({ context, input }) => billingAdmin.adjustCredits({ ...input, actorUserId: context.user.id })),
+
+		setLimit: adminProcedure
+			.route({ ...route, method: "PUT", path: "/billing/admin/limits" })
+			.input(
+				z
+					.object({
+						userId: z.string().min(1).optional(),
+						email: z.email().optional(),
+						limitKey: z.enum(LIMIT_OVERRIDE_KEYS),
+						value: z.number().int().min(0),
+						expiresInDays: z.number().int().min(1).max(366).optional(),
+						reason: z.string().trim().min(3).max(500),
+					})
+					.refine((input) => (input.userId === undefined) !== (input.email === undefined), {
+						message: "Give either userId or email.",
+					})
+					.refine((input) => input.value <= LIMIT_OVERRIDE_MAX[input.limitKey], {
+						message: "That limit is higher than an override can set.",
+					}),
+			)
+			.output(limitOverride)
+			.handler(({ context, input }) => billingAdmin.setLimitOverride({ ...input, actorUserId: context.user.id })),
+
+		clearLimit: adminProcedure
+			.route({ ...route, method: "POST", path: "/billing/admin/limits/clear" })
+			.input(
+				z.object({
+					userId: z.string().min(1),
+					limitKey: z.enum(LIMIT_OVERRIDE_KEYS),
+					reason: z.string().trim().min(3).max(500),
+				}),
+			)
+			.output(limitOverride)
+			.handler(({ context, input }) => billingAdmin.clearLimitOverride({ ...input, actorUserId: context.user.id })),
 
 		revokePeriod: adminProcedure
 			.route({ ...route, method: "POST", path: "/billing/admin/periods/{periodId}/revoke" })

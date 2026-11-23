@@ -119,6 +119,16 @@ export type PlanLimits = {
 };
 
 /**
+ * Plan limits an administrator can set for one account, above or below its plan's: support giving a few more job
+ * searches, or a tester who needs many. Each replaces the plan's number while it lasts.
+ */
+export const LIMIT_OVERRIDE_KEYS = ["jobSearchesPerDay"] as const satisfies readonly (keyof PlanLimits)[];
+export type LimitOverrideKey = (typeof LIMIT_OVERRIDE_KEYS)[number];
+
+/** The highest number an override can set: well past any plan, below what would let one account drain the budget. */
+export const LIMIT_OVERRIDE_MAX: Record<LimitOverrideKey, number> = { jobSearchesPerDay: 500 };
+
+/**
  * A paid plan's price per renewal (a card subscription, in US dollars) or per pass (QRIS, in Rupiah), in each
  * currency's smallest unit. PRICES_INCLUDE_TAX says which include tax.
  */

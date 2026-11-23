@@ -171,6 +171,15 @@ function describeSubscriptionChange(details: unknown) {
 }
 
 /** An audit entry in words. Unknown actions show their code. */
+/** "Job searches set to 25 a day by an admin", from a limit.set entry's details. */
+function describeLimitSet(details: unknown): string {
+	const value =
+		details && typeof details === "object" && "value" in details && typeof details.value === "number"
+			? details.value
+			: null;
+	return value === null ? t`Job search limit set by an admin` : t`Job searches set to ${value} a day by an admin`;
+}
+
 export function describeAudit(entry: { action: string; details?: unknown }): { title: string; tone: HistoryTone } {
 	switch (entry.action) {
 		case "payment.fulfilled":
@@ -201,6 +210,10 @@ export function describeAudit(entry: { action: string; details?: unknown }): { t
 			return { title: t`Pass revoked by an admin`, tone: "danger" };
 		case "credits.adjusted":
 			return { title: t`Credits adjusted`, tone: "default" };
+		case "limit.set":
+			return { title: describeLimitSet(entry.details), tone: "default" };
+		case "limit.cleared":
+			return { title: t`Job search limit set by hand removed`, tone: "warning" };
 		default:
 			return { title: entry.action, tone: "default" };
 	}
