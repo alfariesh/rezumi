@@ -21,7 +21,7 @@ import { renderAsH1 } from "@/libs/typography";
 
 const PAGE_SIZE = 20;
 
-export type AccountPlanFilter = "all" | "free" | "plus" | "pro-ai";
+type AccountPlanFilter = "all" | "free" | "plus" | "pro-ai";
 
 const PLAN_FILTERS = (): { id: AccountPlanFilter; label: string }[] => [
 	{ id: "all", label: t`All plans` },

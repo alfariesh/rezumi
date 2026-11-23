@@ -213,7 +213,7 @@ export function StatWidget({
 	);
 }
 
-export const REPORT_PRESETS = (): { id: ReportPreset; label: string }[] => [
+const REPORT_PRESETS = (): { id: ReportPreset; label: string }[] => [
 	{ id: "7d", label: t`7 days` },
 	{ id: "30d", label: t`30 days` },
 	{ id: "90d", label: t`90 days` },
