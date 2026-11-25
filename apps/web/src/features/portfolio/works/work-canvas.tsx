@@ -23,7 +23,7 @@ export function WorkCanvas({ preview }: WorkCanvasProps) {
 	const works = usePortfolioData().works.items;
 	const open = works.find((work) => work.id === openWorkId);
 
-	if (view === "preview") return preview;
+	if (!open && view === "preview") return preview;
 	if (!open)
 		return (
 			<div className="grid size-full place-items-center p-6">
@@ -44,15 +44,21 @@ export function WorkCanvas({ preview }: WorkCanvasProps) {
 		);
 
 	return (
-		// Keyed by work: another work starts at its top.
-		<div key={open.id} className="size-full scrollbar-thin overflow-y-auto bg-surface">
-			<article
-				aria-label={t`Writing ${open.title.trim() || t`Untitled work`}`}
-				className="work-doc @container mx-auto w-full max-w-[52rem] px-6 pt-10 pb-24 sm:px-20"
-			>
-				<WorkDocument workId={open.id} />
-			</article>
-		</div>
+		<>
+			{view === "preview" && preview}
+			{/*
+			 * Keyed by work: another work starts at its top. The document stays mounted behind Preview, only hidden, so
+			 * a look at the page doesn't stop pictures still uploading or throw away the caret and the scroll position.
+			 */}
+			<div key={open.id} hidden={view === "preview"} className="size-full scrollbar-thin overflow-y-auto bg-surface">
+				<article
+					aria-label={t`Writing ${open.title.trim() || t`Untitled work`}`}
+					className="work-doc @container mx-auto w-full max-w-[52rem] px-6 pt-10 pb-24 sm:px-20"
+				>
+					<WorkDocument workId={open.id} />
+				</article>
+			</div>
+		</>
 	);
 }
 

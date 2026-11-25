@@ -51,9 +51,12 @@ type SortableProviderProps = {
 	children: ReactNode;
 };
 
+/** What every sortable drag's type starts with: a drop target of another kind can tell a reorder is passing over it. */
+export const SORTABLE_TYPE_PREFIX = "application/x-sortable-";
+
 export function SortableProvider({ onMove, renderPreview, children }: SortableProviderProps) {
 	// Drag types are lower-cased by the browser, so keep the generated one to [a-z0-9].
-	const type = `application/x-sortable-${useId()
+	const type = `${SORTABLE_TYPE_PREFIX}${useId()
 		.replaceAll(/[^a-z0-9]/gi, "")
 		.toLowerCase()}`;
 	const [dragging, setDraggingState] = useState<Dragging | null>(null);

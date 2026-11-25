@@ -236,7 +236,7 @@ type RichTextFieldProps = {
 	headingHint?: HeadingHint | undefined;
 };
 
-/** A labelled rich text field. The editor loads on first use; it starts over after undo, redo or a reload. */
+/** A labelled rich text field. The editor loads on first use; it starts over when its text is changed from outside. */
 export function RichTextField({
 	label,
 	value,
@@ -253,8 +253,24 @@ export function RichTextField({
 }: RichTextFieldProps) {
 	const revision = usePortfolioEditorStore((state) => state.revision);
 	const labelId = useId();
-	// The editor keeps its own document: text from AI starts it over, like undo does.
-	const [rewrites, setRewrites] = useState(0);
+	// The editor keeps its own document, so text put in from outside has to start it over: Undo, Redo, a reload, an AI
+	// rewrite. `own` is the text as this editor last wrote it; data swapped in (`revision`) restarts the editor only
+	// when it holds other text here. A block added elsewhere, or AI changing another section, leaves the caret, the
+	// focus and the editor's own undo steps where they are.
+	const [own, setOwn] = useState(value);
+	const [seenRevision, setSeenRevision] = useState(revision);
+	const [restarts, setRestarts] = useState(0);
+	if (seenRevision !== revision) {
+		setSeenRevision(revision);
+		if (value !== own) {
+			setOwn(value);
+			setRestarts((count) => count + 1);
+		}
+	}
+	const write = (html: string) => {
+		setOwn(html);
+		onChange(html);
+	};
 
 	return (
 		<div className={cn("grid gap-1.5", appearance === "document" && "group/text relative")}>
@@ -274,8 +290,8 @@ export function RichTextField({
 							field={rewrite}
 							value={value}
 							onResult={(html) => {
-								onChange(html);
-								setRewrites((count) => count + 1);
+								write(html);
+								setRestarts((count) => count + 1);
 							}}
 						/>
 					</span>
@@ -289,11 +305,11 @@ export function RichTextField({
 							fallback={<Skeleton className={appearance === "document" ? "h-7 rounded-lg" : "h-44 rounded-2xl"} />}
 						>
 							<LazyRichTextEditor
-								key={`${revision}-${rewrites}`}
+								key={restarts}
 								label={label}
 								labelledBy={labelId}
 								value={value}
-								onChange={onChange}
+								onChange={write}
 								maxLength={maxLength}
 								placeholder={placeholder}
 								slashItems={slashItems}

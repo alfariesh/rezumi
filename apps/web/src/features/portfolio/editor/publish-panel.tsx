@@ -17,6 +17,7 @@ import { usePortfolioPageUrl } from "../card/use-page-url";
 import { isPortfolioLive } from "../status";
 import { languageName, pageLocaleOf, usePortfolioOwner, usePortfolioSource } from "./context";
 import { PanelGroup, TextInput } from "./fields";
+import { PageCheckGroup } from "./page-check";
 import { PasswordGroup } from "./password-group";
 import { useSettingAction } from "./setting-action";
 import { editPortfolio, usePortfolioData, usePortfolioEditorStore, usePortfolioRecord } from "./store";
@@ -42,6 +43,7 @@ export function PublishPanel() {
 	return (
 		<div className="grid gap-6 p-3">
 			<PublishGroup />
+			<PageCheckGroup />
 			<PasswordGroup />
 			<DomainGroup />
 			<SearchGroup />

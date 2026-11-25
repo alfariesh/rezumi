@@ -40,8 +40,14 @@ export function WorkAddress({ work }: WorkAddressProps) {
 	const record = usePortfolioRecord();
 	const { username } = usePortfolioOwner();
 	const base = `${usePortfolioPageUrl(username)}/work/`;
-	// Undo, redo, or a new title put another address in the data: the field shows that one.
+	// Undo, redo, or a new title put another address in the data: the field shows that one. A new title isn't a swap
+	// of the data, so the address this field last showed or wrote is kept beside the draft to notice it.
 	const [text, setText] = useDraftText(work.slug);
+	const [shown, setShown] = useState(work.slug);
+	if (shown !== work.slug) {
+		setShown(work.slug);
+		setText(work.slug);
+	}
 	const [touched, setTouched] = useState(false);
 	const problem = workSlugProblem(data, work.id, text);
 	const url = `${base}${work.slug}`;
@@ -53,6 +59,7 @@ export function WorkAddress({ work }: WorkAddressProps) {
 		// Checked against the data as it is now, not as this render saw it.
 		const now = usePortfolioEditorStore.getState().portfolio?.data ?? data;
 		if (workSlugProblem(now, work.id, slug)) return;
+		setShown(slug);
 		editPortfolio(
 			(draft) => {
 				const target = draft.works.items.find((entry) => entry.id === work.id);

@@ -34,6 +34,40 @@ export function newWork(data: Pick<PortfolioData, "works">, title = ""): Portfol
 	};
 }
 
+/**
+ * A copy of a work to edit on its own, titled `title`: its own ids (work, blocks, metrics) and address, the card's
+ * metric pointing at the copy's, no old addresses and no tie to a resume project. Pictures and PDFs are the same
+ * stored files, which stay for as long as either work uses them. It starts hidden, so a half-edited twin never shows
+ * on a published page.
+ */
+export function duplicateWork(data: Pick<PortfolioData, "works">, work: PortfolioWork, title: string): PortfolioWork {
+	const metricIds = new Map<string, string>();
+	const blocks = structuredClone(work.blocks).map((block) => {
+		const id = generateId();
+		if (block.type !== "metrics") return { ...block, id };
+		const items = block.items.map((item) => {
+			const metricId = generateId();
+			metricIds.set(item.id, metricId);
+			return { ...item, id: metricId };
+		});
+		return { ...block, id, items };
+	});
+	const { fromResumeItemId: _source, highlightMetricId, ...rest } = structuredClone(work);
+	const highlight = highlightMetricId ? metricIds.get(highlightMetricId) : undefined;
+	const cut = title.slice(0, PORTFOLIO_LIMITS.text.workTitle);
+	return {
+		...rest,
+		id: generateId(),
+		slug: uniquePortfolioSlug(cut, slugsExcept(data)),
+		previousSlugs: [],
+		title: cut,
+		blocks,
+		featured: false,
+		hidden: true,
+		...(highlight && { highlightMetricId: highlight }),
+	};
+}
+
 /** Why an address typed for a work can't be used, or null when it can. */
 export function workSlugProblem(
 	data: Pick<PortfolioData, "works">,

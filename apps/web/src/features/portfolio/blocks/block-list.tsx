@@ -240,8 +240,11 @@ function useAddBlock(work: PortfolioWork, index: number, last = false) {
 			return true;
 		}
 		const place = blockPlace(work, index, last);
-		if (pictures.length) void addPictures(pictures, place);
-		else if (pdf) media.addPdfFile(pdf, inserter(place));
+		if (pictures.length) {
+			void addPictures(pictures, place);
+			// One add at a time: a PDF that came along is named, not dropped without a word.
+			if (pdf) toast.add({ type: "warning", description: t`The PDF wasn't added. Drop it on its own.` });
+		} else if (pdf) media.addPdfFile(pdf, inserter(place));
 		return true;
 	};
 
@@ -612,8 +615,12 @@ function TextBlockEditor({ work, block, index, appearance }: TextBlockEditorProp
 	return (
 		<>
 			<RichTextField
-				// One add at a time, as for "/".
-				onFiles={busy ? undefined : addFiles}
+				// One add at a time, as for "/": files that arrive meanwhile are refused aloud, not ignored.
+				onFiles={(files) => {
+					if (!busy) return addFiles(files);
+					toast.add({ type: "warning", description: t`Something is still being added. Try again when it's done.` });
+					return true;
+				}}
 				onUrl={busy ? undefined : addUrl}
 				headingHint={(heading) => hints.get(normalizeHeading(heading))}
 				hideLabel

@@ -91,8 +91,37 @@ export function renderPortfolioHtml(html: string): string {
 	return sanitizeHtml(html, pageOptions);
 }
 
-/** Every rich-text field of portfolio data, cleaned. Returns a new object; the input is unchanged. */
-export function sanitizePortfolioData(data: PortfolioData): PortfolioData {
+// Half of a character that takes two UTF-16 units (most emoji). The database refuses JSON holding one, or a NUL.
+const LONE_SURROGATE = /[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?<![\uD800-\uDBFF])[\uDC00-\uDFFF]/g;
+
+/** Text as the database can hold it: without NULs and halves of two-unit characters. Other text is returned as is. */
+export function storableText(text: string): string {
+	return text.replaceAll("\0", "").replace(LONE_SURROGATE, "");
+}
+
+/** `value` with every text in it made storable; parts without such text are returned as they are, not copied. */
+function storable<T>(value: T): T {
+	if (typeof value === "string") return storableText(value) as T;
+	if (Array.isArray(value)) {
+		const next = value.map((entry) => storable(entry));
+		return (next.some((entry, index) => entry !== value[index]) ? next : value) as T;
+	}
+	if (typeof value !== "object" || value === null || value instanceof Date) return value;
+	let changed = false;
+	const next: Record<string, unknown> = {};
+	for (const [key, entry] of Object.entries(value)) {
+		next[key] = storable(entry);
+		if (next[key] !== entry) changed = true;
+	}
+	return changed ? (next as T) : value;
+}
+
+/**
+ * Portfolio data as it is saved: every rich-text field cleaned, and every text made storable (`storableText`), so one
+ * pasted character can't make every later save fail in the database. Returns a new object; the input is unchanged.
+ */
+export function sanitizePortfolioData(input: PortfolioData): PortfolioData {
+	const data = storable(input);
 	return {
 		...data,
 		about: { ...data.about, content: sanitizePortfolioHtml(data.about.content) },

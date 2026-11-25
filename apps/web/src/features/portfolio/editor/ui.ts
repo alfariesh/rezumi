@@ -1,3 +1,4 @@
+import type { PortfolioReveal } from "./save-problem";
 import type { PortfolioImage } from "@rezumi/schema/portfolio/files";
 import type { PortfolioSectionKey } from "@rezumi/schema/portfolio/sections";
 import { create } from "zustand/react";
@@ -30,6 +31,13 @@ type PortfolioEditorUi = {
 	revealSection: (key: PortfolioSectionKey) => void;
 	/** The section was scrolled to. */
 	revealed: () => void;
+	/**
+	 * A place a panel asks the editor to open (the page check's lines). The shell owns the tabs, so it takes the request
+	 * and clears it (`takeReveal`).
+	 */
+	revealRequest: PortfolioReveal | null;
+	requestReveal: (place: PortfolioReveal) => void;
+	takeReveal: () => void;
 	/** Bumped to play the intro effect again in the preview ("Replay", or a newly chosen effect). */
 	effectReplay: number;
 	/** Goes up after every upload: the storage meter reads the usage again. */
@@ -59,6 +67,7 @@ const initialUi = {
 	workView: "edit",
 	openSectionKey: null,
 	revealing: null,
+	revealRequest: null,
 	effectReplay: 0,
 	uploads: 0,
 	keptPhoto: null,
@@ -74,6 +83,8 @@ export const usePortfolioEditorUi = create<PortfolioEditorUi>()((set) => ({
 	openSection: (openSectionKey) => set({ openSectionKey }),
 	revealSection: (key) => set({ openSectionKey: key, revealing: key }),
 	revealed: () => set({ revealing: null }),
+	requestReveal: (revealRequest) => set({ revealRequest }),
+	takeReveal: () => set({ revealRequest: null }),
 	replayEffect: () => set((state) => ({ effectReplay: state.effectReplay + 1 })),
 	noteUpload: () => set((state) => ({ uploads: state.uploads + 1 })),
 	keepPhoto: (image) => set({ keptPhoto: image ? { image, at: Date.now() } : null }),
