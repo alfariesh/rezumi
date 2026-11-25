@@ -26,6 +26,7 @@ Urutan disarankan: (a) logika editor ke paket, (b) Content, (c) Work, (d) Design
 6. **Design:** galeri tema bergambar (8 tema; gambar dari server, Inggris dan Indonesia), latar intro, pemilih efek intro dengan gambar diam, "Replay intro" di pratinjau.
 7. **AI:** menu AI pada isian teks panjang (`portfolio.ai.rewrite`), "Find numbers" (`portfolio.ai.findMetrics`), draf (`portfolio.ai.draft`), dan **asisten portofolio** dengan komponen percakapan Phase 11 (`portfolio.aiView`, `applyEdits`, `addImage`, thread `agent.*`): perubahan langsung diterapkan dengan Undo; fokus pada karya yang sedang dibuka; biaya kredit ditampilkan.
 8. Persetujuan AI per operasi berlaku untuk semua panggilan AI portofolio.
+9. **Dari web (PR #115):** segmen Publish menampilkan Page check (`@rezumi/portfolio/checkup`; tiap baris membuka tempat yang perlu diperbaiki, tidak menghalangi terbit). Daftar karya punya Duplicate (pindahkan `duplicateWork` ke paket bersama `works.ts`; salinan mulai tersembunyi).
 
 ### Tes dan verifikasi
 
