@@ -2,7 +2,7 @@ import type { PortfolioReveal } from "@/features/portfolio/editor/save-problem";
 import type { PortfolioSaveStatus } from "@/features/portfolio/editor/store";
 import type { ReactNode } from "react";
 import { Segment } from "@heroui-pro/react";
-import { Button, buttonVariants, Modal, Spinner, Tooltip } from "@heroui/react";
+import { Button, buttonVariants, Modal, Popover, Spinner, Tooltip } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useHotkey } from "@tanstack/react-hotkeys";
@@ -144,6 +144,23 @@ export function PortfolioShell() {
 			ui.setWorkView("edit");
 		} else if (section) ui.revealSection(section);
 	};
+
+	// A panel asked for a place (the page check): open it, with the panel in view on tablets as for the assistant.
+	const revealRequest = usePortfolioEditorUi((state) => state.revealRequest);
+	const openRequest = useRef<(place: PortfolioReveal) => void>(() => {});
+	useLayoutEffect(() => {
+		openRequest.current = (place) => {
+			reveal(place);
+			// A work opens on the canvas; a tablet's unpinned drawer would cover it.
+			if (place.workId && editorLayout.layout === "tablet" && !useEditorStore.getState().drawerPinned)
+				useEditorStore.setState({ drawerOpen: false });
+		};
+	});
+	useEffect(() => {
+		if (!revealRequest) return;
+		usePortfolioEditorUi.getState().takeReveal();
+		openRequest.current(revealRequest);
+	}, [revealRequest]);
 
 	// A line on the assistant's changes card opens its place. The assistant stays open beside the panel; on phones,
 	// where one sheet shows at a time, the panel's sheet takes its place, and a tablet's panel drawer opens.
@@ -415,43 +432,89 @@ function SaveStatus({ onReveal }: SaveStatusProps) {
 	const said = failure ? t`${words}. ${reason}` : words;
 	const place = status === "invalid" ? (failure?.place ?? null) : null;
 	const placeLabel = place?.label ?? "";
+	const [open, setOpen] = useState(false);
 	const action =
 		"cursor-(--cursor-interactive) rounded-sm font-semibold underline underline-offset-2 outline-none hover:opacity-80 focus-visible:ring-2 focus-visible:ring-focus";
 
+	// Something the person has to fix is said once where it can't be missed: the bar's words are small, and a phone's
+	// bar shows only the icon. What passes by itself (the connection) stays in the bar, where it retries.
+	const invalidReason = status === "invalid" ? reason : "";
+	useEffect(() => {
+		if (invalidReason) toast.add({ type: "warning", title: t`Your changes aren't saved`, description: invalidReason });
+	}, [invalidReason]);
+
+	const icon = (
+		<>
+			{status === "saving" && <Spinner size="sm" color="current" aria-hidden />}
+			{status === "saved" && <Icon name="cloud-check" size={16} />}
+			{status !== "saved" && status !== "saving" && <Icon name="cloud-warning" size={16} className="shrink-0" />}
+		</>
+	);
+	const retry = status === "error" && (
+		<button
+			type="button"
+			onClick={() => void usePortfolioEditorStore.getState().flush()}
+			aria-label={t`Retry saving`}
+			className={action}
+		>
+			<Trans>Retry</Trans>
+		</button>
+	);
+	const show = place && (
+		<button
+			type="button"
+			onClick={() => {
+				setOpen(false);
+				onReveal(place.reveal);
+			}}
+			aria-label={t`Show me: ${placeLabel}`}
+			className={action}
+		>
+			<Trans>Show me</Trans>
+		</button>
+	);
+
 	return (
 		<span
-			title={said}
+			{...(!failure && { title: said })}
 			className={cn(
 				"me-1 flex min-w-0 shrink items-center gap-1.5 text-xs whitespace-nowrap text-muted",
 				failed && "text-danger",
 			)}
 		>
-			{status === "saving" && <Spinner size="sm" color="current" aria-hidden />}
-			{status === "saved" && <Icon name="cloud-check" size={16} />}
-			{status !== "saved" && status !== "saving" && <Icon name="cloud-warning" size={16} className="shrink-0" />}
-			<span className={status === "saved" || status === "saving" ? "sr-only" : "hidden truncate sm:inline"}>
-				{words}
-			</span>
-			{status === "error" && (
-				<button
-					type="button"
-					onClick={() => void usePortfolioEditorStore.getState().flush()}
-					aria-label={t`Retry saving`}
-					className={action}
-				>
-					<Trans>Retry</Trans>
-				</button>
+			{failure ? (
+				// The reason is one press away on every screen, phones included: the icon and its words open it.
+				<Popover isOpen={open} onOpenChange={setOpen}>
+					<Popover.Trigger
+						aria-label={t`${words}. Why?`}
+						className="flex min-w-0 cursor-(--cursor-interactive) items-center gap-1.5 rounded-sm outline-none focus-visible:ring-2 focus-visible:ring-focus"
+					>
+						{icon}
+						<span className="hidden truncate underline decoration-dotted underline-offset-2 sm:inline">{words}</span>
+					</Popover.Trigger>
+					<Popover.Content placement="bottom start" className="w-80 max-w-[calc(100vw-2rem)]">
+						<Popover.Dialog aria-label={words} className="grid gap-2 p-1 text-sm whitespace-normal">
+							<span className="font-medium">{words}</span>
+							<span className="text-muted">{reason}</span>
+							{(retry || show) && (
+								<span className="flex items-center gap-3 text-xs">
+									{retry}
+									{show}
+								</span>
+							)}
+						</Popover.Dialog>
+					</Popover.Content>
+				</Popover>
+			) : (
+				<>
+					{icon}
+					<span className={status === "saved" || status === "saving" ? "sr-only" : "hidden truncate sm:inline"}>
+						{words}
+					</span>
+				</>
 			)}
-			{place && (
-				<button
-					type="button"
-					onClick={() => onReveal(place.reveal)}
-					aria-label={t`Show me: ${placeLabel}`}
-					className={action}
-				>
-					<Trans>Show me</Trans>
-				</button>
-			)}
+			{retry}
+			{show}
 			<span role="status" aria-live="polite" className="sr-only">
 				{failed && failure ? said : ""}
 			</span>
@@ -630,7 +693,7 @@ function useOpenAssistantFromUrl() {
 	}, [assistant, ask, navigate]);
 }
 
-/** Closing the tab with changes still on their way asks first. */
+/** Closing the tab with changes still on their way asks first; a page that is hidden sends them at once. */
 function useUnsavedGuard() {
 	useEffect(() => {
 		const onBeforeUnload = (event: BeforeUnloadEvent) => {
@@ -639,7 +702,20 @@ function useUnsavedGuard() {
 			void usePortfolioEditorStore.getState().flush();
 			event.preventDefault();
 		};
+		// Phones rarely fire `beforeunload`: switching apps or closing the tab only hides the page. What was typed in the
+		// last moment is sent then, instead of waiting for a pause in typing that may never come.
+		const onHidden = () => {
+			if (document.visibilityState !== "hidden") return;
+			const { status, dirty } = usePortfolioEditorStore.getState();
+			if (dirty && status === "saving") void usePortfolioEditorStore.getState().flush();
+		};
 		window.addEventListener("beforeunload", onBeforeUnload);
-		return () => window.removeEventListener("beforeunload", onBeforeUnload);
+		document.addEventListener("visibilitychange", onHidden);
+		window.addEventListener("pagehide", onHidden);
+		return () => {
+			window.removeEventListener("beforeunload", onBeforeUnload);
+			document.removeEventListener("visibilitychange", onHidden);
+			window.removeEventListener("pagehide", onHidden);
+		};
 	}, []);
 }

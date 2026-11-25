@@ -8,6 +8,7 @@ import { mergeProps } from "react-aria";
 import { PORTFOLIO_LIMITS } from "@rezumi/schema/portfolio/limits";
 import { Icon } from "@rezumi/ui/components/icon";
 import { IconButton } from "@rezumi/ui/components/icon-button";
+import { toast } from "@rezumi/ui/components/toast";
 import { useBreakpoint } from "@rezumi/ui/hooks/use-breakpoint";
 import { cn } from "@rezumi/utils/style";
 import { useRemovalFocus } from "../blocks/list-focus";
@@ -19,7 +20,7 @@ import { AddWorkDialog } from "./add-work/add-work-dialog";
 import { usePortfolioLimits } from "./limits";
 import { StorageMeter } from "./storage-meter";
 import { WorkDocument } from "./work-document";
-import { workRoom } from "./works";
+import { duplicateWork, workRoom } from "./works";
 import { SortableEdge, SortableHandle, SortableProvider, useSortableItem } from "@/components/input/sortable";
 import { usePlan } from "@/features/billing/plan";
 import { openPlanDialog } from "@/features/billing/plan-dialog";
@@ -112,6 +113,30 @@ function WorksList() {
 		);
 	};
 
+	const duplicate = (id: string, title: string) => {
+		if (full) {
+			if (planFull) openPlanDialog({ kind: "limit", limit: "portfolioWorks", max: limits.works, used: items.length });
+			else toast.add({ type: "warning", description: t`Your portfolio is full. Delete a work to copy this one.` });
+			return;
+		}
+		// Built from the data as it is now, outside the edit: a draft being edited can't be copied whole.
+		const now = usePortfolioEditorStore.getState().portfolio?.data;
+		const source = now?.works.items.find((work) => work.id === id);
+		if (!now || !source) return;
+		// An untitled work's copy stays untitled: "Untitled work" is the list's word for it, not its title.
+		const copy = duplicateWork(now, source, source.title.trim() ? t`${title} (copy)` : "");
+		const copyId = copy.id;
+		editPortfolio(
+			(draft) => {
+				const index = draft.works.items.findIndex((work) => work.id === id);
+				draft.works.items.splice(index + 1, 0, copy);
+			},
+			{ structural: true },
+		);
+		openOnCanvas(copyId);
+		toast.add({ description: t`Copied. The copy is hidden from your page until you show it.` });
+	};
+
 	return (
 		<>
 			{/* Where focus goes once the last work is deleted: Add work. */}
@@ -182,6 +207,13 @@ function WorksList() {
 											if (target) target.hidden = !target.hidden;
 										})
 									}
+								/>
+								<IconButton
+									icon="copy"
+									size="sm"
+									label={t`Duplicate ${title}`}
+									className="text-muted"
+									onPress={() => duplicate(work.id, title)}
 								/>
 								<IconButton
 									icon="trash"

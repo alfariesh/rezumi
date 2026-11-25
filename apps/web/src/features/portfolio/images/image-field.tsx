@@ -12,6 +12,7 @@ import { isFileDropItem } from "react-aria-components";
 import { PORTFOLIO_LIMITS } from "@rezumi/schema/portfolio/limits";
 import { Icon } from "@rezumi/ui/components/icon";
 import { IconButton } from "@rezumi/ui/components/icon-button";
+import { toast } from "@rezumi/ui/components/toast";
 import { cn } from "@rezumi/utils/style";
 import { pictureFiles } from "./compress";
 import { discardUploadedImages, MAX_BATCH_PICTURES, uploadImageBatch } from "./upload";
@@ -191,7 +192,18 @@ export function useImageUploads() {
 	const running = useRef<AbortController | null>(null);
 	const busy = progress !== null && progress.done < progress.total;
 
-	useEffect(() => () => running.current?.abort(), []);
+	useEffect(
+		() => () => {
+			if (!running.current) return;
+			running.current.abort();
+			// Stopped by leaving (another work, another tab), not by Cancel: said aloud, or the pictures just never appear.
+			toast.add({
+				type: "warning",
+				description: t`The upload stopped because you moved away before it finished. Add the pictures again.`,
+			});
+		},
+		[],
+	);
 
 	/** The pictures that made it, with the names of their files. */
 	const uploadNamed = async (files: readonly File[], options: UploadOptions = {}): Promise<UploadedImage[]> => {

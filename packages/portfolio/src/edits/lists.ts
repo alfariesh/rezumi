@@ -100,11 +100,17 @@ export function positionIndex(
 	at: PortfolioEditPosition | undefined,
 	target: ListTarget,
 	movingId?: string,
+	/**
+	 * Replaying a resolved edit (an Undo): its neighbour may have been removed since it was recorded. The item then
+	 * goes to the end instead of the whole Undo failing and leaving the item lost.
+	 */
+	lenient = false,
 ): number {
 	if (at === undefined || at === "last") return items.length;
 	if (at === "first") return 0;
 	const anchor = "before" in at ? at.before : at.after;
 	if (anchor === movingId) return refuse("An item can't be placed before or after itself.");
+	if (lenient && !items.some((item) => item.id === anchor)) return items.length;
 	const index = indexOf(items, anchor, target);
 	return "before" in at ? index : index + 1;
 }

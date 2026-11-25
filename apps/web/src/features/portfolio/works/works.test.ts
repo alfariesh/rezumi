@@ -6,6 +6,7 @@ import { PORTFOLIO_LIMITS } from "@rezumi/schema/portfolio/limits";
 import {
 	changeWorkSlug,
 	cleanSlugHistory,
+	duplicateWork,
 	newWork,
 	retitleWork,
 	titleFromFileName,
@@ -152,5 +153,69 @@ describe("work page addresses", () => {
 		expect(workSlugProblem(data, id, "kopi--senja")).toBe("pattern");
 		expect(workSlugProblem(data, id, "")).toBe("pattern");
 		expect(workSlugProblem(data, id, "a".repeat(65))).toBe("pattern");
+	});
+});
+
+describe("duplicateWork", () => {
+	const data = parseWritablePortfolioData({
+		works: {
+			items: [
+				{
+					id: "w1",
+					slug: "kopi-senja",
+					previousSlugs: ["kopi"],
+					title: "Kopi Senja",
+					summary: "Ordering, redone.",
+					featured: true,
+					fromResumeItemId: "p1",
+					highlightMetricId: "m2",
+					cover: picture("cover").image,
+					blocks: [
+						{ id: "b1", type: "text", html: "<p>Story</p>" },
+						{
+							id: "b2",
+							type: "metrics",
+							items: [
+								{ id: "m1", label: "Orders", value: { kind: "number", number: 10 } },
+								{ id: "m2", label: "Rating", value: { kind: "number", number: 4 } },
+							],
+						},
+					],
+				},
+			],
+		},
+	});
+	const original = data.works.items[0];
+	if (!original) throw new Error("The fixture has a work.");
+
+	it("copies the content under new ids and its own address", () => {
+		const copy = duplicateWork(data, original, "Kopi Senja (copy)");
+		expect(copy.title).toBe("Kopi Senja (copy)");
+		expect(copy.slug).toBe("kopi-senja-copy");
+		expect(copy.summary).toBe(original.summary);
+		expect(copy.cover).toEqual(original.cover);
+		expect(copy.id).not.toBe(original.id);
+		expect(copy.blocks.map((block) => block.type)).toEqual(["text", "metrics"]);
+		const ids = (work: typeof original) =>
+			work.blocks.flatMap((block) => [block.id, ...(block.type === "metrics" ? block.items.map(({ id }) => id) : [])]);
+		expect(ids(copy).some((id) => ids(original).includes(id))).toBe(false);
+	});
+
+	it("starts hidden, unfeatured, with no history, and keeps the card's metric on its own copy", () => {
+		const copy = duplicateWork(data, original, "Kopi Senja (copy)");
+		expect(copy).toMatchObject({ hidden: true, featured: false, previousSlugs: [] });
+		expect(copy.fromResumeItemId).toBeUndefined();
+		const metrics = copy.blocks.flatMap((block) => (block.type === "metrics" ? block.items : []));
+		expect(copy.highlightMetricId).toBe(metrics[1]?.id);
+		expect(copy.highlightMetricId).not.toBe("m2");
+	});
+
+	it("leaves the original alone and passes the save's rules next to it", () => {
+		const copy = duplicateWork(data, original, "Kopi Senja (copy)");
+		const next = produce(data, (draft) => {
+			draft.works.items.splice(1, 0, copy);
+		});
+		expect(next.works.items[0]).toBe(original);
+		expect(() => parseWritablePortfolioData(next)).not.toThrow();
 	});
 });

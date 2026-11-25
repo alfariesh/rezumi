@@ -7,8 +7,10 @@ import { generateJSON } from "@tiptap/core";
 import StarterKit from "@tiptap/starter-kit";
 import { useLayoutEffect, useRef, useState } from "react";
 import { Icon } from "@rezumi/ui/components/icon";
+import { toast } from "@rezumi/ui/components/toast";
 import { headingHints } from "./heading-hints";
 import { pasteIntent } from "./paste";
+import { SORTABLE_TYPE_PREFIX } from "@/components/input/sortable";
 
 const ICON = 18;
 
@@ -117,11 +119,23 @@ export default function PortfolioRichTextEditor({
 						return true;
 					},
 					handleDrop: (_view, event, _slice, moved) => {
-						const files = [...(event.dataTransfer?.files ?? [])];
+						const transfer = event.dataTransfer;
+						// A block or card being reordered passes over the text: the list takes the drop. Its drag also
+						// carries its name as plain text, which must not be typed in here.
+						if ([...(transfer?.types ?? [])].some((type) => type.startsWith(SORTABLE_TYPE_PREFIX))) return true;
+						const files = [...(transfer?.files ?? [])];
 						if (moved || !files.length) return false;
+						// Files never fall through: the browser would leave the editor to open them.
+						event.preventDefault();
 						const taken = handlers.current.onFiles?.(files) ?? false;
-						if (taken) event.preventDefault();
-						return taken;
+						if (!taken)
+							toast.add({
+								type: "warning",
+								description: handlers.current.onFiles
+									? t`Only pictures and PDFs can be dropped here.`
+									: t`Files can't be dropped into this text.`,
+							});
+						return true;
 					},
 				},
 			}}

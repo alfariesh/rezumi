@@ -27,7 +27,7 @@ import {
 	setSectionHidden,
 	setSectionTitle,
 } from "./sections";
-import { editPortfolio, usePortfolioData } from "./store";
+import { editPortfolio, usePortfolioData, usePortfolioEditorStore } from "./store";
 import { usePortfolioEditorUi } from "./ui";
 import { useEditorView, usePageMessages } from "./use-view";
 import { SortableEdge, SortableHandle, SortableProvider, useSortableItem } from "@/components/input/sortable";
@@ -181,6 +181,9 @@ function SectionRow({ sectionKey, index, title, hidden, empty, open, onOpenChang
 			confirmText: t`Rename`,
 		});
 		if (value === null) return;
+		// Confirmed as it was: a default title stays the default, so it keeps following the page's language.
+		const custom = usePortfolioEditorStore.getState().portfolio?.data.sections.titles[sectionKey];
+		if (!custom && value.trim() === title.trim()) return;
 		const most = PORTFOLIO_LIMITS.text.sectionTitle;
 		if (value.trim().length > most)
 			toast.add({

@@ -305,7 +305,7 @@ function applyAdd(
 	if (items.some((entry) => entry.id === item.id)) refuse(`${edit.list} already has an item with the id "${item.id}".`);
 	if (state.strict && (edit.list === "metrics" || edit.list === "highlights")) finishMetric(item, `The new ${noun}`);
 	const at = edit.at === undefined ? undefined : resolvePosition(edit.at, env);
-	items.splice(positionIndex(items, at, target), 0, item);
+	items.splice(positionIndex(items, at, target, undefined, !state.strict), 0, item);
 	if (edit.list === "custom") showCustomSection(next, item.id);
 	if (edit.ref !== undefined) pending.set(edit.ref, item.id);
 
@@ -444,7 +444,7 @@ function applyMove(
 	const [item] = items.splice(index, 1) as [EditItem];
 	const back = placeAt(items, index);
 	const to = resolvePosition(edit.to, env);
-	items.splice(positionIndex(items, to, target, id), 0, item);
+	items.splice(positionIndex(items, to, target, id, !state.strict), 0, item);
 
 	const data = validate(next, current);
 	checkPlan(state, data, null);

@@ -885,3 +885,18 @@ describe("portfolioEditItemName", () => {
 		expect(name({ op: "set", path: "theme", value: "prima" })).toBeNull();
 	});
 });
+
+describe("undo after the data moved on", () => {
+	it("puts a removed work back at the end when the work it sat after is gone", () => {
+		const data = stored();
+		const [first, second] = data.works.items;
+		if (!first || !second) throw new Error("The fixture needs two works.");
+		const removed = strict(data, [{ op: "remove", list: "works", id: second.id }]);
+		expect(removed.failed).toEqual([]);
+		// Its neighbour is deleted before the removal is undone.
+		const later = strict(removed.data, [{ op: "remove", list: "works", id: first.id }]);
+		const undone = applyPortfolioEdits(later.data, removed.applied[0]?.inverse ?? [], { mode: "replay" });
+		expect(undone.failed).toEqual([]);
+		expect(undone.data.works.items.at(-1)?.id).toBe(second.id);
+	});
+});

@@ -97,4 +97,21 @@ describe("sanitizePortfolioData", () => {
 		expect(clean.custom[0]?.content).toBe("<p>Ok</p>");
 		expect(data.about.content).toBe(dirty);
 	});
+
+	it("drops characters the database can't hold from every text, and keeps whole emoji", () => {
+		const data = parseWritablePortfolioData({
+			hero: { greeting: "Hi\u0000 there \uD83D" },
+			works: { items: [{ id: "w", slug: "w", title: "Kopi \uDE00Senja \uD83D\uDE00", tags: ["a\u0000b"] }] },
+		});
+		const clean = sanitizePortfolioData(data);
+		expect(clean.hero.greeting).toBe("Hi there ");
+		expect(clean.works.items[0]?.title).toBe("Kopi Senja \uD83D\uDE00");
+		expect(clean.works.items[0]?.tags).toEqual(["ab"]);
+		expect(JSON.stringify(clean)).not.toMatch(/\\u0000|\\ud83d(?!\\ude00)/i);
+	});
+
+	it("returns clean parts as they are", () => {
+		const data = parseWritablePortfolioData({ works: { items: [{ id: "w", slug: "w", title: "Fine" }] } });
+		expect(sanitizePortfolioData(data).works.items[0]?.tags).toBe(data.works.items[0]?.tags);
+	});
 });
