@@ -66,7 +66,6 @@ type InputBoxProps = Omit<TextFieldProps, "label" | "helper"> & {
 	accessibilityLabel: string;
 	hint?: string | undefined;
 	multiline?: boolean | undefined;
-	minHeight?: number | undefined;
 };
 
 /** The bordered box: 1 pt `lineStrong`, 2 pt `accent` while focused, 2 pt `dangerText` with an error. */
@@ -78,7 +77,6 @@ function InputBox({
 	prefix,
 	mono,
 	multiline,
-	minHeight,
 	onFocus,
 	onBlur,
 	...input
@@ -96,7 +94,7 @@ function InputBox({
 				flexDirection: "row",
 				alignItems: multiline ? "flex-start" : "center",
 				gap: space.s2,
-				minHeight: minHeight ?? size.input,
+				minHeight: size.input,
 				// The thicker focus border eats into the padding, so the text does not move.
 				paddingHorizontal: space.s3 - (border - 1),
 				paddingVertical: multiline ? space.s3 - (border - 1) : 0,
@@ -152,28 +150,6 @@ export function TextField({ label, helper, error, ...input }: TextFieldProps) {
 				accessibilityLabel={input.accessibilityLabel ?? label}
 				hint={error ?? helper}
 				error={error}
-			/>
-		</Field>
-	);
-}
-
-export type TextAreaProps = Omit<TextFieldProps, "multiline" | "trailing" | "prefix"> & {
-	/** Visible lines before the field scrolls. Defaults to 4. */
-	minLines?: number | undefined;
-};
-
-export function TextArea({ label, helper, error, minLines = 4, ...input }: TextAreaProps) {
-	const { space, type } = useTheme();
-
-	return (
-		<Field label={label} helper={helper} error={error}>
-			<InputBox
-				{...input}
-				accessibilityLabel={input.accessibilityLabel ?? label}
-				hint={error ?? helper}
-				error={error}
-				multiline
-				minHeight={type.bodyLarge.lineHeight * minLines + space.s3 * 2}
 			/>
 		</Field>
 	);

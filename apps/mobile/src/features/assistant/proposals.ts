@@ -4,7 +4,8 @@ import type { Proposal } from "@rezumi/resume/proposals";
 import type { ResumeData } from "@rezumi/schema/resume/data";
 import { useMemo } from "react";
 import { create } from "zustand";
-import { applyProposal, markProposals, pendingProposals } from "@rezumi/resume/proposals";
+import { markProposals, pendingProposals } from "@rezumi/resume/proposal-preview";
+import { applyProposal } from "@rezumi/resume/proposals";
 import { getAccountScope } from "@/auth/session";
 import { useResumeStore } from "@/draft";
 

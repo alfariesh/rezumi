@@ -4,7 +4,7 @@ import { applyProposal } from "@rezumi/resume/proposals";
 import { toast } from "@rezumi/ui/components/toast";
 import { useResumeStore } from "@/features/resume/builder/draft";
 
-export { markChange, markProposals, pendingProposals } from "@rezumi/resume/proposals";
+export { markChange, markProposals, pendingProposals } from "@rezumi/resume/proposal-preview";
 
 /** Applies proposals to the resume as one undo step; the toast's Undo takes them back, and they show as pending again. */
 export function acceptResumeProposals(proposals: readonly Proposal[]) {
