@@ -353,6 +353,7 @@ function IntroGroup() {
 			{data.hero.background.kind === "image" && (
 				<ImageField
 					label={t`Background picture`}
+					uploadKey="hero.background.image"
 					value={data.hero.background.image}
 					altSuggestion=""
 					onChange={(image, typing) =>

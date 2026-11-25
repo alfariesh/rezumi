@@ -3,10 +3,11 @@ import type { StepProps } from "./parts";
 import { Button, Modal } from "@heroui/react";
 import { plural, t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { PORTFOLIO_LIMITS } from "@rezumi/schema/portfolio/limits";
 import { ChoiceSelect, TextInput } from "../../editor/fields";
 import { editPortfolio, usePortfolioData, usePortfolioEditorStore } from "../../editor/store";
+import { cancelPortfolioTask } from "../../editor/tasks";
 import { usePortfolioEditorUi } from "../../editor/ui";
 import { ImageDrop, portfolioImageSrc, UploadStatus, useImageUploads } from "../../images/image-field";
 import { discardUnplacedImages } from "../../images/upload";
@@ -16,6 +17,9 @@ import { BackButton, useReportBusy } from "./parts";
 import { usePlan } from "@/features/billing/plan";
 import { openPlanDialog } from "@/features/billing/plan-dialog";
 
+/** The dialog's upload: it belongs to the dialog, unlike uploads for a place in the portfolio. */
+const UPLOAD_KEY = "add-work.pictures";
+
 /**
  * Pictures as works: uploaded one by one (shrunk in the browser), then one work for all, or one per picture. Closing
  * the dialog or going back cancels the upload: no work is added after that, and pictures already up are deleted.
@@ -24,7 +28,8 @@ export function FromPictures({ onBack, onClose, onBusy }: StepProps) {
 	const data = usePortfolioData();
 	const limits = usePortfolioLimits();
 	const openWork = usePortfolioEditorUi((state) => state.openWork);
-	const uploads = useImageUploads();
+	const uploads = useImageUploads(UPLOAD_KEY);
+	useEffect(() => () => cancelPortfolioTask(UPLOAD_KEY), []);
 	const [mode, setMode] = useState<"one" | "each">("one");
 	const [title, setTitle] = useState("");
 	const [done, setDone] = useState<UploadedImage[]>([]);

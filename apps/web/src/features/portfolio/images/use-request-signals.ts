@@ -1,9 +1,10 @@
 import { useEffect, useRef } from "react";
 
 /**
- * Abort signals for a component's requests (uploads, links being read): `next(name)` cancels the request running under
- * that name and gives the next one its signal, and every request is cancelled when the component goes away (a dialog
- * closed, a block removed), so nothing it started changes the portfolio afterwards. `cancel(name)` stops one early.
+ * Abort signals for requests whose answer belongs to the component (a dialog, a menu waiting for the AI):
+ * `next(name)` cancels the request running under that name and gives the next one its signal, and every request is
+ * cancelled when the component goes away (a dialog closed), so nothing it started acts afterwards. `cancel(name)` stops
+ * one early. Work for a place in the portfolio that should finish anyway (uploads) uses `runPortfolioTask` instead.
  */
 export function useRequestSignals() {
 	const controllers = useRef(new Map<string, AbortController>());

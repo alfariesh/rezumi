@@ -27,6 +27,7 @@ Urutan disarankan: (a) logika editor ke paket, (b) Content, (c) Work, (d) Design
 7. **AI:** menu AI pada isian teks panjang (`portfolio.ai.rewrite`), "Find numbers" (`portfolio.ai.findMetrics`), draf (`portfolio.ai.draft`), dan **asisten portofolio** dengan komponen percakapan Phase 11 (`portfolio.aiView`, `applyEdits`, `addImage`, thread `agent.*`): perubahan langsung diterapkan dengan Undo; fokus pada karya yang sedang dibuka; biaya kredit ditampilkan.
 8. Persetujuan AI per operasi berlaku untuk semua panggilan AI portofolio.
 9. **Dari web (PR #115):** segmen Publish menampilkan Page check (`@rezumi/portfolio/checkup`; tiap baris membuka tempat yang perlu diperbaiki, tidak menghalangi terbit). Daftar karya punya Duplicate (pindahkan `duplicateWork` ke paket bersama `works.ts`; salinan mulai tersembunyi).
+10. **Dari web (unggahan di latar belakang):** unggahan dan pembacaan tautan untuk satu tempat di portofolio (gambar blok, sampul, PDF, gambar video/embed/tautan) berjalan sebagai tugas latar per tempat (web: `apps/web/src/features/portfolio/editor/tasks.ts`). Pindah karya atau segmen tidak menghentikannya; hasilnya masuk lewat id, tempat itu menampilkan progresnya lagi saat dibuka, galat untuk tempat yang tak terlihat jadi toast, bar menampilkan "Uploading…", dan keluar editor bertanya dulu. App meniru perilaku ini (store tugas di luar layar, dibatalkan saat editor menutup portofolio).
 
 ### Tes dan verifikasi
 

@@ -7,15 +7,21 @@ import { DropZone, useDropZonePickerContext } from "@heroui-pro/react";
 import { Alert, Button, FieldError, Input, Label, ProgressBar, TextField } from "@heroui/react";
 import { plural, t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { isFileDropItem } from "react-aria-components";
 import { PORTFOLIO_LIMITS } from "@rezumi/schema/portfolio/limits";
 import { Icon } from "@rezumi/ui/components/icon";
 import { IconButton } from "@rezumi/ui/components/icon-button";
-import { toast } from "@rezumi/ui/components/toast";
 import { cn } from "@rezumi/utils/style";
+import {
+	addPortfolioTaskError,
+	cancelPortfolioTask,
+	clearPortfolioTaskErrors,
+	runPortfolioTask,
+	usePortfolioTask,
+} from "../editor/tasks";
 import { pictureFiles } from "./compress";
-import { discardUploadedImages, MAX_BATCH_PICTURES, uploadImageBatch } from "./upload";
+import { discardUnplacedImages, discardUploadedImages, MAX_BATCH_PICTURES, uploadImageBatch } from "./upload";
 import { INPUT_WITH_ICON, WithInputIcon } from "@/components/input/input-icon";
 
 /** A stored picture's address in the editor (the upload route serves `uploads/...` at the app's origin). */
@@ -181,51 +187,32 @@ type UploadOptions = {
 };
 
 /**
- * Uploads pictures one at a time with progress, keeping the reasons any of them failed for `UploadStatus`. Resolves
- * with the pictures that made it. The batch is cancelled when the component goes away (a dialog closed, an item
- * removed) or on `cancel()`: it then resolves with none, so nothing is added to the portfolio afterwards, and the
- * pictures already uploaded are deleted.
+ * Uploads pictures one at a time with progress, as the background task for a place in the portfolio (`key`, see
+ * `runPortfolioTask`): it carries on when the component goes away (another work, another part of the editor), and the
+ * component shows its progress and messages again when it's back. Resolves with the pictures that made it; the caller
+ * then puts them in the data by ids, not through the component. A cancelled batch (`cancel()`, the next batch for the
+ * place, the editor closing) resolves with none, and the pictures already uploaded are deleted.
  */
-export function useImageUploads() {
-	const [progress, setProgress] = useState<UploadProgress | null>(null);
-	const [errors, setErrors] = useState<string[]>([]);
-	const running = useRef<AbortController | null>(null);
-	const busy = progress !== null && progress.done < progress.total;
-
-	useEffect(
-		() => () => {
-			if (!running.current) return;
-			running.current.abort();
-			// Stopped by leaving (another work, another tab), not by Cancel: said aloud, or the pictures just never appear.
-			toast.add({
-				type: "warning",
-				description: t`The upload stopped because you moved away before it finished. Add the pictures again.`,
-			});
-		},
-		[],
-	);
+export function useImageUploads(key: string) {
+	const task = usePortfolioTask(key);
 
 	/** The pictures that made it, with the names of their files. */
 	const uploadNamed = async (files: readonly File[], options: UploadOptions = {}): Promise<UploadedImage[]> => {
-		running.current?.abort();
-		const controller = new AbortController();
-		running.current = controller;
-		setErrors([]);
-		setProgress({ done: 0, total: Math.min(files.length, MAX_BATCH_PICTURES), current: null });
-		try {
-			const outcome = await uploadImageBatch(files, { ...options, signal: controller.signal, onProgress: setProgress });
-			if (controller.signal.aborted) {
+		const uploaded = await runPortfolioTask(key, async (controls) => {
+			controls.progress({ done: 0, total: Math.min(files.length, MAX_BATCH_PICTURES), current: null });
+			const outcome = await uploadImageBatch(files, {
+				...options,
+				signal: controls.signal,
+				onProgress: controls.progress,
+			});
+			if (controls.signal.aborted) {
 				void discardUploadedImages(outcome.uploaded.map((entry) => entry.image));
 				return [];
 			}
-			setErrors(outcome.errors);
+			for (const error of outcome.errors) controls.fail(error);
 			return outcome.uploaded;
-		} finally {
-			if (running.current === controller) {
-				running.current = null;
-				setProgress(null);
-			}
-		}
+		});
+		return uploaded ?? [];
 	};
 
 	const upload = async (files: readonly File[], options: UploadOptions = {}) =>
@@ -234,13 +221,13 @@ export function useImageUploads() {
 	return {
 		upload,
 		uploadNamed,
-		busy,
-		progress,
-		errors,
-		clearErrors: () => setErrors([]),
+		busy: task.running,
+		progress: task.progress,
+		errors: task.errors,
+		clearErrors: () => clearPortfolioTaskErrors(key),
 		/** Adds a message of the caller's own (pictures it left out) to the batch's. */
-		addError: (message: string) => setErrors((previous) => [...previous, message]),
-		cancel: () => running.current?.abort(),
+		addError: (message: string) => addPortfolioTaskError(key, message),
+		cancel: () => cancelPortfolioTask(key),
 	};
 }
 
@@ -380,6 +367,11 @@ function FocusPicker({ image, focus, onChange }: FocusPickerProps) {
 
 type ImageFieldProps = {
 	label: string;
+	/**
+	 * The place the picture goes, unique in the portfolio (`works.<id>.cover`): its upload carries on when the field
+	 * goes away, and the field shows it again when it's back.
+	 */
+	uploadKey: string;
 	value: PortfolioImage | undefined;
 	/**
 	 * A new picture, none, or the same one described differently. `typing` is true for the description: give that edit
@@ -397,10 +389,12 @@ type ImageFieldProps = {
 
 /**
  * One picture: drop or choose it, then describe it. Replacing or removing keeps the old file until the portfolio no
- * longer uses it; the server deletes unused files a day later, so Undo can still bring it back.
+ * longer uses it; the server deletes unused files a day later, so Undo can still bring it back. `onChange` must edit
+ * the data by ids (not through state of the component around it): an upload may finish after the field is gone.
  */
 export function ImageField({
 	label,
+	uploadKey,
 	value,
 	onChange,
 	kind = "photo",
@@ -408,11 +402,15 @@ export function ImageField({
 	focus,
 	children,
 }: ImageFieldProps) {
-	const uploads = useImageUploads();
+	const uploads = useImageUploads(uploadKey);
 
+	// `onChange` edits the data by ids, so it still lands after the field went away; where the place is gone by then
+	// (its item deleted), the picture isn't kept.
 	const choose = async (files: File[]) => {
 		const [image] = await uploads.upload(files.slice(0, 1), { kind, alt: () => altSuggestion });
-		if (image) onChange(image, false);
+		if (!image) return;
+		onChange(image, false);
+		discardUnplacedImages([image]);
 	};
 
 	return (

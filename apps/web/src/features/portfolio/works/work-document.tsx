@@ -176,6 +176,7 @@ function Cover({ work, update }: PartProps) {
 		<div className="grid gap-2">
 			<ImageField
 				label={t`Cover picture`}
+				uploadKey={`works.${work.id}.cover`}
 				value={cover}
 				altSuggestion={work.title.trim()}
 				onChange={(image, typing) =>

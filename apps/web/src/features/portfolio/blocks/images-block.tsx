@@ -34,7 +34,7 @@ type ImagesBlockEditorProps = {
 
 /** A Pictures block: 1 to 12 pictures, each described and with an optional caption, laid out one of three ways. */
 export function ImagesBlockEditor({ work, block, edit, onRemove }: ImagesBlockEditorProps) {
-	const uploads = useImageUploads();
+	const uploads = useImageUploads(`works.${work.id}.blocks.${block.id}.images`);
 	const { itemProps, fallbackRef, removed } = useRemovalFocus();
 	const images = block.images;
 	const most = PORTFOLIO_LIMITS.imagesPerBlock;

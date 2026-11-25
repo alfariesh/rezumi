@@ -1,21 +1,20 @@
 import type { PortfolioBlockOf } from "@rezumi/schema/portfolio/blocks";
 import type { PortfolioWork } from "@rezumi/schema/portfolio/data";
 import type { Draft } from "immer";
-import { Button, Spinner } from "@heroui/react";
+import { Button } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
-import { useEffect, useRef, useState } from "react";
 import { PORTFOLIO_LIMITS } from "@rezumi/schema/portfolio/limits";
 import { parseVideoUrl, youtubeThumbnailUrl } from "@rezumi/schema/portfolio/video";
 import { Icon } from "@rezumi/ui/components/icon";
 import { TextInput } from "../editor/fields";
+import { runPortfolioTask, usePortfolioTask } from "../editor/tasks";
 import { portfolioImageSrc } from "../images/image-field";
-import { discardUploadedImages, isAbort } from "../images/upload";
-import { useRequestSignals } from "../images/use-request-signals";
+import { discardUploadedImages } from "../images/upload";
 import { samePlayedVideo, stillPlays, videoAddress } from "../media/link-blocks";
 import { importVideoThumbnail, remotePictureErrorMessage, videoBlockFromUrl } from "../media/remote";
 import { useDraftText } from "../metrics/use-draft-text";
-import { currentBlock, ErrorNote } from "./add-media-block";
+import { currentBlock, TaskStatus } from "./add-media-block";
 import { openPlanDialogForError } from "@/features/billing/plan-dialog";
 
 const { text: max } = PORTFOLIO_LIMITS;
@@ -33,17 +32,14 @@ type VideoBlockEditorProps = { work: PortfolioWork; block: PortfolioBlockOf<"vid
 /**
  * A video: its thumbnail (copied into the portfolio), the link it plays, and an optional title. A new link plays at
  * once; its title and thumbnail are fetched after a pause in typing, the latest link only, and are kept only while the
- * block still plays that video.
+ * block still plays that video. Fetching and copying run in the background (`runPortfolioTask`), so they still land
+ * when the work is closed meanwhile.
  */
 export function VideoBlockEditor({ work, block, edit }: VideoBlockEditorProps) {
 	const [text, setText] = useDraftText(videoAddress(block));
-	const [copying, setCopying] = useState(false);
-	// Why "Copy the thumbnail" didn't work, when the person pressed it.
-	const [copyError, setCopyError] = useState<string | null>(null);
-	const requests = useRequestSignals();
-	const timer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
-	useEffect(() => () => clearTimeout(timer.current), []);
 	const key = `works.${work.id}.blocks.${block.id}.video`;
+	const taskKey = `works.${work.id}.blocks.${block.id}.details`;
+	const task = usePortfolioTask(taskKey);
 	const parsed = parseVideoUrl(text);
 	const thumbnail = block.thumbnail
 		? portfolioImageSrc(block.thumbnail)
@@ -66,43 +62,35 @@ export function VideoBlockEditor({ work, block, edit }: VideoBlockEditorProps) {
 		});
 	};
 
-	const copyNow = async () => {
-		const signal = requests.next("details");
-		setCopying(true);
-		setCopyError(null);
-		try {
+	// Says why "Copy the thumbnail" didn't work, when the person pressed it.
+	const copyNow = () =>
+		runPortfolioTask(taskKey, async ({ signal, say, fail }) => {
+			say(t`Copying the thumbnail into your portfolio…`);
 			await copyThumbnail(block, signal, (failure) => {
 				openPlanDialogForError(failure);
-				setCopyError(remotePictureErrorMessage(failure));
+				fail(remotePictureErrorMessage(failure));
 			});
-		} catch (error) {
-			if (!isAbort(error, signal)) throw error;
-		} finally {
-			if (!signal.aborted) setCopying(false);
-		}
-	};
+		});
 
 	/** The title and thumbnail of the video `url` names, once typing paused. */
-	const fetchDetails = async (url: string) => {
-		const signal = requests.next("details");
-		setCopying(true);
-		try {
-			const fresh = await videoBlockFromUrl(url, signal);
-			if (!fresh || !stillPlays(currentBlock(work.id, block.id), fresh)) return;
-			edit(
-				(draft) => {
-					if (fresh.thumbnailUrl) draft.thumbnailUrl = fresh.thumbnailUrl;
-					if (!draft.title?.trim() && fresh.title) draft.title = fresh.title;
-				},
-				{ key },
-			);
-			await copyThumbnail({ ...fresh, id: block.id }, signal);
-		} catch (error) {
-			if (!isAbort(error, signal)) throw error;
-		} finally {
-			if (!signal.aborted) setCopying(false);
-		}
-	};
+	const fetchDetails = (url: string) =>
+		runPortfolioTask(
+			taskKey,
+			async ({ signal, say }) => {
+				say(t`Copying the thumbnail into your portfolio…`);
+				const fresh = await videoBlockFromUrl(url, signal);
+				if (!fresh || !stillPlays(currentBlock(work.id, block.id), fresh)) return;
+				edit(
+					(draft) => {
+						if (fresh.thumbnailUrl) draft.thumbnailUrl = fresh.thumbnailUrl;
+						if (!draft.title?.trim() && fresh.title) draft.title = fresh.title;
+					},
+					{ key },
+				);
+				await copyThumbnail({ ...fresh, id: block.id }, signal);
+			},
+			{ delayMs: DETAILS_DELAY_MS },
+		);
 
 	const changeVideo = (value: string) => {
 		setText(value);
@@ -121,11 +109,8 @@ export function VideoBlockEditor({ work, block, edit }: VideoBlockEditorProps) {
 			},
 			{ key },
 		);
-		requests.cancel("details");
-		setCopying(false);
-		setCopyError(null);
-		clearTimeout(timer.current);
-		timer.current = setTimeout(() => void fetchDetails(value), DETAILS_DELAY_MS);
+		// The pause starts over with every new link, cancelling what was on its way for the one before.
+		void fetchDetails(value);
 	};
 
 	return (
@@ -166,22 +151,15 @@ export function VideoBlockEditor({ work, block, edit }: VideoBlockEditorProps) {
 					)
 				}
 			/>
-			{copying ? (
-				<p className="flex items-center gap-2 text-xs text-muted" role="status">
-					<Spinner size="sm" />
-					<Trans>Copying the thumbnail into your portfolio…</Trans>
-				</p>
-			) : (
-				!block.thumbnail && (
-					<div className="flex flex-wrap items-center gap-2 text-xs text-muted">
-						<Trans>The page shows a plain play button until the thumbnail is copied.</Trans>
-						<Button size="sm" variant="secondary" onPress={() => void copyNow()}>
-							<Trans>Copy the thumbnail</Trans>
-						</Button>
-					</div>
-				)
+			{!task.running && !block.thumbnail && (
+				<div className="flex flex-wrap items-center gap-2 text-xs text-muted">
+					<Trans>The page shows a plain play button until the thumbnail is copied.</Trans>
+					<Button size="sm" variant="secondary" onPress={() => void copyNow()}>
+						<Trans>Copy the thumbnail</Trans>
+					</Button>
+				</div>
 			)}
-			{copyError && <ErrorNote message={copyError} />}
+			<TaskStatus task={task} />
 		</div>
 	);
 }

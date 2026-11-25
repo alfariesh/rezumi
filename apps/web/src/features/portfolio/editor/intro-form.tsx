@@ -17,11 +17,15 @@ import { removeWithUndo } from "./list-undo";
 import { useOwnOrigins } from "./pictures";
 import { setBasicsText } from "./sections";
 import { editPortfolio, usePortfolioData } from "./store";
+import { cancelPortfolioTask } from "./tasks";
 import { KEPT_PHOTO_MS, usePortfolioEditorUi } from "./ui";
 import { useEditorView, usePageMessages } from "./use-view";
 import { ChipInput } from "@/components/input/chip-input";
 
 const { text: max } = PORTFOLIO_LIMITS;
+
+/** Where the portfolio-only photo uploads (`ImageField`). */
+const PHOTO_UPLOAD = "basics.picture";
 
 const buttonKindLabel = (kind: PortfolioButton["kind"]) =>
 	({
@@ -166,6 +170,8 @@ function HeroPhoto() {
 
 	const choose = (next: string) => {
 		setWantsOwn(next === "own");
+		// Another choice: a photo still uploading for this one isn't wanted anymore.
+		if (next !== "own") cancelPortfolioTask(PHOTO_UPLOAD);
 		// The photo in the data right now is the one to bring back, whatever undo or redo did before.
 		if (next === "resume" && basics.picture) keepPhoto(basics.picture);
 		const restore = kept && Date.now() - kept.at < KEPT_PHOTO_MS ? kept.image : null;
@@ -203,6 +209,7 @@ function HeroPhoto() {
 			{choice === "own" && (
 				<ImageField
 					label={t`Portfolio photo`}
+					uploadKey={PHOTO_UPLOAD}
 					// Its small copy is a JPEG, which the share card can draw.
 					kind="portrait"
 					value={basics.picture ?? undefined}

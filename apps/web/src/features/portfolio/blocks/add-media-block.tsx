@@ -1,18 +1,19 @@
+import type { PortfolioTask, TaskControls } from "../editor/tasks";
 import type { EmbedFind } from "../media/embeds";
 import type { PortfolioBlock, PortfolioBlockOf } from "@rezumi/schema/portfolio/blocks";
 import type { Draft } from "immer";
 import { Alert, Spinner } from "@heroui/react";
 import { t } from "@lingui/core/macro";
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import { parseEmbedUrl } from "@rezumi/schema/portfolio/embed";
 import { parseVideoUrl } from "@rezumi/schema/portfolio/video";
 import { Icon } from "@rezumi/ui/components/icon";
 import { toast } from "@rezumi/ui/components/toast";
 import { generateId } from "@rezumi/utils/string";
 import { usePortfolioEditorStore } from "../editor/store";
+import { runPortfolioTask, showPortfolioTaskError, usePortfolioTask } from "../editor/tasks";
 import { useFilePicker } from "../images/image-field";
 import { discardUploadedImages, isAbort } from "../images/upload";
-import { useRequestSignals } from "../images/use-request-signals";
 import {
 	embedFromUnfurl,
 	embedFromUrl,
@@ -57,16 +58,15 @@ type SetBlock = (workId: string, blockId: string, recipe: (block: Draft<Portfoli
 /**
  * Adding a Video, PDF or Link block: a video or link is asked for first (a block needs one), a PDF is chosen and
  * uploaded first. A video's thumbnail and a link's suggested picture follow once the block is in. `insert` is bound to
- * the place chosen, so a block that arrives late still lands there. Requests stop when the menu goes away.
+ * the place chosen, so a block that arrives late still lands there. The work runs as the background task `key`
+ * (`runPortfolioTask`): it carries on when the menu goes away, and the menu shows it again when it's back.
  */
-export function useAddMediaBlock(workId: string, setBlock: SetBlock) {
+export function useAddMediaBlock(key: string, workId: string, setBlock: SetBlock) {
 	const prompt = usePrompt();
-	const requests = useRequestSignals();
-	const [busy, setBusy] = useState<string | null>(null);
-	const [error, setError] = useState<string | null>(null);
+	const task = usePortfolioTask(key);
 
 	/** Copies a new video's thumbnail in, if its block still plays that video by then. */
-	const copyThumbnail = async (block: PortfolioBlockOf<"video">, signal: AbortSignal) => {
+	const copyThumbnail = async (block: PortfolioBlockOf<"video">, { signal }: TaskControls) => {
 		const thumbnail = await importVideoThumbnail(block, signal);
 		if (!thumbnail) return;
 		if (!stillPlays(currentBlock(workId, block.id), block)) {
@@ -79,11 +79,11 @@ export function useAddMediaBlock(workId: string, setBlock: SetBlock) {
 	};
 
 	/** Copies a new Embed block's picture in, quietly unless storage is full, if the block still shows that content. */
-	const copyEmbedPicture = async (find: EmbedFind, signal: AbortSignal) => {
+	const copyEmbedPicture = async (find: EmbedFind, controls: TaskControls) => {
 		if (!find.thumbnailUrl) return;
-		setBusy(t`Copying the picture…`);
+		controls.say(t`Copying the picture…`);
 		const { block } = find;
-		const image = await importEmbedThumbnail(find.thumbnailUrl, block.title ?? "", signal, (failure) => {
+		const image = await importEmbedThumbnail(find.thumbnailUrl, block.title ?? "", controls.signal, (failure) => {
 			if (isNoRoomError(failure)) openPlanDialogForError(failure);
 		});
 		if (!image) return;
@@ -96,17 +96,11 @@ export function useAddMediaBlock(workId: string, setBlock: SetBlock) {
 		});
 	};
 
-	const run = async (label: string, task: (signal: AbortSignal) => Promise<void>) => {
-		const signal = requests.next();
-		setError(null);
-		setBusy(label);
-		try {
-			await task(signal);
-		} catch (failure) {
-			if (!isAbort(failure, signal)) throw failure;
-		} finally {
-			if (!signal.aborted) setBusy(null);
-		}
+	const run = async (label: string, work: (controls: TaskControls) => Promise<void>) => {
+		await runPortfolioTask(key, async (controls) => {
+			controls.say(label);
+			await work(controls);
+		});
 	};
 
 	const addVideo = async (insert: InsertBlock) => {
@@ -119,15 +113,15 @@ export function useAddMediaBlock(workId: string, setBlock: SetBlock) {
 	};
 
 	const addVideoUrl = async (url: string, insert: InsertBlock) => {
-		await run(t`Reading the video…`, async (signal) => {
-			const block = await videoBlockFromUrl(url, signal);
+		await run(t`Reading the video…`, async (controls) => {
+			const block = await videoBlockFromUrl(url, controls.signal);
 			if (!block) {
-				setError(t`That isn't a YouTube or Vimeo video link. Copy the address from the video's page.`);
+				controls.fail(t`That isn't a YouTube or Vimeo video link. Copy the address from the video's page.`);
 				return;
 			}
 			if (!insert(block)) return;
-			setBusy(t`Copying the thumbnail…`);
-			await copyThumbnail(block, signal);
+			controls.say(t`Copying the thumbnail…`);
+			await copyThumbnail(block, controls);
 		});
 	};
 
@@ -140,38 +134,42 @@ export function useAddMediaBlock(workId: string, setBlock: SetBlock) {
 		const address = readLinkAddress(text);
 		if (!address.ok) {
 			if (address.problem === "email")
-				setError(t`A Link block opens a web page, not an email address. Visitors find your email in Contact.`);
-			else if (address.problem === "invalid") setError(t`Enter a full web address, such as https://example.com.`);
+				showPortfolioTaskError(
+					key,
+					t`A Link block opens a web page, not an email address. Visitors find your email in Contact.`,
+				);
+			else if (address.problem === "invalid")
+				showPortfolioTaskError(key, t`Enter a full web address, such as https://example.com.`);
 			return;
 		}
 		const { url } = address;
-		await run(t`Reading the link…`, async (signal) => {
+		await run(t`Reading the link…`, async (controls) => {
 			try {
-				const result = await unfurlLink(url, signal);
+				const result = await unfurlLink(url, controls.signal);
 				if (result.kind === "embed") {
 					const find = embedFromUnfurl(result);
 					if (!insert(find.block)) return;
 					const provider = embedProviderName(result.provider);
 					toast.add({ description: t`That's a ${provider} link, so it was added as an Embed block.` });
-					await copyEmbedPicture(find, signal);
+					await copyEmbedPicture(find, controls);
 					return;
 				}
 				if (result.kind === "video") {
 					const block = videoBlockFromUnfurl(result);
 					if (!insert(block)) return;
 					toast.add({ description: t`That's a video, so it was added as a Video block.` });
-					setBusy(t`Copying the thumbnail…`);
-					await copyThumbnail(block, signal);
+					controls.say(t`Copying the thumbnail…`);
+					await copyThumbnail(block, controls);
 					return;
 				}
 				const block = linkBlockFromUnfurl(result, url);
 				if (!insert(block)) return;
 				if (result.imageUrl) useLinkSuggestions.getState().suggest(block.id, result.imageUrl);
 			} catch (failure) {
-				if (isAbort(failure, signal)) throw failure;
+				if (isAbort(failure, controls.signal)) throw failure;
 				// The card is made anyway; the person fills it in.
 				insert({ id: generateId(), type: "link", url, title: "" });
-				setError(unfurlErrorMessage(failure));
+				controls.fail(unfurlErrorMessage(failure));
 			}
 		});
 	};
@@ -184,34 +182,34 @@ export function useAddMediaBlock(workId: string, setBlock: SetBlock) {
 		if (!text?.trim()) return;
 		const address = readLinkAddress(text);
 		if (!address.ok) {
-			setError(t`This link isn't from a service we can embed. Use a Link block instead.`);
+			showPortfolioTaskError(key, t`This link isn't from a service we can embed. Use a Link block instead.`);
 			return;
 		}
 		await addEmbedUrl(address.url, insert);
 	};
 
 	const addEmbedUrl = async (url: string, insert: InsertBlock) => {
-		await run(t`Reading the link…`, async (signal) => {
-			const find = await embedFromUrl(url, signal);
+		await run(t`Reading the link…`, async (controls) => {
+			const find = await embedFromUrl(url, controls.signal);
 			if (!find) {
-				setError(t`This link isn't from a service we can embed. Use a Link block instead.`);
+				controls.fail(t`This link isn't from a service we can embed. Use a Link block instead.`);
 				return;
 			}
 			if (!insert(find.block)) return;
-			await copyEmbedPicture(find, signal);
+			await copyEmbedPicture(find, controls);
 		});
 	};
 
 	const addPdf = async (file: File, insert: InsertBlock) => {
-		await run(t`Reading and uploading the PDF…`, async (signal) => {
+		await run(t`Reading and uploading the PDF…`, async (controls) => {
 			try {
-				const block = await newPdfBlock(file, signal);
+				const block = await newPdfBlock(file, controls.signal);
 				// No room for it any more (the work filled up meanwhile): its files aren't kept.
 				if (!insert(block))
 					void discardUploadedImages(block.preview ? [block.preview, { key: block.file }] : [{ key: block.file }]);
 			} catch (failure) {
-				if (isAbort(failure, signal)) throw failure;
-				setError(pdfErrorMessage(failure));
+				if (isAbort(failure, controls.signal)) throw failure;
+				controls.fail(pdfErrorMessage(failure));
 			}
 		});
 	};
@@ -253,13 +251,7 @@ export function useAddMediaBlock(workId: string, setBlock: SetBlock) {
 	const status = (
 		<>
 			{picker.element}
-			{busy && (
-				<p className="flex items-center gap-2 text-xs text-muted" role="status">
-					<Spinner size="sm" />
-					{busy}
-				</p>
-			)}
-			{error && <ErrorNote message={error} />}
+			<TaskStatus task={task} />
 		</>
 	);
 
@@ -268,9 +260,29 @@ export function useAddMediaBlock(workId: string, setBlock: SetBlock) {
 		addFromUrl,
 		/** A PDF dropped or pasted: uploaded and put in like one chosen from the menu. */
 		addPdfFile: (file: File, insert: InsertBlock) => void addPdf(file, insert),
-		busy: busy !== null,
+		busy: task.running,
 		status,
 	};
+}
+
+type TaskStatusProps = { task: PortfolioTask };
+
+/** What a block's background task is doing (a spinner and its words), then what went wrong with it. */
+export function TaskStatus({ task }: TaskStatusProps) {
+	return (
+		<>
+			{task.running && task.label && (
+				<p className="flex items-center gap-2 text-xs text-muted" role="status">
+					<Spinner size="sm" />
+					{task.label}
+				</p>
+			)}
+			{task.errors.map((message, index) => (
+				// Two steps can fail the same way: the place keeps each message apart.
+				<ErrorNote key={`${index}:${message}`} message={message} />
+			))}
+		</>
+	);
 }
 
 type ErrorNoteProps = { message: string };
