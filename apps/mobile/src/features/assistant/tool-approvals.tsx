@@ -2,7 +2,7 @@ import type { UIMessage } from "ai";
 import { Trans, useLingui } from "@lingui/react/macro";
 import { View } from "react-native";
 import { agentApprovalRequests } from "@rezumi/ai/tools/agent-tool-contracts";
-import { Button, Text, useTheme } from "@/ui-legacy";
+import { Button, Text } from "@/ui";
 
 type ToolApprovalsProps = {
 	message: UIMessage;
@@ -12,10 +12,9 @@ type ToolApprovalsProps = {
 
 export function ToolApprovals({ message, disabled, onDecision }: ToolApprovalsProps) {
 	const { t } = useLingui();
-	const { space } = useTheme();
 	return agentApprovalRequests(message).map(({ id, kind, text }) => (
-		<View key={id} style={{ gap: space.s3, padding: space.s3 }}>
-			<Text>
+		<View key={id} className="gap-3 rounded-2xl border border-border p-3">
+			<Text weight="semibold">
 				{kind === "search" ? (
 					<Trans>Send this exact query to your web search provider?</Trans>
 				) : (
@@ -23,17 +22,16 @@ export function ToolApprovals({ message, disabled, onDecision }: ToolApprovalsPr
 				)}
 			</Text>
 			<Text selectable>{text}</Text>
-			<Button
-				disabled={disabled}
-				label={kind === "search" ? t`Search the web` : t`Save story`}
-				onPress={() => onDecision({ id, approved: true })}
-			/>
-			<Button
-				variant="secondary"
-				disabled={disabled}
-				label={t`Skip`}
-				onPress={() => onDecision({ id, approved: false })}
-			/>
+			<View className="flex-row flex-wrap gap-2">
+				<Button size="sm" isDisabled={disabled} onPress={() => onDecision({ id, approved: true })}>
+					<Button.Label>{kind === "search" ? t`Search the web` : t`Save story`}</Button.Label>
+				</Button>
+				<Button size="sm" variant="secondary" isDisabled={disabled} onPress={() => onDecision({ id, approved: false })}>
+					<Button.Label>
+						<Trans>Skip</Trans>
+					</Button.Label>
+				</Button>
+			</View>
 		</View>
 	));
 }

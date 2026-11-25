@@ -80,6 +80,7 @@ function load(path) {
 modules.zod = requireSchema("zod");
 modules["@rezumi/schema/billing"] = load("../../packages/schema/src/billing/catalog.ts");
 modules["@/features/billing/ai-source"] = load("src/features/billing/ai-source.ts");
+modules["@/ui/operation-consent"] = load("src/ui/operation-consent.ts");
 modules["./ai-consent"] = load("src/api/ai-consent.ts");
 const { client } = load("src/api/client.ts");
 

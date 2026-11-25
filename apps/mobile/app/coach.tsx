@@ -1,8 +1,21 @@
-import { useLocalSearchParams } from "expo-router";
-import { CoachScreen, offerIdsFrom } from "@/features/assistant/coach-screen";
+import { useLocalSearchParams, useRouter } from "expo-router";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { Coach, offerIdsFrom } from "@/features/assistant/coach";
+import { routes } from "@/routes";
 
-/** `?offers=` carries the saved offers chosen in Offers → Plan what to ask. */
+const fill = { flex: 1 };
+
 export default function CoachRoute() {
-	const { offers } = useLocalSearchParams<{ offers?: string | string[] }>();
-	return <CoachScreen offerIds={offerIdsFrom(offers)} />;
+	const { offers, thread } = useLocalSearchParams<{ offers?: string | string[]; thread?: string }>();
+	const router = useRouter();
+	return (
+		<SafeAreaView style={fill}>
+			<Coach
+				key={thread}
+				initialThread={thread}
+				offerIds={offerIdsFrom(offers)}
+				onClose={() => (router.canGoBack() ? router.back() : router.replace(routes.home()))}
+			/>
+		</SafeAreaView>
+	);
 }

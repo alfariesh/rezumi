@@ -96,11 +96,11 @@ function dashboardHref(rest: readonly string[], path: string): AppHref | null {
 		case "jobs":
 			return rest.length === 1 ? routes.applications("jobs") : null;
 		case "coach":
-			return rest.length <= 2 ? routes.coach() : null;
+			return rest.length <= 2 ? (second ? routes.coachThread(second) : routes.coach()) : null;
 		case "career":
 			if (second === "knowledge") return routes.profile(profileTab(third) ?? "facts");
 			if (second === "offers") return rest.length === 2 ? routes.offers() : null;
-			if (second === "coach") return rest.length <= 3 ? routes.coach() : null;
+			if (second === "coach") return rest.length <= 3 ? (third ? routes.coachThread(third) : routes.coach()) : null;
 			return null;
 		case "applications":
 			if (!second) return routes.applications();

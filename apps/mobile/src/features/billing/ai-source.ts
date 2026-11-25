@@ -69,7 +69,7 @@ export const describeCreditCost = (action: CreditAction, balance: number) =>
 
 /**
  * Too few Rezumi AI credits: names what's needed and the way on without credits. No price, link or button to buy
- * (Google Play rules); one plain sentence says where plans are sold. Only Android ever gets this error.
+ * (Google Play rules).
  */
 export function showCreditsAlertForError(error: unknown) {
 	if (!(error instanceof ORPCError) || error.code !== "INSUFFICIENT_CREDITS") return false;
@@ -78,7 +78,7 @@ export function showCreditsAlertForError(error: unknown) {
 	const balance = creditCount(typeof data.balance === "number" ? data.balance : 0);
 	Alert.alert(
 		t`Not enough Rezumi AI credits`,
-		`${t`This needs ${required} and you have ${balance}. Use your own AI connection instead: set it as the default in Settings → AI providers.`}\n\n${t`Plans can be bought on the rezumi.app website.`}`,
+		t`This needs ${required} and you have ${balance}. Switch to your own AI connection to continue.`,
 		[{ text: t`OK`, style: "cancel" }],
 	);
 	return true;

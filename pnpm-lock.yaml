@@ -1663,6 +1663,9 @@ importers:
 
   packages/ai:
     dependencies:
+      '@orpc/client':
+        specifier: 'catalog:'
+        version: 1.16.1
       '@rezumi/resume':
         specifier: workspace:*
         version: link:../resume
@@ -1672,6 +1675,9 @@ importers:
       '@rezumi/utils':
         specifier: workspace:*
         version: link:../utils
+      ai:
+        specifier: 'catalog:'
+        version: 7.0.155(zod@4.6.7)
       jsonrepair:
         specifier: 'catalog:'
         version: 3.15.0
@@ -1682,9 +1688,6 @@ importers:
       '@rezumi/config':
         specifier: workspace:*
         version: link:../config
-      ai:
-        specifier: 'catalog:'
-        version: 7.0.155(zod@4.6.7)
       tsrs:
         specifier: 'catalog:'
         version: 0.18.0-ts7.1.0-dev.20260929

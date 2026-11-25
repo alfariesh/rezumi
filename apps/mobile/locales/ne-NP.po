@@ -69,12 +69,6 @@ msgstr "\"{value}\" आज पछि सुरु हुन्छ। वर्�
 msgid "{0, plural, =0 {No interviews} one {# interview} other {# interviews}}"
 msgstr ""
 
-#. placeholder {0}: proposals.length
-#: src/features/assistant/document.ts
-#: src/features/assistant/proposals.ts
-msgid "{0, plural, =1 {Edit applied} other {# edits applied}}"
-msgstr "{0, plural, =1 {सम्पादन लागू गरियो} other {# सम्पादनहरू लागू गरिए}}"
-
 #. placeholder {0}: term.jdCount
 #. placeholder {1}: term.label
 #. placeholder {2}: term.label
@@ -148,8 +142,8 @@ msgstr "{0, plural, one {# दिन} other {# दिनहरू}}"
 msgid "{0, plural, one {# document} other {# documents}}"
 msgstr "{0, plural, one {# कागजात} other {# कागजातहरू}}"
 
-#. placeholder {0}: knowledge.facts
-#: src/features/assistant/coach-screen.tsx
+#. placeholder {0}: profile.facts
+#: src/features/assistant/coach.tsx
 msgid "{0, plural, one {# fact} other {# facts}}"
 msgstr "{0, plural, one {# तथ्य} other {# तथ्यहरू}}"
 
@@ -188,7 +182,7 @@ msgid "{0, plural, one {# page} other {# pages}}"
 msgstr "{0, plural, one {# पृष्ठ} other {# पृष्ठहरू}}"
 
 #. placeholder {0}: proposals.length
-#: src/features/assistant/messages.tsx
+#: src/features/assistant/change-set.tsx
 msgid "{0, plural, one {# proposed edit} other {# proposed edits}}"
 msgstr "{0, plural, one {# प्रस्तावित सम्पादन} other {# प्रस्तावित सम्पादनहरू}}"
 
@@ -198,7 +192,7 @@ msgid "{0, plural, one {# resume} other {# resumes}}"
 msgstr ""
 
 #. placeholder {0}: offerIds.length
-#: src/features/assistant/coach-screen.tsx
+#: src/features/assistant/coach.tsx
 msgid "{0, plural, one {# saved offer} other {# saved offers}}"
 msgstr "{0, plural, one {# सुरक्षित प्रस्ताव} other {# सुरक्षित प्रस्तावहरू}}"
 
@@ -226,11 +220,6 @@ msgstr "{0, plural, one {# दिनको लागि} other {# दिनह�
 #: src/features/applications/next-step.ts
 msgid "{0, plural, one {No reply in # day} other {No reply in # days}}"
 msgstr "{0, plural, one {# दिनमा कुनै जवाफ छैन} other {# दिनहरूमा कुनै जवाफ छैन}}"
-
-#. placeholder {0}: knowledge.facts
-#: src/features/assistant/coach-screen.tsx
-msgid "{0, plural, one {Profile · # fact} other {Profile · # facts}}"
-msgstr ""
 
 #. placeholder {0}: passages.length
 #: src/features/check/writing-tab.tsx
@@ -398,12 +387,6 @@ msgstr "{0} रोजगार पोस्टिंग"
 msgid "{0} pt"
 msgstr ""
 
-#. placeholder {0}: props.connection
-#. placeholder {1}: errorText(error, t`an error`)
-#: src/features/assistant/chat-view.tsx
-msgid "{0} returned “{1}”. Your message is kept."
-msgstr "{0} \"{1}\" फिर्ता भयो। तपाईंको सन्देश राखिएको छ।"
-
 #. placeholder {0}: getStageLabel(stage)
 #: src/features/applications/detail/detail-header.tsx
 msgid "{0}, current stage"
@@ -421,7 +404,7 @@ msgid "{0}%"
 msgstr "{0}%"
 
 #. placeholder {0}: proposals.length
-#: src/features/assistant/messages.tsx
+#: src/features/assistant/change-set.tsx
 msgid "{accepted} of {0} applied"
 msgstr "{0} मध्ये {accepted} लागू गरियो"
 
@@ -692,10 +675,6 @@ msgstr ""
 #: src/features/applications/calendar/grid-event.tsx
 msgid "{kind} interview, {0}, {1}, {2}, {3} – {4}"
 msgstr ""
-
-#: src/features/assistant/coach-screen.tsx
-msgid "{label} connection"
-msgstr "{label} जडान"
 
 #: src/shell/app-tabs.tsx
 msgid "{label}, {count} unread"
@@ -1184,13 +1163,13 @@ msgstr "एक्सेन्ट रंग"
 msgid "Accent is used for headings, icons and the header band. Body text stays near-black for print and ATS."
 msgstr "एक्सेन्ट हेडिङ, आइकन र हेडर ब्यान्डका लागि प्रयोग गरिन्छ। मुख्य पाठ प्रिन्ट र ATS को लागी नजिकै कालो रहन्छ।"
 
-#: src/features/assistant/messages.tsx
+#: src/features/assistant/change-set.tsx
 #: src/features/check/proposal-card.tsx
 #: src/features/workspace/apply/answer-diff.tsx
 msgid "Accept"
 msgstr "स्वीकार गर्नुहोस्"
 
-#: src/features/assistant/messages.tsx
+#: src/features/assistant/change-set.tsx
 msgid "Accept all"
 msgstr "सबै स्वीकार गर्नुहोस्"
 
@@ -1585,6 +1564,10 @@ msgstr "आफ्नो नाम थप्नुहोस्"
 msgid "Add your own AI connection in Settings, or choose Rezumi AI."
 msgstr ""
 
+#: src/features/assistant/provider.tsx
+msgid "Add your own connection to start a conversation."
+msgstr ""
+
 #: src/features/billing/credits.ts
 msgid "Added by Rezumi"
 msgstr ""
@@ -1717,6 +1700,10 @@ msgstr ""
 msgid "AI edit"
 msgstr "एआई सम्पादन"
 
+#: src/features/assistant/provider.tsx
+msgid "AI is unavailable"
+msgstr ""
+
 #: src/features/check/provider-sheet.tsx
 msgid "AI provider"
 msgstr "एआई प्रदायक"
@@ -1749,6 +1736,10 @@ msgstr ""
 
 #: src/features/check/writing-tab.tsx
 msgid "AI review"
+msgstr ""
+
+#: src/features/assistant/provider.tsx
+msgid "AI settings"
 msgstr ""
 
 #: src/features/settings/locale-names.ts
@@ -1860,10 +1851,6 @@ msgstr "एम्बेड गरिएको फन्ट पढ्न सक�
 #: src/features/check/messages.ts
 msgid "An entry has no dates"
 msgstr "प्रविष्टिको कुनै मिति छैन"
-
-#: src/features/assistant/chat-view.tsx
-msgid "an error"
-msgstr "एउटा त्रुटि"
 
 #: src/features/auth/create-account-screen.tsx
 msgid "Ana Putri"
@@ -2044,7 +2031,7 @@ msgstr "आवेदन विवरण"
 msgid "Application options"
 msgstr "नौकरी आवेदन विकल्प"
 
-#: src/features/assistant/coach-screen.tsx
+#: src/features/assistant/coach.tsx
 msgid "application summaries"
 msgstr "आवेदनका सारांशहरू"
 
@@ -2060,7 +2047,7 @@ msgstr "आवेदनका दृश्यहरू"
 #: app/(tabs)/applications/_layout.tsx
 #: src/features/applications/frame.tsx
 #: src/features/applications/insights/insights-screen.tsx
-#: src/features/assistant/coach-screen.tsx
+#: src/features/assistant/coach.tsx
 #: src/features/jobs/jobs-screen.tsx
 #: src/features/offers/offers-screen.tsx
 #: src/features/search/search-screen.tsx
@@ -2088,7 +2075,7 @@ msgstr ""
 msgid "Applied"
 msgstr "आवेदन गरियो"
 
-#: src/features/assistant/messages.tsx
+#: src/features/assistant/change-set.tsx
 #: src/features/workspace/messages/proposal-card.tsx
 msgctxt "A proposed change has been applied"
 msgid "Applied"
@@ -2155,13 +2142,9 @@ msgstr "{0} लाई सोध्नुहोस्"
 msgid "Ask about this application…"
 msgstr "यो आवेदनबारे सोध्नुहोस्…"
 
-#: src/features/assistant/coach-screen.tsx
+#: src/features/assistant/coach.tsx
 msgid "Ask about your next career step…"
 msgstr "तपाईंको करियरको अर्को कदमबारे सोध्नुहोस्…"
-
-#: src/features/assistant/coach-screen.tsx
-msgid "Ask about your search, or bring an accomplishment you want to explain better. Answers use what's switched on below and say what they relied on."
-msgstr "तपाईंको खोजबारे सोध्नुहोस्, वा अझ राम्रोसँग बुझाउन चाहेको उपलब्धि ल्याउनुहोस्। जवाफहरूले तल खुला गरिएका कुराहरू प्रयोग गर्छन् र केमा भर परे भनेर बताउँछन्।"
 
 #: src/features/workspace/coach-sheet.tsx
 msgid "Ask anything about this job. The coach reads the posting, your notes and what you sent, and knows you're on {part}."
@@ -2243,7 +2226,7 @@ msgstr "ATS-सुरक्षित"
 msgid "ATS-safe template"
 msgstr ""
 
-#: src/features/assistant/chat-view.tsx
+#: src/features/assistant/composer.tsx
 msgid "Attach a file"
 msgstr "फाइल संलग्न गर्नुहोस्"
 
@@ -2255,7 +2238,7 @@ msgstr ""
 msgid "Attach a resume (PDF)"
 msgstr ""
 
-#: src/features/assistant/chat-view.tsx
+#: src/features/assistant/composer.tsx
 msgid "Attach up to 10 files to a message."
 msgstr "सन्देशमा 10 फाइलहरू सम्म संलग्न गर्नुहोस्।"
 
@@ -2263,7 +2246,7 @@ msgstr "सन्देशमा 10 फाइलहरू सम्म संल
 msgid "Attachment"
 msgstr "संलग्नक"
 
-#: src/features/assistant/chat-view.tsx
+#: src/features/assistant/composer.tsx
 msgid "Attachments can be up to 100 MB in all."
 msgstr "एट्याचमेन्टहरू सबैमा १०० MB सम्म हुन सक्छन्।"
 
@@ -2586,7 +2569,7 @@ msgstr ""
 #: src/features/applications/board/close-reason-sheet.tsx
 #: src/features/applications/calendar/application-picker.tsx
 #: src/features/applications/save-posting.tsx
-#: src/features/assistant/coach-screen.tsx
+#: src/features/assistant/threads.tsx
 #: src/features/ats-checker/checker.tsx
 #: src/features/check/parser-view.tsx
 #: src/features/check/writing-tab.tsx
@@ -3058,6 +3041,7 @@ msgstr "अभिवादन वा समापन हटाउन त्य�
 msgid "Clears its entries; the section stays. You can undo."
 msgstr "यसको प्रविष्टिहरू खाली गर्दछ; खण्ड रहन्छ। तपाईं पूर्ववत गर्न सक्नुहुन्छ।"
 
+#: src/features/ai/report-content.tsx
 #: src/features/applications/detail/activity.tsx
 #: src/features/applications/detail/contacts.tsx
 #: src/features/applications/detail/detail-sheet.tsx
@@ -3072,6 +3056,10 @@ msgstr "यसको प्रविष्टिहरू खाली गर्
 #: src/features/applications/list/list-row.tsx
 #: src/features/applications/list/row-menu.tsx
 #: src/features/applications/save-sheet.tsx
+#: src/features/assistant/coach.tsx
+#: src/features/assistant/panel-bar.tsx
+#: src/features/assistant/provider.tsx
+#: src/features/assistant/threads.tsx
 #: src/features/auth/welcome-screen.tsx
 #: src/features/career/schedule-fields.tsx
 #: src/features/career/schedule-sheet.tsx
@@ -3140,10 +3128,6 @@ msgstr "खोज बन्द गर्नुहोस्"
 msgid "Close the application"
 msgstr ""
 
-#: src/features/assistant/assistant-screen.tsx
-msgid "Close the assistant"
-msgstr "सहायक बन्द गर्नुहोस्"
-
 #: src/features/applications/detail/stage-sheets.tsx
 #: src/features/applications/list/row-menu.tsx
 msgid "Close this application"
@@ -3165,8 +3149,7 @@ msgstr "बन्द"
 msgid "Closed: {closed}"
 msgstr "बन्द: {closed}"
 
-#: app/_layout.tsx
-#: src/features/assistant/coach-screen.tsx
+#: src/features/assistant/coach.tsx
 #: src/features/billing/credits.ts
 #: src/features/workspace/coach-sheet.tsx
 #: src/shell/tab-chrome.tsx
@@ -3179,6 +3162,10 @@ msgstr ""
 
 #: src/features/auth/two-factor-screen.tsx
 msgid "Codes look like a1b2c-d3e4f."
+msgstr ""
+
+#: src/features/assistant/panel-bar.tsx
+msgid "Collapse Coach"
 msgstr ""
 
 #: src/features/design/design-pane.tsx
@@ -3295,10 +3282,6 @@ msgstr "यसलाई स्वचालित रूपमा रिफ्र
 msgid "Connect an AI provider to read pasted text. Filling in by hand works without AI."
 msgstr ""
 
-#: src/features/assistant/provider.tsx
-msgid "Connect another…"
-msgstr "अर्को जडान गर्नुहोस्..."
-
 #: app/account/ai.tsx
 msgid "Connect the tools you use for writing, job search and working with your resumes."
 msgstr "तपाईंले लेखन, जागिर खोजी र आफ्नो रिजुमेहरूसँग काम गर्न प्रयोग गर्ने उपकरणहरू जडान गर्नुहोस्।"
@@ -3360,17 +3343,13 @@ msgstr "सामग्री अझै पनि समाप्त हुन�
 msgid "Content to report"
 msgstr "रिपोर्ट गर्न सामग्री"
 
-#: src/features/assistant/chat-view.tsx
-msgid "Context"
-msgstr "सन्दर्भ"
-
-#: src/features/assistant/chat-view.tsx
+#: src/features/assistant/conversation.tsx
 #: src/features/assistant/messages.tsx
 msgid "Context is left out, so reply with a new message instead."
 msgstr "सन्दर्भ छोडिएको छ, त्यसैले यसको सट्टा नयाँ सन्देशको साथ जवाफ दिनुहोस्।"
 
 #: app/(auth)/server.tsx
-#: src/features/assistant/chat-view.tsx
+#: src/features/assistant/conversation.tsx
 #: src/features/auth/check-email-screen.tsx
 #: src/features/onboarding/onboarding-screen.tsx
 #: src/features/profile/bring-screen.tsx
@@ -3391,24 +3370,21 @@ msgstr ""
 msgid "Contrast {0} to 1"
 msgstr ""
 
-#: src/features/assistant/chat-view.tsx
+#: src/features/assistant/conversation.tsx
 msgid "Conversation"
 msgstr "कुराकानी"
 
-#: src/features/assistant/coach-screen.tsx
+#: src/features/assistant/threads.tsx
 msgid "Conversation name"
 msgstr "कुराकानीको नाम"
 
-#: src/features/assistant/coach-screen.tsx
+#: src/features/assistant/panel-bar.tsx
 #: src/features/workspace/coach-sheet.tsx
 msgid "Conversations"
 msgstr "कुराकानीहरू"
 
-#: src/features/assistant/coach-screen.tsx
-msgid "Conversations about one job live in its workspace."
-msgstr "एउटा जागिरबारेका कुराकानीहरू त्यसको कार्यक्षेत्रमा रहन्छन्।"
-
 #: src/features/assistant/assistant-screen.tsx
+#: src/features/assistant/coach.tsx
 #: src/features/workspace/coach-sheet.tsx
 msgid "Conversations couldn't load."
 msgstr "कुराकानीहरू लोड हुन सकेन।"
@@ -3463,7 +3439,7 @@ msgstr "प्रत्युत्तर प्रतिलिपि गर्�
 msgid "Copy the text out of the exported file and read it through; fix anything that arrives in the wrong place."
 msgstr "निर्यात गरिएको फाइलबाट पाठ प्रतिलिपि गरी पूरा पढ्नुहोस्; गलत ठाउँमा आउने कुनै पनि कुरा सुधार्नुहोस्।"
 
-#: src/features/assistant/chat-view.tsx
+#: src/features/assistant/conversation.tsx
 msgid "Copy transcript"
 msgstr "ट्रान्सक्रिप्ट प्रतिलिपि गर्नुहोस्"
 
@@ -3492,7 +3468,7 @@ msgstr ""
 msgid "Correction by Rezumi"
 msgstr ""
 
-#: src/features/assistant/chat-view.tsx
+#: src/features/assistant/composer.tsx
 msgid "Couldn't attach the file. Try again."
 msgstr "फाइल संलग्न गर्न सकिएन। पुन: प्रयास गर्नुहोस्।"
 
@@ -3545,7 +3521,7 @@ msgstr ""
 msgid "Couldn't copy the questions. Try again."
 msgstr ""
 
-#: src/features/assistant/chat-view.tsx
+#: src/features/assistant/conversation.tsx
 msgid "Couldn't copy the transcript. Try again."
 msgstr "ट्रान्सक्रिप्ट प्रतिलिपि गर्न सकिएन। पुन: प्रयास गर्नुहोस्।"
 
@@ -3867,7 +3843,7 @@ msgstr "यसलाई आवेदनहरूबाट हटाउन सक
 msgid "Couldn't remove the file. Try again."
 msgstr "फाइल हटाउन सकिएन। पुन: प्रयास गर्नुहोस्।"
 
-#: src/features/assistant/coach-screen.tsx
+#: src/features/assistant/threads.tsx
 msgid "Couldn't rename the conversation. Try again."
 msgstr "कुराकानीको नाम परिवर्तन गर्न सकिएन। पुन: प्रयास गर्नुहोस्।"
 
@@ -4034,6 +4010,10 @@ msgstr "कुराकानी सुरु गर्न सकिएन। �
 #: src/features/assistant/provider.tsx
 msgid "Couldn't switch models. Try again."
 msgstr "मोडेल बदल्न सकिएन। पुन: प्रयास गर्नुहोस्।"
+
+#: src/features/assistant/use-conversation.ts
+msgid "Couldn't sync the edit status. Try again online."
+msgstr ""
 
 #: src/features/workspace/practice/recorder-control.tsx
 msgid "Couldn't transcribe. Your recording is still here."
@@ -4416,8 +4396,6 @@ msgstr "\"{title}\" मेट्ने हो?"
 
 #. placeholder {0}: item.title
 #. placeholder {0}: title(thread)
-#: src/features/assistant/coach-screen.tsx
-#: src/features/assistant/threads.tsx
 #: src/features/workspace/coach-sheet.tsx
 #: src/features/workspace/saved/saved-row.tsx
 msgid "Delete {0}"
@@ -4923,7 +4901,11 @@ msgstr ""
 msgid "Each run looks for jobs that appeared since the last one. New ones wait in Home for your review; applications and documents are never created for you."
 msgstr ""
 
-#: src/features/assistant/coach-screen.tsx
+#: src/features/assistant/assistant-screen.tsx
+msgid "Each send starts fresh with this message and selected files. Previous conversation history stays here."
+msgstr ""
+
+#: src/features/assistant/coach.tsx
 msgid "earlier messages in this chat"
 msgstr "यो च्याटका अघिल्ला सन्देशहरू"
 
@@ -4935,12 +4917,6 @@ msgstr "यो च्याटका अघिल्ला सन्देशह
 #: src/features/write/basics-screen.tsx
 msgid "Edit"
 msgstr "सम्पादन गर्नुहोस्"
-
-#. placeholder {0}: index + 1
-#. placeholder {1}: proposal.location
-#: src/features/assistant/messages.tsx
-msgid "Edit {0}: {1}"
-msgstr "सम्पादन गर्नुहोस् {0}: {1}"
 
 #: src/features/home/schedules.tsx
 msgid "Edit {name}"
@@ -5249,6 +5225,10 @@ msgstr ""
 msgid "Exit full screen"
 msgstr ""
 
+#: src/features/assistant/panel-bar.tsx
+msgid "Expand Coach"
+msgstr ""
+
 #: src/features/entries/fields.ts
 #: src/features/onboarding/intro-screen.tsx
 #: src/features/profile/facts-labels.ts
@@ -5363,7 +5343,7 @@ msgstr "यस उपकरणमा फाइल साझेदारी अ�
 msgid "Files"
 msgstr ""
 
-#: src/features/assistant/chat-view.tsx
+#: src/features/assistant/composer.tsx
 msgid "Files can be up to 5 MB each."
 msgstr ""
 
@@ -5932,7 +5912,7 @@ msgstr "मद्दत र कागजातहरू"
 msgid "Help & legal"
 msgstr ""
 
-#: src/features/assistant/coach-screen.tsx
+#: src/features/assistant/coach.tsx
 msgid "Help me turn an accomplishment into a Situation, Task, Action, Result and Reflection story."
 msgstr "एउटा उपलब्धिलाई स्थिति, कार्य, कदम, नतिजा र प्रतिबिम्ब भएको कथामा बदल्न मलाई मद्दत गर्नुहोस्।"
 
@@ -6113,22 +6093,6 @@ msgstr ""
 #: src/features/design/typography-screen.tsx
 msgid "Hyphenation"
 msgstr "अल्पविराम विभાજक"
-
-#: src/features/assistant/assistant-screen.tsx
-msgid "I can see this letter and the {company} posting. Suggestions come back as edits you can accept one by one."
-msgstr "म यो पत्र र {company} को जागिर विज्ञापन हेर्न सक्छु। सुझावहरू तपाईंले एकएक गरी स्वीकार गर्न सक्ने परिवर्तनका रूपमा देखिन्छन्।"
-
-#: src/features/assistant/assistant-screen.tsx
-msgid "I can see this letter. Suggestions come back as edits you can accept one by one."
-msgstr "म यो पत्र हेर्न सक्छु। सुझावहरू तपाईंले एकएक गरी स्वीकार गर्न सक्ने परिवर्तनका रूपमा देखिन्छन्।"
-
-#: src/features/assistant/assistant-screen.tsx
-msgid "I can see this resume and the {company} posting. Suggestions come back as edits you can accept one by one."
-msgstr "म यो बायोडाटा र {company} जागिरको विज्ञापन हेर्न सक्छु। सुझावहरू सम्पादनको रूपमा फिर्ता आउँछन् तपाईंले एक-एक गरेर स्वीकार गर्न सक्नुहुन्छ।"
-
-#: src/features/assistant/assistant-screen.tsx
-msgid "I can see this resume. Suggestions come back as edits you can accept one by one."
-msgstr "म यो बायोडाटा हेर्न सक्छु। सुझावहरू सम्पादनको रूपमा फिर्ता आउँछन् तपाईंले एक-एक गरेर स्वीकार गर्न सक्नुहुन्छ।"
 
 #: src/features/applications/stages.ts
 msgid "I withdrew"
@@ -6656,6 +6620,10 @@ msgstr ""
 msgid "Keep both"
 msgstr "दुवै राख्नुहोस्"
 
+#: src/features/assistant/threads.tsx
+msgid "Keep conversation"
+msgstr ""
+
 #: src/features/applications/interview-sheet.tsx
 #: src/features/applications/save-sheet.tsx
 #: src/features/career/schedule-sheet.tsx
@@ -6871,7 +6839,7 @@ msgstr ""
 msgid "Later"
 msgstr "पछि"
 
-#: src/features/assistant/chat-view.tsx
+#: src/features/assistant/conversation.tsx
 msgid "Latest"
 msgstr "पछिल्लो"
 
@@ -7258,7 +7226,7 @@ msgstr ""
 msgid "Loading workspace…"
 msgstr "कार्यक्षेत्र लोड गर्दै…"
 
-#: src/features/assistant/coach-screen.tsx
+#: src/features/assistant/coach.tsx
 msgid "Loading your Profile before you send…"
 msgstr ""
 
@@ -7512,7 +7480,11 @@ msgstr "मध्यम"
 msgid "Meets: {0}"
 msgstr ""
 
-#: src/features/assistant/chat-view.tsx
+#: src/features/ai/report-content.tsx
+msgid "Message actions"
+msgstr ""
+
+#: src/features/assistant/composer.tsx
 msgid "Message the assistant"
 msgstr "सहायकलाई सन्देश पठाउनुहोस्"
 
@@ -7587,10 +7559,6 @@ msgstr "थप विकल्पहरू"
 #: src/features/letters/write.tsx
 msgid "More personal"
 msgstr "थप व्यक्तिगत"
-
-#: src/features/assistant/provider.tsx
-msgid "More providers and options are in Settings. Editing, design, Check issues and downloads work without AI."
-msgstr "थप प्रदायक र विकल्पहरू सेटिङहरू मा छन्। सम्पादन, डिजाइन, जाँच समस्याहरू र डाउनलोडहरू AI बिना काम गर्छन्।"
 
 #: src/features/onboarding/template-choice.tsx
 msgid "More templates"
@@ -7889,7 +7857,8 @@ msgid "New application"
 msgstr "नयाँ आवेदन"
 
 #: src/features/assistant/assistant-screen.tsx
-#: src/features/assistant/coach-screen.tsx
+#: src/features/assistant/coach.tsx
+#: src/features/assistant/panel-bar.tsx
 #: src/features/assistant/threads.tsx
 #: src/features/workspace/coach-sheet.tsx
 msgid "New conversation"
@@ -7955,6 +7924,10 @@ msgstr "नयाँ खण्ड"
 
 #: src/features/profile/stories.tsx
 msgid "New story"
+msgstr ""
+
+#: src/features/assistant/conversation.tsx
+msgid "New suggested edits"
 msgstr ""
 
 #: src/features/auth/email-sign-in-screen.tsx
@@ -8068,8 +8041,8 @@ msgid "No conventional section headings were found."
 msgstr "कुनै परम्परागत खण्ड शीर्षक फेला परेन।"
 
 #: src/features/assistant/threads.tsx
-msgid "No conversations about this document yet."
-msgstr "यस कागजातको बारेमा अहिलेसम्म कुनै कुराकानी छैन।"
+msgid "No conversations yet."
+msgstr ""
 
 #: src/features/profile/facts-detail.tsx
 msgid "No corrections"
@@ -8099,10 +8072,6 @@ msgstr "कुनै मिति फेला परेन।"
 #: src/features/share/custom-domain.tsx
 msgid "No domain is connected anymore. Pull to refresh."
 msgstr ""
-
-#: src/features/assistant/threads.tsx
-msgid "no edits"
-msgstr "कुनै सम्पादन छैन"
 
 #: src/features/ats-checker/messages.ts
 msgid "No education section was found."
@@ -8915,6 +8884,10 @@ msgstr "{0} का लागि विकल्पहरू"
 msgid "Options for {0} at {1}"
 msgstr "{0} को {1} मा विकल्पहरू"
 
+#: src/features/assistant/threads.tsx
+msgid "Options for {label}"
+msgstr ""
+
 #: src/features/write/entry-row.tsx
 msgid "Options for {name}"
 msgstr ""
@@ -8972,7 +8945,7 @@ msgstr ""
 msgid "Other documents · {0}"
 msgstr "अन्य कागजातहरू · {0}"
 
-#: src/features/assistant/messages.tsx
+#: src/features/assistant/change-set.tsx
 msgid "Out of date: the text has changed since."
 msgstr "म्याद सकियो: पाठ पछि परिवर्तन भएको छ।"
 
@@ -9113,10 +9086,6 @@ msgstr ""
 #: src/features/share/web-page.tsx
 msgid "Passwords do not match."
 msgstr "पासवर्डहरू मेल खाँदैनन्।"
-
-#: src/features/assistant/assistant-screen.tsx
-msgid "Past conversations"
-msgstr "विगतका कुराकानीहरू"
 
 #: src/features/applications/save-posting.tsx
 msgid "Paste a job link or the posting's text, then check the role and company."
@@ -9338,7 +9307,6 @@ msgid "Planning your week"
 msgstr "तपाईंको हप्ताको योजना बनाउँदै"
 
 #: app/account/membership.tsx
-#: src/features/billing/ai-source.ts
 #: src/features/billing/plan-alert.ts
 msgid "Plans can be bought on the rezumi.app website."
 msgstr ""
@@ -9574,6 +9542,10 @@ msgstr ""
 msgid "Previous issue"
 msgstr "अघिल्लो मुद्दा"
 
+#: src/features/assistant/assistant-screen.tsx
+msgid "Previous messages, including document details, are also sent."
+msgstr ""
+
 #: src/features/applications/calendar/calendar-toolbar.tsx
 msgid "Previous month"
 msgstr "अघिल्लो महिना"
@@ -9644,6 +9616,7 @@ msgstr "दक्षता (Proficiency)"
 #: app/(tabs)/_layout.tsx
 #: app/(tabs)/profile/_layout.tsx
 #: app/account/account.tsx
+#: src/features/assistant/coach.tsx
 #: src/features/profile/profile-screen.tsx
 #: src/features/search/search-screen.tsx
 #: src/shell/app-tabs.tsx
@@ -10042,12 +10015,12 @@ msgstr ""
 msgid "Rehearse aloud"
 msgstr "ठूलो स्वरमा रिहर्सल गर्नुहोस्"
 
-#: src/features/assistant/messages.tsx
+#: src/features/assistant/change-set.tsx
 #: src/features/check/proposal-card.tsx
 msgid "Reject"
 msgstr "अस्वीकार गर्नुहोस्"
 
-#: src/features/assistant/messages.tsx
+#: src/features/assistant/change-set.tsx
 #: src/features/check/proposal-card.tsx
 msgid "Rejected"
 msgstr "अस्वीकार गरियो"
@@ -10210,15 +10183,11 @@ msgstr "यो फाइल हटाउने हो?"
 msgid "Remove this photo?"
 msgstr "यो तस्बिर हटाउने हो?"
 
+#: src/features/assistant/threads.tsx
 #: src/features/documents/document-menu.tsx
 #: src/features/documents/library-menu.tsx
 msgid "Rename"
 msgstr "पुन: नामाकरण गर्नुहोस्"
-
-#. placeholder {0}: title(thread)
-#: src/features/assistant/coach-screen.tsx
-msgid "Rename {0}"
-msgstr "नाम बदल्नुहोस् {0}"
 
 #: src/features/write/section-sheet.tsx
 msgid "Rename section"
@@ -10443,7 +10412,8 @@ msgstr ""
 #: src/features/applications/list/list-states.tsx
 #: src/features/assistant/assistant-screen.tsx
 #: src/features/assistant/chat-view.tsx
-#: src/features/assistant/coach-screen.tsx
+#: src/features/assistant/coach.tsx
+#: src/features/assistant/conversation.tsx
 #: src/features/assistant/provider.tsx
 #: src/features/career/schedule-body.tsx
 #: src/features/check/application-picker.tsx
@@ -10558,6 +10528,12 @@ msgstr "यो API कुञ्जी रद्द गर्नुहोस्"
 #: src/features/check/writing-tab.tsx
 msgid "Rewrite accepted"
 msgstr "पुनर्लेखन स्वीकार गरियो"
+
+#. placeholder {0}: CREDIT_COSTS["coach-turn"]
+#. placeholder {1}: providers.balance
+#: src/features/assistant/provider.tsx
+msgid "Rezumi AI · {0} credit per reply · {1} left"
+msgstr ""
 
 #: app/account/membership.tsx
 msgid "Rezumi AI credits"
@@ -10694,7 +10670,7 @@ msgstr "नमूना रिज्यूम थपियो। यसलाई
 
 #: src/features/applications/detail/activity.tsx
 #: src/features/applications/detail/follow-up-sheet.tsx
-#: src/features/assistant/coach-screen.tsx
+#: src/features/assistant/threads.tsx
 #: src/features/documents/menu-panels.tsx
 #: src/features/history/history-panel.tsx
 #: src/features/history/version-options.tsx
@@ -11078,7 +11054,7 @@ msgstr ""
 msgid "Search role, company or contact"
 msgstr "भूमिका, कम्पनी वा सम्पर्क खोज्नुहोस्"
 
-#: src/features/assistant/coach-screen.tsx
+#: src/features/assistant/coach.tsx
 msgid "Search terms go to your web search service."
 msgstr "खोज शब्दहरू तपाईंको वेब खोज सेवामा जान्छन्।"
 
@@ -11173,7 +11149,7 @@ msgstr ""
 msgid "Selects or clears this application"
 msgstr ""
 
-#: src/features/assistant/chat-view.tsx
+#: src/features/assistant/composer.tsx
 #: src/features/assistant/messages.tsx
 msgid "Send"
 msgstr "पठाउनुहोस्"
@@ -11227,6 +11203,30 @@ msgstr ""
 #. placeholder {0}: connection.defaultProvider?.label ?? ""
 #: src/features/jobs/listing-fit.tsx
 msgid "Sends this job's posting and your Profile (details, and the facts and stories that are switched on) to {0}."
+msgstr ""
+
+#: src/features/assistant/assistant-screen.tsx
+msgid "Sends this letter and the posting to {provider}, only when you tap send."
+msgstr ""
+
+#: src/features/assistant/assistant-screen.tsx
+msgid "Sends this letter to {provider}, only when you tap send."
+msgstr ""
+
+#: src/features/assistant/assistant-screen.tsx
+msgid "Sends this resume and the posting to {provider}, only when you tap send."
+msgstr ""
+
+#: src/features/assistant/assistant-screen.tsx
+msgid "Sends this resume to {provider}, only when you tap send."
+msgstr ""
+
+#: src/features/assistant/assistant-screen.tsx
+msgid "Sends your message and the posting to {provider}, only when you tap send."
+msgstr ""
+
+#: src/features/assistant/assistant-screen.tsx
+msgid "Sends your message to {provider}, only when you tap send."
 msgstr ""
 
 #: src/features/workspace/coach-sheet.tsx
@@ -11626,6 +11626,10 @@ msgstr "कागजातहरू सिर्जना गर्न वा �
 msgid "Sign in to edit this resume."
 msgstr "यो बायोडाटा सम्पादन गर्न साइन इन गर्नुहोस्।"
 
+#: src/features/assistant/coach.tsx
+msgid "Sign in to use Coach"
+msgstr ""
+
 #: src/features/assistant/assistant-screen.tsx
 msgid "Sign in to use the assistant."
 msgstr "सहायक प्रयोग गर्न साइन इन गर्नुहोस्।"
@@ -11846,7 +11850,7 @@ msgstr ""
 msgid "Source"
 msgstr "स्रोत"
 
-#: src/features/assistant/chat-view.tsx
+#: src/features/assistant/conversation.tsx
 #: src/features/assistant/messages.tsx
 msgid "Sources"
 msgstr "स्रोतहरू"
@@ -12036,7 +12040,7 @@ msgstr ""
 msgid "Step {index} of {total}"
 msgstr ""
 
-#: src/features/assistant/chat-view.tsx
+#: src/features/assistant/composer.tsx
 #: src/features/letters/write.tsx
 msgid "Stop"
 msgstr "रोक्नुहोस्"
@@ -12054,11 +12058,11 @@ msgstr "रेकर्डिङ रोक्नुहोस्"
 msgid "Stop when you're done. Nothing is sent until then."
 msgstr "सकिएपछि रोक्नुहोस्। तबसम्म केही पनि पठाइँदैन।"
 
-#: src/features/assistant/chat-view.tsx
+#: src/features/assistant/conversation.tsx
 msgid "Stopped"
 msgstr "रोकियो"
 
-#: src/features/assistant/chat-view.tsx
+#: src/features/assistant/conversation.tsx
 msgid "Stopped. No edits were proposed."
 msgstr "रोकियो। कुनै सम्पादन प्रस्तावित थिएन।"
 
@@ -12187,7 +12191,7 @@ msgstr "सुरु र अन्त्य मितिहरू बदल्�
 msgid "Swedish"
 msgstr "स्विडिस"
 
-#: src/features/assistant/chat-view.tsx
+#: src/features/assistant/conversation.tsx
 msgid "Switch model"
 msgstr "मोडेल स्विच गर्नुहोस्"
 
@@ -12516,14 +12520,6 @@ msgstr ""
 msgid "The application this letter is for."
 msgstr "जागिरको आवेदन यो पत्रको लागि हो।"
 
-#: src/features/assistant/assistant-screen.tsx
-msgid "The assistant isn't set up on this server. Whoever runs it needs to set ENCRYPTION_SECRET. Everything else works without it."
-msgstr "यस सर्भरमा सहायक सेटअप गरिएको छैन। जसले यसलाई चलाउँछ ENCRYPTION_SECRET सेट गर्न आवश्यक छ। अरू सबै यो बिना काम गर्दछ।"
-
-#: src/features/assistant/provider.tsx
-msgid "The assistant uses your own key. Nothing is sent anywhere until you connect one."
-msgstr "सहायकले तपाईंको आफ्नै कुञ्जी प्रयोग गर्दछ। तपाईंले जडान नगरेसम्म कुनै पनि कुरा कतै पठाइँदैन।"
-
 #: src/features/profile/conflict-sheet.tsx
 msgid "The changes you made on this device since then will be lost."
 msgstr ""
@@ -12547,10 +12543,6 @@ msgstr "कोचले तपाईंका सन्देशहरूबा�
 #: src/features/workspace/coach-sheet.tsx
 msgid "The coach isn't set up on this server. Whoever runs it needs to set ENCRYPTION_SECRET."
 msgstr "यो सर्भरमा प्रशिक्षक सेटअप गरिएको छैन। सर्भर सञ्चालकले ENCRYPTION_SECRET सेट गर्नुपर्छ।"
-
-#: src/features/assistant/coach-screen.tsx
-msgid "The coach isn't set up on this server. Whoever runs it needs to set ENCRYPTION_SECRET. Your Profile, Offers and your applications work without it."
-msgstr ""
 
 #: src/features/profile/preferences.tsx
 msgid "The coach proposes each fact in the chat. Nothing is saved until you agree."
@@ -12706,6 +12698,10 @@ msgstr "कारण इनसाइट्स को लागी राखि�
 msgid "The records aren't visible yet. Check again later."
 msgstr "रेकर्डहरू अझै देखिँदैनन्। पछि फेरि जाँच गर्नुहोस्।"
 
+#: src/features/assistant/conversation.tsx
+msgid "The reply was interrupted."
+msgstr ""
+
 #: src/features/ats-checker/checker.tsx
 msgid "The rest of the file isn't in this report."
 msgstr "बाँकी फाइल यस रिपोर्टमा छैन।"
@@ -12741,6 +12737,14 @@ msgstr "स्कोरले सफ्टवेयरले तपाइँक�
 #: src/features/ats-checker/checker.tsx
 msgid "The score reflects how reliably text is extracted, not your chances."
 msgstr "स्कोरले पाठलाई कसरी भरपर्दो तरिकाले निकालिएको छ भन्ने प्रतिबिम्बित गर्दछ, तपाइँको संभावनाहरू होइन।"
+
+#: src/features/assistant/coach.tsx
+msgid "The server operator needs to configure AI before Coach can start."
+msgstr ""
+
+#: src/features/assistant/assistant-screen.tsx
+msgid "The server operator needs to configure AI before the assistant can start."
+msgstr ""
 
 #: src/features/documents/import-file.ts
 msgid "The server returned an invalid import result. Refresh Documents before retrying."
@@ -12837,7 +12841,7 @@ msgstr ""
 msgid "Thinking"
 msgstr "सोच्दै"
 
-#: src/features/assistant/chat-view.tsx
+#: src/features/assistant/conversation.tsx
 msgid "Thinking…"
 msgstr "सोच्दै…"
 
@@ -12871,6 +12875,7 @@ msgstr ""
 
 #: src/features/assistant/assistant-screen.tsx
 #: src/features/assistant/chat-view.tsx
+#: src/features/assistant/coach.tsx
 msgid "This conversation couldn't be opened."
 msgstr "यो कुराकानी खोल्न सकिएन।"
 
@@ -13096,7 +13101,7 @@ msgid "This measures how faithfully software can extract this file's text. It do
 msgstr "यसले सफ्टवेयरले यस फाइलको पाठलाई कसरी निष्ठापूर्वक निकाल्न सक्छ भन्ने उपाय गर्छ। यसले आवेदन अस्वीकृत हुन्छ कि हुँदैन भनेर भविष्यवाणी गर्दैन, र कुनै उपकरणले गर्न सक्दैन।"
 
 #: src/features/billing/ai-source.ts
-msgid "This needs {required} and you have {balance}. Use your own AI connection instead: set it as the default in Settings → AI providers."
+msgid "This needs {required} and you have {balance}. Switch to your own AI connection to continue."
 msgstr ""
 
 #: src/features/assistant/messages.tsx
@@ -13439,7 +13444,7 @@ msgstr "ट्रान्सक्राइब गरिएको · {spokenFor
 msgid "Transcribing with {model}…"
 msgstr "{model} बाट ट्रान्सक्राइब गर्दै…"
 
-#: src/features/assistant/chat-view.tsx
+#: src/features/assistant/conversation.tsx
 msgid "Transcript copied"
 msgstr "ट्रान्सक्रिप्ट प्रतिलिपि गरियो"
 
@@ -13635,9 +13640,8 @@ msgstr "अधोरेखित लिङ्कहरू"
 #: src/features/applications/detail/contacts.tsx
 #: src/features/applications/interview/use-reschedule.ts
 #: src/features/applications/queries.ts
-#: src/features/assistant/document.ts
+#: src/features/assistant/change-set.tsx
 #: src/features/assistant/messages.tsx
-#: src/features/assistant/proposals.ts
 #: src/features/career/undo.ts
 #: src/features/check/actions.ts
 #: src/features/design/draft.ts
@@ -13949,8 +13953,6 @@ msgstr "#3E6B4F जस्ता छवटा Hex अङ्क प्रयोग
 msgid "Use the authenticator app"
 msgstr ""
 
-#: src/features/assistant/document.ts
-#: src/features/assistant/proposals.ts
 #: src/features/check/actions.ts
 msgid "Use the builder's Undo to undo earlier changes."
 msgstr "अघिल्ला परिवर्तनहरू उल्टाउन बिल्डरको पूर्ववत प्रयोग गर्नुहोस्।"
@@ -14242,7 +14244,7 @@ msgstr ""
 msgid "Web page"
 msgstr "वेब पेज"
 
-#: src/features/assistant/coach-screen.tsx
+#: src/features/assistant/coach.tsx
 msgid "Web research"
 msgstr "वेब अनुसन्धान"
 
@@ -14299,7 +14301,7 @@ msgstr "पार्सरले के पढ्छ"
 msgid "What a person sees"
 msgstr "मानिसले के देख्छ"
 
-#: src/features/assistant/coach-screen.tsx
+#: src/features/assistant/coach.tsx
 msgid "What are you working on?"
 msgstr "तपाईं केमा काम गर्दै हुनुहुन्छ?"
 
@@ -14323,7 +14325,7 @@ msgstr "तपाईंले के भन्नुभयो, जति सक�
 msgid "What goes in it?"
 msgstr "यसमा के जान्छ ?"
 
-#: src/features/assistant/coach-screen.tsx
+#: src/features/assistant/coach.tsx
 msgid "What interview answers should I practice?"
 msgstr "मैले अन्तर्वार्ताका कुन जवाफहरू अभ्यास गर्नुपर्छ?"
 
@@ -14427,9 +14429,9 @@ msgstr ""
 msgid "When do they need your answer?"
 msgstr "उनीहरूलाई तपाईंको जवाफ कहिलेसम्म चाहिन्छ?"
 
-#: src/features/assistant/coach-screen.tsx
-msgid "When you tap send, {list} go to {connection}."
-msgstr "तपाईंले पठाउनुमा ट्याप गर्दा, {list} {connection} मा जान्छन्।"
+#: src/features/assistant/coach.tsx
+msgid "When you tap send, {list} go to {label}."
+msgstr ""
 
 #: src/features/applications/insights/insights-cards.tsx
 msgid "Where applications come from"
@@ -14463,7 +14465,7 @@ msgstr "तपाईको आवेदन कहाँ गयो"
 msgid "Which application is it for?"
 msgstr ""
 
-#: src/features/assistant/coach-screen.tsx
+#: src/features/assistant/coach.tsx
 msgid "Which opportunities best match my priorities?"
 msgstr "कुन अवसरहरू मेरा प्राथमिकताहरूसँग सबैभन्दा राम्रो मेल खान्छन्?"
 
@@ -14642,7 +14644,7 @@ msgstr "हिजो"
 msgid "Yesterday {time}"
 msgstr "हिजो {time}"
 
-#: src/features/assistant/chat-view.tsx
+#: src/features/assistant/conversation.tsx
 msgid "You"
 msgstr "तपाईं"
 
@@ -14830,6 +14832,11 @@ msgstr "तपाईंको AI जडान"
 msgid "Your AI connection"
 msgstr "तपाईंको AI जडान"
 
+#. placeholder {0}: provider.label
+#: src/features/assistant/provider.tsx
+msgid "Your AI connection · {0}"
+msgstr ""
+
 #: src/api/ai-consent.ts
 msgid "Your AI settings changed while you were deciding. Nothing was sent; try again."
 msgstr "तपाईंले निर्णय गर्दा तपाईंको AI सेटिङहरू परिवर्तन भयो। केही पठाइएन; पुन: प्रयास गर्नुहोस्।"
@@ -14958,9 +14965,13 @@ msgstr "तपाईंको लाइनहरू धेरै कडा प�
 msgid "Your margins are very narrow."
 msgstr "तपाईंका मार्जिन धेरै साँघुरा छन्।"
 
-#: src/features/assistant/coach-screen.tsx
+#: src/features/assistant/coach.tsx
 msgid "your message"
 msgstr "तपाईंको सन्देश"
+
+#: src/features/assistant/conversation.tsx
+msgid "Your message is kept. Try again to continue."
+msgstr ""
 
 #: src/features/write/write-header.tsx
 msgid "Your name"
@@ -15038,7 +15049,7 @@ msgstr ""
 msgid "Your portfolio is coming to the app"
 msgstr ""
 
-#: src/features/assistant/coach-screen.tsx
+#: src/features/assistant/coach.tsx
 msgid "your preferences"
 msgstr "तपाईंका प्राथमिकताहरू"
 
@@ -15074,7 +15085,7 @@ msgstr ""
 msgid "Your Profile changed somewhere else. Try again."
 msgstr ""
 
-#: src/features/assistant/coach-screen.tsx
+#: src/features/assistant/coach.tsx
 msgid "Your Profile couldn't load. Try again or switch Profile off before sending."
 msgstr ""
 
@@ -15190,7 +15201,7 @@ msgstr "तपाईंले फेरि प्रकाशित नगरे
 msgid "Your sources"
 msgstr ""
 
-#: src/features/assistant/coach-screen.tsx
+#: src/features/assistant/coach.tsx
 msgid "your stories"
 msgstr "तपाईंका कथाहरू"
 

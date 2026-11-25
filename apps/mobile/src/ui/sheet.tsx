@@ -1,4 +1,4 @@
-import type { DetentChangeEvent, SheetDetent } from "@lodev09/react-native-true-sheet";
+import type { DetentChangeEvent, DidPresentEvent, SheetDetent } from "@lodev09/react-native-true-sheet";
 // Sheets: the platform's own bottom sheet (UISheetPresentationController on iOS, the Material bottom sheet on Android)
 // through TrueSheet, for a task beside the current screen: a short form, options, a detail. Dialogs and toasts render
 // above an open sheet. Phones get a grabber and detents; tablets a centred form sheet.
@@ -14,6 +14,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { ScrollView, StyleSheet, useWindowDimensions, View } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { IconButton } from "./button";
+import { NativeKeyboardBoundary } from "./keyboard";
 import { haptics, useIsWide, useReducedMotion } from "./motion";
 import { useWindowSafeAreaInsets } from "./safe-area";
 import { Typography } from "./text";
@@ -37,6 +38,9 @@ export type SheetProps = {
 	 * the screen (`0.5`). Moving between detents plays the selection haptic.
 	 */
 	detents?: SheetDetent[] | undefined;
+	/** Select a detent programmatically while preserving the content as it expands. */
+	detent?: number | undefined;
+	onDetentChange?: ((index: number) => void) | undefined;
 	children?: ReactNode;
 	/** Pinned under the scrolling content and lifted above the keyboard: the sheet's primary action. */
 	footer?: ReactNode;
@@ -89,6 +93,8 @@ export function Sheet({
 	title,
 	closeLabel,
 	detents = ["auto"],
+	detent,
+	onDetentChange: onDetentChanged,
 	children,
 	footer,
 	scroll = true,
@@ -107,6 +113,7 @@ export function Sheet({
 	const scrollRef = useRef<ComponentRef<typeof ScrollView>>(null);
 	const [footerHeight, setFooterHeight] = useState(0);
 	const [headerHeight, setHeaderHeight] = useState(0);
+	const [sheetTop, setSheetTop] = useState<number | null>(null);
 	const detentIndex = useRef(-1);
 	const wantsOpen = useRef(false);
 	const presented = useRef(false);
@@ -142,7 +149,22 @@ export function Sheet({
 		}
 	}, [isOpen, reduced, present]);
 
+	useEffect(() => {
+		if (!isOpen || detent === undefined) return;
+		let current = true;
+		void opening.current
+			.then(() => {
+				if (current && wantsOpen.current && presented.current && detentIndex.current !== detent)
+					return ref.current?.resize(detent);
+			})
+			.catch(() => undefined);
+		return () => {
+			current = false;
+		};
+	}, [isOpen, detent]);
+
 	const onDidDismiss = () => {
+		setSheetTop(null);
 		presented.current = false;
 		detentIndex.current = -1;
 		if (closing.current) {
@@ -155,9 +177,16 @@ export function Sheet({
 		onDismissed?.();
 	};
 
-	const onDetentChange = ({ nativeEvent: { index } }: DetentChangeEvent) => {
+	const measureDetent = ({ nativeEvent: { position } }: DetentChangeEvent | DidPresentEvent) => {
+		if (detent !== undefined) setSheetTop(position);
+	};
+
+	const onDetentChange = (event: DetentChangeEvent) => {
+		const { index } = event.nativeEvent;
+		measureDetent(event);
 		if (detentIndex.current >= 0 && index !== detentIndex.current) haptics.selection();
 		detentIndex.current = index;
+		onDetentChanged?.(index);
 	};
 
 	const requestClose = () => {
@@ -180,7 +209,11 @@ export function Sheet({
 	// added under it: without it the last lines of a long sheet stay under the screen's edge.
 	const headerSpace = hasHeader && scroll ? headerHeight : 0;
 	const bottom = (footer ? (scroll ? space[4] : footerHeight + space[4]) : insets.bottom + space[4]) + headerSpace;
+	// A fixed-detent viewport hosts a virtualized list, which needs a bounded height before it can lay out.
+	const viewportHeight =
+		detent === undefined ? undefined : height - (sheetTop ?? height * (1 - Number(detents[detent] ?? 1)));
 	const contentStyle = {
+		height: viewportHeight,
 		gap: space[3],
 		paddingTop: hasHeader ? space[2] : space[6],
 		paddingHorizontal: padded ? space[4] : 0,
@@ -193,12 +226,13 @@ export function Sheet({
 			detents={detents}
 			dismissible={canDismiss}
 			draggable
+			onDidPresent={measureDetent}
 			onDidDismiss={onDidDismiss}
 			onDismissAttempt={() => onDismissAttempt?.()}
 			onDetentChange={onDetentChange}
 			presentation={wide ? "form" : "page"}
 			maxContentWidth={size.formSheet}
-			maxContentHeight={Math.round((height - insets.top) * maxHeight)}
+			maxContentHeight={Math.round((height - insets.top) * (detent === undefined ? maxHeight : 1))}
 			backgroundColor={background}
 			cornerRadius={cornerRadius}
 			grabber={!wide}
@@ -219,31 +253,33 @@ export function Sheet({
 					}
 				: {})}
 		>
-			<GestureHandlerRootView style={styles.root}>
-				{scroll ? (
-					<ScrollView
-						ref={scrollRef}
-						testID={testID}
-						nestedScrollEnabled
-						accessibilityViewIsModal
-						onAccessibilityEscape={requestClose}
-						keyboardShouldPersistTaps="handled"
-						keyboardDismissMode="interactive"
-						contentContainerStyle={contentStyle}
-					>
-						{children}
-					</ScrollView>
-				) : (
-					<View
-						testID={testID}
-						accessibilityViewIsModal
-						onAccessibilityEscape={requestClose}
-						style={[styles.root, contentStyle]}
-					>
-						{children}
-					</View>
-				)}
-			</GestureHandlerRootView>
+			<NativeKeyboardBoundary>
+				<GestureHandlerRootView style={styles.root}>
+					{scroll ? (
+						<ScrollView
+							ref={scrollRef}
+							testID={testID}
+							nestedScrollEnabled
+							accessibilityViewIsModal
+							onAccessibilityEscape={requestClose}
+							keyboardShouldPersistTaps="handled"
+							keyboardDismissMode="interactive"
+							contentContainerStyle={contentStyle}
+						>
+							{children}
+						</ScrollView>
+					) : (
+						<View
+							testID={testID}
+							accessibilityViewIsModal
+							onAccessibilityEscape={requestClose}
+							style={[styles.root, contentStyle]}
+						>
+							{children}
+						</View>
+					)}
+				</GestureHandlerRootView>
+			</NativeKeyboardBoundary>
 		</TrueSheet>
 	);
 }

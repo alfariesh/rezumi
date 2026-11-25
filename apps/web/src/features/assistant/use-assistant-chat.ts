@@ -1,15 +1,11 @@
 import type { MessageContext } from "./chat";
+import type { AgentMessagesApi } from "@rezumi/ai/chat-transport";
 import type { AgentUIMessage } from "@rezumi/ai/tools/agent-tool-contracts";
 import type { ChatTransport, UIMessage } from "ai";
 import { useChat } from "@ai-sdk/react";
-import { eventIteratorToUnproxiedDataStream } from "@orpc/client";
-import {
-	lastAssistantMessageIsCompleteWithApprovalResponses,
-	lastAssistantMessageIsCompleteWithToolCalls,
-	parseJsonEventStream,
-	uiMessageChunkSchema,
-} from "ai";
+import { lastAssistantMessageIsCompleteWithApprovalResponses, lastAssistantMessageIsCompleteWithToolCalls } from "ai";
 import { useLayoutEffect, useMemo, useRef } from "react";
+import { resumeAgentStream, sendAgentMessage } from "@rezumi/ai/chat-transport";
 import { agentMessageMetadataSchema } from "@rezumi/ai/tools/agent-tool-contracts";
 import { generateId } from "@rezumi/utils/string";
 import { DocumentNotReadyError } from "./send-guard";
@@ -17,23 +13,6 @@ import { openCreditsDialogForError } from "@/features/billing/ai-source-menu";
 import { client, streamClient } from "@/libs/orpc/client";
 
 // Apart from chat.ts so pages that only list conversations don't load the AI SDK.
-
-function parseSse(stream: ReadableStream<string>) {
-	return parseJsonEventStream({
-		stream: stream.pipeThrough(new TextEncoderStream()),
-		schema: uiMessageChunkSchema,
-	}).pipeThrough(
-		new TransformStream({
-			transform(chunk, controller) {
-				if (!chunk.success) {
-					console.warn("[assistant] dropping malformed SSE frame", chunk.error);
-					return;
-				}
-				controller.enqueue(chunk.value);
-			},
-		}),
-	);
-}
 
 // Stop requests still on their way to the server, by conversation. The next message waits for its stop, so the server
 // already knows the run was stopped and frees the conversation instead of answering "still replying".
@@ -50,10 +29,11 @@ export function requestStop(threadId: string) {
 	pendingStops.set(threadId, request);
 }
 
-const attachmentIdsOf = (body: object | undefined) =>
-	body && "attachmentIds" in body && Array.isArray(body.attachmentIds)
-		? body.attachmentIds.filter((id): id is string => typeof id === "string")
-		: undefined;
+const messagesApi: AgentMessagesApi = {
+	send: (input, options) =>
+		streamClient.agent.messages.send({ ...input, message: input.message as AgentUIMessage }, options),
+	resume: (input, options) => streamClient.agent.messages.resume(input, options),
+};
 
 type UseAssistantChatInput = {
 	threadId: string;
@@ -97,32 +77,15 @@ export function useAssistantChat({
 	const transport = useMemo<ChatTransport<AgentUIMessage>>(
 		() => ({
 			async sendMessages(options) {
-				const message = options.messages.at(-1);
-				if (!message) throw new Error("No message to send.");
 				await pendingStops.get(threadId);
 				const problem = (await beforeSendRef.current?.()) ?? null;
 				if (problem) throw new DocumentNotReadyError(problem);
-				const attachmentIds = attachmentIdsOf(options.body);
-				// Every reply is its own Rezumi AI action, with its own key.
+				options.abortSignal?.throwIfAborted();
 				const source = aiSourceRef.current ? { aiSource: aiSourceRef.current, idempotencyKey: generateId() } : {};
-				return parseSse(
-					eventIteratorToUnproxiedDataStream(
-						await streamClient.agent.messages.send(
-							{
-								threadId,
-								message,
-								context: contextRef.current,
-								...(attachmentIds ? { attachmentIds } : {}),
-								...source,
-							},
-							options.abortSignal ? { signal: options.abortSignal } : {},
-						),
-					),
-				);
+				return sendAgentMessage(messagesApi, threadId, contextRef.current, options, source);
 			},
-			async reconnectToStream() {
-				return parseSse(eventIteratorToUnproxiedDataStream(await streamClient.agent.messages.resume({ threadId })));
-			},
+			reconnectToStream: ({ abortSignal }) =>
+				resumeAgentStream(messagesApi, threadId, { signal: abortSignal, idleMs: null }),
 		}),
 		[threadId],
 	);

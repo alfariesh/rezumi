@@ -60,7 +60,7 @@ function useNavigationTheme() {
 	} satisfies typeof DefaultTheme;
 }
 
-const overTabs = (name: string) => name === "coach" || name === "ats-checker" || name.startsWith("account/");
+const overTabs = (name: string) => name === "ats-checker" || name.startsWith("account/");
 
 type CrashScreenProps = { onRetry: () => void };
 
@@ -92,7 +92,7 @@ function RootStack() {
 				screenOptions={({ route }) => ({
 					animation: reduced ? "fade" : "default",
 					headerTitleStyle: { fontFamily: navigationTheme.fonts.bold.fontFamily },
-					// Screens pushed over the tabs (account stack, Coach, ATS checker) would read "(tabs)" as their back title.
+					// Screens pushed over the tabs (account stack, ATS checker) would read "(tabs)" as their back title.
 					...(overTabs(route.name) ? { headerBackButtonDisplayMode: "minimal" as const } : {}),
 				})}
 			>
@@ -110,7 +110,7 @@ function RootStack() {
 					options={{ presentation: "formSheet", sheetAllowedDetents: [0.5, 0.9], title: t`New` }}
 				/>
 				<Stack.Screen name="search" options={{ presentation: "modal", headerShown: false, title: t`Search` }} />
-				<Stack.Screen name="coach" options={{ title: t`Coach`, headerTransparent: false }} />
+				<Stack.Screen name="coach" options={{ headerShown: false }} />
 				<Stack.Screen name="ats-checker" options={{ title: t`ATS checker` }} />
 				<Stack.Screen name="applications/[id]" options={{ headerShown: false, title: t`Application` }} />
 				<Stack.Screen name="r/[username]/[slug]" options={{ title: t`Resume` }} />

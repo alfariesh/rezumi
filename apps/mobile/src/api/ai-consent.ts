@@ -1,15 +1,24 @@
 import type { client } from "./client";
 import type { AiSource } from "@rezumi/schema/billing";
 import { t } from "@lingui/core/macro";
-import { Alert } from "react-native";
 import { generateId } from "@rezumi/utils/string";
 import { getAccountScope, getServer } from "@/auth/session";
 import { canUseRezumiAi, creditActionOf, describeCreditCost } from "@/features/billing/ai-source";
+import { confirmOperation } from "@/ui/operation-consent";
 
 type ConsentApi = Pick<typeof client, "aiProviders" | "agent" | "billing">;
 
 /** Which AI the server runs the request on, added to the request's input. */
 export type AiSourceFields = { aiSource: AiSource; idempotencyKey?: string };
+
+/** A user decision is an abort to the API, and a recoverable send failure to the chat. */
+export class AiConsentDeclined extends Error {
+	override name = "AbortError";
+
+	constructor() {
+		super(t`Data sharing canceled. Nothing was sent to the AI provider.`);
+	}
+}
 
 let dialogs: Promise<unknown> = Promise.resolve();
 
@@ -110,22 +119,14 @@ export async function authorizeAiRequest(
 	const cost = rezumi ? `${describeCreditCost(rezumi, balance)}\n\n` : "";
 	const result = dialogs.then(async () => {
 		current();
-		const allowed = await new Promise<boolean>((resolve) => {
-			Alert.alert(
-				rezumi ? t`Use Rezumi AI?` : t`Share data with ${provider.label}?`,
-				`${cost}${t`Server`}: ${server}\n${t`Provider`}: ${destination}\n\n${data}\n\n${webNotice}\n${scheduleNotice}\n${t`Provider retention and use follow its privacy policy. Declining prevents this operation and leaves other app features available.`}`,
-				[
-					{ text: t`Don't share`, style: "cancel", onPress: () => resolve(false) },
-					{
-						text: rezumi ? t`Use credits` : scheduled ? t`Allow scheduled sharing` : t`Allow this operation`,
-						onPress: () => resolve(true),
-					},
-				],
-				{ cancelable: true, onDismiss: () => resolve(false) },
-			);
+		const allowed = await confirmOperation({
+			title: rezumi ? t`Use Rezumi AI?` : t`Share data with ${provider.label}?`,
+			message: `${cost}${t`Server`}: ${server}\n${t`Provider`}: ${destination}\n\n${data}\n\n${webNotice}\n${scheduleNotice}\n${t`Provider retention and use follow its privacy policy. Declining prevents this operation and leaves other app features available.`}`,
+			cancelLabel: t`Don't share`,
+			allowLabel: rezumi ? t`Use credits` : scheduled ? t`Allow scheduled sharing` : t`Allow this operation`,
 		});
 		current();
-		if (!allowed) throw new DOMException(t`Data sharing canceled. Nothing was sent to the AI provider.`, "AbortError");
+		if (!allowed) throw new AiConsentDeclined();
 		// The approval covers the provider shown. If its settings or the default changed while the dialog was open,
 		// nothing is sent.
 		const approved = await resolveProvider();

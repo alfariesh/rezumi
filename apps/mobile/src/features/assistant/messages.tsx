@@ -1,4 +1,4 @@
-import type { ToolPart } from "./proposals";
+import type { ToolPart } from "@rezumi/ai/assistant-proposals";
 import type { Proposal, ProposalState } from "@rezumi/resume/proposals";
 import type { UIMessage } from "ai";
 import type { ReactNode } from "react";
@@ -6,14 +6,14 @@ import { plural } from "@lingui/core/macro";
 import { Trans, useLingui } from "@lingui/react/macro";
 import { useQueryClient } from "@tanstack/react-query";
 import { memo, useState } from "react";
-import { ActivityIndicator, Linking, Pressable, TextInput, View } from "react-native";
-import { blockText } from "@rezumi/resume/proposals";
-import { webSources } from "./chat";
+import { Linking, View } from "react-native";
+import { isProposeEdits, skippedCount, toProposals } from "@rezumi/ai/assistant-proposals";
+import { agentWebSources } from "@rezumi/ai/tools/agent-tool-contracts";
+import { ChangeSet } from "./change-set";
 import { AssistantMarkdown } from "./markdown";
-import { isProposeEdits, skippedCount, toProposals } from "./proposals";
 import { client, orpc } from "@/api/client";
 import { ReportAiContent } from "@/features/ai/report-content";
-import { Button, Icon, Text, showToast, useTheme } from "@/ui-legacy";
+import { Button, Icon, IconButton, Input, Spinner, Text, showToast } from "@/ui";
 
 export type EditStatus = Proposal["status"];
 
@@ -24,6 +24,7 @@ export type ProposalHandlers = {
 	locked: boolean;
 	onAccept: (message: UIMessage, part: ToolPart, proposals: readonly Proposal[]) => void;
 	onReject: (message: UIMessage, part: ToolPart, proposals: readonly Proposal[]) => void;
+	undo: React.ComponentProps<typeof ChangeSet>["undo"];
 };
 
 type MessageViewProps = {
@@ -44,23 +45,14 @@ export const MessageView = memo(function MessageView({
 	onAnswer,
 }: MessageViewProps) {
 	const { t } = useLingui();
-	const { colors, radius, space } = useTheme();
 
 	if (message.role === "user") {
 		const text = message.parts.flatMap((part) => (part.type === "text" ? [part.text] : [])).join("\n");
 		const files = message.parts.flatMap((part) => (part.type === "file" ? [part] : []));
 		return (
-			<View style={{ alignItems: "flex-end", gap: space.s1, marginStart: space.s8 }}>
+			<View className="ms-8 items-end gap-1">
 				{text ? (
-					<View
-						style={{
-							paddingHorizontal: space.s3,
-							paddingVertical: space.s2,
-							backgroundColor: colors.sunken,
-							borderRadius: radius.rLg,
-							borderBottomEndRadius: radius.rSm,
-						}}
-					>
+					<View className="rounded-xl rounded-ee-sm bg-surface-secondary px-3 py-2">
 						<Text selectable>{text}</Text>
 					</View>
 				) : null}
@@ -71,24 +63,17 @@ export const MessageView = memo(function MessageView({
 		);
 	}
 
-	const sources = webSources(message);
+	const sources = agentWebSources(message);
 	const reportText = message.parts.flatMap((part) => (part.type === "text" ? [part.text] : [])).join("\n");
-	const lastText = message.parts.findLastIndex((part) => part.type === "text");
 
 	return (
-		<View style={{ gap: space.s3 }}>
+		<View className="gap-3">
 			{message.parts.map((part, index) => {
 				const key = `${message.id}-${index}`;
 				if (part.type === "text")
 					return (
 						<View key={key}>
 							<AssistantMarkdown text={part.text} />
-							{streaming && index === lastText ? (
-								<View
-									accessible={false}
-									style={{ width: 8, height: 16, marginTop: space.s1, backgroundColor: colors.ink }}
-								/>
-							) : null}
 						</View>
 					);
 				return (
@@ -103,21 +88,21 @@ export const MessageView = memo(function MessageView({
 					/>
 				);
 			})}
-			{!streaming ? <ReportAiContent source="assistant" text={reportText} /> : null}
+			{!streaming && reportText.trim() ? <ReportAiContent source="assistant" text={reportText} fromMenu /> : null}
 			{sources.length > 0 ? (
-				<View style={{ gap: space.s1 }}>
-					<Text variant="caption" color="ink3">
+				<View className="gap-1">
+					<Text size="xs" tone="muted">
 						<Trans>Sources</Trans>
 					</Text>
 					{sources.map((source) => (
 						<Text
 							key={source.url}
-							variant="callout"
-							color="accentText"
+
+							tone="accent"
 							numberOfLines={1}
 							accessibilityRole="link"
 							onPress={() => void Linking.openURL(source.url)}
-							style={{ textDecorationLine: "underline" }}
+							className="underline"
 						>
 							{source.title}
 						</Text>
@@ -132,64 +117,32 @@ type FileChipProps = { name: string; busy?: boolean | undefined; onRemove?: (() 
 
 export function FileChip({ name, busy, onRemove }: FileChipProps) {
 	const { t } = useLingui();
-	const { colors, radius, space } = useTheme();
 	return (
-		<View
-			style={{
-				flexDirection: "row",
-				alignItems: "center",
-				gap: space.s1,
-				minHeight: 28,
-				paddingStart: space.s2,
-				paddingEnd: onRemove ? 0 : space.s2,
-				borderRadius: radius.rMd,
-				backgroundColor: colors.sunken,
-				maxWidth: 200,
-			}}
-		>
-			{busy ? <ActivityIndicator size="small" /> : <Icon name="paperclip" size={14} color={colors.ink2} />}
-			<Text variant="caption" color="ink2" numberOfLines={1} style={{ flexShrink: 1 }}>
+		<View className="min-h-8 max-w-48 flex-row items-center gap-1 rounded-full bg-surface-secondary px-2">
+			{busy ? <Spinner size="sm" /> : <Icon name="paperclip" size={16} tone="muted" />}
+			<Text size="xs" tone="muted" numberOfLines={1} className="shrink">
 				{name}
 			</Text>
-			{onRemove ? (
-				<Pressable
-					accessibilityRole="button"
-					accessibilityLabel={t`Remove ${name}`}
-					onPress={onRemove}
-					hitSlop={8}
-					style={{ width: 28, height: 28, alignItems: "center", justifyContent: "center" }}
-				>
-					<Icon name="x" size={12} color={colors.ink3} />
-				</Pressable>
-			) : null}
+			{onRemove ? <IconButton icon="x" label={t`Remove ${name}`} size="sm" onPress={onRemove} /> : null}
 		</View>
 	);
 }
 
 type StatusProps = { status?: "running" | "error" | "pending" | undefined; children: ReactNode };
 
-/**
- * One step the assistant took, as a quiet trace line (the web's Trace): a spinner while it runs, a check when done,
- * a warning in danger when it failed, a dash and dimmed when it never finished.
- */
 export function Status({ status, children }: StatusProps) {
-	const { colors, space } = useTheme();
-	const color = status === "error" ? colors.dangerText : status === "pending" ? colors.ink3 : colors.accent;
 	return (
-		<View
-			accessibilityRole={status === "error" ? "alert" : undefined}
-			style={{ flexDirection: "row", alignItems: "center", gap: space.s2, opacity: status === "pending" ? 0.7 : 1 }}
-		>
+		<View accessibilityRole={status === "error" ? "alert" : undefined} className="flex-row items-center gap-2">
 			{status === "running" ? (
-				<ActivityIndicator size="small" />
+				<Spinner size="sm" />
 			) : (
 				<Icon
 					name={status === "error" ? "warning-circle" : status === "pending" ? "minus" : "check"}
-					size={14}
-					color={color}
+					size={16}
+					tone={status === "error" ? "danger" : "muted"}
 				/>
 			)}
-			<Text variant="caption" color={status === "error" ? "dangerText" : "ink3"} style={{ flexShrink: 1 }}>
+			<Text size="xs" tone={status === "error" ? "danger" : "muted"} className="shrink">
 				{children}
 			</Text>
 		</View>
@@ -199,7 +152,6 @@ export function Status({ status, children }: StatusProps) {
 type ToolPartViewProps = Omit<MessageViewProps, "message"> & { part: ToolPart; message: UIMessage };
 
 function ToolPartView({ part, message, streaming, readOnly, proposals, onAnswer }: ToolPartViewProps) {
-	const { space } = useTheme();
 	const working = part.state === "input-streaming" || part.state === "input-available";
 	if (part.state === "approval-requested" || part.state === "approval-responded") return null;
 	if (part.state === "output-denied")
@@ -248,7 +200,7 @@ function ToolPartView({ part, message, streaming, readOnly, proposals, onAnswer 
 				? (part.output as { truncated?: unknown; completeness?: unknown; fallbackReason?: unknown })
 				: null;
 			return (
-				<View style={{ gap: space.s1 }}>
+				<View className="gap-1">
 					<Status status={working ? "running" : undefined}>
 						{reading ? (
 							working ? (
@@ -263,12 +215,12 @@ function ToolPartView({ part, message, streaming, readOnly, proposals, onAnswer 
 						)}
 					</Status>
 					{page && (page.truncated === true || page.completeness === "incomplete") ? (
-						<Text variant="caption" color="ink3">
+						<Text size="xs" tone="muted">
 							<Trans>This page is clipped or incomplete. Check the original before using it.</Trans>
 						</Text>
 					) : null}
 					{page && typeof page.fallbackReason === "string" ? (
-						<Text variant="caption" color="ink3">
+						<Text size="xs" tone="muted">
 							<Trans>Enhanced reading unavailable; used the built-in reader.</Trans>
 						</Text>
 					) : null}
@@ -300,18 +252,19 @@ function ToolPartView({ part, message, streaming, readOnly, proposals, onAnswer 
 			const list = toProposals(part, proposals.statuses);
 			const skipped = skippedCount(part);
 			return (
-				<View style={{ gap: space.s2 }}>
+				<View className="gap-2">
 					{list.length > 0 ? (
 						<ChangeSet
 							proposals={list}
 							states={list.map(proposals.stateOf)}
-							locked={readOnly || proposals.locked}
+							locked={readOnly || proposals.locked || streaming}
+							undo={proposals.undo}
 							onAccept={(chosen) => proposals.onAccept(message, part, chosen)}
 							onReject={(chosen) => proposals.onReject(message, part, chosen)}
 						/>
 					) : null}
 					{skipped > 0 ? (
-						<Text variant="caption" color="ink3">
+						<Text size="xs" tone="muted">
 							{plural(skipped, {
 								one: "# edit couldn't be placed: its text changed. Ask again to redo it.",
 								other: "# edits couldn't be placed: their text changed. Ask again to redo them.",
@@ -342,7 +295,6 @@ type QuestionCardProps = Pick<MessageViewProps, "readOnly" | "onAnswer"> & { par
 /** The assistant asks before writing anything the document doesn't say: an info-soft card with its choices. */
 function QuestionCard({ part, readOnly, onAnswer }: QuestionCardProps) {
 	const { t } = useLingui();
-	const { colors, radius, size, space, type } = useTheme();
 	const [other, setOther] = useState("");
 	const input = (part.input ?? {}) as { question?: unknown; choices?: unknown };
 	const question = typeof input.question === "string" ? input.question : "";
@@ -354,54 +306,45 @@ function QuestionCard({ part, readOnly, onAnswer }: QuestionCardProps) {
 	if (!question) return null;
 
 	return (
-		<View style={{ gap: space.s3, padding: space.s3, borderRadius: radius.rLg, backgroundColor: colors.infoSoft }}>
-			<Text variant="label" color="infoText">
+		<View className="gap-3 rounded-xl bg-accent-soft p-3">
+			<Text weight="semibold" tone="accent">
 				{question}
 			</Text>
 			{answer !== null ? (
-				<Text variant="callout" color="infoText">
+				<Text tone="accent">
 					<Trans>You answered: {answer}</Trans>
 				</Text>
 			) : readOnly || !toolCallId ? null : !onAnswer ? (
-				<Text variant="callout" color="infoText">
+				<Text tone="accent">
 					<Trans>Context is left out, so reply with a new message instead.</Trans>
 				</Text>
 			) : (
 				<>
 					{choices.length > 0 ? (
-						<View style={{ flexDirection: "row", flexWrap: "wrap", gap: space.s2 }}>
+						<View className="flex-row flex-wrap gap-2">
 							{choices.map((choice) => (
-								<Button key={choice} variant="secondary" label={choice} onPress={() => onAnswer(toolCallId, choice)} />
+								<Button key={choice} variant="secondary" onPress={() => onAnswer(toolCallId, choice)}>
+									<Button.Label>{choice}</Button.Label>
+								</Button>
 							))}
 						</View>
 					) : null}
-					<View style={{ flexDirection: "row", alignItems: "center", gap: space.s2 }}>
-						<TextInput
+					<View className="flex-row items-center gap-2">
+						<Input
 							value={other}
 							onChangeText={setOther}
 							accessibilityLabel={t`Answer in your own words`}
 							placeholder={t`Or in your own words…`}
-							placeholderTextColor={colors.ink3}
+							variant="secondary"
 							returnKeyType="send"
 							onSubmitEditing={() => other.trim() && onAnswer(toolCallId, other.trim())}
-							style={{
-								...type.body,
-								flex: 1,
-								minHeight: size.hit,
-								paddingHorizontal: space.s3,
-								color: colors.ink,
-								backgroundColor: colors.raised,
-								borderRadius: radius.rMd,
-								borderWidth: 1,
-								borderColor: colors.line2,
-							}}
+							className="flex-1"
 						/>
-						<Button
-							variant="secondary"
-							label={t`Send`}
-							disabled={!other.trim()}
-							onPress={() => onAnswer(toolCallId, other.trim())}
-						/>
+						<Button variant="secondary" isDisabled={!other.trim()} onPress={() => onAnswer(toolCallId, other.trim())}>
+							<Button.Label>
+								<Trans>Send</Trans>
+							</Button.Label>
+						</Button>
 					</View>
 				</>
 			)}
@@ -409,148 +352,10 @@ function QuestionCard({ part, readOnly, onAnswer }: QuestionCardProps) {
 	);
 }
 
-type ChangeSetProps = {
-	proposals: readonly Proposal[];
-	states: readonly ProposalState[];
-	locked: boolean;
-	onAccept: (proposals: readonly Proposal[]) => void;
-	onReject: (proposals: readonly Proposal[]) => void;
-};
-
-/** "n proposed edits" with Accept all, then each edit numbered: where it lands, old text struck, new text, why. */
-function ChangeSet({ proposals, states, locked, onAccept, onReject }: ChangeSetProps) {
-	const { t } = useLingui();
-	const { colors, radius, size, space } = useTheme();
-	const pending = proposals.filter((_, index) => states[index] === "pending");
-	const accepted = states.filter((state) => state === "accepted").length;
-
-	return (
-		<View style={{ borderWidth: 1, borderColor: colors.line, borderRadius: radius.rLg, overflow: "hidden" }}>
-			<View
-				style={{
-					flexDirection: "row",
-					alignItems: "center",
-					gap: space.s2,
-					minHeight: size.hit,
-					paddingHorizontal: space.s3,
-					paddingVertical: space.s2,
-					backgroundColor: colors.bg,
-					borderBottomWidth: 1,
-					borderColor: colors.line,
-				}}
-			>
-				<Text variant="label" accessibilityRole="header" style={{ flex: 1 }}>
-					{pending.length > 0
-						? plural(proposals.length, { one: "# proposed edit", other: "# proposed edits" })
-						: t`${accepted} of ${proposals.length} applied`}
-				</Text>
-				{pending.length > 1 ? (
-					<Button size="sm" label={t`Accept all`} disabled={locked} onPress={() => onAccept(pending)} />
-				) : null}
-			</View>
-			{proposals.map((proposal, index) => (
-				<View
-					key={proposal.id}
-					style={{
-						gap: space.s2,
-						padding: space.s3,
-						borderTopWidth: index === 0 ? 0 : 1,
-						borderColor: colors.line,
-					}}
-				>
-					<View style={{ flexDirection: "row", alignItems: "center", gap: space.s2 }}>
-						<View
-							style={{
-								minWidth: 20,
-								minHeight: 20,
-								borderRadius: radius.rLg,
-								alignItems: "center",
-								justifyContent: "center",
-								backgroundColor: colors.accent,
-							}}
-						>
-							<Text variant="micro" color="onAccent">
-								{index + 1}
-							</Text>
-						</View>
-						<Text
-							variant="caption"
-							color="ink3"
-							numberOfLines={1}
-							accessibilityLabel={t`Edit ${index + 1}: ${proposal.location}`}
-							style={{ flex: 1 }}
-						>
-							{proposal.location}
-						</Text>
-					</View>
-					{proposal.before ? (
-						<Text variant="callout" color="ink3" style={{ textDecorationLine: "line-through" }}>
-							{blockText(proposal.before)}
-						</Text>
-					) : null}
-					<Text
-						variant="callout"
-						style={{
-							alignSelf: "flex-start",
-							paddingHorizontal: space.s1,
-							borderRadius: radius.rMd,
-							backgroundColor: colors.accentSoft,
-						}}
-					>
-						{blockText(proposal.after)}
-					</Text>
-					{proposal.why ? (
-						<Text variant="caption" color="ink2">
-							{proposal.why}
-						</Text>
-					) : null}
-					<ProposalOutcome
-						state={states[index] ?? "pending"}
-						locked={locked}
-						onAccept={() => onAccept([proposal])}
-						onReject={() => onReject([proposal])}
-					/>
-				</View>
-			))}
-		</View>
-	);
-}
-
-type ProposalOutcomeProps = { state: ProposalState; locked: boolean; onAccept: () => void; onReject: () => void };
-
-function ProposalOutcome({ state, locked, onAccept, onReject }: ProposalOutcomeProps) {
-	const { t } = useLingui();
-	const { colors, space } = useTheme();
-	if (state === "pending")
-		return (
-			<View style={{ flexDirection: "row", gap: space.s2 }}>
-				<Button label={t`Accept`} disabled={locked} onPress={onAccept} />
-				<Button variant="secondary" label={t`Reject`} onPress={onReject} />
-			</View>
-		);
-	if (state === "accepted")
-		return (
-			<View style={{ flexDirection: "row", alignItems: "center", gap: space.s2, minHeight: 28 }}>
-				<Icon name="check" size={16} color={colors.accentText} />
-				<Text variant="caption" color="accentText">
-					<Trans context="A proposed change has been applied">Applied</Trans>
-				</Text>
-			</View>
-		);
-	return (
-		<Text variant="caption" color={state === "stale" ? "warnText" : "ink3"} style={{ minHeight: 28 }}>
-			{state === "stale" ? <Trans>Out of date: the text has changed since.</Trans> : <Trans>Rejected</Trans>}
-		</Text>
-	);
-}
-
-// ---- Coach memory: a fact proposed for the Profile, or saved automatically with Undo ----
-
 type RememberOutput = { status?: unknown; id?: unknown; fact?: { text?: unknown } };
 
 function RememberNote({ part }: { part: ToolPart }) {
 	const { t } = useLingui();
-	const { colors, radius, space } = useTheme();
 	const queryClient = useQueryClient();
 	const [outcome, setOutcome] = useState<"pending" | "saved" | "dismissed" | "undone">("pending");
 	const [busy, setBusy] = useState(false);
@@ -563,14 +368,13 @@ function RememberNote({ part }: { part: ToolPart }) {
 	if (output.status === "saved" && typeof output.id === "string") {
 		const id = output.id;
 		return (
-			<View style={{ flexDirection: "row", flexWrap: "wrap", alignItems: "center", gap: space.s2 }}>
-				<Icon name="check-circle" size={18} color={colors.accentText} />
-				<Text variant="callout" color="ink2" style={{ flexShrink: 1 }}>
+			<View className="flex-row flex-wrap items-center gap-2">
+				<Icon name="check-circle" size={18} tone="accent" />
+				<Text tone="muted" className="shrink">
 					<Trans>Remembered: “{text}”</Trans>
 				</Text>
 				<Button
-					variant="link"
-					label={t`Undo`}
+					variant="tertiary"
 					onPress={() => {
 						setOutcome("undone");
 						client.career
@@ -578,10 +382,14 @@ function RememberNote({ part }: { part: ToolPart }) {
 							.then(refresh)
 							.catch(() => {
 								setOutcome("pending");
-								showToast({ message: t`Couldn't undo that. Try again.` });
+								showToast({ title: t`Couldn't undo that. Try again.` });
 							});
 					}}
-				/>
+				>
+					<Button.Label>
+						<Trans>Undo</Trans>
+					</Button.Label>
+				</Button>
 			</View>
 		);
 	}
@@ -595,18 +403,15 @@ function RememberNote({ part }: { part: ToolPart }) {
 		);
 
 	return (
-		<View style={{ gap: space.s2, padding: space.s3, borderRadius: radius.rLg, backgroundColor: colors.sunken }}>
-			<Text variant="label">
+		<View className="gap-2 rounded-xl bg-surface-secondary p-3">
+			<Text weight="semibold">
 				<Trans>Remember this for future coaching?</Trans>
 			</Text>
-			<Text variant="callout" color="ink2">
-				{text}
-			</Text>
-			<View style={{ flexDirection: "row", gap: space.s2 }}>
+			<Text tone="muted">{text}</Text>
+			<View className="flex-row gap-2">
 				<Button
 					size="sm"
-					label={t`Remember`}
-					loading={busy}
+					isDisabled={busy}
 					onPress={() => {
 						setBusy(true);
 						client.career
@@ -615,11 +420,19 @@ function RememberNote({ part }: { part: ToolPart }) {
 								setOutcome("saved");
 								refresh();
 							})
-							.catch(() => showToast({ message: t`Couldn't remember that. Try again.` }))
+							.catch(() => showToast({ title: t`Couldn't remember that. Try again.` }))
 							.finally(() => setBusy(false));
 					}}
-				/>
-				<Button size="sm" variant="ghost" label={t`Not now`} onPress={() => setOutcome("dismissed")} />
+				>
+					<Button.Label>
+						<Trans>Remember</Trans>
+					</Button.Label>
+				</Button>
+				<Button size="sm" variant="ghost" onPress={() => setOutcome("dismissed")}>
+					<Button.Label>
+						<Trans>Not now</Trans>
+					</Button.Label>
+				</Button>
 			</View>
 		</View>
 	);

@@ -5,6 +5,7 @@ import { useLingui } from "@lingui/react/macro";
 import { useRouter } from "expo-router";
 import { createContext, use } from "react";
 import { DrawerButton } from "./app-drawer";
+import { useOpenCoach } from "./coach-actions";
 import { useIsTablet } from "./use-is-tablet";
 import { routes } from "@/routes";
 import { Fab, IconButton, TopBar } from "@/ui";
@@ -16,18 +17,9 @@ export function useInTabs() {
 	return use(InTabs);
 }
 
-/**
- * Opens Coach. Phase 11 turns this into the Coach sheet (phones) and side panel (tablets); until then it pushes the
- * existing Coach screen, so every caller already goes through the slot.
- */
-function useOpenCoach() {
-	const router = useRouter();
-	return () => router.push(routes.coach());
-}
-
 /** The drawer's avatar at the start of a section's top bar on phones; tablets have the sidebar instead. */
 export function TabBarLeading() {
-	return useIsTablet() ? null : <DrawerButton />;
+	return useIsTablet("window") ? null : <DrawerButton />;
 }
 
 /** Coach and Search, at the end of a section's top bar. */
@@ -37,7 +29,12 @@ export function TabBarActions() {
 	const openCoach = useOpenCoach();
 	return (
 		<>
-			<IconButton icon="sparkle" label={t`Coach`} onPress={openCoach} testID="open-coach" />
+			<IconButton
+				icon="sparkle"
+				label={t`Coach`}
+				onPress={openCoach ?? (() => router.push(routes.coach()))}
+				testID="open-coach"
+			/>
 			<IconButton
 				icon="magnifying-glass"
 				label={t`Search`}
@@ -59,6 +56,6 @@ export function TabTopBar({ title }: TabTopBarProps) {
 export function NewFab() {
 	const { t } = useLingui();
 	const router = useRouter();
-	if (useIsTablet()) return null;
+	if (useIsTablet("window")) return null;
 	return <Fab icon="plus" label={t`New`} safeArea={false} onPress={() => router.push(routes.new())} testID="new-fab" />;
 }

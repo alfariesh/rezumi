@@ -80,6 +80,7 @@ export const routes = {
 	/** Coach full screen. `offers`: saved offer ids picked in Offers → Plan what to ask. */
 	coach: (offers?: readonly string[]) =>
 		offers?.length ? (`/coach?offers=${offers.map(segment).join(",")}` as const) : ("/coach" as const),
+	coachThread: (id: string) => `/coach?thread=${segment(id)}` as const,
 	atsChecker: () => "/ats-checker" as const,
 	/** An application's workspace; without a part it opens the one its stage needs (`default`). */
 	application: (id: string, tab: ApplicationTab | "default" = "default") =>

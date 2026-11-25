@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import { memo } from "react";
 import { Linking, View } from "react-native";
-import { Text, useTheme } from "@/ui-legacy";
+import { Text } from "@/ui";
 
 // ponytail: a small Markdown subset (paragraphs, headings, lists, quotes, code, bold/italic/code/links). Tables show as
 // monospaced text. Web renders full GFM with react-markdown; add a parser here only if replies need more.
@@ -68,19 +68,18 @@ function parseBlocks(source: string): Block[] {
 const INLINE = /(\*\*[^*]+\*\*|__[^_]+__|`[^`]+`|\[[^[\]]+\]\([^)\s]+\)|\*[^*\s][^*]*\*|_[^_\s][^_]*_)/g;
 
 function Inline({ text }: { text: string }) {
-	const { fonts } = useTheme();
 	const nodes: ReactNode[] = text.split(INLINE).map((piece, index) => {
 		if (!piece) return null;
 		const key = `${index}`;
 		if (/^(\*\*|__).+\1$/.test(piece))
 			return (
-				<Text key={key} style={{ fontFamily: fonts.ui[600] }}>
+				<Text key={key} weight="semibold">
 					{piece.slice(2, -2)}
 				</Text>
 			);
 		if (/^`.+`$/.test(piece))
 			return (
-				<Text key={key} variant="mono" color="ink2">
+				<Text key={key} mono tone="muted">
 					{piece.slice(1, -1)}
 				</Text>
 			);
@@ -91,10 +90,10 @@ function Inline({ text }: { text: string }) {
 			return (
 				<Text
 					key={key}
-					color="accentText"
+					tone="accent"
 					accessibilityRole={safe ? "link" : undefined}
 					onPress={safe ? () => void Linking.openURL(url) : undefined}
-					style={{ textDecorationLine: "underline" }}
+					className="underline"
 				>
 					{link[1]}
 				</Text>
@@ -102,7 +101,7 @@ function Inline({ text }: { text: string }) {
 		}
 		if (/^([*_]).+\1$/.test(piece))
 			return (
-				<Text key={key} style={{ fontStyle: "italic" }}>
+				<Text key={key} className="italic">
 					{piece.slice(1, -1)}
 				</Text>
 			);
@@ -113,40 +112,39 @@ function Inline({ text }: { text: string }) {
 
 /** The assistant's reply as Markdown. Memoized on the text, so finished replies stop re-rendering while one streams. */
 export const AssistantMarkdown = memo(function AssistantMarkdown({ text }: { text: string }) {
-	const { colors, radius, space } = useTheme();
 	return (
-		<View style={{ gap: space.s2 }}>
+		<View className="gap-2">
 			{parseBlocks(text).map((block, index) => {
 				const key = `${index}`;
 				if (block.kind === "h")
 					return (
-						<Text key={key} variant="title" accessibilityRole="header">
+						<Text key={key} size="base" weight="semibold" accessibilityRole="header">
 							<Inline text={block.text} />
 						</Text>
 					);
 				if (block.kind === "code")
 					return (
-						<View key={key} style={{ padding: space.s3, borderRadius: radius.rMd, backgroundColor: colors.sunken }}>
-							<Text variant="mono" selectable>
+						<View key={key} className="rounded-lg bg-surface-secondary p-3">
+							<Text mono selectable>
 								{block.text}
 							</Text>
 						</View>
 					);
 				if (block.kind === "quote")
 					return (
-						<View key={key} style={{ borderStartWidth: 2, borderColor: colors.line2, paddingStart: space.s3 }}>
-							<Text color="ink2" selectable>
+						<View key={key} className="border-s-2 border-border ps-3">
+							<Text tone="muted" selectable>
 								<Inline text={block.text} />
 							</Text>
 						</View>
 					);
 				if (block.kind === "list")
 					return (
-						<View key={key} style={{ gap: space.s1 }}>
+						<View key={key} className="gap-1">
 							{block.items.map((item, number) => (
-								<View key={`${number}`} style={{ flexDirection: "row", gap: space.s2, paddingStart: space.s1 }}>
-									<Text color="ink2">{block.ordered ? `${number + 1}.` : "•"}</Text>
-									<Text selectable style={{ flex: 1 }}>
+								<View key={`${number}`} className="flex-row gap-2 ps-1">
+									<Text tone="muted">{block.ordered ? `${number + 1}.` : "•"}</Text>
+									<Text selectable className="flex-1">
 										<Inline text={item} />
 									</Text>
 								</View>

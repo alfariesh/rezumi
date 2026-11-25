@@ -69,12 +69,6 @@ msgstr "“{value}” starts after today. Check the year, or mark it as current.
 msgid "{0, plural, =0 {No interviews} one {# interview} other {# interviews}}"
 msgstr "{0, plural, =0 {No interviews} one {# interview} other {# interviews}}"
 
-#. placeholder {0}: proposals.length
-#: src/features/assistant/document.ts
-#: src/features/assistant/proposals.ts
-msgid "{0, plural, =1 {Edit applied} other {# edits applied}}"
-msgstr "{0, plural, =1 {Edit applied} other {# edits applied}}"
-
 #. placeholder {0}: term.jdCount
 #. placeholder {1}: term.label
 #. placeholder {2}: term.label
@@ -148,8 +142,8 @@ msgstr "{0, plural, one {# day} other {# days}}"
 msgid "{0, plural, one {# document} other {# documents}}"
 msgstr "{0, plural, one {# document} other {# documents}}"
 
-#. placeholder {0}: knowledge.facts
-#: src/features/assistant/coach-screen.tsx
+#. placeholder {0}: profile.facts
+#: src/features/assistant/coach.tsx
 msgid "{0, plural, one {# fact} other {# facts}}"
 msgstr "{0, plural, one {# fact} other {# facts}}"
 
@@ -188,7 +182,7 @@ msgid "{0, plural, one {# page} other {# pages}}"
 msgstr "{0, plural, one {# page} other {# pages}}"
 
 #. placeholder {0}: proposals.length
-#: src/features/assistant/messages.tsx
+#: src/features/assistant/change-set.tsx
 msgid "{0, plural, one {# proposed edit} other {# proposed edits}}"
 msgstr "{0, plural, one {# proposed edit} other {# proposed edits}}"
 
@@ -198,7 +192,7 @@ msgid "{0, plural, one {# resume} other {# resumes}}"
 msgstr "{0, plural, one {# resume} other {# resumes}}"
 
 #. placeholder {0}: offerIds.length
-#: src/features/assistant/coach-screen.tsx
+#: src/features/assistant/coach.tsx
 msgid "{0, plural, one {# saved offer} other {# saved offers}}"
 msgstr "{0, plural, one {# saved offer} other {# saved offers}}"
 
@@ -226,11 +220,6 @@ msgstr "{0, plural, one {For # day} other {For # days}}"
 #: src/features/applications/next-step.ts
 msgid "{0, plural, one {No reply in # day} other {No reply in # days}}"
 msgstr "{0, plural, one {No reply in # day} other {No reply in # days}}"
-
-#. placeholder {0}: knowledge.facts
-#: src/features/assistant/coach-screen.tsx
-msgid "{0, plural, one {Profile · # fact} other {Profile · # facts}}"
-msgstr "{0, plural, one {Profile · # fact} other {Profile · # facts}}"
 
 #. placeholder {0}: passages.length
 #: src/features/check/writing-tab.tsx
@@ -398,12 +387,6 @@ msgstr "{0} posting"
 msgid "{0} pt"
 msgstr "{0} pt"
 
-#. placeholder {0}: props.connection
-#. placeholder {1}: errorText(error, t`an error`)
-#: src/features/assistant/chat-view.tsx
-msgid "{0} returned “{1}”. Your message is kept."
-msgstr "{0} returned “{1}”. Your message is kept."
-
 #. placeholder {0}: getStageLabel(stage)
 #: src/features/applications/detail/detail-header.tsx
 msgid "{0}, current stage"
@@ -421,7 +404,7 @@ msgid "{0}%"
 msgstr "{0}%"
 
 #. placeholder {0}: proposals.length
-#: src/features/assistant/messages.tsx
+#: src/features/assistant/change-set.tsx
 msgid "{accepted} of {0} applied"
 msgstr "{accepted} of {0} applied"
 
@@ -692,10 +675,6 @@ msgstr "{kind} interview · {0}, {1}"
 #: src/features/applications/calendar/grid-event.tsx
 msgid "{kind} interview, {0}, {1}, {2}, {3} – {4}"
 msgstr "{kind} interview, {0}, {1}, {2}, {3} – {4}"
-
-#: src/features/assistant/coach-screen.tsx
-msgid "{label} connection"
-msgstr "{label} connection"
 
 #: src/shell/app-tabs.tsx
 msgid "{label}, {count} unread"
@@ -1184,13 +1163,13 @@ msgstr "Accent color"
 msgid "Accent is used for headings, icons and the header band. Body text stays near-black for print and ATS."
 msgstr "Accent is used for headings, icons and the header band. Body text stays near-black for print and ATS."
 
-#: src/features/assistant/messages.tsx
+#: src/features/assistant/change-set.tsx
 #: src/features/check/proposal-card.tsx
 #: src/features/workspace/apply/answer-diff.tsx
 msgid "Accept"
 msgstr "Accept"
 
-#: src/features/assistant/messages.tsx
+#: src/features/assistant/change-set.tsx
 msgid "Accept all"
 msgstr "Accept all"
 
@@ -1585,6 +1564,10 @@ msgstr "Add your name"
 msgid "Add your own AI connection in Settings, or choose Rezumi AI."
 msgstr "Add your own AI connection in Settings, or choose Rezumi AI."
 
+#: src/features/assistant/provider.tsx
+msgid "Add your own connection to start a conversation."
+msgstr "Add your own connection to start a conversation."
+
 #: src/features/billing/credits.ts
 msgid "Added by Rezumi"
 msgstr "Added by Rezumi"
@@ -1717,6 +1700,10 @@ msgstr "AI couldn't read everything. Check the details, or fill them in by hand.
 msgid "AI edit"
 msgstr "AI edit"
 
+#: src/features/assistant/provider.tsx
+msgid "AI is unavailable"
+msgstr "AI is unavailable"
+
 #: src/features/check/provider-sheet.tsx
 msgid "AI provider"
 msgstr "AI provider"
@@ -1750,6 +1737,10 @@ msgstr "AI reads pasted text only when you ask. Links use the page's own job dat
 #: src/features/check/writing-tab.tsx
 msgid "AI review"
 msgstr "AI review"
+
+#: src/features/assistant/provider.tsx
+msgid "AI settings"
+msgstr "AI settings"
 
 #: src/features/settings/locale-names.ts
 msgid "Albanian"
@@ -1860,10 +1851,6 @@ msgstr "An embedded font could not be read."
 #: src/features/check/messages.ts
 msgid "An entry has no dates"
 msgstr "An entry has no dates"
-
-#: src/features/assistant/chat-view.tsx
-msgid "an error"
-msgstr "an error"
 
 #: src/features/auth/create-account-screen.tsx
 msgid "Ana Putri"
@@ -2044,7 +2031,7 @@ msgstr "Application details"
 msgid "Application options"
 msgstr "Application options"
 
-#: src/features/assistant/coach-screen.tsx
+#: src/features/assistant/coach.tsx
 msgid "application summaries"
 msgstr "application summaries"
 
@@ -2060,7 +2047,7 @@ msgstr "Application views"
 #: app/(tabs)/applications/_layout.tsx
 #: src/features/applications/frame.tsx
 #: src/features/applications/insights/insights-screen.tsx
-#: src/features/assistant/coach-screen.tsx
+#: src/features/assistant/coach.tsx
 #: src/features/jobs/jobs-screen.tsx
 #: src/features/offers/offers-screen.tsx
 #: src/features/search/search-screen.tsx
@@ -2088,7 +2075,7 @@ msgstr "Applications sent per week: {0}"
 msgid "Applied"
 msgstr "Applied"
 
-#: src/features/assistant/messages.tsx
+#: src/features/assistant/change-set.tsx
 #: src/features/workspace/messages/proposal-card.tsx
 msgctxt "A proposed change has been applied"
 msgid "Applied"
@@ -2155,13 +2142,9 @@ msgstr "Ask {0}"
 msgid "Ask about this application…"
 msgstr "Ask about this application…"
 
-#: src/features/assistant/coach-screen.tsx
+#: src/features/assistant/coach.tsx
 msgid "Ask about your next career step…"
 msgstr "Ask about your next career step…"
-
-#: src/features/assistant/coach-screen.tsx
-msgid "Ask about your search, or bring an accomplishment you want to explain better. Answers use what's switched on below and say what they relied on."
-msgstr "Ask about your search, or bring an accomplishment you want to explain better. Answers use what's switched on below and say what they relied on."
 
 #: src/features/workspace/coach-sheet.tsx
 msgid "Ask anything about this job. The coach reads the posting, your notes and what you sent, and knows you're on {part}."
@@ -2243,7 +2226,7 @@ msgstr "ATS-safe"
 msgid "ATS-safe template"
 msgstr "ATS-safe template"
 
-#: src/features/assistant/chat-view.tsx
+#: src/features/assistant/composer.tsx
 msgid "Attach a file"
 msgstr "Attach a file"
 
@@ -2255,7 +2238,7 @@ msgstr "Attach a letter (PDF)"
 msgid "Attach a resume (PDF)"
 msgstr "Attach a resume (PDF)"
 
-#: src/features/assistant/chat-view.tsx
+#: src/features/assistant/composer.tsx
 msgid "Attach up to 10 files to a message."
 msgstr "Attach up to 10 files to a message."
 
@@ -2263,7 +2246,7 @@ msgstr "Attach up to 10 files to a message."
 msgid "Attachment"
 msgstr "Attachment"
 
-#: src/features/assistant/chat-view.tsx
+#: src/features/assistant/composer.tsx
 msgid "Attachments can be up to 100 MB in all."
 msgstr "Attachments can be up to 100 MB in all."
 
@@ -2586,7 +2569,7 @@ msgstr "Can't tell: {0}"
 #: src/features/applications/board/close-reason-sheet.tsx
 #: src/features/applications/calendar/application-picker.tsx
 #: src/features/applications/save-posting.tsx
-#: src/features/assistant/coach-screen.tsx
+#: src/features/assistant/threads.tsx
 #: src/features/ats-checker/checker.tsx
 #: src/features/check/parser-view.tsx
 #: src/features/check/writing-tab.tsx
@@ -3058,6 +3041,7 @@ msgstr "Clear the greeting or sign-off to omit it. Clearing the sign-off also re
 msgid "Clears its entries; the section stays. You can undo."
 msgstr "Clears its entries; the section stays. You can undo."
 
+#: src/features/ai/report-content.tsx
 #: src/features/applications/detail/activity.tsx
 #: src/features/applications/detail/contacts.tsx
 #: src/features/applications/detail/detail-sheet.tsx
@@ -3072,6 +3056,10 @@ msgstr "Clears its entries; the section stays. You can undo."
 #: src/features/applications/list/list-row.tsx
 #: src/features/applications/list/row-menu.tsx
 #: src/features/applications/save-sheet.tsx
+#: src/features/assistant/coach.tsx
+#: src/features/assistant/panel-bar.tsx
+#: src/features/assistant/provider.tsx
+#: src/features/assistant/threads.tsx
 #: src/features/auth/welcome-screen.tsx
 #: src/features/career/schedule-fields.tsx
 #: src/features/career/schedule-sheet.tsx
@@ -3140,10 +3128,6 @@ msgstr "Close search"
 msgid "Close the application"
 msgstr "Close the application"
 
-#: src/features/assistant/assistant-screen.tsx
-msgid "Close the assistant"
-msgstr "Close the assistant"
-
 #: src/features/applications/detail/stage-sheets.tsx
 #: src/features/applications/list/row-menu.tsx
 msgid "Close this application"
@@ -3165,8 +3149,7 @@ msgstr "Closed"
 msgid "Closed: {closed}"
 msgstr "Closed: {closed}"
 
-#: app/_layout.tsx
-#: src/features/assistant/coach-screen.tsx
+#: src/features/assistant/coach.tsx
 #: src/features/billing/credits.ts
 #: src/features/workspace/coach-sheet.tsx
 #: src/shell/tab-chrome.tsx
@@ -3180,6 +3163,10 @@ msgstr "Coach memory"
 #: src/features/auth/two-factor-screen.tsx
 msgid "Codes look like a1b2c-d3e4f."
 msgstr "Codes look like a1b2c-d3e4f."
+
+#: src/features/assistant/panel-bar.tsx
+msgid "Collapse Coach"
+msgstr "Collapse Coach"
 
 #: src/features/design/design-pane.tsx
 #: src/features/letters/design.tsx
@@ -3295,10 +3282,6 @@ msgstr "Connect an AI provider in Settings to refresh it automatically."
 msgid "Connect an AI provider to read pasted text. Filling in by hand works without AI."
 msgstr "Connect an AI provider to read pasted text. Filling in by hand works without AI."
 
-#: src/features/assistant/provider.tsx
-msgid "Connect another…"
-msgstr "Connect another…"
-
 #: app/account/ai.tsx
 msgid "Connect the tools you use for writing, job search and working with your resumes."
 msgstr "Connect the tools you use for writing, job search and working with your resumes."
@@ -3360,17 +3343,13 @@ msgstr "Content still runs over. Hide a section or shorten entries."
 msgid "Content to report"
 msgstr "Content to report"
 
-#: src/features/assistant/chat-view.tsx
-msgid "Context"
-msgstr "Context"
-
-#: src/features/assistant/chat-view.tsx
+#: src/features/assistant/conversation.tsx
 #: src/features/assistant/messages.tsx
 msgid "Context is left out, so reply with a new message instead."
 msgstr "Context is left out, so reply with a new message instead."
 
 #: app/(auth)/server.tsx
-#: src/features/assistant/chat-view.tsx
+#: src/features/assistant/conversation.tsx
 #: src/features/auth/check-email-screen.tsx
 #: src/features/onboarding/onboarding-screen.tsx
 #: src/features/profile/bring-screen.tsx
@@ -3391,24 +3370,21 @@ msgstr "Continue with Google"
 msgid "Contrast {0} to 1"
 msgstr "Contrast {0} to 1"
 
-#: src/features/assistant/chat-view.tsx
+#: src/features/assistant/conversation.tsx
 msgid "Conversation"
 msgstr "Conversation"
 
-#: src/features/assistant/coach-screen.tsx
+#: src/features/assistant/threads.tsx
 msgid "Conversation name"
 msgstr "Conversation name"
 
-#: src/features/assistant/coach-screen.tsx
+#: src/features/assistant/panel-bar.tsx
 #: src/features/workspace/coach-sheet.tsx
 msgid "Conversations"
 msgstr "Conversations"
 
-#: src/features/assistant/coach-screen.tsx
-msgid "Conversations about one job live in its workspace."
-msgstr "Conversations about one job live in its workspace."
-
 #: src/features/assistant/assistant-screen.tsx
+#: src/features/assistant/coach.tsx
 #: src/features/workspace/coach-sheet.tsx
 msgid "Conversations couldn't load."
 msgstr "Conversations couldn't load."
@@ -3463,7 +3439,7 @@ msgstr "Copy reply"
 msgid "Copy the text out of the exported file and read it through; fix anything that arrives in the wrong place."
 msgstr "Copy the text out of the exported file and read it through; fix anything that arrives in the wrong place."
 
-#: src/features/assistant/chat-view.tsx
+#: src/features/assistant/conversation.tsx
 msgid "Copy transcript"
 msgstr "Copy transcript"
 
@@ -3492,7 +3468,7 @@ msgstr "Corrected {0} · original kept"
 msgid "Correction by Rezumi"
 msgstr "Correction by Rezumi"
 
-#: src/features/assistant/chat-view.tsx
+#: src/features/assistant/composer.tsx
 msgid "Couldn't attach the file. Try again."
 msgstr "Couldn't attach the file. Try again."
 
@@ -3545,7 +3521,7 @@ msgstr "Couldn't copy the photo. You can add one later in your Profile."
 msgid "Couldn't copy the questions. Try again."
 msgstr "Couldn't copy the questions. Try again."
 
-#: src/features/assistant/chat-view.tsx
+#: src/features/assistant/conversation.tsx
 msgid "Couldn't copy the transcript. Try again."
 msgstr "Couldn't copy the transcript. Try again."
 
@@ -3867,7 +3843,7 @@ msgstr "Couldn't remove it from Applications. Try again."
 msgid "Couldn't remove the file. Try again."
 msgstr "Couldn't remove the file. Try again."
 
-#: src/features/assistant/coach-screen.tsx
+#: src/features/assistant/threads.tsx
 msgid "Couldn't rename the conversation. Try again."
 msgstr "Couldn't rename the conversation. Try again."
 
@@ -4034,6 +4010,10 @@ msgstr "Couldn't start the conversation. Try again."
 #: src/features/assistant/provider.tsx
 msgid "Couldn't switch models. Try again."
 msgstr "Couldn't switch models. Try again."
+
+#: src/features/assistant/use-conversation.ts
+msgid "Couldn't sync the edit status. Try again online."
+msgstr "Couldn't sync the edit status. Try again online."
 
 #: src/features/workspace/practice/recorder-control.tsx
 msgid "Couldn't transcribe. Your recording is still here."
@@ -4416,8 +4396,6 @@ msgstr "Delete “{title}”?"
 
 #. placeholder {0}: item.title
 #. placeholder {0}: title(thread)
-#: src/features/assistant/coach-screen.tsx
-#: src/features/assistant/threads.tsx
 #: src/features/workspace/coach-sheet.tsx
 #: src/features/workspace/saved/saved-row.tsx
 msgid "Delete {0}"
@@ -4923,7 +4901,11 @@ msgstr "Each resume decides whether to show it."
 msgid "Each run looks for jobs that appeared since the last one. New ones wait in Home for your review; applications and documents are never created for you."
 msgstr "Each run looks for jobs that appeared since the last one. New ones wait in Home for your review; applications and documents are never created for you."
 
-#: src/features/assistant/coach-screen.tsx
+#: src/features/assistant/assistant-screen.tsx
+msgid "Each send starts fresh with this message and selected files. Previous conversation history stays here."
+msgstr "Each send starts fresh with this message and selected files. Previous conversation history stays here."
+
+#: src/features/assistant/coach.tsx
 msgid "earlier messages in this chat"
 msgstr "earlier messages in this chat"
 
@@ -4935,12 +4917,6 @@ msgstr "earlier messages in this chat"
 #: src/features/write/basics-screen.tsx
 msgid "Edit"
 msgstr "Edit"
-
-#. placeholder {0}: index + 1
-#. placeholder {1}: proposal.location
-#: src/features/assistant/messages.tsx
-msgid "Edit {0}: {1}"
-msgstr "Edit {0}: {1}"
 
 #: src/features/home/schedules.tsx
 msgid "Edit {name}"
@@ -5249,6 +5225,10 @@ msgstr "Executive"
 msgid "Exit full screen"
 msgstr "Exit full screen"
 
+#: src/features/assistant/panel-bar.tsx
+msgid "Expand Coach"
+msgstr "Expand Coach"
+
 #: src/features/entries/fields.ts
 #: src/features/onboarding/intro-screen.tsx
 #: src/features/profile/facts-labels.ts
@@ -5363,7 +5343,7 @@ msgstr "File sharing is unavailable on this device."
 msgid "Files"
 msgstr "Files"
 
-#: src/features/assistant/chat-view.tsx
+#: src/features/assistant/composer.tsx
 msgid "Files can be up to 5 MB each."
 msgstr "Files can be up to 5 MB each."
 
@@ -5932,7 +5912,7 @@ msgstr "Help & docs"
 msgid "Help & legal"
 msgstr "Help & legal"
 
-#: src/features/assistant/coach-screen.tsx
+#: src/features/assistant/coach.tsx
 msgid "Help me turn an accomplishment into a Situation, Task, Action, Result and Reflection story."
 msgstr "Help me turn an accomplishment into a Situation, Task, Action, Result and Reflection story."
 
@@ -6113,22 +6093,6 @@ msgstr "Hybrid"
 #: src/features/design/typography-screen.tsx
 msgid "Hyphenation"
 msgstr "Hyphenation"
-
-#: src/features/assistant/assistant-screen.tsx
-msgid "I can see this letter and the {company} posting. Suggestions come back as edits you can accept one by one."
-msgstr "I can see this letter and the {company} posting. Suggestions come back as edits you can accept one by one."
-
-#: src/features/assistant/assistant-screen.tsx
-msgid "I can see this letter. Suggestions come back as edits you can accept one by one."
-msgstr "I can see this letter. Suggestions come back as edits you can accept one by one."
-
-#: src/features/assistant/assistant-screen.tsx
-msgid "I can see this resume and the {company} posting. Suggestions come back as edits you can accept one by one."
-msgstr "I can see this resume and the {company} posting. Suggestions come back as edits you can accept one by one."
-
-#: src/features/assistant/assistant-screen.tsx
-msgid "I can see this resume. Suggestions come back as edits you can accept one by one."
-msgstr "I can see this resume. Suggestions come back as edits you can accept one by one."
 
 #: src/features/applications/stages.ts
 msgid "I withdrew"
@@ -6656,6 +6620,10 @@ msgstr "Keep application"
 msgid "Keep both"
 msgstr "Keep both"
 
+#: src/features/assistant/threads.tsx
+msgid "Keep conversation"
+msgstr "Keep conversation"
+
 #: src/features/applications/interview-sheet.tsx
 #: src/features/applications/save-sheet.tsx
 #: src/features/career/schedule-sheet.tsx
@@ -6871,7 +6839,7 @@ msgstr "Last week"
 msgid "Later"
 msgstr "Later"
 
-#: src/features/assistant/chat-view.tsx
+#: src/features/assistant/conversation.tsx
 msgid "Latest"
 msgstr "Latest"
 
@@ -7258,7 +7226,7 @@ msgstr "Loading the description"
 msgid "Loading workspace…"
 msgstr "Loading workspace…"
 
-#: src/features/assistant/coach-screen.tsx
+#: src/features/assistant/coach.tsx
 msgid "Loading your Profile before you send…"
 msgstr "Loading your Profile before you send…"
 
@@ -7512,7 +7480,11 @@ msgstr "Medium"
 msgid "Meets: {0}"
 msgstr "Meets: {0}"
 
-#: src/features/assistant/chat-view.tsx
+#: src/features/ai/report-content.tsx
+msgid "Message actions"
+msgstr "Message actions"
+
+#: src/features/assistant/composer.tsx
 msgid "Message the assistant"
 msgstr "Message the assistant"
 
@@ -7587,10 +7559,6 @@ msgstr "More options"
 #: src/features/letters/write.tsx
 msgid "More personal"
 msgstr "More personal"
-
-#: src/features/assistant/provider.tsx
-msgid "More providers and options are in Settings. Editing, design, Check issues and downloads work without AI."
-msgstr "More providers and options are in Settings. Editing, design, Check issues and downloads work without AI."
 
 #: src/features/onboarding/template-choice.tsx
 msgid "More templates"
@@ -7889,7 +7857,8 @@ msgid "New application"
 msgstr "New application"
 
 #: src/features/assistant/assistant-screen.tsx
-#: src/features/assistant/coach-screen.tsx
+#: src/features/assistant/coach.tsx
+#: src/features/assistant/panel-bar.tsx
 #: src/features/assistant/threads.tsx
 #: src/features/workspace/coach-sheet.tsx
 msgid "New conversation"
@@ -7956,6 +7925,10 @@ msgstr "New section"
 #: src/features/profile/stories.tsx
 msgid "New story"
 msgstr "New story"
+
+#: src/features/assistant/conversation.tsx
+msgid "New suggested edits"
+msgstr "New suggested edits"
 
 #: src/features/auth/email-sign-in-screen.tsx
 #: src/features/auth/welcome-screen.tsx
@@ -8068,8 +8041,8 @@ msgid "No conventional section headings were found."
 msgstr "No conventional section headings were found."
 
 #: src/features/assistant/threads.tsx
-msgid "No conversations about this document yet."
-msgstr "No conversations about this document yet."
+msgid "No conversations yet."
+msgstr "No conversations yet."
 
 #: src/features/profile/facts-detail.tsx
 msgid "No corrections"
@@ -8099,10 +8072,6 @@ msgstr "No dates were found."
 #: src/features/share/custom-domain.tsx
 msgid "No domain is connected anymore. Pull to refresh."
 msgstr "No domain is connected anymore. Pull to refresh."
-
-#: src/features/assistant/threads.tsx
-msgid "no edits"
-msgstr "no edits"
 
 #: src/features/ats-checker/messages.ts
 msgid "No education section was found."
@@ -8915,6 +8884,10 @@ msgstr "Options for {0}"
 msgid "Options for {0} at {1}"
 msgstr "Options for {0} at {1}"
 
+#: src/features/assistant/threads.tsx
+msgid "Options for {label}"
+msgstr "Options for {label}"
+
 #: src/features/write/entry-row.tsx
 msgid "Options for {name}"
 msgstr "Options for {name}"
@@ -8972,7 +8945,7 @@ msgstr "Other details"
 msgid "Other documents · {0}"
 msgstr "Other documents · {0}"
 
-#: src/features/assistant/messages.tsx
+#: src/features/assistant/change-set.tsx
 msgid "Out of date: the text has changed since."
 msgstr "Out of date: the text has changed since."
 
@@ -9113,10 +9086,6 @@ msgstr "Password strength: {label}"
 #: src/features/share/web-page.tsx
 msgid "Passwords do not match."
 msgstr "Passwords do not match."
-
-#: src/features/assistant/assistant-screen.tsx
-msgid "Past conversations"
-msgstr "Past conversations"
 
 #: src/features/applications/save-posting.tsx
 msgid "Paste a job link or the posting's text, then check the role and company."
@@ -9338,7 +9307,6 @@ msgid "Planning your week"
 msgstr "Planning your week"
 
 #: app/account/membership.tsx
-#: src/features/billing/ai-source.ts
 #: src/features/billing/plan-alert.ts
 msgid "Plans can be bought on the rezumi.app website."
 msgstr "Plans can be bought on the rezumi.app website."
@@ -9574,6 +9542,10 @@ msgstr "Previous days"
 msgid "Previous issue"
 msgstr "Previous issue"
 
+#: src/features/assistant/assistant-screen.tsx
+msgid "Previous messages, including document details, are also sent."
+msgstr "Previous messages, including document details, are also sent."
+
 #: src/features/applications/calendar/calendar-toolbar.tsx
 msgid "Previous month"
 msgstr "Previous month"
@@ -9644,6 +9616,7 @@ msgstr "Proficiency"
 #: app/(tabs)/_layout.tsx
 #: app/(tabs)/profile/_layout.tsx
 #: app/account/account.tsx
+#: src/features/assistant/coach.tsx
 #: src/features/profile/profile-screen.tsx
 #: src/features/search/search-screen.tsx
 #: src/shell/app-tabs.tsx
@@ -10042,12 +10015,12 @@ msgstr "Refund policy"
 msgid "Rehearse aloud"
 msgstr "Rehearse aloud"
 
-#: src/features/assistant/messages.tsx
+#: src/features/assistant/change-set.tsx
 #: src/features/check/proposal-card.tsx
 msgid "Reject"
 msgstr "Reject"
 
-#: src/features/assistant/messages.tsx
+#: src/features/assistant/change-set.tsx
 #: src/features/check/proposal-card.tsx
 msgid "Rejected"
 msgstr "Rejected"
@@ -10210,15 +10183,11 @@ msgstr "Remove this file?"
 msgid "Remove this photo?"
 msgstr "Remove this photo?"
 
+#: src/features/assistant/threads.tsx
 #: src/features/documents/document-menu.tsx
 #: src/features/documents/library-menu.tsx
 msgid "Rename"
 msgstr "Rename"
-
-#. placeholder {0}: title(thread)
-#: src/features/assistant/coach-screen.tsx
-msgid "Rename {0}"
-msgstr "Rename {0}"
 
 #: src/features/write/section-sheet.tsx
 msgid "Rename section"
@@ -10443,7 +10412,8 @@ msgstr "Resumes, cover letters, applications and your portfolio, in one place."
 #: src/features/applications/list/list-states.tsx
 #: src/features/assistant/assistant-screen.tsx
 #: src/features/assistant/chat-view.tsx
-#: src/features/assistant/coach-screen.tsx
+#: src/features/assistant/coach.tsx
+#: src/features/assistant/conversation.tsx
 #: src/features/assistant/provider.tsx
 #: src/features/career/schedule-body.tsx
 #: src/features/check/application-picker.tsx
@@ -10558,6 +10528,12 @@ msgstr "Revoke this API key"
 #: src/features/check/writing-tab.tsx
 msgid "Rewrite accepted"
 msgstr "Rewrite accepted"
+
+#. placeholder {0}: CREDIT_COSTS["coach-turn"]
+#. placeholder {1}: providers.balance
+#: src/features/assistant/provider.tsx
+msgid "Rezumi AI · {0} credit per reply · {1} left"
+msgstr "Rezumi AI · {0} credit per reply · {1} left"
 
 #: app/account/membership.tsx
 msgid "Rezumi AI credits"
@@ -10694,7 +10670,7 @@ msgstr "Sample resume added. Delete it anytime."
 
 #: src/features/applications/detail/activity.tsx
 #: src/features/applications/detail/follow-up-sheet.tsx
-#: src/features/assistant/coach-screen.tsx
+#: src/features/assistant/threads.tsx
 #: src/features/documents/menu-panels.tsx
 #: src/features/history/history-panel.tsx
 #: src/features/history/version-options.tsx
@@ -11078,7 +11054,7 @@ msgstr "Search resumes"
 msgid "Search role, company or contact"
 msgstr "Search role, company or contact"
 
-#: src/features/assistant/coach-screen.tsx
+#: src/features/assistant/coach.tsx
 msgid "Search terms go to your web search service."
 msgstr "Search terms go to your web search service."
 
@@ -11173,7 +11149,7 @@ msgstr "Selection"
 msgid "Selects or clears this application"
 msgstr "Selects or clears this application"
 
-#: src/features/assistant/chat-view.tsx
+#: src/features/assistant/composer.tsx
 #: src/features/assistant/messages.tsx
 msgid "Send"
 msgstr "Send"
@@ -11228,6 +11204,30 @@ msgstr "Sends this application's posting, notes and documents, plus your Profile
 #: src/features/jobs/listing-fit.tsx
 msgid "Sends this job's posting and your Profile (details, and the facts and stories that are switched on) to {0}."
 msgstr "Sends this job's posting and your Profile (details, and the facts and stories that are switched on) to {0}."
+
+#: src/features/assistant/assistant-screen.tsx
+msgid "Sends this letter and the posting to {provider}, only when you tap send."
+msgstr "Sends this letter and the posting to {provider}, only when you tap send."
+
+#: src/features/assistant/assistant-screen.tsx
+msgid "Sends this letter to {provider}, only when you tap send."
+msgstr "Sends this letter to {provider}, only when you tap send."
+
+#: src/features/assistant/assistant-screen.tsx
+msgid "Sends this resume and the posting to {provider}, only when you tap send."
+msgstr "Sends this resume and the posting to {provider}, only when you tap send."
+
+#: src/features/assistant/assistant-screen.tsx
+msgid "Sends this resume to {provider}, only when you tap send."
+msgstr "Sends this resume to {provider}, only when you tap send."
+
+#: src/features/assistant/assistant-screen.tsx
+msgid "Sends your message and the posting to {provider}, only when you tap send."
+msgstr "Sends your message and the posting to {provider}, only when you tap send."
+
+#: src/features/assistant/assistant-screen.tsx
+msgid "Sends your message to {provider}, only when you tap send."
+msgstr "Sends your message to {provider}, only when you tap send."
 
 #: src/features/workspace/coach-sheet.tsx
 msgid "Sends your message, earlier messages, this application (posting, notes, documents sent) and your Profile, if switched on, to {label}."
@@ -11626,6 +11626,10 @@ msgstr "Sign in to create or import documents."
 msgid "Sign in to edit this resume."
 msgstr "Sign in to edit this resume."
 
+#: src/features/assistant/coach.tsx
+msgid "Sign in to use Coach"
+msgstr "Sign in to use Coach"
+
 #: src/features/assistant/assistant-screen.tsx
 msgid "Sign in to use the assistant."
 msgstr "Sign in to use the assistant."
@@ -11846,7 +11850,7 @@ msgstr "Sort: {0}, {1}"
 msgid "Source"
 msgstr "Source"
 
-#: src/features/assistant/chat-view.tsx
+#: src/features/assistant/conversation.tsx
 #: src/features/assistant/messages.tsx
 msgid "Sources"
 msgstr "Sources"
@@ -12036,7 +12040,7 @@ msgstr "Step {0} of {1}"
 msgid "Step {index} of {total}"
 msgstr "Step {index} of {total}"
 
-#: src/features/assistant/chat-view.tsx
+#: src/features/assistant/composer.tsx
 #: src/features/letters/write.tsx
 msgid "Stop"
 msgstr "Stop"
@@ -12054,11 +12058,11 @@ msgstr "Stop recording"
 msgid "Stop when you're done. Nothing is sent until then."
 msgstr "Stop when you're done. Nothing is sent until then."
 
-#: src/features/assistant/chat-view.tsx
+#: src/features/assistant/conversation.tsx
 msgid "Stopped"
 msgstr "Stopped"
 
-#: src/features/assistant/chat-view.tsx
+#: src/features/assistant/conversation.tsx
 msgid "Stopped. No edits were proposed."
 msgstr "Stopped. No edits were proposed."
 
@@ -12187,7 +12191,7 @@ msgstr "Swap the start and end dates."
 msgid "Swedish"
 msgstr "Swedish"
 
-#: src/features/assistant/chat-view.tsx
+#: src/features/assistant/conversation.tsx
 msgid "Switch model"
 msgstr "Switch model"
 
@@ -12516,14 +12520,6 @@ msgstr "The application is saved. Linking it to this resume didn't work yet."
 msgid "The application this letter is for."
 msgstr "The application this letter is for."
 
-#: src/features/assistant/assistant-screen.tsx
-msgid "The assistant isn't set up on this server. Whoever runs it needs to set ENCRYPTION_SECRET. Everything else works without it."
-msgstr "The assistant isn't set up on this server. Whoever runs it needs to set ENCRYPTION_SECRET. Everything else works without it."
-
-#: src/features/assistant/provider.tsx
-msgid "The assistant uses your own key. Nothing is sent anywhere until you connect one."
-msgstr "The assistant uses your own key. Nothing is sent anywhere until you connect one."
-
 #: src/features/profile/conflict-sheet.tsx
 msgid "The changes you made on this device since then will be lost."
 msgstr "The changes you made on this device since then will be lost."
@@ -12547,10 +12543,6 @@ msgstr "The coach doesn't remember anything from your messages."
 #: src/features/workspace/coach-sheet.tsx
 msgid "The coach isn't set up on this server. Whoever runs it needs to set ENCRYPTION_SECRET."
 msgstr "The coach isn't set up on this server. Whoever runs it needs to set ENCRYPTION_SECRET."
-
-#: src/features/assistant/coach-screen.tsx
-msgid "The coach isn't set up on this server. Whoever runs it needs to set ENCRYPTION_SECRET. Your Profile, Offers and your applications work without it."
-msgstr "The coach isn't set up on this server. Whoever runs it needs to set ENCRYPTION_SECRET. Your Profile, Offers and your applications work without it."
 
 #: src/features/profile/preferences.tsx
 msgid "The coach proposes each fact in the chat. Nothing is saved until you agree."
@@ -12706,6 +12698,10 @@ msgstr "The reason is kept for Insights. Linked documents aren't touched."
 msgid "The records aren't visible yet. Check again later."
 msgstr "The records aren't visible yet. Check again later."
 
+#: src/features/assistant/conversation.tsx
+msgid "The reply was interrupted."
+msgstr "The reply was interrupted."
+
 #: src/features/ats-checker/checker.tsx
 msgid "The rest of the file isn't in this report."
 msgstr "The rest of the file isn't in this report."
@@ -12741,6 +12737,14 @@ msgstr "The score counts how reliably software reads your resume. It doesn't pre
 #: src/features/ats-checker/checker.tsx
 msgid "The score reflects how reliably text is extracted, not your chances."
 msgstr "The score reflects how reliably text is extracted, not your chances."
+
+#: src/features/assistant/coach.tsx
+msgid "The server operator needs to configure AI before Coach can start."
+msgstr "The server operator needs to configure AI before Coach can start."
+
+#: src/features/assistant/assistant-screen.tsx
+msgid "The server operator needs to configure AI before the assistant can start."
+msgstr "The server operator needs to configure AI before the assistant can start."
 
 #: src/features/documents/import-file.ts
 msgid "The server returned an invalid import result. Refresh Documents before retrying."
@@ -12837,7 +12841,7 @@ msgstr "They're deleted with their timelines and files. This can't be undone."
 msgid "Thinking"
 msgstr "Thinking"
 
-#: src/features/assistant/chat-view.tsx
+#: src/features/assistant/conversation.tsx
 msgid "Thinking…"
 msgstr "Thinking…"
 
@@ -12871,6 +12875,7 @@ msgstr "This conversation can't continue in this app. Start a new conversation."
 
 #: src/features/assistant/assistant-screen.tsx
 #: src/features/assistant/chat-view.tsx
+#: src/features/assistant/coach.tsx
 msgid "This conversation couldn't be opened."
 msgstr "This conversation couldn't be opened."
 
@@ -13096,8 +13101,8 @@ msgid "This measures how faithfully software can extract this file's text. It do
 msgstr "This measures how faithfully software can extract this file's text. It does not predict whether an application will be rejected, and no tool can."
 
 #: src/features/billing/ai-source.ts
-msgid "This needs {required} and you have {balance}. Use your own AI connection instead: set it as the default in Settings → AI providers."
-msgstr "This needs {required} and you have {balance}. Use your own AI connection instead: set it as the default in Settings → AI providers."
+msgid "This needs {required} and you have {balance}. Switch to your own AI connection to continue."
+msgstr "This needs {required} and you have {balance}. Switch to your own AI connection to continue."
 
 #: src/features/assistant/messages.tsx
 msgid "This page is clipped or incomplete. Check the original before using it."
@@ -13439,7 +13444,7 @@ msgstr "Transcribed · {spokenFor} · check numbers and names before using it"
 msgid "Transcribing with {model}…"
 msgstr "Transcribing with {model}…"
 
-#: src/features/assistant/chat-view.tsx
+#: src/features/assistant/conversation.tsx
 msgid "Transcript copied"
 msgstr "Transcript copied"
 
@@ -13635,9 +13640,8 @@ msgstr "Underline links"
 #: src/features/applications/detail/contacts.tsx
 #: src/features/applications/interview/use-reschedule.ts
 #: src/features/applications/queries.ts
-#: src/features/assistant/document.ts
+#: src/features/assistant/change-set.tsx
 #: src/features/assistant/messages.tsx
-#: src/features/assistant/proposals.ts
 #: src/features/career/undo.ts
 #: src/features/check/actions.ts
 #: src/features/design/draft.ts
@@ -13949,8 +13953,6 @@ msgstr "Use six hex digits, like #3E6B4F."
 msgid "Use the authenticator app"
 msgstr "Use the authenticator app"
 
-#: src/features/assistant/document.ts
-#: src/features/assistant/proposals.ts
 #: src/features/check/actions.ts
 msgid "Use the builder's Undo to undo earlier changes."
 msgstr "Use the builder's Undo to undo earlier changes."
@@ -14242,7 +14244,7 @@ msgstr "Weak"
 msgid "Web page"
 msgstr "Web page"
 
-#: src/features/assistant/coach-screen.tsx
+#: src/features/assistant/coach.tsx
 msgid "Web research"
 msgstr "Web research"
 
@@ -14299,7 +14301,7 @@ msgstr "What a parser reads"
 msgid "What a person sees"
 msgstr "What a person sees"
 
-#: src/features/assistant/coach-screen.tsx
+#: src/features/assistant/coach.tsx
 msgid "What are you working on?"
 msgstr "What are you working on?"
 
@@ -14323,7 +14325,7 @@ msgstr "What did you say, as close as you remember?"
 msgid "What goes in it?"
 msgstr "What goes in it?"
 
-#: src/features/assistant/coach-screen.tsx
+#: src/features/assistant/coach.tsx
 msgid "What interview answers should I practice?"
 msgstr "What interview answers should I practice?"
 
@@ -14427,9 +14429,9 @@ msgstr "When a plan ends, nothing is locked or deleted: every document stays ope
 msgid "When do they need your answer?"
 msgstr "When do they need your answer?"
 
-#: src/features/assistant/coach-screen.tsx
-msgid "When you tap send, {list} go to {connection}."
-msgstr "When you tap send, {list} go to {connection}."
+#: src/features/assistant/coach.tsx
+msgid "When you tap send, {list} go to {label}."
+msgstr "When you tap send, {list} go to {label}."
 
 #: src/features/applications/insights/insights-cards.tsx
 msgid "Where applications come from"
@@ -14463,7 +14465,7 @@ msgstr "Where your applications went"
 msgid "Which application is it for?"
 msgstr "Which application is it for?"
 
-#: src/features/assistant/coach-screen.tsx
+#: src/features/assistant/coach.tsx
 msgid "Which opportunities best match my priorities?"
 msgstr "Which opportunities best match my priorities?"
 
@@ -14642,7 +14644,7 @@ msgstr "Yesterday"
 msgid "Yesterday {time}"
 msgstr "Yesterday {time}"
 
-#: src/features/assistant/chat-view.tsx
+#: src/features/assistant/conversation.tsx
 msgid "You"
 msgstr "You"
 
@@ -14830,6 +14832,11 @@ msgstr "your AI connection"
 msgid "Your AI connection"
 msgstr "Your AI connection"
 
+#. placeholder {0}: provider.label
+#: src/features/assistant/provider.tsx
+msgid "Your AI connection · {0}"
+msgstr "Your AI connection · {0}"
+
 #: src/api/ai-consent.ts
 msgid "Your AI settings changed while you were deciding. Nothing was sent; try again."
 msgstr "Your AI settings changed while you were deciding. Nothing was sent; try again."
@@ -14958,9 +14965,13 @@ msgstr "Your lines are packed very tightly."
 msgid "Your margins are very narrow."
 msgstr "Your margins are very narrow."
 
-#: src/features/assistant/coach-screen.tsx
+#: src/features/assistant/coach.tsx
 msgid "your message"
 msgstr "your message"
+
+#: src/features/assistant/conversation.tsx
+msgid "Your message is kept. Try again to continue."
+msgstr "Your message is kept. Try again to continue."
 
 #: src/features/write/write-header.tsx
 msgid "Your name"
@@ -15038,7 +15049,7 @@ msgstr "Your plan"
 msgid "Your portfolio is coming to the app"
 msgstr "Your portfolio is coming to the app"
 
-#: src/features/assistant/coach-screen.tsx
+#: src/features/assistant/coach.tsx
 msgid "your preferences"
 msgstr "your preferences"
 
@@ -15074,7 +15085,7 @@ msgstr "Your Profile changed since this check. Checking again uses AI again."
 msgid "Your Profile changed somewhere else. Try again."
 msgstr "Your Profile changed somewhere else. Try again."
 
-#: src/features/assistant/coach-screen.tsx
+#: src/features/assistant/coach.tsx
 msgid "Your Profile couldn't load. Try again or switch Profile off before sending."
 msgstr "Your Profile couldn't load. Try again or switch Profile off before sending."
 
@@ -15190,7 +15201,7 @@ msgstr "Your short link and custom domain say this resume isn't shared until you
 msgid "Your sources"
 msgstr "Your sources"
 
-#: src/features/assistant/coach-screen.tsx
+#: src/features/assistant/coach.tsx
 msgid "your stories"
 msgstr "your stories"
 

@@ -1,5 +1,4 @@
 import type { ThreadSummary } from "./chat";
-import type { ReactNode } from "react";
 import { plural } from "@lingui/core/macro";
 import { Trans, useLingui } from "@lingui/react/macro";
 import { useQueryClient } from "@tanstack/react-query";
@@ -8,23 +7,21 @@ import { ScrollView, View } from "react-native";
 import { refreshThreads } from "./chat";
 import { client } from "@/api/client";
 import { getAccountScope } from "@/auth/session";
-import { ConfirmDialog, IconButton, ListRow, Text, showToast, useTheme } from "@/ui-legacy";
+import { Button, ConfirmDialog, Input, ListGroup, ListRow, Text, showToast } from "@/ui";
+import { SheetMenu } from "@/ui/sheet-menu";
 
-/** "Find weak bullets" — the server titles new conversations in English until their first message. */
 export const useThreadTitle = () => {
 	const { t } = useLingui();
 	return (thread: ThreadSummary | undefined) =>
 		thread && thread.title !== "New conversation" ? thread.title : t`New conversation`;
 };
 
-/** "Oct 12, 14:20". */
 export function useThreadTime() {
 	const { i18n } = useLingui();
 	const format = new Intl.DateTimeFormat(i18n.locale, { dateStyle: "medium", timeStyle: "short" });
 	return (value: Date | string) => format.format(new Date(value));
 }
 
-/** Deletes a conversation after a confirmation; accepted edits stay in the document. */
 export function useDeleteThread(onDeleted?: (id: string) => void) {
 	const { t } = useLingui();
 	const queryClient = useQueryClient();
@@ -32,23 +29,24 @@ export function useDeleteThread(onDeleted?: (id: string) => void) {
 	const [target, setTarget] = useState<ThreadSummary | null>(null);
 	const dialog = (
 		<ConfirmDialog
-			open={target !== null}
+			isOpen={target !== null}
+			onOpenChange={(open) => {
+				if (!open) setTarget(null);
+			}}
 			title={t`Delete this conversation?`}
 			message={t`Its messages and attachments are deleted. Edits you accepted stay in the document.`}
 			confirmLabel={t`Delete conversation`}
+			cancelLabel={t`Keep conversation`}
 			destructive
-			onCancel={() => setTarget(null)}
 			onConfirm={() => {
-				const thread = target;
-				setTarget(null);
-				if (!thread || !scope) return;
-				client.agent.threads
-					.delete({ id: thread.id }, { context: { scope } })
+				if (!target || !scope) return;
+				void client.agent.threads
+					.delete({ id: target.id }, { context: { scope } })
 					.then(() => {
 						refreshThreads(queryClient);
-						onDeleted?.(thread.id);
+						onDeleted?.(target.id);
 					})
-					.catch(() => showToast({ message: t`Couldn't delete the conversation. Try again.` }));
+					.catch(() => showToast({ title: t`Couldn't delete the conversation. Try again.` }));
 			}}
 		/>
 	);
@@ -57,75 +55,129 @@ export function useDeleteThread(onDeleted?: (id: string) => void) {
 
 type PastConversationsProps = {
 	threads: readonly ThreadSummary[];
-	/** Conversations about the open document come first. */
-	isMine: (thread: ThreadSummary) => boolean;
+	isMine?: (thread: ThreadSummary) => boolean;
 	currentId: string | null;
 	onOpen: (thread: ThreadSummary) => void;
 	onDeleted: (id: string) => void;
 };
 
-/** Conversations grouped by document, titled by their task, with what came of them. */
 export function PastConversations({ threads, isMine, currentId, onOpen, onDeleted }: PastConversationsProps) {
 	const { t } = useLingui();
-	const { space } = useTheme();
 	const title = useThreadTitle();
 	const time = useThreadTime();
+	const queryClient = useQueryClient();
 	const remove = useDeleteThread(onDeleted);
-	const mine = threads.filter(isMine);
-	const others = threads.filter((thread) => !isMine(thread) && (thread.workingResumeId || thread.coverLetterId));
+	const [renaming, setRenaming] = useState<{ id: string; title: string } | null>(null);
+	const mine = isMine ? threads.filter(isMine) : threads;
+	const others = isMine
+		? threads.filter((thread) => !isMine(thread) && (thread.workingResumeId || thread.coverLetterId))
+		: [];
 
-	const outcome = (thread: ThreadSummary) =>
-		thread.editsProposed === 0
-			? t`no edits`
-			: plural(thread.editsProposed, {
+	const saveName = async () => {
+		const scope = getAccountScope();
+		const target = renaming;
+		const name = target?.title.trim();
+		if (!scope || !target || !name) return;
+		try {
+			await client.agent.threads.update({ id: target.id, title: name }, { context: { scope } });
+			refreshThreads(queryClient);
+			setRenaming(null);
+		} catch {
+			showToast({ title: t`Couldn't rename the conversation. Try again.` });
+		}
+	};
+	const row = (thread: ThreadSummary, other = false) => {
+		const outcome = thread.editsProposed
+			? plural(thread.editsProposed, {
 					one: `${thread.editsAccepted} of # edit accepted`,
 					other: `${thread.editsAccepted} of # edits accepted`,
-				});
-
-	const row = (thread: ThreadSummary, other: boolean) => (
-		<ListRow
-			key={thread.id}
-			title={title(thread)}
-			subtitle={[
-				time(thread.lastMessageAt),
-				outcome(thread),
-				...(other ? [thread.coverLetterName ?? thread.resumeName ?? ""] : []),
-			]
-				.filter(Boolean)
-				.join(" · ")}
-			selected={thread.id === currentId}
-			onPress={() => onOpen(thread)}
-			trailing={<IconButton icon="dots-three" label={t`Delete ${title(thread)}`} onPress={() => remove.ask(thread)} />}
-		/>
-	);
+				})
+			: "";
+		return renaming?.id === thread.id ? (
+			<View key={thread.id} className="gap-2 p-3">
+				<Input
+					variant="secondary"
+					accessibilityLabel={t`Conversation name`}
+					value={renaming.title}
+					maxLength={200}
+					onChangeText={(name) => setRenaming({ id: thread.id, title: name })}
+					onSubmitEditing={() => void saveName()}
+				/>
+				<View className="flex-row gap-2">
+					<Button size="sm" onPress={() => void saveName()}>
+						<Button.Label>
+							<Trans>Save</Trans>
+						</Button.Label>
+					</Button>
+					<Button size="sm" variant="ghost" onPress={() => setRenaming(null)}>
+						<Button.Label>
+							<Trans>Cancel</Trans>
+						</Button.Label>
+					</Button>
+				</View>
+			</View>
+		) : (
+			<View key={thread.id} className="flex-row items-center gap-1 pe-2">
+				<View className="flex-1">
+					<ListRow
+						title={title(thread)}
+						description={[
+							time(thread.lastMessageAt),
+							outcome,
+							other ? (thread.coverLetterName ?? thread.resumeName) : "",
+						]
+							.filter(Boolean)
+							.join(" · ")}
+						isSelected={thread.id === currentId}
+						onPress={() => onOpen(thread)}
+					/>
+				</View>
+				<ThreadMenu
+					label={title(thread)}
+					onRename={() => setRenaming({ id: thread.id, title: title(thread) })}
+					onDelete={() => remove.ask(thread)}
+				/>
+			</View>
+		);
+	};
 
 	return (
-		<ScrollView contentContainerStyle={{ paddingVertical: space.s3 }}>
-			<Section title={t`This document`}>
-				{mine.length > 0 ? (
-					mine.map((thread) => row(thread, false))
-				) : (
-					<Text color="ink2" style={{ paddingHorizontal: space.s4, paddingVertical: space.s2 }}>
-						<Trans>No conversations about this document yet.</Trans>
-					</Text>
-				)}
-			</Section>
-			{others.length > 0 ? (
-				<Section title={t`Other documents · ${others.length}`}>{others.map((thread) => row(thread, true))}</Section>
+		<ScrollView className="flex-1" contentContainerClassName="gap-3 p-4" keyboardShouldPersistTaps="handled">
+			{isMine ? (
+				<Text size="xs" weight="semibold" tone="muted">
+					<Trans>This document</Trans>
+				</Text>
+			) : null}
+			{mine.length ? (
+				<ListGroup>{mine.map((thread) => row(thread))}</ListGroup>
+			) : (
+				<Text tone="muted">
+					<Trans>No conversations yet.</Trans>
+				</Text>
+			)}
+			{others.length ? (
+				<>
+					<Text size="xs" weight="semibold" tone="muted">{t`Other documents · ${others.length}`}</Text>
+					<ListGroup>{others.map((thread) => row(thread, true))}</ListGroup>
+				</>
 			) : null}
 			{remove.dialog}
 		</ScrollView>
 	);
 }
 
-function Section({ title, children }: { title: string; children: ReactNode }) {
-	const { space } = useTheme();
+type ThreadMenuProps = { label: string; onRename: () => void; onDelete: () => void };
+
+function ThreadMenu({ label, onRename, onDelete }: ThreadMenuProps) {
+	const { t } = useLingui();
 	return (
-		<View style={{ gap: space.s1, marginBottom: space.s4 }}>
-			<Text variant="eyebrow" color="ink3" accessibilityRole="header" style={{ paddingHorizontal: space.s4 }}>
-				{title}
-			</Text>
-			{children}
-		</View>
+		<SheetMenu
+			label={t`Options for ${label}`}
+			closeLabel={t`Close`}
+			items={[
+				{ label: t`Rename`, onPress: onRename },
+				{ label: t`Delete conversation`, onPress: onDelete, destructive: true },
+			]}
+		/>
 	);
 }

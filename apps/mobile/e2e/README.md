@@ -25,3 +25,18 @@ maestro test -e RESUME_ID="$RESUME_ID" -e SHARE_SHEET_TEXT="Save to Files" apps/
 OS browser-consent text, native rich-text accessibility and sheet gestures may need selector adjustments after the first device run. No app-only test flags, authentication bypasses or production test seams were added.
 
 `jobs.yaml` (Phase 09): search → open the first listing → Track → it shows in Applications. Point the server's job search at the local treg stub (`TREG_BASE_URL=http://127.0.0.1:3999`, `TREG_API_KEY` any value; launch config `treg-stub-09` + `rezumi-mobile-09`), never at treg, and supply a role the account hasn't tracked: `maestro test -e QUERY="Data analyst" apps/mobile/e2e/jobs.yaml`. Passed on the iPhone 17 simulator (iOS 27.2) on 2026-11-22.
+
+## Coach and editor assistant
+
+Use a signed-in, disposable account with a tested OpenAI-compatible connection pointed at the local stub from the web tests. Run this from the repository root and leave it running while exercising the flows.
+
+```sh
+pnpm --filter server exec tsx -e 'import { startAiStub } from "../../tests/e2e/fixtures/ai-stub.ts"; void startAiStub(39411)'
+```
+
+Start a local Rezumi server with `FLAG_ALLOW_UNSAFE_AI_BASE_URL=true` and an encryption secret. Add a connection with base URL `http://127.0.0.1:39411/v1` as seen by the **server**, model `stub`, and a fictional key. Test the connection and make it the default. Create an unlocked sample resume on this account so the stub has a passage to edit. Use an English app UI and a phone in portrait.
+
+```sh
+maestro test apps/mobile/e2e/coach.yaml
+maestro test -e RESUME_ID="$RESUME_ID" apps/mobile/e2e/assistant-proposals.yaml
+```

@@ -104,3 +104,7 @@ Akun lama yang masuk di perangkat baru langsung ke Home. Izin notifikasi diminta
 | CSV lamaran             | Ada                          | Tidak ada (D6)                                              |
 | Admin                   | Ada                          | Tidak ada (K16)                                             |
 | Pintasan keyboard       | ⌘K dan lain-lain             | Hanya dengan keyboard fisik (modul `key-commands` yang ada) |
+
+## Phase 11 — Percakapan
+
+Coach dari tombol kilau memakai lembar dengan tombol **Expand Coach** di ponsel, dan panel kanan di tablet. **Conversations** membuka riwayat. Asisten CV dan surat memakai lembar yang sama pola percakapannya. Komposer, pilihan konteks dan sumber AI selalu berada di bawah daftar pesan. Usulan yang diterapkan mendapat tombol **Undo** selama langkahnya masih bisa diurungkan.

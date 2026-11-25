@@ -143,7 +143,7 @@ function Frame<T extends string>({
 	};
 
 	// The panes' own bottom safe area: none while the mode bar under them pads it.
-	const showBar = !tablet && !!barPane && !keyboardVisible;
+	const showBar = !tablet && !!barPane && !keyboardVisible && current !== "assistant";
 	const sideless = { ...insets, left: 0, right: 0, top: tablet ? 0 : insets.top };
 	const paneInsets = showBar && currentPane ? { ...sideless, bottom: 0 } : sideless;
 
@@ -182,7 +182,16 @@ function Frame<T extends string>({
 										<Stack.Screen
 											key={name}
 											name={name}
-											options={{ presentation: "modal", headerShown: name !== "assistant" }}
+											options={
+												name === "assistant"
+													? {
+															presentation: "formSheet",
+															headerShown: false,
+															sheetAllowedDetents: [0.92, 1],
+															sheetGrabberVisible: true,
+														}
+													: { presentation: "modal" }
+											}
 										/>
 									))}
 									{fullScreenModals.map((name) => (

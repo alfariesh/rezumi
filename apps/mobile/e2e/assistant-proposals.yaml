@@ -1,0 +1,33 @@
+appId: app.rezumi
+name: Accept and undo a resume edit from the local AI stub
+---
+- launchApp
+- openLink: app.rezumi://builder/${RESUME_ID}/write
+- extendedWaitUntil:
+    visible:
+      id: open-editor-assistant
+    timeout: 30000
+- tapOn:
+    id: open-editor-assistant
+- extendedWaitUntil:
+    visible:
+      id: assistant-message
+    timeout: 30000
+- tapOn: New conversation
+- tapOn:
+    id: assistant-message
+- inputText: Tighten my resume
+- tapOn:
+    id: assistant-send
+- tapOn: Allow this operation
+- extendedWaitUntil:
+    visible:
+      id: assistant-accept
+    timeout: 30000
+- tapOn:
+    id: assistant-accept
+- assertVisible: Applied
+- tapOn:
+    id: assistant-undo
+- assertVisible:
+    id: assistant-accept

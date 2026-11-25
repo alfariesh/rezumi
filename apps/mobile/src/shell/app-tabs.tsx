@@ -9,6 +9,7 @@ import { useRouter } from "expo-router";
 import { Pressable, ScrollView, View, useWindowDimensions } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { AccountButton } from "./account-menu";
+import { sidebarLayout } from "./section-width";
 import { useUnreadCount, useSidebarCounts } from "@/features/home/queries";
 import { routes } from "@/routes";
 import { Button, Icon, Text, cx, haptics } from "@/ui";
@@ -23,9 +24,6 @@ export const tabIcons: Record<AppTab, IconName> = {
 
 /** The web sidebar's order (owner, 2026-11-16): Home, Portfolio, Documents, Profile, Applications. */
 export const sidebarOrder: readonly AppTab[] = ["home", "portfolio", "documents", "profile", "applications"];
-
-/** Below this width the sidebar is a rail of icons with short labels. */
-const fullSidebarWidth = 1000;
 
 type TabRoute = BottomTabBarProps["state"]["routes"][number];
 
@@ -133,7 +131,7 @@ export function AppSidebar(props: BottomTabBarProps) {
 	const counts = useSidebarCounts();
 	const insets = useSafeAreaInsets();
 	const { width } = useWindowDimensions();
-	const compact = width < fullSidebarWidth;
+	const { compact, width: railWidth } = sidebarLayout(width);
 	const { visible, focusedKey, press } = readTabs(props);
 	const ordered = sidebarOrder.flatMap((name) => visible.filter((route) => route.name === name));
 	const countOf: Partial<Record<AppTab, number | undefined>> = {
@@ -142,17 +140,14 @@ export function AppSidebar(props: BottomTabBarProps) {
 		applications: counts.applications,
 	};
 	const frame = {
+		width: railWidth,
 		paddingTop: insets.top + 12,
 		paddingBottom: insets.bottom + 12,
 		paddingStart: insets.left + 12,
 	};
 
 	return (
-		<View
-			accessibilityRole="tablist"
-			className={cx("border-e border-separator bg-surface pe-3", compact ? "w-24" : "w-64")}
-			style={frame}
-		>
+		<View accessibilityRole="tablist" className="border-e border-separator bg-surface pe-3" style={frame}>
 			<Text
 				weight="bold"
 				size="base"
