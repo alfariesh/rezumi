@@ -167,11 +167,12 @@ const fullWorkMessage = () =>
 /**
  * Adds a block at a place in a work: text and metrics at once, pictures after they're chosen and uploaded (a Pictures
  * block always holds one), a video or link once its address is given, a PDF once it's uploaded. A block that arrives
- * late still lands next to the block it was added after. Returns the action, whether something is still uploading,
- * and the pickers and progress the actions show.
+ * late still lands next to the block it was added after, also when the work was closed meanwhile: uploads and reads
+ * run as background tasks under `key` (`runPortfolioTask`), and whoever uses the same key shows them. Returns the
+ * action, whether something is still uploading, and the pickers and progress the actions show.
  */
-function useAddBlock(work: PortfolioWork, index: number, last = false) {
-	const uploads = useImageUploads();
+function useAddBlock(key: string, work: PortfolioWork, index: number, last = false) {
+	const uploads = useImageUploads(`${key}.pictures`);
 	// The place is read when the action starts; the block may only arrive after an upload.
 	const inserter =
 		(place: BlockPlace) =>
@@ -184,7 +185,7 @@ function useAddBlock(work: PortfolioWork, index: number, last = false) {
 			if (!added) toast.add({ type: "warning", description: fullWorkMessage() });
 			return added > 0;
 		};
-	const media = useAddMediaBlock(work.id, (workId, blockId, recipe) =>
+	const media = useAddMediaBlock(`${key}.media`, work.id, (workId, blockId, recipe) =>
 		editWork(workId, (draft) => {
 			const block = draft.blocks.find((entry) => entry.id === blockId);
 			if (block) recipe(block);
@@ -274,7 +275,9 @@ type AddBlockMenuProps = {
 
 /** "+ Add block" between blocks: Text, Pictures, Metrics, Video, PDF, Link. */
 function AddBlockMenu({ work, index, last = false, quiet = false, appearance = "panel" }: AddBlockMenuProps) {
-	const { add, busy, status } = useAddBlock(work, index, last);
+	// The menu after a block stands for "after that block", whatever moves around it; the last one for the end.
+	const key = `works.${work.id}.add.${last ? "end" : (work.blocks[index - 1]?.id ?? "start")}`;
+	const { add, busy, status } = useAddBlock(key, work, index, last);
 	const full = blockRoom(work) === 0;
 
 	if (quiet) return status;
@@ -603,7 +606,11 @@ type TextBlockEditorProps = {
 
 /** Rich text; typing "/" adds a block after this one. */
 function TextBlockEditor({ work, block, index, appearance }: TextBlockEditorProps) {
-	const { add, addFiles, addUrl, busy, status } = useAddBlock(work, index + 1);
+	const { add, addFiles, addUrl, busy, status } = useAddBlock(
+		`works.${work.id}.blocks.${block.id}.slash`,
+		work,
+		index + 1,
+	);
 	const { i18n } = useLingui();
 	// The questions under a story outline's headings, in the app's language.
 	const hints = useMemo(() => storyHints((descriptor) => i18n._(descriptor)), [i18n]);

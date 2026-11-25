@@ -1,59 +1,58 @@
 import type { EditBlock } from "./video-block";
 import type { PortfolioBlockOf } from "@rezumi/schema/portfolio/blocks";
 import type { PortfolioWork } from "@rezumi/schema/portfolio/data";
-import { Button, Spinner } from "@heroui/react";
+import { Button } from "@heroui/react";
 import { plural, t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
-import { useState } from "react";
 import { PORTFOLIO_LIMITS } from "@rezumi/schema/portfolio/limits";
 import { Icon } from "@rezumi/ui/components/icon";
 import { TextInput } from "../editor/fields";
+import { runPortfolioTask, usePortfolioTask } from "../editor/tasks";
 import { portfolioImageSrc } from "../images/image-field";
 import { discardUnplacedImages, discardUploadedImages, isAbort } from "../images/upload";
-import { useRequestSignals } from "../images/use-request-signals";
 import { formatFileSize, pdfErrorMessage, uploadPortfolioPdf } from "../media/pdf";
-import { currentBlock, ErrorNote, usePdfPicker } from "./add-media-block";
+import { currentBlock, TaskStatus, usePdfPicker } from "./add-media-block";
 
 const { text: max } = PORTFOLIO_LIMITS;
 
 type PdfBlockEditorProps = { work: PortfolioWork; block: PortfolioBlockOf<"pdf">; edit: EditBlock<"pdf"> };
 
-/** A PDF: its first page, title, pages and size, and a way to replace the file. */
+/**
+ * A PDF: its first page, title, pages and size, and a way to replace the file. A replacement uploads in the background
+ * (`runPortfolioTask`): it carries on when the work is closed, and lands if the block is still there.
+ */
 export function PdfBlockEditor({ work, block, edit }: PdfBlockEditorProps) {
-	const [busy, setBusy] = useState(false);
-	const [error, setError] = useState<string | null>(null);
-	const requests = useRequestSignals();
+	const taskKey = `works.${work.id}.blocks.${block.id}.pdf`;
+	const task = usePortfolioTask(taskKey);
 
-	const replace = async (file: File) => {
-		const signal = requests.next();
-		setBusy(true);
-		setError(null);
-		try {
-			const uploaded = await uploadPortfolioPdf(file, block.title, signal);
-			if (currentBlock(work.id, block.id)?.type !== "pdf") {
-				// The block went away meanwhile: nothing uses the new file.
-				void discardUploadedImages(
-					uploaded.preview ? [uploaded.preview, { key: uploaded.file }] : [{ key: uploaded.file }],
+	const replace = (file: File) =>
+		runPortfolioTask(taskKey, async ({ signal, say, fail }) => {
+			say(t`Reading and uploading the PDF…`);
+			try {
+				const uploaded = await uploadPortfolioPdf(file, block.title, signal);
+				if (currentBlock(work.id, block.id)?.type !== "pdf") {
+					// The block went away meanwhile: nothing uses the new file.
+					void discardUploadedImages(
+						uploaded.preview ? [uploaded.preview, { key: uploaded.file }] : [{ key: uploaded.file }],
+					);
+					return;
+				}
+				edit(
+					(draft) => {
+						draft.file = uploaded.file;
+						draft.pages = uploaded.pages;
+						if (uploaded.bytes) draft.bytes = uploaded.bytes;
+						if (uploaded.preview) draft.preview = uploaded.preview;
+						else delete draft.preview;
+					},
+					{ structural: true },
 				);
-				return;
+				if (uploaded.preview) discardUnplacedImages([uploaded.preview]);
+			} catch (failure) {
+				if (isAbort(failure, signal)) throw failure;
+				fail(pdfErrorMessage(failure));
 			}
-			edit(
-				(draft) => {
-					draft.file = uploaded.file;
-					draft.pages = uploaded.pages;
-					if (uploaded.bytes) draft.bytes = uploaded.bytes;
-					if (uploaded.preview) draft.preview = uploaded.preview;
-					else delete draft.preview;
-				},
-				{ structural: true },
-			);
-			if (uploaded.preview) discardUnplacedImages([uploaded.preview]);
-		} catch (failure) {
-			if (!isAbort(failure, signal)) setError(pdfErrorMessage(failure));
-		} finally {
-			if (!signal.aborted) setBusy(false);
-		}
-	};
+		});
 
 	const picker = usePdfPicker((file) => void replace(file));
 	const details = [
@@ -103,7 +102,7 @@ export function PdfBlockEditor({ work, block, edit }: PdfBlockEditorProps) {
 				}
 			/>
 			<div className="flex flex-wrap items-center gap-2">
-				<Button size="sm" variant="secondary" isDisabled={busy} onPress={picker.open}>
+				<Button size="sm" variant="secondary" isDisabled={task.running} onPress={picker.open}>
 					<Icon name="arrows-clockwise" size={16} />
 					<Trans>Replace the PDF</Trans>
 				</Button>
@@ -112,13 +111,7 @@ export function PdfBlockEditor({ work, block, edit }: PdfBlockEditorProps) {
 				</span>
 			</div>
 			{picker.element}
-			{busy && (
-				<p className="flex items-center gap-2 text-xs text-muted" role="status">
-					<Spinner size="sm" />
-					<Trans>Reading and uploading the PDF…</Trans>
-				</p>
-			)}
-			{error && <ErrorNote message={error} />}
+			<TaskStatus task={task} />
 		</div>
 	);
 }

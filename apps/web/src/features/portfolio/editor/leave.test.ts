@@ -9,6 +9,7 @@ vi.mock("@/libs/orpc/client", () => ({ client: { portfolio: { update: mocks.upda
 
 const { LEAVE_SAVE_TIMEOUT_MS, shouldStayInEditor } = await import("./leave");
 const { usePortfolioEditorStore } = await import("./store");
+const { portfolioTasksRunning, runPortfolioTask } = await import("./tasks");
 
 const opened = new Date("2026-11-06T01:00:00.000Z");
 const record = (patch: Partial<PortfolioRecord> = {}): PortfolioRecord => ({
@@ -82,6 +83,34 @@ describe("leaving the editor", () => {
 		await store().flush();
 		expect(store().status).toBe("gone");
 		expect(await shouldStayInEditor(vi.fn().mockResolvedValue(true))).toBe(false);
+	});
+
+	it("asks before stopping uploads still on their way, and closing the portfolio stops them", async () => {
+		let stopped = false;
+		const uploading = runPortfolioTask(
+			"works.w.cover",
+			({ signal }) =>
+				new Promise<string>((_resolve, reject) =>
+					signal.addEventListener("abort", () => {
+						stopped = true;
+						reject(signal.reason);
+					}),
+				),
+		);
+		const stay = vi.fn().mockResolvedValue(false);
+		expect(await shouldStayInEditor(stay)).toBe(true);
+		expect(stay).toHaveBeenCalledWith(
+			"Stop the uploads?",
+			expect.objectContaining({ confirmText: "Leave and stop them" }),
+		);
+		expect(stopped).toBe(false);
+
+		const leave = vi.fn().mockResolvedValue(true);
+		expect(await shouldStayInEditor(leave)).toBe(false);
+		store().close();
+		expect(await uploading).toBeUndefined();
+		expect(stopped).toBe(true);
+		expect(portfolioTasksRunning()).toBe(false);
 	});
 
 	it("asks instead of waiting for a save without an answer, which is given up and tried again later", async () => {

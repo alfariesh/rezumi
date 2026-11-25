@@ -22,6 +22,7 @@ import { preloadPortfolioRichTextEditor } from "@/features/portfolio/editor/fiel
 import { PublishPanel, usePortfolioUrl } from "@/features/portfolio/editor/publish-panel";
 import { describeRetry, describeSaveProblem } from "@/features/portfolio/editor/save-problem";
 import { usePortfolioData, usePortfolioEditorStore } from "@/features/portfolio/editor/store";
+import { portfolioTasksRunning, usePortfolioTasksRunning } from "@/features/portfolio/editor/tasks";
 import { usePortfolioEditorUi } from "@/features/portfolio/editor/ui";
 import { usePageMessages } from "@/features/portfolio/editor/use-view";
 import { usePortfolioWebMcpTools } from "@/features/portfolio/editor/webmcp";
@@ -310,7 +311,28 @@ function PortfolioTitle({ onReveal }: PortfolioTitleProps) {
 				<Trans>Portfolio</Trans>
 			</span>
 			<SaveStatus onReveal={onReveal} />
+			<UploadingStatus />
 		</>
+	);
+}
+
+/**
+ * Uploads still on their way, wherever in the editor they were started: they carry on while the person works on
+ * something else, and land where they were added.
+ */
+function UploadingStatus() {
+	const running = usePortfolioTasksRunning();
+	if (!running) return null;
+	return (
+		<span
+			title={t`Something you added is still uploading. Keep editing: it lands where you added it.`}
+			className="me-1 flex shrink-0 items-center gap-1.5 text-xs whitespace-nowrap text-muted"
+		>
+			<Spinner size="sm" color="current" aria-hidden />
+			<span className="sr-only sm:not-sr-only">
+				<Trans>Uploading…</Trans>
+			</span>
+		</span>
 	);
 }
 
@@ -693,13 +715,18 @@ function useOpenAssistantFromUrl() {
 	}, [assistant, ask, navigate]);
 }
 
-/** Closing the tab with changes still on their way asks first; a page that is hidden sends them at once. */
+/**
+ * Closing the tab with changes or uploads still on their way asks first; a page that is hidden sends the changes at
+ * once.
+ */
 function useUnsavedGuard() {
 	useEffect(() => {
 		const onBeforeUnload = (event: BeforeUnloadEvent) => {
 			const { status, dirty } = usePortfolioEditorStore.getState();
-			if (status === "saved" && !dirty) return;
-			void usePortfolioEditorStore.getState().flush();
+			const unsaved = status !== "saved" || dirty;
+			// Uploads on their way stop with the page, so closing it asks too.
+			if (!unsaved && !portfolioTasksRunning()) return;
+			if (unsaved) void usePortfolioEditorStore.getState().flush();
 			event.preventDefault();
 		};
 		// Phones rarely fire `beforeunload`: switching apps or closing the tab only hides the page. What was typed in the

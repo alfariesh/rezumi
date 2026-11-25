@@ -5,14 +5,13 @@ import type { ParsedEmbed } from "@rezumi/schema/portfolio/embed";
 import { Button, Chip, Spinner } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
-import { useEffect, useRef, useState } from "react";
 import { embedPageUrl, parseEmbedUrl } from "@rezumi/schema/portfolio/embed";
 import { PORTFOLIO_LIMITS } from "@rezumi/schema/portfolio/limits";
 import { Icon } from "@rezumi/ui/components/icon";
 import { TextInput } from "../editor/fields";
+import { runPortfolioTask, usePortfolioTask } from "../editor/tasks";
 import { ImageField } from "../images/image-field";
-import { discardUploadedImages, isAbort } from "../images/upload";
-import { useRequestSignals } from "../images/use-request-signals";
+import { discardUploadedImages } from "../images/upload";
 import {
 	embedFromUrl,
 	embedProviderName,
@@ -37,58 +36,54 @@ type EmbedBlockEditorProps = { work: PortfolioWork; block: PortfolioBlockOf<"emb
  * Something another service shows on the page (Phase 13 3.5): a Figma file, a Loom video, a Spotify or SoundCloud
  * track, Google Slides. The page shows only its picture and a button; the service loads after a visitor presses it.
  * A new link shows at once; its title and picture are read after a pause in typing, kept only while the block still
- * shows that content.
+ * shows that content. Reading and copying run in the background (`runPortfolioTask`), so they still land when the
+ * work is closed meanwhile.
  */
 export function EmbedBlockEditor({ work, block, edit }: EmbedBlockEditorProps) {
 	const [text, setText] = useDraftText(embedPageUrl(block));
-	const [reading, setReading] = useState(false);
-	const [copyError, setCopyError] = useState<string | null>(null);
-	const requests = useRequestSignals();
-	const timer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
-	useEffect(() => () => clearTimeout(timer.current), []);
+	const taskKey = `works.${work.id}.blocks.${block.id}.details`;
+	const task = usePortfolioTask(taskKey);
+	const reading = task.running;
 	const parsed = parseEmbedUrl(text);
 	const provider = embedProviderName(block.provider);
 	const hint = embedSharingHint(block.provider);
 	const titleKey = `works.${work.id}.blocks.${block.id}.title`;
 
 	/** The title and picture of the content `url` names, once typing paused; quiet unless storage is full. */
-	const fetchDetails = async (url: string, embed: ParsedEmbed) => {
-		const signal = requests.next("details");
-		setReading(true);
-		try {
-			const find = await embedFromUrl(url, signal);
-			if (!find || !stillEmbeds(currentBlock(work.id, block.id), embed)) return;
-			const title = find.block.title;
-			if (title)
-				edit(
-					(draft) => {
-						if (!draft.title?.trim()) draft.title = title;
-					},
-					{ key: titleKey },
-				);
-			if (!find.thumbnailUrl) return;
-			// Quiet, like a video's thumbnail, unless the portfolio has no room left.
-			const image = await importEmbedThumbnail(find.thumbnailUrl, title ?? "", signal, (failure) => {
-				if (!isNoRoomError(failure)) return;
-				openPlanDialogForError(failure);
-				setCopyError(remotePictureErrorMessage(failure));
-			});
-			if (!image) return;
-			const now = currentBlock(work.id, block.id);
-			// Another link meanwhile, or a picture of the person's own: this one isn't used.
-			if (!stillEmbeds(now, embed) || (now?.type === "embed" && now.thumbnail)) {
-				void discardUploadedImages([image]);
-				return;
-			}
-			edit((draft) => {
-				draft.thumbnail = image;
-			});
-		} catch (error) {
-			if (!isAbort(error, signal)) throw error;
-		} finally {
-			if (!signal.aborted) setReading(false);
-		}
-	};
+	const fetchDetails = (url: string, embed: ParsedEmbed) =>
+		runPortfolioTask(
+			taskKey,
+			async ({ signal, fail }) => {
+				const find = await embedFromUrl(url, signal);
+				if (!find || !stillEmbeds(currentBlock(work.id, block.id), embed)) return;
+				const title = find.block.title;
+				if (title)
+					edit(
+						(draft) => {
+							if (!draft.title?.trim()) draft.title = title;
+						},
+						{ key: titleKey },
+					);
+				if (!find.thumbnailUrl) return;
+				// Quiet, like a video's thumbnail, unless the portfolio has no room left.
+				const image = await importEmbedThumbnail(find.thumbnailUrl, title ?? "", signal, (failure) => {
+					if (!isNoRoomError(failure)) return;
+					openPlanDialogForError(failure);
+					fail(remotePictureErrorMessage(failure));
+				});
+				if (!image) return;
+				const now = currentBlock(work.id, block.id);
+				// Another link meanwhile, or a picture of the person's own: this one isn't used.
+				if (!stillEmbeds(now, embed) || (now?.type === "embed" && now.thumbnail)) {
+					void discardUploadedImages([image]);
+					return;
+				}
+				edit((draft) => {
+					draft.thumbnail = image;
+				});
+			},
+			{ delayMs: DETAILS_DELAY_MS },
+		);
 
 	const changeLink = (value: string) => {
 		setText(value);
@@ -103,11 +98,8 @@ export function EmbedBlockEditor({ work, block, edit }: EmbedBlockEditorProps) {
 			},
 			{ key: `works.${work.id}.blocks.${block.id}.link` },
 		);
-		requests.cancel("details");
-		setReading(false);
-		setCopyError(null);
-		clearTimeout(timer.current);
-		timer.current = setTimeout(() => void fetchDetails(value, next), DETAILS_DELAY_MS);
+		// The pause starts over with every new link, cancelling what was on its way for the one before.
+		void fetchDetails(value, next);
 	};
 
 	return (
@@ -154,6 +146,7 @@ export function EmbedBlockEditor({ work, block, edit }: EmbedBlockEditorProps) {
 			/>
 			<ImageField
 				label={t`Picture (optional)`}
+				uploadKey={`works.${work.id}.blocks.${block.id}.thumbnail`}
 				value={block.thumbnail}
 				altSuggestion={block.title?.trim() || provider}
 				onChange={(image, typing) =>
@@ -175,7 +168,9 @@ export function EmbedBlockEditor({ work, block, edit }: EmbedBlockEditorProps) {
 				<Icon name="shield-check" size={14} className="mt-0.5 shrink-0" />
 				<Trans>Visitors load it from {provider} only when they press it.</Trans>
 			</p>
-			{copyError && <ErrorNote message={copyError} />}
+			{task.errors.map((message, index) => (
+				<ErrorNote key={`${index}:${message}`} message={message} />
+			))}
 			<a
 				href={embedPageUrl(block)}
 				target="_blank"

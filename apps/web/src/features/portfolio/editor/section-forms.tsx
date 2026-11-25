@@ -132,6 +132,7 @@ export function CustomSectionForm({ id }: { id: string }) {
 			)}
 			<ImageField
 				label={t`Picture (optional)`}
+				uploadKey={`custom.${id}.image`}
 				value={section.image}
 				altSuggestion={section.title.trim()}
 				onChange={(image, typing) =>

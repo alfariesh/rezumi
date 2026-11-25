@@ -246,6 +246,7 @@ export function TestimonialsForm() {
 							/>
 							<ImageField
 								label={t`Their photo (optional)`}
+								uploadKey={`testimonials.${item.id}.photo`}
 								value={item.photo}
 								altSuggestion={item.name.trim()}
 								onChange={(image, typing) =>
@@ -461,6 +462,7 @@ export function ClientsForm() {
 							/>
 							<ImageField
 								label={t`Logo (optional)`}
+								uploadKey={`clients.${client.id}.logo`}
 								kind="logo"
 								value={client.logo && "key" in client.logo ? client.logo : undefined}
 								altSuggestion={client.name.trim() ? t`${client.name.trim()} logo` : ""}

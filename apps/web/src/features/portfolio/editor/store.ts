@@ -10,6 +10,7 @@ import { writablePortfolioDataSchema } from "@rezumi/schema/portfolio/data";
 import { PORTFOLIO_LIMITS, portfolioDataBytes } from "@rezumi/schema/portfolio/limits";
 import { generateId } from "@rezumi/utils/string";
 import { classifySaveError, saveRetryDelay } from "./save-failure";
+import { cancelPortfolioTasks } from "./tasks";
 import { getPlanProblem } from "@/features/billing/plan";
 import { openPlanDialog } from "@/features/billing/plan-dialog";
 import { client } from "@/libs/orpc/client";
@@ -537,6 +538,8 @@ export const usePortfolioEditorStore = create<PortfolioEditorStore>()((set, get)
 		},
 
 		reset: () => {
+			// Uploads and reads on their way belong to the portfolio being put away: what they made is deleted.
+			cancelPortfolioTasks();
 			clearTimeout(timer);
 			stopRetrying();
 			lastEdit = { key: undefined, at: 0 };
