@@ -4,7 +4,7 @@ export { Button, IconButton } from "./button";
 export { Segmented, SelectSheet, Switch, TextField } from "./fields";
 export { Icon, type IconName } from "./icon";
 export { Avatar, Banner, Card, EmptyState, ListRow, Skeleton } from "./layout";
-export { ConfirmDialog, Sheet, Toaster, dismissToast, showToast } from "./overlays";
+export { ConfirmDialog, Sheet, Toaster, showToast } from "./overlays";
 export {
 	haptics,
 	listItemMotion,
