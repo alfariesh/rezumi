@@ -83,13 +83,13 @@ function domainError(error: unknown) {
 const isUnavailable = (error: unknown) =>
 	error instanceof ORPCError && ["PRECONDITION_FAILED", "FORBIDDEN", "NOT_FOUND"].includes(error.code);
 
-type CustomDomainProps = { offline: boolean };
+type CustomDomainProps = { offline: boolean; readOnly?: boolean };
 
 /**
  * Connects the account's own domain: the domain, the DNS records to add in a sheet, a check, and the result. The web's
  * `.cv` suggestion from OlaCV (a price, a discount code and a link to buy) has no place in the app (K6).
  */
-export function CustomDomain({ offline }: CustomDomainProps) {
+export function CustomDomain({ offline, readOnly = false }: CustomDomainProps) {
 	const { t } = useLingui();
 	const queryClient = useQueryClient();
 	const domain = useQuery({
@@ -172,6 +172,7 @@ export function CustomDomain({ offline }: CustomDomainProps) {
 	}
 	const current = domain.data;
 
+	if (!current && readOnly) return <Text tone="muted">{t`No custom domain connected.`}</Text>;
 	if (!current)
 		return (
 			<View className="gap-3">
@@ -228,16 +229,18 @@ export function CustomDomain({ offline }: CustomDomainProps) {
 				<Text mono weight="medium" numberOfLines={1} className="min-w-0 flex-1">
 					{current.hostname}
 				</Text>
-				<Button
-					variant="danger-soft"
-					size="sm"
-					isDisabled={offline || remove.isPending}
-					// A connected domain stops working at once; coming back means checking DNS and waiting for HTTPS.
-					onPress={() => (current.verified ? setConfirmRemove(true) : remove.mutate({}))}
-				>
-					{remove.isPending ? <Spinner size="sm" /> : null}
-					<Button.Label>{t`Remove`}</Button.Label>
-				</Button>
+				{readOnly ? null : (
+					<Button
+						variant="danger-soft"
+						size="sm"
+						isDisabled={offline || remove.isPending}
+						// A connected domain stops working at once; coming back means checking DNS and waiting for HTTPS.
+						onPress={() => (current.verified ? setConfirmRemove(true) : remove.mutate({}))}
+					>
+						{remove.isPending ? <Spinner size="sm" /> : null}
+						<Button.Label>{t`Remove`}</Button.Label>
+					</Button>
+				)}
 			</View>
 
 			{redirecting ? (
@@ -260,12 +263,14 @@ export function CustomDomain({ offline }: CustomDomainProps) {
 							<Typography type="body-xs" className="text-muted">
 								{t`Not connected yet. Add its DNS records where you manage the domain, then check.`}
 							</Typography>
-							<View className="flex-row flex-wrap gap-2">
-								<Button variant="secondary" size="sm" onPress={() => setRecordsOpen(true)}>
-									<Button.Label>{t`Show DNS records`}</Button.Label>
-								</Button>
-								{checkButton(t`Check DNS`)}
-							</View>
+							{readOnly ? null : (
+								<View className="flex-row flex-wrap gap-2">
+									<Button variant="secondary" size="sm" onPress={() => setRecordsOpen(true)}>
+										<Button.Label>{t`Show DNS records`}</Button.Label>
+									</Button>
+									{checkButton(t`Check DNS`)}
+								</View>
+							)}
 						</>
 					) : (
 						<>
@@ -274,7 +279,7 @@ export function CustomDomain({ offline }: CustomDomainProps) {
 									{t`Setting up HTTPS. This usually takes a few minutes, and this screen updates by itself.`}
 								</Typography>
 							) : null}
-							<View className="flex-row flex-wrap gap-2">{checkButton(t`Check again`)}</View>
+							{readOnly ? null : <View className="flex-row flex-wrap gap-2">{checkButton(t`Check again`)}</View>}
 						</>
 					)}
 				</>

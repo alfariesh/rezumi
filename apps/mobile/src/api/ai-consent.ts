@@ -48,6 +48,7 @@ export async function authorizeAiRequest(
 		!(path[0] === "ai" && path[1] !== "reportContent" && path[1] !== "capabilities") &&
 		!(path[0] === "applications" && path[1] === "ai") &&
 		operation !== "coverLetters.draft" &&
+		operation !== "portfolio.ai.draft" &&
 		operation !== "profile.sources.website" &&
 		operation !== "jobs.checkFit" &&
 		operation !== "career.generate" &&
@@ -105,7 +106,9 @@ export async function authorizeAiRequest(
 			? t`Your recording is uploaded through your server to this transcription provider. It can contain personal information.`
 			: operation === "career.voice.speak"
 				? t`The text to read aloud is sent through your server to this speech provider. It can contain personal information.`
-				: t`Your request and relevant resume, letter, job posting, application, career information, conversation history, and attachments are sent through your server to this AI provider, according to the feature and context you selected. They can contain personal information.`;
+				: operation === "portfolio.ai.draft"
+					? t`Your portfolio, its selected resume or Profile, and your instructions are sent through your server to this AI provider. They can contain personal information.`
+					: t`Your request and relevant resume, letter, job posting, application, career information, conversation history, and attachments are sent through your server to this AI provider, according to the feature and context you selected. They can contain personal information.`;
 	const webNotice = web
 		? t`If the web is used, search terms go to your server's search service and links go to the sites being read.`
 		: "";

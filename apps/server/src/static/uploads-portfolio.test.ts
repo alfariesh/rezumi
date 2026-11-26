@@ -15,6 +15,7 @@ const state = vi.hoisted(() => ({
 	publicFiles: new Set<string>(),
 	/** Keys of a portfolio behind a visitor password: `protected`, with its current password's hash. */
 	protectedFiles: new Set<string>(),
+	previewFiles: new Set<string>(),
 	passwordHash: "$2a$10$current-hash",
 	lookups: 0,
 }));
@@ -29,6 +30,9 @@ vi.mock("@rezumi/api/features/portfolio/public", () => ({
 		if (state.protectedFiles.has(key)) return { access: "protected", passwordHash: state.passwordHash };
 		return { access: state.publicFiles.has(key) ? "public" : "none" };
 	},
+}));
+vi.mock("@rezumi/api/features/portfolio/preview-file", () => ({
+	canReadPortfolioPreviewFile: (key: string, token: string) => token === "fixture" && state.previewFiles.has(key),
 }));
 // Visitors have no session; `x-test-user` stands in for a signed-in account's cookie.
 vi.mock("@rezumi/api/context", () => ({
@@ -58,6 +62,7 @@ beforeEach(() => {
 	state.banned.clear();
 	state.publicFiles.clear();
 	state.protectedFiles.clear();
+	state.previewFiles.clear();
 	state.passwordHash = "$2a$10$current-hash";
 	state.lookups = 0;
 });
@@ -71,6 +76,17 @@ const get = (key: string, headers: HeadersInit = {}) =>
 const owner = { "x-test-user": "user-1" };
 const administrator = { "x-test-user": "admin-1" };
 const stranger = { "x-test-user": "someone-else" };
+
+it("serves a signed draft image across origins without saving a cache copy", async () => {
+	await storage.write({ key: pictureKey, data: webpBytes, contentType: "image/webp" });
+	state.previewFiles.add(pictureKey);
+	const response = await get(`${pictureKey}?preview=fixture`, { "If-None-Match": "*" });
+	expect(response.status).toBe(200);
+	expect(response.headers.get("Cache-Control")).toBe("private, no-store");
+	expect(response.headers.get("Cross-Origin-Resource-Policy")).toBe("cross-origin");
+	expect((await get(pictureKey)).status).toBe(404);
+	expect((await get(`${pictureKey}?preview=wrong`)).status).toBe(404);
+});
 
 describe("portfolio files a published portfolio uses", () => {
 	it("are public PDFs, shown inline by the PDF viewer and locked down, loadable from any site", async () => {

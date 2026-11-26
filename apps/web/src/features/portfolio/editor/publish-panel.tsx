@@ -456,12 +456,13 @@ function SourceGroup() {
 	const { data: resumes } = useQuery(orpc.resume.list.queryOptions());
 	const { run, pending } = useSettingAction();
 	const inTrash = record.sourceResume?.inTrash ?? false;
+	const blank = record.sourceResumeId === null && record.data.useProfileSource === false;
 	const options = [
 		{ id: FROM_PROFILE, label: t`Your Profile` },
 		...(resumes ?? []).map((resume) => ({ id: resume.id, label: resume.name })),
 	];
 	// A source resume in Trash is no choice to show; the list asks for another.
-	const value = inTrash ? "" : (record.sourceResumeId ?? FROM_PROFILE);
+	const value = inTrash || blank ? "" : (record.sourceResumeId ?? FROM_PROFILE);
 
 	return (
 		<PanelGroup icon="file-text" title={<Trans>Source</Trans>}>
@@ -481,7 +482,7 @@ function SourceGroup() {
 					</Alert.Content>
 				</Alert>
 			)}
-			{!inTrash && (
+			{!inTrash && !blank && (
 				<p className="px-1 text-body-xs text-muted">
 					{value === FROM_PROFILE ? (
 						<Trans>Experience, education and your other sections follow your Profile.</Trans>
@@ -496,10 +497,11 @@ function SourceGroup() {
 				isDisabled={pending}
 				options={options.map((option) => ({ value: option.id, label: option.label }))}
 				onChange={(key) => {
-					if (key === value) return;
+					if (!key || key === value) return;
 					void run(
 						() => client.portfolio.updateSettings({ sourceResumeId: key === FROM_PROFILE ? null : key }),
 						t`Couldn't change the source. Try again.`,
+						{ saveFirst: blank },
 					);
 				}}
 			/>

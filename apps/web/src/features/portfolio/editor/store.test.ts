@@ -189,6 +189,32 @@ describe("saving", () => {
 		expect(greetingOf(store().portfolio?.data)).toBe("One");
 	});
 
+	it("connects a blank page to a source and keeps new editor changes without restoring the blank flag on Undo", () => {
+		const blank = record({ data: parsePortfolioData({ useProfileSource: false }) });
+		store().load(blank);
+		type("Unsaved");
+		store().applySettings(record({ updatedAt: later(1200) }));
+		expect(store().portfolio?.updatedAt).toEqual(later(1200));
+		expect(openedData().useProfileSource).toBeUndefined();
+		expect(greetingOf(openedData())).toBe("Unsaved");
+		store().undo();
+		expect(openedData().useProfileSource).toBeUndefined();
+		expect(greetingOf(openedData())).toBe("");
+	});
+
+	it("does not rebase unsaved edits over another device's changes when the source is connected", () => {
+		store().load(record({ data: parsePortfolioData({ useProfileSource: false }) }));
+		type("On this device");
+		const remote = record({
+			data: parsePortfolioData({ hero: { greeting: "On another device" } }),
+			updatedAt: later(1200),
+		});
+		store().applySettings(remote);
+		expect(store().status).toBe("conflict");
+		expect(store().conflict?.server).toEqual(remote);
+		expect(greetingOf(openedData())).toBe("On this device");
+	});
+
 	it("takes published and other settings without touching the data being edited", () => {
 		type("Unsaved");
 		store().applySettings(record({ isPublic: true, updatedAt: new Date("2030-01-01T00:00:00.000Z") }));

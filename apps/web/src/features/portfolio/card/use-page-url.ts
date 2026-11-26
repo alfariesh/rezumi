@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+import { portfolioPageUrl } from "@rezumi/portfolio/sharing";
 import { portfolioHoldsShortLink } from "@rezumi/resume/sharing";
 import { useShareOrigin } from "@/features/resume/share/use-share-origin";
 import { orpc } from "@/libs/orpc/client";
@@ -12,7 +13,5 @@ export function usePortfolioPageUrl(username: string): string {
 	// Refused while custom domains aren't open to the account: then there's none, and nothing to retry.
 	const { data: domain } = useQuery({ ...orpc.customDomain.get.queryOptions(), retry: false });
 	const { data: status } = useQuery(orpc.portfolio.status.queryOptions());
-	const domainOpensPortfolio =
-		domain?.stage === "active" && domain.plan.state !== "redirecting" && portfolioHoldsShortLink(status);
-	return domainOpensPortfolio ? `https://${domain.hostname}` : `${origin}/${encodeURIComponent(username)}`;
+	return portfolioPageUrl(origin, username, portfolioHoldsShortLink(status), domain);
 }

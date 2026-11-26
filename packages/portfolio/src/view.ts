@@ -453,7 +453,8 @@ export function portfolioPageLocale(
  */
 export function buildPortfolioView(input: PortfolioViewInput): PortfolioView {
 	const { data } = input.portfolio;
-	const resume = input.resume?.data ?? null;
+	const resume =
+		input.resume?.from === "profile" && data.useProfileSource === false ? null : (input.resume?.data ?? null);
 	// Language, accent and fonts follow a source resume only, never the Profile.
 	const designResume = portfolioSourceResume(input.resume);
 	const { messages } = input;

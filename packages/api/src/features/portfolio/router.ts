@@ -23,6 +23,7 @@ import {
 import { portfolioAdminRouter } from "./admin-router";
 import { portfolioAiRouter } from "./ai/router";
 import { portfolioErrorMap, portfolioErrors } from "./errors";
+import { previewPortfolio } from "./preview";
 import { portfolioService } from "./service";
 
 // Kept out of the public API and its OpenAPI spec until portfolios launch (portfolio plan Phase 12).
@@ -378,6 +379,37 @@ export const portfolioRouter = {
 		)
 		.handler(({ context }) => portfolioService.status(context.user.id)),
 
+	preview: protectedProcedure
+		.route({
+			...route,
+			method: "GET",
+			path: "/portfolio/preview",
+			summary: "Render the owner's saved portfolio for the mobile preview",
+		})
+		.use(portfolioUpdateRateLimit)
+		.input(
+			z
+				.object({
+					theme: portfolioThemeSchema.optional(),
+					workId: z.string().regex(PORTFOLIO_ITEM_ID_PATTERN).optional(),
+					width: z.enum(["phone", "desktop"]).optional(),
+				})
+				.optional(),
+		)
+		.errors(portfolioErrorMap("PORTFOLIO_DISABLED", "NOT_FOUND", "PORTFOLIO_WORK_NOT_FOUND"))
+		.output(
+			z.object({
+				html: z.string(),
+				origin: z.url(),
+				homePath: z.string(),
+				works: z.array(z.object({ id: z.string(), path: z.string() })),
+			}),
+		)
+		.handler(({ context, input }) => {
+			context.resHeaders?.set("Cache-Control", "private, no-store");
+			return previewPortfolio(context.user.id, input ?? {});
+		}),
+
 	create: protectedProcedure
 		.route({
 			...route,
@@ -395,6 +427,7 @@ export const portfolioRouter = {
 					.describe(
 						"A resume to start from; null for the Profile; missing for the Profile when it holds career items, else the primary (or latest edited) resume.",
 					),
+				startEmpty: z.boolean().optional().describe("Start without importing or showing Profile content."),
 				theme: portfolioThemeSchema.optional(),
 				basics: z
 					.object({

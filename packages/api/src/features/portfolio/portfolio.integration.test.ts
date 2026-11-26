@@ -281,6 +281,18 @@ describe.skipIf(!databaseUrl)("portfolio service", () => {
 	});
 
 	describe("create", () => {
+		it("starts blank even with a Profile, and can link the Profile later", async () => {
+			const blank = await service.create("member", { startEmpty: true, basics: { name: "Blank page" } });
+			expect(blank.sourceResumeId).toBeNull();
+			expect(blank.data.useProfileSource).toBe(false);
+			expect(blank.data.works.items).toEqual([]);
+			expect((await service.aiContext("member")).source).toBeNull();
+			const linked = await service.updateSettings("member", { sourceResumeId: null });
+			expect(linked.data.useProfileSource).toBeUndefined();
+			expect(linked.updatedAt.getTime()).toBeGreaterThan(blank.updatedAt.getTime());
+			expect((await service.aiContext("member")).source?.from).toBe("profile");
+		});
+
 		it("starts from the primary resume: About from its summary and works from its projects", async () => {
 			await addResume("member", { name: "Newer", isPrimary: false });
 			const primary = await addResume("member", { name: "Main", isPrimary: true });

@@ -215,7 +215,7 @@ export function parseDeepLink(input: string, currentServer: string): DeepLink | 
 		return target((group ? `/dev/ui?group=${group}` : "/dev/ui") as AppHref);
 	}
 
-	// The portfolio editor (`/builder/portfolio?mode=`) is not in the app yet: its tab (Phase 12–13 add the editor).
+	// The portfolio editor (`/builder/portfolio?mode=`) is not in the app yet: open its management tab until Phase 13.
 	if (first === "builder" && second === "portfolio" && segments.length === 2) return target(routes.portfolio());
 	if (first === "builder") {
 		// Web editor mode is a query parameter. Never forward arbitrary queries (e.g. assistant auto-send prompts).

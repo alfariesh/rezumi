@@ -1,5 +1,5 @@
-import type { StatisticsCsvKind } from "./csv";
 import type { client } from "@/libs/orpc/client";
+import type { StatisticsCsvKind } from "@rezumi/portfolio/statistics-csv";
 import type { PortfolioStatisticsRange } from "@rezumi/schema/portfolio/statistics";
 import { KPIGroup, Segment, Widget } from "@heroui-pro/react";
 import { KPI } from "@heroui-pro/react/kpi";
@@ -9,6 +9,7 @@ import { Trans, useLingui } from "@lingui/react/macro";
 import { keepPreviousData, useQuery, useQueryClient } from "@tanstack/react-query";
 import { getRouteApi, Link, useRouteContext, useRouter } from "@tanstack/react-router";
 import { Suspense, useId, useState } from "react";
+import { dailyCsv, detailsCsv, statisticsCsvName, worksCsv } from "@rezumi/portfolio/statistics-csv";
 import {
 	PORTFOLIO_CLICK_KINDS,
 	PORTFOLIO_DEVICES,
@@ -22,7 +23,6 @@ import { cn } from "@rezumi/utils/style";
 import { ChunkBoundary, retryableLazy } from "../editor/chunk-boundary";
 import { countryNames } from "../location/cities";
 import { saveFile } from "../save-file";
-import { dailyCsv, detailsCsv, statisticsCsvName, worksCsv } from "./csv";
 import {
 	clickLabels,
 	DailyBars,

@@ -1,7 +1,7 @@
-import type { PortfolioStatisticsResult } from "./csv";
+import type { PortfolioStatisticsResult } from "./statistics-csv";
 import { describe, expect, it } from "vite-plus/test";
 import { PORTFOLIO_CLICK_KINDS, PORTFOLIO_VISIT_SOURCES } from "@rezumi/schema/portfolio/statistics";
-import { csvCell, dailyCsv, detailsCsv, statisticsCsvName, toCsv, worksCsv } from "./csv";
+import { csvCell, dailyCsv, detailsCsv, statisticsCsvName, toCsv, worksCsv } from "./statistics-csv";
 
 const counts = <K extends string>(keys: readonly K[], value = 0) =>
 	Object.fromEntries(keys.map((key) => [key, value])) as Record<K, number>;

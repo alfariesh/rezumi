@@ -377,6 +377,11 @@ msgstr "மாற்றியமைக்கப்பட்ட {1} வேலை 
 msgid "{0} only"
 msgstr "{0} மட்டும்"
 
+#. placeholder {0}: i18n.number(details.totals.opens)
+#: src/features/portfolio/statistics.tsx
+msgid "{0} opens"
+msgstr ""
+
 #. placeholder {0}: document.posting.company
 #: src/features/assistant/assistant-screen.tsx
 msgid "{0} posting"
@@ -385,6 +390,16 @@ msgstr "{0} வேலை இடுகை"
 #. placeholder {0}: metadata.typography.body.fontSize
 #: src/features/design/advanced-group.tsx
 msgid "{0} pt"
+msgstr ""
+
+#. placeholder {0}: i18n.number(stats.data.totals.views)
+#: src/features/portfolio/overview.tsx
+msgid "{0} views in 30 days"
+msgstr ""
+
+#. placeholder {0}: item.name
+#: src/features/portfolio/create.tsx
+msgid "{0}, available with Plus"
 msgstr ""
 
 #. placeholder {0}: getStageLabel(stage)
@@ -566,6 +581,10 @@ msgstr ""
 
 #: src/features/jobs/format.ts
 msgid "{days, plural, one {Posted # day ago} other {Posted # days ago}}"
+msgstr ""
+
+#: src/features/portfolio/statistics.tsx
+msgid "{days} days"
 msgstr ""
 
 #: src/features/applications/queries.ts
@@ -920,6 +939,11 @@ msgstr ""
 msgid "{TRASH_DAYS, plural, one {Documents you move here stay for # day.} other {Documents you move here stay for # days.}}"
 msgstr ""
 
+#: src/features/portfolio/inbox.tsx
+#: src/features/portfolio/overview.tsx
+msgid "{unread, plural, one {# unread message} other {# unread messages}}"
+msgstr ""
+
 #: app/account/membership.tsx
 msgid "{used} in use"
 msgstr ""
@@ -1007,6 +1031,10 @@ msgstr ""
 #: src/features/letters/share.tsx
 msgid "A backup of this letter. Imports back into Rezumi as a letter."
 msgstr "இந்த கடிதத்தின் காப்புப்பிரதி. கடிதமாக Rezumi க்கு மீண்டும் இறக்குமதி செய்கிறது."
+
+#: src/features/portfolio/create.tsx
+msgid "A blank page"
+msgstr ""
 
 #: src/features/share/custom-domain.tsx
 msgid "A CAA record on this domain blocks its HTTPS certificate. Remove that record or allow the certificate authority, then check again."
@@ -1106,6 +1134,7 @@ msgid "A reminder to check in, shown as the next step until you do."
 msgstr "செக்-இன் செய்வதற்கான நினைவூட்டல், நீங்கள் செய்யும் வரை அடுத்த படியாகக் காட்டப்படும்."
 
 #: src/features/letters/write.tsx
+#: src/features/portfolio/create.tsx
 msgid "A resume"
 msgstr ""
 
@@ -1132,6 +1161,10 @@ msgstr "நேரமிட்ட திட்டம், உங்கள் த�
 #: src/features/ats-checker/messages.ts
 msgid "A web address is written without https://."
 msgstr "ஒரு இணைய முகவரி https:// இல்லாமல் எழுதப்பட்டுள்ளது."
+
+#: src/features/portfolio/card.tsx
+msgid "A4 print sheet"
+msgstr ""
 
 #. placeholder {0}: company.name
 #: src/features/jobs/listing-detail.tsx
@@ -1915,6 +1948,10 @@ msgstr ""
 msgid "Any level"
 msgstr ""
 
+#: src/features/portfolio/publish.tsx
+msgid "Anyone with the link can open your published portfolio."
+msgstr ""
+
 #: src/features/share/web-page.tsx
 msgid "Anyone with the link will be able to view your resume."
 msgstr "இணைப்பைக் கொண்டுள்ள எவரும் உங்கள் ரெஸ்யூமைப் பார்க்க முடியும்."
@@ -2290,6 +2327,7 @@ msgstr "அசர்பைஜானி"
 #: src/features/documents/new-copy.tsx
 #: src/features/entries/entry-editor.tsx
 #: src/features/onboarding/onboarding-screen.tsx
+#: src/features/portfolio/layout.tsx
 #: src/features/profile/bring-screen.tsx
 #: src/features/search/search-screen.tsx
 #: src/features/workspace/bar.tsx
@@ -2318,6 +2356,10 @@ msgstr ""
 #: src/features/letters/share.tsx
 msgid "Back to now"
 msgstr "இப்போது திரும்பவும்"
+
+#: src/features/portfolio/preview.tsx
+msgid "Back to portfolio preview"
+msgstr ""
 
 #: src/features/auth/forgot-password-screen.tsx
 msgid "Back to sign in"
@@ -2490,6 +2532,10 @@ msgstr ""
 msgid "Bring in my details"
 msgstr ""
 
+#: src/features/portfolio/create.tsx
+msgid "Bring in work and career details from your Profile."
+msgstr ""
+
 #: src/features/documents/library-states.tsx
 #: src/features/home/home-screen.tsx
 msgid "Bring in your LinkedIn, GitHub or resume file and we fill in your Profile, or start a document blank or from a sample."
@@ -2536,6 +2582,11 @@ msgstr "பர்கண்டி"
 msgid "Business"
 msgstr ""
 
+#: src/features/portfolio/card.tsx
+#: src/features/portfolio/overview.tsx
+msgid "Business card"
+msgstr ""
+
 #: app/account/index.tsx
 msgid "by <0>Salman Alfariesh</0>"
 msgstr "<0>Salman Alfariesh</0> உருவாக்கியது"
@@ -2576,6 +2627,7 @@ msgstr ""
 #: src/features/design/template-gallery.tsx
 #: src/features/documents/new-import.tsx
 #: src/features/entries/improve.tsx
+#: src/features/portfolio/publish.tsx
 #: src/features/profile/facts-detail.tsx
 #: src/features/profile/facts.tsx
 #: src/features/profile/stories.tsx
@@ -2626,6 +2678,10 @@ msgstr "மொழியை… க்கு மாற்றவும்"
 #: src/features/offers/offer-header.tsx
 msgid "Change offer: {0}"
 msgstr ""
+
+#: src/features/portfolio/publish.tsx
+msgid "Change password"
+msgstr "கடவுச்சொல்லை மாற்று"
 
 #: src/features/settings/profile.tsx
 msgid "Change photo"
@@ -2870,8 +2926,16 @@ msgstr "தேதியைத் தேர்ந்தெடுக்கவு�
 msgid "Choose a day"
 msgstr ""
 
+#: src/features/portfolio/queries.ts
+msgid "Choose a different source. This one is unavailable."
+msgstr ""
+
 #: src/features/design/uploaded-fonts.tsx
 msgid "Choose a font file smaller than 8 MB."
+msgstr ""
+
+#: src/features/portfolio/inbox.tsx
+msgid "Choose a message to read it."
 msgstr ""
 
 #: src/features/auth/reset-password-screen.tsx
@@ -2899,13 +2963,29 @@ msgstr ""
 msgid "Choose a photo smaller than 10 MB."
 msgstr "10 MB க்கும் குறைவான புகைப்படத்தைத் தேர்ந்தெடுக்கவும்."
 
+#: src/features/portfolio/create.tsx
+msgid "Choose a resume"
+msgstr ""
+
+#: src/features/portfolio/create.tsx
+msgid "Choose a resume to use as your source."
+msgstr ""
+
 #: src/features/letters/design.tsx
 msgid "Choose a resume under From in Write to match its design. Until then, the letter has its own."
+msgstr ""
+
+#: src/features/portfolio/publish.tsx
+msgid "Choose a source"
 msgstr ""
 
 #: src/api/ai-consent.ts
 msgid "Choose a tested AI provider before sharing data."
 msgstr "தரவைப் பகிர்வதற்கு முன் சோதிக்கப்பட்ட AI வழங்குநரைத் தேர்வு செய்யவும்."
+
+#: src/features/portfolio/create.tsx
+msgid "Choose a theme"
+msgstr ""
 
 #: src/features/applications/interview/when-fields.tsx
 msgid "Choose a time"
@@ -2958,6 +3038,10 @@ msgstr ""
 
 #: src/features/applications/list/bulk-bar.tsx
 msgid "Choose up to {BULK_LIMIT} applications at a time."
+msgstr ""
+
+#: src/features/portfolio/publish.tsx
+msgid "Choose where career and contact details come from."
 msgstr ""
 
 #: src/features/design/colors-screen.tsx
@@ -3041,6 +3125,10 @@ msgstr "விளிப்பு அல்லது நிறைவு வாச
 msgid "Clears its entries; the section stays. You can undo."
 msgstr "உள்ளீடுகளை அழிக்கிறது ஆனால் பிரிவை வைத்திருக்கிறது. இதை நீங்கள் செயல்தவிர்க்கலாம்."
 
+#: src/features/portfolio/statistics.tsx
+msgid "Clicks"
+msgstr ""
+
 #: src/features/ai/report-content.tsx
 #: src/features/applications/detail/activity.tsx
 #: src/features/applications/detail/contacts.tsx
@@ -3090,6 +3178,10 @@ msgstr "உள்ளீடுகளை அழிக்கிறது ஆனா�
 #: src/features/letters/design.tsx
 #: src/features/letters/share.tsx
 #: src/features/letters/write.tsx
+#: src/features/portfolio/create.tsx
+#: src/features/portfolio/inbox.tsx
+#: src/features/portfolio/publish.tsx
+#: src/features/portfolio/statistics.tsx
 #: src/features/profile/career.tsx
 #: src/features/profile/facts.tsx
 #: src/features/profile/fill-sheet.tsx
@@ -3234,6 +3326,10 @@ msgstr "முழுமையான தரவு காப்புப்பி�
 msgid "Compress or remove large images to keep uploads quick."
 msgstr "பதிவேற்றங்களை விரைவாக வைத்திருக்க பெரிய படங்களை சுருக்கவும் அல்லது நீக்கவும்."
 
+#: src/features/portfolio/statistics.tsx
+msgid "Computers"
+msgstr ""
+
 #: src/features/applications/detail/stage-sheets.tsx
 msgid "Confirm applied"
 msgstr "விண்ணப்பித்ததை உறுதிப்படுத்தவும்"
@@ -3286,6 +3382,10 @@ msgstr ""
 msgid "Connect the tools you use for writing, job search and working with your resumes."
 msgstr "எழுதுவதற்கும், வேலை தேடுவதற்கும், வேலை செய்வதற்கும் நீங்கள் பயன்படுத்தும் கருவிகளை உங்கள் ரெஸ்யூம்களுடன் இணைக்கவும்."
 
+#: src/features/portfolio/layout.tsx
+msgid "Connect to load your portfolio."
+msgstr ""
+
 #: src/features/check/writing-tab.tsx
 msgid "Connect your own AI provider to have a language model read your bullets and suggest rewrites. Issues and Job match need no provider."
 msgstr "ஒரு மொழி மாதிரி உங்கள் பட்டியல் உள்ளீடுகளைப் படித்து மீண்டும் எழுத பரிந்துரைக்க உங்கள் சொந்த AI வழங்குநரை இணைக்கவும். சிக்கல்களுக்கும் வேலைப் பொருத்தத்திற்கும் வழங்குநர் தேவையில்லை."
@@ -3309,6 +3409,10 @@ msgstr "இணைப்புகளைக் கண்டறிகிறது"
 #: src/features/share/custom-domain.tsx
 msgid "Connection progress"
 msgstr ""
+
+#: src/features/portfolio/publish.tsx
+msgid "Contact"
+msgstr "தொடர்பு கொள்ளவும்"
 
 #: app/account/index.tsx
 msgid "Contact & complaints"
@@ -3334,6 +3438,10 @@ msgstr "முழுமையாகக் காட்டு"
 #: src/features/ats-checker/messages.ts
 msgid "Content is laid out in a grid."
 msgstr "உள்ளடக்கம் ஒரு கட்டமைப்பில் (கிரிட்) அமைக்கப்பட்டுள்ளது."
+
+#: src/features/portfolio/publish.tsx
+msgid "Content source"
+msgstr ""
 
 #: src/preview/page.tsx
 msgid "Content still runs over. Hide a section or shorten entries."
@@ -3423,6 +3531,10 @@ msgstr "நகல் உருவாக்கப்பட்டது"
 msgid "Copy for a job…"
 msgstr "வேலைக்கான நகல்…"
 
+#: src/features/portfolio/overview.tsx
+msgid "Copy link"
+msgstr "இணைப்பை நகலெடுக்கவும்"
+
 #: src/features/documents/library-menu.tsx
 msgid "Copy public link"
 msgstr "பொது இணைப்பை நகலெடு"
@@ -3496,6 +3608,10 @@ msgstr "இந்த முகவரியைச் சரிபார்க்�
 msgid "Couldn't check your AI providers."
 msgstr "உங்கள் AI வழங்குநர்களைச் சரிபார்க்க முடியவில்லை."
 
+#: src/features/portfolio/queries.ts
+msgid "Couldn't complete the action. Try again."
+msgstr ""
+
 #: src/features/applications/error.ts
 msgid "Couldn't complete the request. Check your connection and try again."
 msgstr "கோரிக்கையை முடிக்க முடியவில்லை. உங்கள் இணைப்பைச் சரிபார்த்து மீண்டும் முயற்சிக்கவும்."
@@ -3508,6 +3624,10 @@ msgstr "இந்த செயலை முடிக்க முடியவி
 #: src/features/applications/interview/use-interview-actions.ts
 msgid "Couldn't confirm the save. Check the application before retrying to avoid a duplicate."
 msgstr "சேமிப்பை உறுதிப்படுத்த முடியவில்லை. நகல் உருவாகாமல் இருக்க, மீண்டும் முயலும் முன் விண்ணப்பத்தைச் சரிபார்க்கவும்."
+
+#: src/features/portfolio/overview.tsx
+msgid "Couldn't copy the link."
+msgstr ""
 
 #: src/features/profile/bring-screen.tsx
 msgid "Couldn't copy the photo. You can add one in Details."
@@ -3651,6 +3771,10 @@ msgstr "ரெஸ்யூமை ஏற்ற முடியவில்லை.
 msgid "Couldn't load the sample file. Try again."
 msgstr "மாதிரி கோப்பை ஏற்ற முடியவில்லை. மீண்டும் முயற்சிக்கவும்."
 
+#: src/features/portfolio/statistics.tsx
+msgid "Couldn't load the visitor breakdown. Try again later."
+msgstr ""
+
 #: src/features/history/version-page.tsx
 #: src/features/letters/share.tsx
 msgid "Couldn't load this version's page."
@@ -3671,6 +3795,10 @@ msgstr ""
 #: src/features/history/history-panel.tsx
 msgid "Couldn't load versions."
 msgstr "பதிப்புகளை ஏற்ற முடியவில்லை."
+
+#: src/features/portfolio/statistics.tsx
+msgid "Couldn't load work statistics"
+msgstr ""
 
 #: src/features/applications/board/load-states.tsx
 #: src/features/applications/insights/insights-screen.tsx
@@ -3694,6 +3822,10 @@ msgstr ""
 msgid "Couldn't load your offers"
 msgstr ""
 
+#: src/features/portfolio/layout.tsx
+msgid "Couldn't load your portfolio"
+msgstr ""
+
 #: src/features/profile/preferences.tsx
 msgid "Couldn't load your preferences"
 msgstr ""
@@ -3711,6 +3843,7 @@ msgid "Couldn't load your public address."
 msgstr "உங்கள் பொது முகவரியை ஏற்ற முடியவில்லை."
 
 #: src/features/letters/write.tsx
+#: src/features/portfolio/create.tsx
 #: src/features/profile/fill-sheet.tsx
 msgid "Couldn't load your resumes."
 msgstr "உங்கள் ரெஸ்யூம்களை ஏற்ற முடியவில்லை."
@@ -3739,12 +3872,15 @@ msgstr ""
 #: app/account/index.tsx
 #: src/features/auth/welcome-screen.tsx
 #: src/features/settings/api-keys.tsx
-#: src/shell/preparing-tab.tsx
 msgid "Couldn't open the browser. Try again."
 msgstr "உலாவியைத் திறக்க முடியவில்லை. மீண்டும் முயற்சிக்கவும்."
 
 #: src/features/documents/use-import.ts
 msgid "Couldn't open the file."
+msgstr ""
+
+#: src/features/portfolio/queries.ts
+msgid "Couldn't open the link. Try again."
 msgstr ""
 
 #: src/features/applications/detail/detail-body.tsx
@@ -3978,13 +4114,25 @@ msgstr "நாட்காட்டி நிகழ்வைப் பகிர 
 msgid "Couldn't share the calendar file. Try again."
 msgstr "நாட்காட்டிக் கோப்பைப் பகிர முடியவில்லை. மீண்டும் முயற்சிக்கவும்."
 
+#: src/features/portfolio/overview.tsx
+msgid "Couldn't share the link."
+msgstr ""
+
 #: src/features/applications/insights/pipeline-flow.tsx
 msgid "Couldn't share the picture. Try again."
 msgstr "படத்தைப் பகிர முடியவில்லை. மீண்டும் முயற்சிக்கவும்."
 
+#: src/features/portfolio/card.tsx
+msgid "Couldn't share the QR image. Try again."
+msgstr ""
+
 #: src/features/workspace/practice/answer-editor.tsx
 msgid "Couldn't share the recording. Try again."
 msgstr "பதிவைப் பகிர முடியவில்லை. மீண்டும் முயற்சிக்கவும்."
+
+#: src/features/portfolio/statistics.tsx
+msgid "Couldn't share the statistics file."
+msgstr ""
 
 #: src/features/auth/errors.ts
 msgid "Couldn't sign in with this account. If you don't have a Rezumi account yet, sign-ups may be turned off."
@@ -4077,6 +4225,10 @@ msgstr "சொற்களை எண்ணு"
 msgid "Counted separately from the parse score. Coverage does not predict anything."
 msgstr "பாகுபடுத்தல் மதிப்பெண்ணிலிருந்து தனியாகக் கணக்கிடப்படுகிறது. கவரேஜ் எதையும் முன்கூட்டிச் சொல்வதில்லை."
 
+#: src/features/portfolio/statistics.tsx
+msgid "Countries"
+msgstr "நாடுகள்"
+
 #: src/features/career/schedule-fields.tsx
 #: src/features/jobs/filters-sheet.tsx
 msgid "Country"
@@ -4145,6 +4297,10 @@ msgstr "உங்கள் உலாவியின் கணக்கு அம
 msgid "Create copy"
 msgstr "நகலை உருவாக்கவும்"
 
+#: src/features/portfolio/create.tsx
+msgid "Create draft"
+msgstr ""
+
 #: src/features/onboarding/onboarding-screen.tsx
 msgid "Create my resume"
 msgstr ""
@@ -4152,6 +4308,15 @@ msgstr ""
 #: src/features/documents/new-copy.tsx
 msgid "Create or import a resume first, then return to copy it for this job."
 msgstr "முதலில் ரெஸ்யூமை உருவாக்கவும் அல்லது இறக்குமதி செய்யவும், பிறகு இந்த வேலைக்காக அதை நகலெடுக்க திரும்பவும்."
+
+#: src/features/portfolio/create.tsx
+#: src/features/portfolio/overview.tsx
+msgid "Create portfolio"
+msgstr ""
+
+#: src/features/portfolio/overview.tsx
+msgid "Create your portfolio"
+msgstr ""
 
 #: src/features/documents/document-menu-panels.tsx
 #: src/features/documents/library-toolbar.tsx
@@ -4202,6 +4367,10 @@ msgstr "தனிப்பயன்"
 msgid "Custom color (hex)"
 msgstr "தனிப்பயன் நிறம் (hex)"
 
+#: src/features/portfolio/publish.tsx
+msgid "Custom domain"
+msgstr ""
+
 #: src/features/share/custom-domain.tsx
 msgid "Custom domains aren't available here."
 msgstr ""
@@ -4239,10 +4408,22 @@ msgstr ""
 msgid "Daily at {clock} · next {day}"
 msgstr ""
 
+#: src/features/portfolio/statistics.tsx
+msgid "Daily numbers"
+msgstr ""
+
+#: src/features/portfolio/statistics.tsx
+msgid "Daily views"
+msgstr ""
+
 #. placeholder {0}: summary.peak
 #: src/features/share/link.tsx
 msgid "Daily views over 30 days, peak {0}"
 msgstr "30 நாட்களில் தினசரி பார்வைகள், உச்சம் {0}"
+
+#: src/features/portfolio/statistics.tsx
+msgid "Daily work opens"
+msgstr ""
 
 #: src/features/ai/report-content.tsx
 msgid "Dangerous or illegal advice"
@@ -4375,6 +4556,7 @@ msgstr "பட்டம்"
 #: src/features/documents/document-item.tsx
 #: src/features/history/version-options.tsx
 #: src/features/letters/share.tsx
+#: src/features/portfolio/inbox.tsx
 #: src/features/profile/stories.tsx
 #: src/features/write/entry-sheet.tsx
 msgid "Delete"
@@ -4445,9 +4627,17 @@ msgstr "நேர்காணலை நீக்கு"
 msgid "Delete it. Hidden keywords are treated as a deliberate attempt to game the search."
 msgstr "அதை நீக்கவும். மறைக்கப்பட்ட முக்கிய வார்த்தைகள் தேடலை மோசடி செய்யும் வேண்டுமென்றே செய்யப்பட்ட முயற்சியாகக் கருதப்படும்."
 
+#: src/features/portfolio/inbox.tsx
+msgid "Delete message"
+msgstr ""
+
 #: src/features/design/layout-screen.tsx
 msgid "Delete page"
 msgstr "பக்கத்தை நீக்கு"
+
+#: src/features/portfolio/publish.tsx
+msgid "Delete portfolio"
+msgstr ""
 
 #: src/features/ai/provider-editor.tsx
 msgid "Delete provider"
@@ -4478,6 +4668,10 @@ msgstr "இந்த பதிவை நீக்கவா?"
 msgid "Delete this interview?"
 msgstr ""
 
+#: src/features/portfolio/inbox.tsx
+msgid "Delete this message?"
+msgstr ""
+
 #: src/features/ai/provider-editor.tsx
 msgid "Delete this provider?"
 msgstr "இந்த வழங்குநரை நீக்கவா?"
@@ -4486,6 +4680,10 @@ msgstr "இந்த வழங்குநரை நீக்கவா?"
 #: src/features/letters/share.tsx
 msgid "Delete version"
 msgstr "பதிப்பை நீக்கு"
+
+#: src/features/portfolio/publish.tsx
+msgid "Delete your portfolio?"
+msgstr ""
 
 #: src/features/applications/detail/detail-header.tsx
 #: src/features/applications/list/bulk-bar.tsx
@@ -4555,6 +4753,10 @@ msgstr "வடிவமைப்பு"
 msgid "Design reset to defaults"
 msgstr "வடிவமைப்பு இயல்புநிலைக்கு மீட்டமைக்கப்பட்டது"
 
+#: src/features/portfolio/preview.tsx
+msgid "Desktop"
+msgstr ""
+
 #. placeholder {0}: index + 1
 #: src/features/entries/custom-fields.tsx
 msgid "Detail {0}"
@@ -4570,6 +4772,10 @@ msgstr ""
 #: src/features/profile/profile-screen.tsx
 msgid "Details"
 msgstr "விவரங்கள்"
+
+#: src/features/portfolio/statistics.tsx
+msgid "Devices"
+msgstr ""
 
 #: src/features/workspace/debrief/debrief-form.tsx
 msgid "Didn't land"
@@ -4766,6 +4972,7 @@ msgstr "பதிவிறக்கம் மொத்தத்தில் ம�
 msgid "downloads"
 msgstr "பதிவிறக்கங்கள்"
 
+#: src/features/portfolio/overview.tsx
 #: src/features/workspace/apply/answer-card.tsx
 #: src/features/write/entry-row.tsx
 msgid "Draft"
@@ -4811,9 +5018,21 @@ msgstr "உங்கள் ரெஸ்யூமிலிருந்து வ�
 msgid "Draft kept. Edit anything you like."
 msgstr "வரைவு வைக்கப்பட்டுள்ளது. நீங்கள் விரும்பும் எதையும் திருத்தவும்."
 
+#: src/features/portfolio/create.tsx
+msgid "Draft saved"
+msgstr ""
+
+#: src/features/portfolio/create.tsx
+msgid "Draft saved. Fill in the text in brackets before publishing."
+msgstr ""
+
 #: src/features/workspace/prepare/plan.tsx
 msgid "Draft story"
 msgstr "கதையை வரைவு செய்"
+
+#: src/features/portfolio/create.tsx
+msgid "Draft with AI"
+msgstr ""
 
 #: src/features/workspace/working.ts
 msgid "Drafting"
@@ -4957,6 +5176,10 @@ msgstr "இணைப்பைத் திருத்து"
 #: src/features/applications/detail/activity.tsx
 msgid "Edit note"
 msgstr "குறிப்பைத் திருத்து"
+
+#: src/features/portfolio/overview.tsx
+msgid "Edit on the web"
+msgstr ""
 
 #: src/features/workspace/apply/answer-menu.tsx
 msgid "Edit question"
@@ -5335,6 +5558,7 @@ msgstr "கோப்பு மிகவும் பெரியதாக உள
 msgid "File name"
 msgstr "கோப்பு பெயர்"
 
+#: src/features/portfolio/export.ts
 #: src/features/share/files.ts
 msgid "File sharing is unavailable on this device."
 msgstr "இந்தச் சாதனத்தில் கோப்புப் பகிர்வு இல்லை."
@@ -5414,6 +5638,14 @@ msgstr ""
 #. Template gallery filter: finance, banking, law and consulting jobs
 #: src/features/design/preset-names.ts
 msgid "Finance"
+msgstr ""
+
+#: src/features/portfolio/create.tsx
+msgid "Find a resume"
+msgstr ""
+
+#: src/features/portfolio/publish.tsx
+msgid "Find a source"
 msgstr ""
 
 #: src/features/jobs/jobs-states.tsx
@@ -5752,6 +5984,10 @@ msgstr "முழு அகலம்"
 
 #: src/features/design/preset-names.ts
 msgid "Games and sports"
+msgstr ""
+
+#: src/features/portfolio/create.tsx
+msgid "Generate draft"
 msgstr ""
 
 #: src/features/settings/locale-names.ts
@@ -6230,6 +6466,11 @@ msgstr ""
 msgid "In your Profile"
 msgstr ""
 
+#: src/features/portfolio/inbox.tsx
+#: src/features/portfolio/overview.tsx
+msgid "Inbox"
+msgstr ""
+
 #: src/features/jobs/filters-sheet.tsx
 msgid "Include jobs that don't list pay"
 msgstr ""
@@ -6297,6 +6538,10 @@ msgstr "நுண்ணறிவு"
 
 #: src/features/applications/insights/insights-screen.tsx
 msgid "Insights show here once your applications have loaded."
+msgstr ""
+
+#: src/features/portfolio/create.tsx
+msgid "Instructions (optional)"
 msgstr ""
 
 #: src/features/entries/fields.ts
@@ -6448,6 +6693,10 @@ msgstr ""
 #: src/features/documents/purge-dialog.tsx
 msgid "It will be deleted for good and can't be restored."
 msgstr "அது நன்றாக நீக்கப்படும் மற்றும் மீட்டெடுக்க முடியாது."
+
+#: src/features/portfolio/inbox.tsx
+msgid "It will be permanently removed from your inbox."
+msgstr ""
 
 #: src/features/applications/detail/activity.tsx
 msgid "It's removed from the activity for good."
@@ -6665,6 +6914,10 @@ msgstr "நேர்மையாக இருங்கள்"
 msgid "Keep it under 2.5 MB, usually by removing or shrinking images."
 msgstr "பொதுவாக படங்களை நீக்கியோ சுருக்கியோ அதை 2.5 MB க்கும் குறைவாக வைத்திருங்கள்."
 
+#: src/features/portfolio/inbox.tsx
+msgid "Keep message"
+msgstr ""
+
 #: src/draft/conflict-sheet.tsx
 #: src/features/entries/improve.tsx
 msgid "Keep mine"
@@ -6677,6 +6930,10 @@ msgstr ""
 #: src/features/write/section-menu.tsx
 msgid "Keep on one page"
 msgstr "ஒரு பக்கத்தில் வைத்திருங்கள்"
+
+#: src/features/portfolio/create.tsx
+msgid "Keep original draft"
+msgstr ""
 
 #: src/features/entries/photo-field.tsx
 msgid "Keep photo"
@@ -6928,6 +7185,10 @@ msgstr "நீளம் ஒரு குறை அல்ல, ஒரு-பக்
 msgid "Let AI clients like Claude or Cursor read and edit your resumes, using an API key."
 msgstr "Claude அல்லது Cursor போன்ற AI கிளையன்ட்கள் API விசையைப் பயன்படுத்தி உங்கள் ரெஸ்யூமைப் படிக்கவும் திருத்தவும் அனுமதிக்கவும்."
 
+#: src/features/portfolio/publish.tsx
+msgid "Let visitors download a contact card from your page."
+msgstr ""
+
 #: src/features/documents/library-states.tsx
 #: src/features/home/home-screen.tsx
 msgid "Let's start with what you have"
@@ -7040,6 +7301,7 @@ msgid "Link an application…"
 msgstr "வேலை விண்ணப்பத்தை இணைக்கவும்..."
 
 #: src/features/documents/library-menu.tsx
+#: src/features/portfolio/overview.tsx
 #: src/features/share/link.tsx
 #: src/features/share/web-page.tsx
 msgid "Link copied"
@@ -7140,6 +7402,10 @@ msgstr "{url} இல் வெளியிடப்பட்டது"
 msgid "Load more"
 msgstr ""
 
+#: src/features/portfolio/inbox.tsx
+msgid "Load more messages"
+msgstr ""
+
 #: src/features/applications/detail/detail-sheet.tsx
 #: src/features/applications/list/list-states.tsx
 #: src/features/career/schedule-body.tsx
@@ -7197,6 +7463,10 @@ msgstr ""
 msgid "Loading offers"
 msgstr ""
 
+#: src/features/portfolio/layout.tsx
+msgid "Loading portfolio"
+msgstr ""
+
 #: src/features/ai/provider-editor.tsx
 #: src/features/ai/provider-list.tsx
 msgid "Loading providers…"
@@ -7210,6 +7480,7 @@ msgstr ""
 msgid "Loading resume…"
 msgstr "ரெஸ்யூமை ஏற்றுகிறது…"
 
+#: src/features/portfolio/create.tsx
 #: src/features/search/search-screen.tsx
 msgid "Loading resumes…"
 msgstr "ஏற்றுதல் மீண்டும் தொடங்குகிறது…"
@@ -7230,6 +7501,7 @@ msgstr "பணியிடத்தை ஏற்றுகிறது…"
 msgid "Loading your Profile before you send…"
 msgstr ""
 
+#: src/features/portfolio/publish.tsx
 #: src/features/share/link.tsx
 msgid "Loading your public address…"
 msgstr "உங்கள் பொது முகவரியை ஏற்றுகிறது…"
@@ -7339,6 +7611,10 @@ msgstr "மலாய்"
 msgid "Malayalam"
 msgstr "மலையாளம்"
 
+#: src/features/portfolio/publish.tsx
+msgid "Manage domain on the web"
+msgstr ""
+
 #: src/features/ai/provider-editor.tsx
 #: src/features/ai/provider-list.tsx
 msgid "Managed by your server"
@@ -7397,9 +7673,17 @@ msgstr "படித்ததாகக் குறி"
 msgid "Mark it as applied in Apply first."
 msgstr "முதலில் விண்ணப்பம் தாவலில் விண்ணப்பித்ததாகக் குறிக்கவும்."
 
+#: src/features/portfolio/inbox.tsx
+msgid "Mark read"
+msgstr ""
+
 #: src/features/workspace/apply/checklist.tsx
 msgid "Mark the application as applied to keep the versions you sent."
 msgstr "நீங்கள் அனுப்பிய பதிப்புகளை வைத்திருக்க, விண்ணப்பத்தை விண்ணப்பித்ததாகக் குறிக்கவும்."
+
+#: src/features/portfolio/inbox.tsx
+msgid "Mark unread"
+msgstr ""
 
 #: src/features/letters/share.tsx
 #: src/features/share/download.tsx
@@ -7480,6 +7764,10 @@ msgstr "நடுத்தர"
 msgid "Meets: {0}"
 msgstr ""
 
+#: src/features/portfolio/inbox.tsx
+msgid "Message"
+msgstr ""
+
 #: src/features/ai/report-content.tsx
 msgid "Message actions"
 msgstr ""
@@ -7488,9 +7776,14 @@ msgstr ""
 msgid "Message the assistant"
 msgstr "உதவியாளருக்கு செய்தி அனுப்பவும்"
 
+#: src/features/portfolio/statistics.tsx
 #: src/features/workspace/working.ts
 msgid "Messages"
 msgstr "செய்திகள்"
+
+#: src/features/portfolio/inbox.tsx
+msgid "Messages sent through your portfolio contact form appear here."
+msgstr ""
 
 #: src/features/jobs/format.ts
 msgctxt "Job seniority"
@@ -7743,6 +8036,7 @@ msgstr ""
 #: src/features/history/version-options.tsx
 #: src/features/letters/share.tsx
 #: src/features/letters/write.tsx
+#: src/features/portfolio/create.tsx
 #: src/features/settings/profile.tsx
 msgid "Name"
 msgstr "பெயர்"
@@ -7935,6 +8229,10 @@ msgstr ""
 msgid "New to Rezumi? Create an account"
 msgstr ""
 
+#: src/features/portfolio/publish.tsx
+msgid "New visitor password"
+msgstr ""
+
 #: src/features/onboarding/intro-screen.tsx
 msgid "Next"
 msgstr ""
@@ -8061,6 +8359,14 @@ msgstr ""
 msgid "No credits to spend right now"
 msgstr ""
 
+#: src/features/share/custom-domain.tsx
+msgid "No custom domain connected."
+msgstr ""
+
+#: src/features/portfolio/statistics.tsx
+msgid "No data in this period."
+msgstr ""
+
 #: src/features/letters/write.tsx
 msgid "No date"
 msgstr "தேதி இல்லை"
@@ -8161,6 +8467,14 @@ msgstr "இடம் இல்லை"
 msgid "No matches"
 msgstr "பொருந்தவில்லை"
 
+#: src/features/portfolio/publish.tsx
+msgid "No matching sources."
+msgstr ""
+
+#: src/features/portfolio/inbox.tsx
+msgid "No messages yet"
+msgstr ""
+
 #: src/features/home/new-roles.tsx
 msgid "No new roles. Your job alert checks again on {day} at {clock}."
 msgstr ""
@@ -8209,6 +8523,10 @@ msgstr ""
 msgid "No response"
 msgstr "பதில் இல்லை"
 
+#: src/features/portfolio/create.tsx
+msgid "No resumes found."
+msgstr ""
+
 #: src/features/documents/library-states.tsx
 msgid "No resumes yet"
 msgstr ""
@@ -8237,6 +8555,10 @@ msgstr ""
 #: src/features/ats-checker/messages.ts
 msgid "No skills section was found."
 msgstr "திறன்கள் பிரிவு எதுவும் காணப்படவில்லை."
+
+#: src/features/portfolio/publish.tsx
+msgid "No source"
+msgstr ""
 
 #: src/features/applications/insights/insights-cards.tsx
 msgid "No source data yet."
@@ -8288,9 +8610,17 @@ msgstr ""
 msgid "No timezone matches."
 msgstr "எந்த நேர மண்டலமும் பொருந்தவில்லை."
 
+#: src/features/portfolio/statistics.tsx
+msgid "No visits in this period."
+msgstr ""
+
 #: src/features/check/messages.ts
 msgid "No work experience shows"
 msgstr "பணி அனுபவம் இல்லை"
+
+#: src/features/portfolio/statistics.tsx
+msgid "No work was opened in this period."
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "No work-experience section was found."
@@ -8679,6 +9009,10 @@ msgstr "கீழே உள்ள உரை மற்றும் உங்க�
 msgid "Only this device schedules the notification."
 msgstr "இந்த சாதனம் மட்டுமே அறிவிப்பை திட்டமிடுகிறது."
 
+#: src/features/portfolio/publish.tsx
+msgid "Only you can preview this draft."
+msgstr ""
+
 #: src/features/share/link.tsx
 msgid "Only you see these"
 msgstr "இவற்றை நீங்கள் மட்டுமே பார்க்கிறீர்கள்"
@@ -8744,16 +9078,20 @@ msgstr ""
 msgid "Open menu, {unread} unread"
 msgstr ""
 
-#: src/shell/preparing-tab.tsx
-msgid "Open on the web"
-msgstr ""
-
 #: src/features/documents/unsynced-documents.tsx
 msgid "Open one to finish saving it."
 msgstr ""
 
+#: src/features/portfolio/create.tsx
+msgid "Open portfolio"
+msgstr ""
+
 #: src/shell/app-drawer.tsx
 msgid "Open Profile"
+msgstr ""
+
+#: src/features/portfolio/preview.tsx
+msgid "Open public page"
 msgstr ""
 
 #: src/features/assistant/assistant-screen.tsx
@@ -9188,6 +9526,10 @@ msgstr "ஒரு மணி நேரத்திற்கு"
 msgid "Per month"
 msgstr "மாதத்திற்கு"
 
+#: src/features/portfolio/statistics.tsx
+msgid "Per work"
+msgstr ""
+
 #: src/features/profile/preferences.tsx
 msgid "Per year"
 msgstr "வருடத்திற்கு"
@@ -9208,12 +9550,17 @@ msgstr ""
 #: src/features/entries/fields.ts
 #: src/features/letters/write.tsx
 #: src/features/onboarding/source-review.tsx
+#: src/features/portfolio/preview.tsx
 msgid "Phone"
 msgstr "தொலைபேசி"
 
 #: src/features/applications/detail/contacts.tsx
 msgid "Phone (optional)"
 msgstr "தொலைபேசி (விருப்பத்திற்குரியது)"
+
+#: src/features/portfolio/statistics.tsx
+msgid "Phones"
+msgstr ""
 
 #: src/features/entries/photo-field.tsx
 #: src/features/onboarding/source-review.tsx
@@ -9332,9 +9679,18 @@ msgid "Polishing"
 msgstr "மெருகேற்றுகிறது"
 
 #: app/(tabs)/_layout.tsx
-#: app/(tabs)/portfolio/index.tsx
+#: src/features/portfolio/overview.tsx
 #: src/shell/app-tabs.tsx
 msgid "Portfolio"
+msgstr ""
+
+#: src/features/portfolio/preview.tsx
+msgid "Portfolio preview"
+msgstr ""
+
+#: src/features/portfolio/create.tsx
+#: src/features/portfolio/overview.tsx
+msgid "Portfolios aren't available for this account."
 msgstr ""
 
 #: src/features/write/picture-screen.tsx
@@ -9521,6 +9877,14 @@ msgstr ""
 msgid "Press and hold"
 msgstr "அழுத்திப் பிடிக்கவும்"
 
+#: src/features/portfolio/overview.tsx
+msgid "Preview"
+msgstr ""
+
+#: src/features/portfolio/preview.tsx
+msgid "Preview size"
+msgstr "முன்னோட்ட அளவு"
+
 #: src/features/share/web-page.tsx
 msgid "Preview web page"
 msgstr "வலைப்பக்கத்தை முன்னோட்டமிடு"
@@ -9683,6 +10047,10 @@ msgstr "வழங்குநர் வைத்திருத்தல் ம�
 msgid "Public"
 msgstr "பொது"
 
+#: src/features/portfolio/publish.tsx
+msgid "Public address"
+msgstr ""
+
 #: src/features/share/link.tsx
 msgid "Public link"
 msgstr "பொது இணைப்பு"
@@ -9694,6 +10062,11 @@ msgstr "பொது, கடவுச்சொல்லுடன்"
 #: src/features/entries/fields.ts
 msgid "Publications"
 msgstr "வெளியீடுகள்"
+
+#: src/features/portfolio/overview.tsx
+#: src/features/portfolio/publish.tsx
+msgid "Publish portfolio"
+msgstr ""
 
 #: src/features/share/web-page.tsx
 msgid "Publish the web page first."
@@ -9707,13 +10080,23 @@ msgstr "பார்வைகளையும் பதிவிறக்கங�
 msgid "Publish this resume to open it at your short link and custom domain."
 msgstr "உங்கள் குறுகிய இணைப்பிலும் தனிப்பயன் டொமைனிலும் திறக்க இந்த ரெஸ்யூமை வெளியிடுங்கள்."
 
-#: app/(tabs)/portfolio/index.tsx
-msgid "Publish, share and see who visited from your phone. Until then, manage it on the web."
+#: src/features/portfolio/card.tsx
+#: src/features/portfolio/overview.tsx
+msgid "Publish to share your QR code."
+msgstr ""
+
+#: src/features/portfolio/overview.tsx
+msgid "Published"
 msgstr ""
 
 #: src/features/entries/fields.ts
 msgid "Publisher"
 msgstr "பதிப்பாளர்"
+
+#: src/features/portfolio/overview.tsx
+#: src/features/portfolio/publish.tsx
+msgid "Publishing settings"
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "Put a plain email address near the top of the first page. It is what most systems file you under."
@@ -9722,6 +10105,11 @@ msgstr "முதல் பக்கத்தின் மேற்பகுத�
 #: src/features/share/link.tsx
 msgid "QR code"
 msgstr "QR குறியீடு"
+
+#. placeholder {0}: address.shown
+#: src/features/portfolio/card.tsx
+msgid "QR code for {0}"
+msgstr ""
 
 #: src/features/share/link.tsx
 msgid "QR code for {url}"
@@ -9991,6 +10379,10 @@ msgstr "பரிந்துரைகள்"
 msgid "Referral"
 msgstr "பரிந்துரை"
 
+#: src/features/portfolio/statistics.tsx
+msgid "Referring sites"
+msgstr ""
+
 #: src/features/profile/stories-parts.ts
 msgid "Reflection"
 msgstr "பிரதிபலிப்பு"
@@ -10148,6 +10540,7 @@ msgstr "கோப்பை அகற்று"
 msgid "Remove label"
 msgstr ""
 
+#: src/features/portfolio/publish.tsx
 #: src/features/share/web-page.tsx
 msgid "Remove password"
 msgstr "கடவுச்சொல்லை அகற்று"
@@ -10182,6 +10575,10 @@ msgstr "இந்தக் கோப்பை அகற்றவா?"
 #: src/features/entries/photo-field.tsx
 msgid "Remove this photo?"
 msgstr "இந்தப் படத்தை அகற்றவா?"
+
+#: src/features/portfolio/publish.tsx
+msgid "Remove visitor password?"
+msgstr ""
 
 #: src/features/assistant/threads.tsx
 #: src/features/documents/document-menu.tsx
@@ -10248,6 +10645,10 @@ msgstr "விண்ணப்பத்தில் உள்ள “{current}”-
 #: src/features/workspace/working.ts
 msgid "Reply"
 msgstr "மறுமொழி"
+
+#: src/features/portfolio/inbox.tsx
+msgid "Reply by email"
+msgstr ""
 
 #: src/features/workspace/messages/reply-card.tsx
 msgid "Reply copied"
@@ -10390,6 +10791,10 @@ msgstr ""
 msgid "Resume tailoring"
 msgstr ""
 
+#: src/features/portfolio/publish.tsx
+msgid "Resume unavailable"
+msgstr ""
+
 #: src/features/documents/segment-header.tsx
 #: src/features/search/search-screen.tsx
 msgid "Resumes"
@@ -10435,6 +10840,9 @@ msgstr ""
 #: src/features/letters/write.tsx
 #: src/features/offers/offers-screen.tsx
 #: src/features/onboarding/source-progress.tsx
+#: src/features/portfolio/inbox.tsx
+#: src/features/portfolio/layout.tsx
+#: src/features/portfolio/statistics.tsx
 #: src/features/profile/facts.tsx
 #: src/features/profile/fill-sheet.tsx
 #: src/features/profile/preferences.tsx
@@ -10492,6 +10900,14 @@ msgstr ""
 #: src/features/workspace/apply/checklist.tsx
 msgid "Review required form answers and remove unsupported claims."
 msgstr "தேவையான படிவப் பதில்களை மதிப்பாய்வு செய்து, ஆதாரமற்ற கூற்றுகளை அகற்றவும்."
+
+#: src/features/portfolio/create.tsx
+msgid "Review suggested writing before saving it to your draft."
+msgstr ""
+
+#: src/features/portfolio/create.tsx
+msgid "Review the AI draft"
+msgstr ""
 
 #: src/features/workspace/apply/checklist.tsx
 msgid "Review the selected resume and cover letter in their editors."
@@ -10727,6 +11143,10 @@ msgstr "மாற்றங்களைச் சேமிக்கவும்"
 msgid "Save contact"
 msgstr ""
 
+#: src/features/portfolio/publish.tsx
+msgid "Save contact button"
+msgstr ""
+
 #: src/features/profile/facts-detail.tsx
 msgid "Save correction"
 msgstr "திருத்தத்தைச் சேமி"
@@ -10756,9 +11176,18 @@ msgstr ""
 msgid "Save new password"
 msgstr ""
 
+#: src/features/portfolio/export.ts
 #: src/features/share/files.ts
 msgid "Save or share file"
 msgstr "கோப்பை சேமிக்கவும் அல்லது பகிரவும்"
+
+#: src/features/portfolio/card.tsx
+msgid "Save or share PNG"
+msgstr ""
+
+#: src/features/portfolio/publish.tsx
+msgid "Save password"
+msgstr ""
 
 #: src/features/career/schedule-sheet.tsx
 msgid "Save schedule"
@@ -10799,6 +11228,10 @@ msgstr ""
 
 #: src/features/onboarding/onboarding-screen.tsx
 msgid "Save to my Profile"
+msgstr ""
+
+#: src/features/portfolio/create.tsx
+msgid "Save to portfolio"
 msgstr ""
 
 #: src/features/workspace/fit/requirement-card.tsx
@@ -11293,6 +11726,7 @@ msgstr "சேவையக முகவரி"
 msgid "Set a follow-up…"
 msgstr "பின்தொடர்வதை அமைக்கவும்…"
 
+#: src/features/portfolio/publish.tsx
 #: src/features/share/web-page.tsx
 msgid "Set password"
 msgstr "கடவுச்சொல்லை அமைக்கவும்"
@@ -11313,6 +11747,10 @@ msgstr "வழங்குநரை அமைக்கவும்"
 #: src/features/documents/new-choices.tsx
 msgid "Set up AI provider"
 msgstr "AI வழங்குநரை அமைக்கவும்"
+
+#: src/features/portfolio/card.tsx
+msgid "Set up on the web"
+msgstr ""
 
 #: src/features/share/custom-domain.tsx
 msgid "Setting up HTTPS. This usually takes a few minutes, and this screen updates by itself."
@@ -11357,10 +11795,18 @@ msgstr "பகிர்ந்து & ஏற்றுமதி"
 msgid "Share as file"
 msgstr ""
 
+#: src/features/portfolio/statistics.tsx
+msgid "Share CSV"
+msgstr ""
+
 #. placeholder {0}: provider.label
 #: src/api/ai-consent.ts
 msgid "Share data with {0}?"
 msgstr "{0} உடன் தரவைப் பகிரவா?"
+
+#: src/features/portfolio/overview.tsx
+msgid "Share link"
+msgstr ""
 
 #: src/features/share/download.tsx
 msgid "Share PDF"
@@ -11498,6 +11944,7 @@ msgstr "தலைப்பைக் காட்டு"
 msgid "Show icons"
 msgstr "ஐகான்களைக் காட்டு"
 
+#: src/features/portfolio/publish.tsx
 #: src/features/share/web-page.tsx
 msgid "Show in search engines"
 msgstr "தேடுபொறிகளில் காட்டு"
@@ -11541,6 +11988,10 @@ msgstr ""
 #: src/features/check/issues-tab.tsx
 msgid "Show them again"
 msgstr "அவற்றை மீண்டும் காட்டு"
+
+#: src/features/portfolio/overview.tsx
+msgid "Show your work on a personal page you can share."
+msgstr ""
 
 #: src/features/applications/detail/detail-body.tsx
 msgid "Showing the details saved on this device. They couldn't be refreshed."
@@ -11993,12 +12444,20 @@ msgstr "தட்டச்சு செய்யத் தொடங்குங�
 msgid "Start typing. To draft one, fill in your Profile, or link a resume or an application."
 msgstr ""
 
+#: src/features/portfolio/create.tsx
+msgid "Start with"
+msgstr ""
+
 #: src/features/write/add-section.tsx
 msgid "Start with the sections most resumes have."
 msgstr "பெரும்பாலான ரெஸ்யூம்களில் உள்ள பிரிவுகளுடன் தொடங்கவும்."
 
 #: src/features/onboarding/intro-screen.tsx
 msgid "Start with your dashboard project at Kopi Senja: it cut report time by half."
+msgstr ""
+
+#: src/features/portfolio/create.tsx
+msgid "Start with your name and a theme."
 msgstr ""
 
 #: src/features/home/coming-up.tsx
@@ -12017,6 +12476,10 @@ msgstr "{0} மணி நேரத்திற்குள் தொடங்க
 #: src/features/workspace/prepare/soon.tsx
 msgid "Starts now"
 msgstr "இப்போது தொடங்குகிறது"
+
+#: src/features/portfolio/statistics.tsx
+msgid "Statistics date range"
+msgstr ""
 
 #: src/features/share/link.tsx
 msgid "Statistics need a connection."
@@ -12225,6 +12688,10 @@ msgstr "சிஸ்டம்ஸ் உங்களைப் பக்கத்�
 msgid "Systems look for an experience section. Projects or volunteering can show the same history."
 msgstr "அமைப்புகள் அனுபவப் பிரிவைத் தேடுகின்றன. திட்டங்கள் அல்லது தன்னார்வத் தொண்டு அதே வரலாற்றைக் காட்டலாம்."
 
+#: src/features/portfolio/statistics.tsx
+msgid "Tablets"
+msgstr ""
+
 #: src/features/applications/list/list-menus.tsx
 msgid "Tag: {tag}"
 msgstr ""
@@ -12281,6 +12748,10 @@ msgstr ""
 #. placeholder {0}: formatDate(entry.revokedAt)
 #: src/features/billing/credits.ts
 msgid "Taken back on {0}"
+msgstr ""
+
+#: src/features/portfolio/overview.tsx
+msgid "Taken down"
 msgstr ""
 
 #: src/features/documents/new-choices.tsx
@@ -12849,6 +13320,10 @@ msgstr "சிந்திக்கிறது…"
 msgid "Third-party software notices. Tap a dependency to read its license."
 msgstr "மூன்றாம் தரப்பு மென்பொருள் அறிவிப்புகள். ஒரு சார்பின் உரிமத்தைப் படிக்க அதைத் தட்டவும்."
 
+#: src/features/portfolio/queries.ts
+msgid "This account already has a portfolio."
+msgstr ""
+
 #: src/features/billing/plan-alert.ts
 msgid "This app always works. Other apps and assistants that connect with an API key need more."
 msgstr ""
@@ -13104,6 +13579,10 @@ msgstr "இந்த கோப்பின் உரையை மென்பொ
 msgid "This needs {required} and you have {balance}. Switch to your own AI connection to continue."
 msgstr ""
 
+#: src/features/portfolio/queries.ts
+msgid "This option isn't included in your current plan."
+msgstr ""
+
 #: src/features/assistant/messages.tsx
 msgid "This page is clipped or incomplete. Check the original before using it."
 msgstr "இந்தப் பக்கம் வெட்டப்பட்டது அல்லது முழுமையடையவில்லை. அதைப் பயன்படுத்துவதற்கு முன் அசல் சரிபார்க்கவும்."
@@ -13132,6 +13611,11 @@ msgstr ""
 msgid "This PDF is password protected. Save an unprotected copy and try again."
 msgstr "இந்த PDF கடவுச்சொல் பாதுகாப்புடையது. பாதுகாக்கப்படாத நகலைச் சேமித்து மீண்டும் முயற்சிக்கவும்."
 
+#: src/features/portfolio/publish.tsx
+#: src/features/portfolio/queries.ts
+msgid "This portfolio has been taken down."
+msgstr ""
+
 #: src/features/auth/errors.ts
 msgid "This reset link expired or was already used. Ask for a new one."
 msgstr ""
@@ -13142,6 +13626,10 @@ msgstr "இந்த ரெஸ்யூம் வேறு இடத்தில
 
 #: src/features/write/profile-link.tsx
 msgid "This resume couldn't be found. It may have been deleted."
+msgstr ""
+
+#: src/features/portfolio/publish.tsx
+msgid "This resume is in Trash. Choose another source."
 msgstr ""
 
 #: src/features/check/check-pane.tsx
@@ -13702,6 +14190,18 @@ msgstr "திறக்கிறது…"
 msgid "Unnamed key"
 msgstr "பெயரிடப்படாத விசை"
 
+#: src/features/portfolio/publish.tsx
+msgid "Unpublish"
+msgstr ""
+
+#: src/features/portfolio/publish.tsx
+msgid "Unpublish your portfolio?"
+msgstr ""
+
+#: src/features/portfolio/inbox.tsx
+msgid "Unread"
+msgstr ""
+
 #: src/features/documents/document-item.tsx
 #: src/features/documents/unsynced-documents.tsx
 msgid "Unsynced on this device"
@@ -13809,6 +14309,10 @@ msgstr "{url} ஐப் பயன்படுத்தவும்"
 #: src/features/settings/profile.tsx
 msgid "Use 3 to 64 lowercase letters, numbers, dots, hyphens and underscores."
 msgstr "3 முதல் 64 வரையிலான சிறிய எழுத்துக்கள், எண்கள், புள்ளிகள், ஹைபன்கள் மற்றும் அடிக்கோடுகளைப் பயன்படுத்தவும்."
+
+#: src/features/portfolio/publish.tsx
+msgid "Use 6 to 64 characters."
+msgstr ""
 
 #: src/features/share/web-page.tsx
 msgid "Use 6–64 characters."
@@ -14063,6 +14567,10 @@ msgstr "வாய்மொழிச் சலுகை"
 msgid "Verify"
 msgstr "சரிபார்க்கவும்"
 
+#: src/features/portfolio/queries.ts
+msgid "Verify your email before publishing."
+msgstr ""
+
 #: src/features/auth/errors.ts
 msgid "Verify your email first. We sent you a link; open it on this phone, then sign in."
 msgstr ""
@@ -14156,6 +14664,10 @@ msgstr "பார்க்கிறது {0} · {1} · படிக்க ம�
 msgid "Viewing {0} · read-only"
 msgstr "பார்க்கிறது {0} · படிக்க மட்டும்"
 
+#: src/features/portfolio/statistics.tsx
+msgid "Views"
+msgstr ""
+
 #: src/features/share/link.tsx
 msgid "views · 30 days"
 msgstr "காட்சிகள் · 30 நாட்கள்"
@@ -14169,6 +14681,31 @@ msgstr "வன்முறை அல்லது துஷ்பிரயோக�
 msgid "Visa sponsorship"
 msgstr ""
 
+#: src/features/portfolio/statistics.tsx
+msgid "Visit sources"
+msgstr ""
+
+#: src/features/portfolio/statistics.tsx
+msgid "Visitor breakdown"
+msgstr ""
+
+#: src/features/portfolio/statistics.tsx
+msgid "Visitor breakdown is available with Plus."
+msgstr ""
+
+#: src/features/portfolio/statistics.tsx
+msgid "Visitor breakdown isn't configured on this server."
+msgstr ""
+
+#: src/features/portfolio/publish.tsx
+msgid "Visitor password"
+msgstr ""
+
+#: src/features/portfolio/overview.tsx
+#: src/features/portfolio/statistics.tsx
+msgid "Visitor statistics"
+msgstr ""
+
 #: src/features/share/link.tsx
 msgid "Visitors"
 msgstr "பார்வையாளர்கள்"
@@ -14177,9 +14714,17 @@ msgstr "பார்வையாளர்கள்"
 msgid "Visitors can download the PDF"
 msgstr "பார்வையாளர்கள் PDF ஐ பதிவிறக்கம் செய்யலாம்"
 
+#: src/features/portfolio/publish.tsx
+msgid "Visitors can open your page."
+msgstr ""
+
 #: src/features/share/web-page.tsx
 msgid "Visitors enter it before they see the resume. Share it only with people you trust."
 msgstr "பார்வையாளர்கள் ரெஸ்யூமைப் பார்ப்பதற்கு முன் கடவுச்சொல்லை உள்ளிடுவார்கள். நீங்கள் நம்பும் நபர்களுடன் மட்டும் பகிரவும்."
+
+#: src/features/portfolio/publish.tsx
+msgid "Visitors will lose access. You can publish it again later."
+msgstr ""
 
 #: src/features/workspace/practice/answer-panel.tsx
 #: src/features/workspace/practice/voice-settings-sheet.tsx
@@ -14544,6 +15089,10 @@ msgstr "உரை பிரித்தெடுக்கப்படும்�
 msgid "Work arrangement"
 msgstr ""
 
+#: src/features/portfolio/statistics.tsx
+msgid "Work statistics"
+msgstr ""
+
 #: src/features/workspace/prepare/soon.tsx
 msgid "Works without AI or new research"
 msgstr "AI அல்லது புதிய ஆய்வு இல்லாமலும் வேலை செய்யும்"
@@ -14648,6 +15197,10 @@ msgstr "நேற்று {time}"
 msgid "You"
 msgstr "நீங்கள்"
 
+#: src/features/portfolio/create.tsx
+msgid "You already have a portfolio"
+msgstr ""
+
 #: src/features/share/link.tsx
 msgid "You already use this for “{takenBy}”."
 msgstr "இது ஏற்கனவே “{takenBy}”க்கு பயன்படுத்தப்பட்டது."
@@ -14686,6 +15239,15 @@ msgstr "முடிவடைவதற்கு முன்பே நீங்�
 
 #: src/features/onboarding/messages.ts
 msgid "You chose not to share it, so it wasn't read. Retry to choose again."
+msgstr ""
+
+#: src/features/portfolio/publish.tsx
+#: src/features/portfolio/statistics.tsx
+msgid "You don't have a portfolio yet."
+msgstr ""
+
+#: src/features/portfolio/create.tsx
+msgid "You don't have a resume yet."
 msgstr ""
 
 #: src/features/workspace/debrief/review-card.tsx
@@ -14742,6 +15304,7 @@ msgstr "நீங்கள் சேமித்த பதிப்பைப் 
 #: src/features/applications/list/list-states.tsx
 #: src/features/jobs/jobs-states.tsx
 #: src/features/offers/offers-screen.tsx
+#: src/features/portfolio/layout.tsx
 msgid "You're offline"
 msgstr ""
 
@@ -14820,6 +15383,10 @@ msgstr ""
 
 #: src/features/onboarding/messages.ts
 msgid "Your account"
+msgstr ""
+
+#: src/features/portfolio/publish.tsx
+msgid "Your address follows your username or connected domain."
 msgstr ""
 
 #: src/features/workspace/debrief/debrief-form.tsx
@@ -15036,6 +15603,10 @@ msgstr ""
 msgid "Your page keeps its address on Rezumi."
 msgstr ""
 
+#: src/features/portfolio/publish.tsx
+msgid "Your page, uploads and messages will be permanently deleted."
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "Your phone number is written in an unusual shape."
 msgstr "உங்கள் தொலைபேசி எண் அசாதாரண வடிவத்தில் எழுதப்பட்டுள்ளது."
@@ -15045,8 +15616,16 @@ msgstr "உங்கள் தொலைபேசி எண் அசாதார
 msgid "Your plan"
 msgstr ""
 
-#: app/(tabs)/portfolio/index.tsx
-msgid "Your portfolio is coming to the app"
+#: src/features/portfolio/queries.ts
+msgid "Your portfolio changed on another device. Reload it and try again."
+msgstr ""
+
+#: src/features/portfolio/queries.ts
+msgid "Your portfolio is too large to save these changes."
+msgstr ""
+
+#: src/api/ai-consent.ts
+msgid "Your portfolio, its selected resume or Profile, and your instructions are sent through your server to this AI provider. They can contain personal information."
 msgstr ""
 
 #: src/features/assistant/coach.tsx
@@ -15058,6 +15637,8 @@ msgid "your Profile"
 msgstr ""
 
 #: src/features/letters/write.tsx
+#: src/features/portfolio/create.tsx
+#: src/features/portfolio/publish.tsx
 msgid "Your Profile"
 msgstr ""
 
@@ -15223,6 +15804,7 @@ msgid "Your two-minute introduction"
 msgstr "உங்கள் இரண்டு நிமிட அறிமுகம்"
 
 #: src/features/onboarding/messages.ts
+#: src/features/portfolio/overview.tsx
 msgid "Your website"
 msgstr ""
 

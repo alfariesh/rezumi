@@ -377,6 +377,11 @@ msgstr "{0} av {1} tilpassede jobbsøknader fikk svar; {2} av {3} sendt med en a
 msgid "{0} only"
 msgstr "Kun {0}"
 
+#. placeholder {0}: i18n.number(details.totals.opens)
+#: src/features/portfolio/statistics.tsx
+msgid "{0} opens"
+msgstr ""
+
 #. placeholder {0}: document.posting.company
 #: src/features/assistant/assistant-screen.tsx
 msgid "{0} posting"
@@ -385,6 +390,16 @@ msgstr "{0} stillingsannonse"
 #. placeholder {0}: metadata.typography.body.fontSize
 #: src/features/design/advanced-group.tsx
 msgid "{0} pt"
+msgstr ""
+
+#. placeholder {0}: i18n.number(stats.data.totals.views)
+#: src/features/portfolio/overview.tsx
+msgid "{0} views in 30 days"
+msgstr ""
+
+#. placeholder {0}: item.name
+#: src/features/portfolio/create.tsx
+msgid "{0}, available with Plus"
 msgstr ""
 
 #. placeholder {0}: getStageLabel(stage)
@@ -566,6 +581,10 @@ msgstr ""
 
 #: src/features/jobs/format.ts
 msgid "{days, plural, one {Posted # day ago} other {Posted # days ago}}"
+msgstr ""
+
+#: src/features/portfolio/statistics.tsx
+msgid "{days} days"
 msgstr ""
 
 #: src/features/applications/queries.ts
@@ -920,6 +939,11 @@ msgstr ""
 msgid "{TRASH_DAYS, plural, one {Documents you move here stay for # day.} other {Documents you move here stay for # days.}}"
 msgstr ""
 
+#: src/features/portfolio/inbox.tsx
+#: src/features/portfolio/overview.tsx
+msgid "{unread, plural, one {# unread message} other {# unread messages}}"
+msgstr ""
+
 #: app/account/membership.tsx
 msgid "{used} in use"
 msgstr ""
@@ -1007,6 +1031,10 @@ msgstr ""
 #: src/features/letters/share.tsx
 msgid "A backup of this letter. Imports back into Rezumi as a letter."
 msgstr "En sikkerhetskopi av dette brevet. Importerer tilbake til Rezumi som et brev."
+
+#: src/features/portfolio/create.tsx
+msgid "A blank page"
+msgstr ""
 
 #: src/features/share/custom-domain.tsx
 msgid "A CAA record on this domain blocks its HTTPS certificate. Remove that record or allow the certificate authority, then check again."
@@ -1106,6 +1134,7 @@ msgid "A reminder to check in, shown as the next step until you do."
 msgstr "En påminnelse om å sjekke inn, vist som neste trinn til du gjør det."
 
 #: src/features/letters/write.tsx
+#: src/features/portfolio/create.tsx
 msgid "A resume"
 msgstr ""
 
@@ -1132,6 +1161,10 @@ msgstr "En plan med tider, åpningen din, historiene du skal ta med og spørsmå
 #: src/features/ats-checker/messages.ts
 msgid "A web address is written without https://."
 msgstr "En nettadresse er skrevet uten https://."
+
+#: src/features/portfolio/card.tsx
+msgid "A4 print sheet"
+msgstr ""
 
 #. placeholder {0}: company.name
 #: src/features/jobs/listing-detail.tsx
@@ -1915,6 +1948,10 @@ msgstr ""
 msgid "Any level"
 msgstr ""
 
+#: src/features/portfolio/publish.tsx
+msgid "Anyone with the link can open your published portfolio."
+msgstr ""
+
 #: src/features/share/web-page.tsx
 msgid "Anyone with the link will be able to view your resume."
 msgstr "Alle med lenken vil kunne se CV-en din."
@@ -2290,6 +2327,7 @@ msgstr "Aserbajdsjansk"
 #: src/features/documents/new-copy.tsx
 #: src/features/entries/entry-editor.tsx
 #: src/features/onboarding/onboarding-screen.tsx
+#: src/features/portfolio/layout.tsx
 #: src/features/profile/bring-screen.tsx
 #: src/features/search/search-screen.tsx
 #: src/features/workspace/bar.tsx
@@ -2318,6 +2356,10 @@ msgstr ""
 #: src/features/letters/share.tsx
 msgid "Back to now"
 msgstr "Tilbake til nå"
+
+#: src/features/portfolio/preview.tsx
+msgid "Back to portfolio preview"
+msgstr ""
 
 #: src/features/auth/forgot-password-screen.tsx
 msgid "Back to sign in"
@@ -2490,6 +2532,10 @@ msgstr ""
 msgid "Bring in my details"
 msgstr ""
 
+#: src/features/portfolio/create.tsx
+msgid "Bring in work and career details from your Profile."
+msgstr ""
+
 #: src/features/documents/library-states.tsx
 #: src/features/home/home-screen.tsx
 msgid "Bring in your LinkedIn, GitHub or resume file and we fill in your Profile, or start a document blank or from a sample."
@@ -2536,6 +2582,11 @@ msgstr "Burgunder"
 msgid "Business"
 msgstr ""
 
+#: src/features/portfolio/card.tsx
+#: src/features/portfolio/overview.tsx
+msgid "Business card"
+msgstr ""
+
 #: app/account/index.tsx
 msgid "by <0>Salman Alfariesh</0>"
 msgstr "av <0>Salman Alfariesh</0>"
@@ -2576,6 +2627,7 @@ msgstr ""
 #: src/features/design/template-gallery.tsx
 #: src/features/documents/new-import.tsx
 #: src/features/entries/improve.tsx
+#: src/features/portfolio/publish.tsx
 #: src/features/profile/facts-detail.tsx
 #: src/features/profile/facts.tsx
 #: src/features/profile/stories.tsx
@@ -2626,6 +2678,10 @@ msgstr "Endre språk til…"
 #: src/features/offers/offer-header.tsx
 msgid "Change offer: {0}"
 msgstr ""
+
+#: src/features/portfolio/publish.tsx
+msgid "Change password"
+msgstr "Endre passord"
 
 #: src/features/settings/profile.tsx
 msgid "Change photo"
@@ -2870,8 +2926,16 @@ msgstr "Velg en dato"
 msgid "Choose a day"
 msgstr ""
 
+#: src/features/portfolio/queries.ts
+msgid "Choose a different source. This one is unavailable."
+msgstr ""
+
 #: src/features/design/uploaded-fonts.tsx
 msgid "Choose a font file smaller than 8 MB."
+msgstr ""
+
+#: src/features/portfolio/inbox.tsx
+msgid "Choose a message to read it."
 msgstr ""
 
 #: src/features/auth/reset-password-screen.tsx
@@ -2899,13 +2963,29 @@ msgstr ""
 msgid "Choose a photo smaller than 10 MB."
 msgstr "Velg et bilde som er mindre enn 10 MB."
 
+#: src/features/portfolio/create.tsx
+msgid "Choose a resume"
+msgstr ""
+
+#: src/features/portfolio/create.tsx
+msgid "Choose a resume to use as your source."
+msgstr ""
+
 #: src/features/letters/design.tsx
 msgid "Choose a resume under From in Write to match its design. Until then, the letter has its own."
+msgstr ""
+
+#: src/features/portfolio/publish.tsx
+msgid "Choose a source"
 msgstr ""
 
 #: src/api/ai-consent.ts
 msgid "Choose a tested AI provider before sharing data."
 msgstr "Velg en testet AI-leverandør før du deler data."
+
+#: src/features/portfolio/create.tsx
+msgid "Choose a theme"
+msgstr ""
 
 #: src/features/applications/interview/when-fields.tsx
 msgid "Choose a time"
@@ -2958,6 +3038,10 @@ msgstr ""
 
 #: src/features/applications/list/bulk-bar.tsx
 msgid "Choose up to {BULK_LIMIT} applications at a time."
+msgstr ""
+
+#: src/features/portfolio/publish.tsx
+msgid "Choose where career and contact details come from."
 msgstr ""
 
 #: src/features/design/colors-screen.tsx
@@ -3041,6 +3125,10 @@ msgstr "Tøm hilsenen eller avslutningen for å utelate den. Hvis du tømmer avs
 msgid "Clears its entries; the section stays. You can undo."
 msgstr "Tømmer oppføringene, men beholder delen. Du kan angre dette."
 
+#: src/features/portfolio/statistics.tsx
+msgid "Clicks"
+msgstr ""
+
 #: src/features/ai/report-content.tsx
 #: src/features/applications/detail/activity.tsx
 #: src/features/applications/detail/contacts.tsx
@@ -3090,6 +3178,10 @@ msgstr "Tømmer oppføringene, men beholder delen. Du kan angre dette."
 #: src/features/letters/design.tsx
 #: src/features/letters/share.tsx
 #: src/features/letters/write.tsx
+#: src/features/portfolio/create.tsx
+#: src/features/portfolio/inbox.tsx
+#: src/features/portfolio/publish.tsx
+#: src/features/portfolio/statistics.tsx
 #: src/features/profile/career.tsx
 #: src/features/profile/facts.tsx
 #: src/features/profile/fill-sheet.tsx
@@ -3234,6 +3326,10 @@ msgstr "Fullfør sikkerhetskopiering av data. Importerer tilbake til Rezumi elle
 msgid "Compress or remove large images to keep uploads quick."
 msgstr "Komprimer eller fjern store bilder for å holde opplastinger raske."
 
+#: src/features/portfolio/statistics.tsx
+msgid "Computers"
+msgstr ""
+
 #: src/features/applications/detail/stage-sheets.tsx
 msgid "Confirm applied"
 msgstr "Bekreft søkt"
@@ -3286,6 +3382,10 @@ msgstr ""
 msgid "Connect the tools you use for writing, job search and working with your resumes."
 msgstr "Koble sammen verktøyene du bruker til å skrive, jobbsøke og jobbe med CV-ene dine."
 
+#: src/features/portfolio/layout.tsx
+msgid "Connect to load your portfolio."
+msgstr ""
+
 #: src/features/check/writing-tab.tsx
 msgid "Connect your own AI provider to have a language model read your bullets and suggest rewrites. Issues and Job match need no provider."
 msgstr "Koble til din egen AI-leverandør for å få en språkmodell til å lese listeoppføringene dine og foreslå omskrivninger. Problemer og jobbmatch trenger ingen leverandør."
@@ -3309,6 +3409,10 @@ msgstr "Ser sammenhengene"
 #: src/features/share/custom-domain.tsx
 msgid "Connection progress"
 msgstr ""
+
+#: src/features/portfolio/publish.tsx
+msgid "Contact"
+msgstr "Kontakt"
 
 #: app/account/index.tsx
 msgid "Contact & complaints"
@@ -3334,6 +3438,10 @@ msgstr "Tilpass"
 #: src/features/ats-checker/messages.ts
 msgid "Content is laid out in a grid."
 msgstr "Innholdet er lagt ut i et rutenett."
+
+#: src/features/portfolio/publish.tsx
+msgid "Content source"
+msgstr ""
 
 #: src/preview/page.tsx
 msgid "Content still runs over. Hide a section or shorten entries."
@@ -3423,6 +3531,10 @@ msgstr "Kopi opprettet"
 msgid "Copy for a job…"
 msgstr "Kopier for en jobb..."
 
+#: src/features/portfolio/overview.tsx
+msgid "Copy link"
+msgstr "Kopier lenken"
+
 #: src/features/documents/library-menu.tsx
 msgid "Copy public link"
 msgstr "Kopier offentlig lenke"
@@ -3496,6 +3608,10 @@ msgstr "Kunne ikke sjekke eller lagre denne adressen. Prøv igjen."
 msgid "Couldn't check your AI providers."
 msgstr "Kunne ikke sjekke AI-leverandørene dine."
 
+#: src/features/portfolio/queries.ts
+msgid "Couldn't complete the action. Try again."
+msgstr ""
+
 #: src/features/applications/error.ts
 msgid "Couldn't complete the request. Check your connection and try again."
 msgstr "Kunne ikke fullføre forespørselen. Sjekk tilkoblingen og prøv igjen."
@@ -3508,6 +3624,10 @@ msgstr "Kunne ikke fullføre denne handlingen. Prøv igjen."
 #: src/features/applications/interview/use-interview-actions.ts
 msgid "Couldn't confirm the save. Check the application before retrying to avoid a duplicate."
 msgstr "Kunne ikke bekrefte lagringen. Sjekk søknaden før du prøver på nytt for å unngå duplikat."
+
+#: src/features/portfolio/overview.tsx
+msgid "Couldn't copy the link."
+msgstr ""
 
 #: src/features/profile/bring-screen.tsx
 msgid "Couldn't copy the photo. You can add one in Details."
@@ -3651,6 +3771,10 @@ msgstr "Kunne ikke laste inn CV-en."
 msgid "Couldn't load the sample file. Try again."
 msgstr "Kunne ikke laste inn eksempelfilen. Prøv igjen."
 
+#: src/features/portfolio/statistics.tsx
+msgid "Couldn't load the visitor breakdown. Try again later."
+msgstr ""
+
 #: src/features/history/version-page.tsx
 #: src/features/letters/share.tsx
 msgid "Couldn't load this version's page."
@@ -3671,6 +3795,10 @@ msgstr ""
 #: src/features/history/history-panel.tsx
 msgid "Couldn't load versions."
 msgstr "Kunne ikke laste versjoner."
+
+#: src/features/portfolio/statistics.tsx
+msgid "Couldn't load work statistics"
+msgstr ""
 
 #: src/features/applications/board/load-states.tsx
 #: src/features/applications/insights/insights-screen.tsx
@@ -3694,6 +3822,10 @@ msgstr ""
 msgid "Couldn't load your offers"
 msgstr ""
 
+#: src/features/portfolio/layout.tsx
+msgid "Couldn't load your portfolio"
+msgstr ""
+
 #: src/features/profile/preferences.tsx
 msgid "Couldn't load your preferences"
 msgstr ""
@@ -3711,6 +3843,7 @@ msgid "Couldn't load your public address."
 msgstr "Kunne ikke laste den offentlige adressen din."
 
 #: src/features/letters/write.tsx
+#: src/features/portfolio/create.tsx
 #: src/features/profile/fill-sheet.tsx
 msgid "Couldn't load your resumes."
 msgstr "Kunne ikke laste inn CV-ene dine."
@@ -3739,12 +3872,15 @@ msgstr ""
 #: app/account/index.tsx
 #: src/features/auth/welcome-screen.tsx
 #: src/features/settings/api-keys.tsx
-#: src/shell/preparing-tab.tsx
 msgid "Couldn't open the browser. Try again."
 msgstr "Kunne ikke åpne nettleseren. Prøv igjen."
 
 #: src/features/documents/use-import.ts
 msgid "Couldn't open the file."
+msgstr ""
+
+#: src/features/portfolio/queries.ts
+msgid "Couldn't open the link. Try again."
 msgstr ""
 
 #: src/features/applications/detail/detail-body.tsx
@@ -3978,13 +4114,25 @@ msgstr "Kunne ikke dele kalenderhendelsen. Prøv igjen."
 msgid "Couldn't share the calendar file. Try again."
 msgstr "Kunne ikke dele kalenderfilen. Prøv igjen."
 
+#: src/features/portfolio/overview.tsx
+msgid "Couldn't share the link."
+msgstr ""
+
 #: src/features/applications/insights/pipeline-flow.tsx
 msgid "Couldn't share the picture. Try again."
 msgstr "Kunne ikke dele bildet. Prøv igjen."
 
+#: src/features/portfolio/card.tsx
+msgid "Couldn't share the QR image. Try again."
+msgstr ""
+
 #: src/features/workspace/practice/answer-editor.tsx
 msgid "Couldn't share the recording. Try again."
 msgstr "Kunne ikke dele opptaket. Prøv igjen."
+
+#: src/features/portfolio/statistics.tsx
+msgid "Couldn't share the statistics file."
+msgstr ""
 
 #: src/features/auth/errors.ts
 msgid "Couldn't sign in with this account. If you don't have a Rezumi account yet, sign-ups may be turned off."
@@ -4077,6 +4225,10 @@ msgstr "Tell ord"
 msgid "Counted separately from the parse score. Coverage does not predict anything."
 msgstr "Telles separat fra parse-poengsummen. Dekning forutsier ingenting."
 
+#: src/features/portfolio/statistics.tsx
+msgid "Countries"
+msgstr "Land"
+
 #: src/features/career/schedule-fields.tsx
 #: src/features/jobs/filters-sheet.tsx
 msgid "Country"
@@ -4145,6 +4297,10 @@ msgstr "Opprett en API-nøkkel i nettleserens kontoinnstillinger. API-nøkler fu
 msgid "Create copy"
 msgstr "Lag kopi"
 
+#: src/features/portfolio/create.tsx
+msgid "Create draft"
+msgstr ""
+
 #: src/features/onboarding/onboarding-screen.tsx
 msgid "Create my resume"
 msgstr ""
@@ -4152,6 +4308,15 @@ msgstr ""
 #: src/features/documents/new-copy.tsx
 msgid "Create or import a resume first, then return to copy it for this job."
 msgstr "Opprett eller importer en CV først, og gå deretter tilbake for å kopiere den for denne jobben."
+
+#: src/features/portfolio/create.tsx
+#: src/features/portfolio/overview.tsx
+msgid "Create portfolio"
+msgstr ""
+
+#: src/features/portfolio/overview.tsx
+msgid "Create your portfolio"
+msgstr ""
 
 #: src/features/documents/document-menu-panels.tsx
 #: src/features/documents/library-toolbar.tsx
@@ -4202,6 +4367,10 @@ msgstr "Egendefinert"
 msgid "Custom color (hex)"
 msgstr "Egendefinert farge (hex)"
 
+#: src/features/portfolio/publish.tsx
+msgid "Custom domain"
+msgstr ""
+
 #: src/features/share/custom-domain.tsx
 msgid "Custom domains aren't available here."
 msgstr ""
@@ -4239,10 +4408,22 @@ msgstr ""
 msgid "Daily at {clock} · next {day}"
 msgstr ""
 
+#: src/features/portfolio/statistics.tsx
+msgid "Daily numbers"
+msgstr ""
+
+#: src/features/portfolio/statistics.tsx
+msgid "Daily views"
+msgstr ""
+
 #. placeholder {0}: summary.peak
 #: src/features/share/link.tsx
 msgid "Daily views over 30 days, peak {0}"
 msgstr "Daglige visninger over 30 dager, topp {0}"
+
+#: src/features/portfolio/statistics.tsx
+msgid "Daily work opens"
+msgstr ""
 
 #: src/features/ai/report-content.tsx
 msgid "Dangerous or illegal advice"
@@ -4375,6 +4556,7 @@ msgstr "Grad"
 #: src/features/documents/document-item.tsx
 #: src/features/history/version-options.tsx
 #: src/features/letters/share.tsx
+#: src/features/portfolio/inbox.tsx
 #: src/features/profile/stories.tsx
 #: src/features/write/entry-sheet.tsx
 msgid "Delete"
@@ -4445,9 +4627,17 @@ msgstr "Slett intervju"
 msgid "Delete it. Hidden keywords are treated as a deliberate attempt to game the search."
 msgstr "Slett det. Skjulte nøkkelord blir tolket som et bevisst forsøk på å manipulere søket."
 
+#: src/features/portfolio/inbox.tsx
+msgid "Delete message"
+msgstr ""
+
 #: src/features/design/layout-screen.tsx
 msgid "Delete page"
 msgstr "Slett side"
+
+#: src/features/portfolio/publish.tsx
+msgid "Delete portfolio"
+msgstr ""
 
 #: src/features/ai/provider-editor.tsx
 msgid "Delete provider"
@@ -4478,6 +4668,10 @@ msgstr "Vil du slette denne oppføringen?"
 msgid "Delete this interview?"
 msgstr ""
 
+#: src/features/portfolio/inbox.tsx
+msgid "Delete this message?"
+msgstr ""
+
 #: src/features/ai/provider-editor.tsx
 msgid "Delete this provider?"
 msgstr "Vil du slette denne leverandøren?"
@@ -4486,6 +4680,10 @@ msgstr "Vil du slette denne leverandøren?"
 #: src/features/letters/share.tsx
 msgid "Delete version"
 msgstr "Slett versjon"
+
+#: src/features/portfolio/publish.tsx
+msgid "Delete your portfolio?"
+msgstr ""
 
 #: src/features/applications/detail/detail-header.tsx
 #: src/features/applications/list/bulk-bar.tsx
@@ -4555,6 +4753,10 @@ msgstr "Design"
 msgid "Design reset to defaults"
 msgstr "Design tilbakestilt til standard"
 
+#: src/features/portfolio/preview.tsx
+msgid "Desktop"
+msgstr ""
+
 #. placeholder {0}: index + 1
 #: src/features/entries/custom-fields.tsx
 msgid "Detail {0}"
@@ -4570,6 +4772,10 @@ msgstr ""
 #: src/features/profile/profile-screen.tsx
 msgid "Details"
 msgstr "Detaljer"
+
+#: src/features/portfolio/statistics.tsx
+msgid "Devices"
+msgstr ""
 
 #: src/features/workspace/debrief/debrief-form.tsx
 msgid "Didn't land"
@@ -4766,6 +4972,7 @@ msgstr "Nedlastingssummen kan inkludere gjentatte klikk."
 msgid "downloads"
 msgstr "nedlastinger"
 
+#: src/features/portfolio/overview.tsx
 #: src/features/workspace/apply/answer-card.tsx
 #: src/features/write/entry-row.tsx
 msgid "Draft"
@@ -4811,9 +5018,21 @@ msgstr "Utkast fra CV-en din"
 msgid "Draft kept. Edit anything you like."
 msgstr "Utkast beholdt. Rediger alt du liker."
 
+#: src/features/portfolio/create.tsx
+msgid "Draft saved"
+msgstr ""
+
+#: src/features/portfolio/create.tsx
+msgid "Draft saved. Fill in the text in brackets before publishing."
+msgstr ""
+
 #: src/features/workspace/prepare/plan.tsx
 msgid "Draft story"
 msgstr "Utkast til historie"
+
+#: src/features/portfolio/create.tsx
+msgid "Draft with AI"
+msgstr ""
 
 #: src/features/workspace/working.ts
 msgid "Drafting"
@@ -4957,6 +5176,10 @@ msgstr "Rediger link"
 #: src/features/applications/detail/activity.tsx
 msgid "Edit note"
 msgstr "Rediger notat"
+
+#: src/features/portfolio/overview.tsx
+msgid "Edit on the web"
+msgstr ""
 
 #: src/features/workspace/apply/answer-menu.tsx
 msgid "Edit question"
@@ -5335,6 +5558,7 @@ msgstr "Filen er for stor. Velg en fil på opptil 10 MB."
 msgid "File name"
 msgstr "Filnavn"
 
+#: src/features/portfolio/export.ts
 #: src/features/share/files.ts
 msgid "File sharing is unavailable on this device."
 msgstr "Fildeling er ikke tilgjengelig på denne enheten."
@@ -5414,6 +5638,14 @@ msgstr ""
 #. Template gallery filter: finance, banking, law and consulting jobs
 #: src/features/design/preset-names.ts
 msgid "Finance"
+msgstr ""
+
+#: src/features/portfolio/create.tsx
+msgid "Find a resume"
+msgstr ""
+
+#: src/features/portfolio/publish.tsx
+msgid "Find a source"
 msgstr ""
 
 #: src/features/jobs/jobs-states.tsx
@@ -5752,6 +5984,10 @@ msgstr "Full bredde"
 
 #: src/features/design/preset-names.ts
 msgid "Games and sports"
+msgstr ""
+
+#: src/features/portfolio/create.tsx
+msgid "Generate draft"
 msgstr ""
 
 #: src/features/settings/locale-names.ts
@@ -6230,6 +6466,11 @@ msgstr ""
 msgid "In your Profile"
 msgstr ""
 
+#: src/features/portfolio/inbox.tsx
+#: src/features/portfolio/overview.tsx
+msgid "Inbox"
+msgstr ""
+
 #: src/features/jobs/filters-sheet.tsx
 msgid "Include jobs that don't list pay"
 msgstr ""
@@ -6297,6 +6538,10 @@ msgstr "Innsikt"
 
 #: src/features/applications/insights/insights-screen.tsx
 msgid "Insights show here once your applications have loaded."
+msgstr ""
+
+#: src/features/portfolio/create.tsx
+msgid "Instructions (optional)"
 msgstr ""
 
 #: src/features/entries/fields.ts
@@ -6448,6 +6693,10 @@ msgstr ""
 #: src/features/documents/purge-dialog.tsx
 msgid "It will be deleted for good and can't be restored."
 msgstr "Det vil bli slettet for godt og kan ikke gjenopprettes."
+
+#: src/features/portfolio/inbox.tsx
+msgid "It will be permanently removed from your inbox."
+msgstr ""
 
 #: src/features/applications/detail/activity.tsx
 msgid "It's removed from the activity for good."
@@ -6665,6 +6914,10 @@ msgstr "Hold det ærlig"
 msgid "Keep it under 2.5 MB, usually by removing or shrinking images."
 msgstr "Hold den under 2,5 MB, vanligvis ved å fjerne eller krympe bilder."
 
+#: src/features/portfolio/inbox.tsx
+msgid "Keep message"
+msgstr ""
+
 #: src/draft/conflict-sheet.tsx
 #: src/features/entries/improve.tsx
 msgid "Keep mine"
@@ -6677,6 +6930,10 @@ msgstr ""
 #: src/features/write/section-menu.tsx
 msgid "Keep on one page"
 msgstr "Hold deg på én side"
+
+#: src/features/portfolio/create.tsx
+msgid "Keep original draft"
+msgstr ""
 
 #: src/features/entries/photo-field.tsx
 msgid "Keep photo"
@@ -6928,6 +7185,10 @@ msgstr "Lengde er ikke en feil, og det finnes ingen universell enside-regel. Beh
 msgid "Let AI clients like Claude or Cursor read and edit your resumes, using an API key."
 msgstr "La AI-klienter som Claude eller Cursor lese og redigere CV-ene dine ved å bruke en API-nøkkel."
 
+#: src/features/portfolio/publish.tsx
+msgid "Let visitors download a contact card from your page."
+msgstr ""
+
 #: src/features/documents/library-states.tsx
 #: src/features/home/home-screen.tsx
 msgid "Let's start with what you have"
@@ -7040,6 +7301,7 @@ msgid "Link an application…"
 msgstr "Link en jobbsøknad..."
 
 #: src/features/documents/library-menu.tsx
+#: src/features/portfolio/overview.tsx
 #: src/features/share/link.tsx
 #: src/features/share/web-page.tsx
 msgid "Link copied"
@@ -7140,6 +7402,10 @@ msgstr "Publisert på {url}"
 msgid "Load more"
 msgstr ""
 
+#: src/features/portfolio/inbox.tsx
+msgid "Load more messages"
+msgstr ""
+
 #: src/features/applications/detail/detail-sheet.tsx
 #: src/features/applications/list/list-states.tsx
 #: src/features/career/schedule-body.tsx
@@ -7197,6 +7463,10 @@ msgstr ""
 msgid "Loading offers"
 msgstr ""
 
+#: src/features/portfolio/layout.tsx
+msgid "Loading portfolio"
+msgstr ""
+
 #: src/features/ai/provider-editor.tsx
 #: src/features/ai/provider-list.tsx
 msgid "Loading providers…"
@@ -7210,6 +7480,7 @@ msgstr ""
 msgid "Loading resume…"
 msgstr "Laster inn CV…"
 
+#: src/features/portfolio/create.tsx
 #: src/features/search/search-screen.tsx
 msgid "Loading resumes…"
 msgstr "Laster inn CV-er…"
@@ -7230,6 +7501,7 @@ msgstr "Laster inn arbeidsområde…"
 msgid "Loading your Profile before you send…"
 msgstr ""
 
+#: src/features/portfolio/publish.tsx
 #: src/features/share/link.tsx
 msgid "Loading your public address…"
 msgstr "Laster den offentlige adressen din …"
@@ -7339,6 +7611,10 @@ msgstr "Malayisk"
 msgid "Malayalam"
 msgstr "Malayalam"
 
+#: src/features/portfolio/publish.tsx
+msgid "Manage domain on the web"
+msgstr ""
+
 #: src/features/ai/provider-editor.tsx
 #: src/features/ai/provider-list.tsx
 msgid "Managed by your server"
@@ -7397,9 +7673,17 @@ msgstr "Merk som lest"
 msgid "Mark it as applied in Apply first."
 msgstr "Merk den som søkt i Søk først."
 
+#: src/features/portfolio/inbox.tsx
+msgid "Mark read"
+msgstr ""
+
 #: src/features/workspace/apply/checklist.tsx
 msgid "Mark the application as applied to keep the versions you sent."
 msgstr "Merk søknaden som søkt for å beholde versjonene du sendte."
+
+#: src/features/portfolio/inbox.tsx
+msgid "Mark unread"
+msgstr ""
 
 #: src/features/letters/share.tsx
 #: src/features/share/download.tsx
@@ -7480,6 +7764,10 @@ msgstr "Medium"
 msgid "Meets: {0}"
 msgstr ""
 
+#: src/features/portfolio/inbox.tsx
+msgid "Message"
+msgstr ""
+
 #: src/features/ai/report-content.tsx
 msgid "Message actions"
 msgstr ""
@@ -7488,9 +7776,14 @@ msgstr ""
 msgid "Message the assistant"
 msgstr "Send melding til assistenten"
 
+#: src/features/portfolio/statistics.tsx
 #: src/features/workspace/working.ts
 msgid "Messages"
 msgstr "Meldinger"
+
+#: src/features/portfolio/inbox.tsx
+msgid "Messages sent through your portfolio contact form appear here."
+msgstr ""
 
 #: src/features/jobs/format.ts
 msgctxt "Job seniority"
@@ -7743,6 +8036,7 @@ msgstr ""
 #: src/features/history/version-options.tsx
 #: src/features/letters/share.tsx
 #: src/features/letters/write.tsx
+#: src/features/portfolio/create.tsx
 #: src/features/settings/profile.tsx
 msgid "Name"
 msgstr "Navn"
@@ -7935,6 +8229,10 @@ msgstr ""
 msgid "New to Rezumi? Create an account"
 msgstr ""
 
+#: src/features/portfolio/publish.tsx
+msgid "New visitor password"
+msgstr ""
+
 #: src/features/onboarding/intro-screen.tsx
 msgid "Next"
 msgstr ""
@@ -8061,6 +8359,14 @@ msgstr ""
 msgid "No credits to spend right now"
 msgstr ""
 
+#: src/features/share/custom-domain.tsx
+msgid "No custom domain connected."
+msgstr ""
+
+#: src/features/portfolio/statistics.tsx
+msgid "No data in this period."
+msgstr ""
+
 #: src/features/letters/write.tsx
 msgid "No date"
 msgstr "Ingen dato"
@@ -8161,6 +8467,14 @@ msgstr "Ingen plassering"
 msgid "No matches"
 msgstr "Ingen treff"
 
+#: src/features/portfolio/publish.tsx
+msgid "No matching sources."
+msgstr ""
+
+#: src/features/portfolio/inbox.tsx
+msgid "No messages yet"
+msgstr ""
+
 #: src/features/home/new-roles.tsx
 msgid "No new roles. Your job alert checks again on {day} at {clock}."
 msgstr ""
@@ -8209,6 +8523,10 @@ msgstr ""
 msgid "No response"
 msgstr "Ingen respons"
 
+#: src/features/portfolio/create.tsx
+msgid "No resumes found."
+msgstr ""
+
 #: src/features/documents/library-states.tsx
 msgid "No resumes yet"
 msgstr ""
@@ -8237,6 +8555,10 @@ msgstr ""
 #: src/features/ats-checker/messages.ts
 msgid "No skills section was found."
 msgstr "Ingen ferdighetsseksjon ble funnet."
+
+#: src/features/portfolio/publish.tsx
+msgid "No source"
+msgstr ""
 
 #: src/features/applications/insights/insights-cards.tsx
 msgid "No source data yet."
@@ -8288,9 +8610,17 @@ msgstr ""
 msgid "No timezone matches."
 msgstr "Ingen tidssoner samsvarer."
 
+#: src/features/portfolio/statistics.tsx
+msgid "No visits in this period."
+msgstr ""
+
 #: src/features/check/messages.ts
 msgid "No work experience shows"
 msgstr "Ingen arbeidserfaring viser"
+
+#: src/features/portfolio/statistics.tsx
+msgid "No work was opened in this period."
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "No work-experience section was found."
@@ -8679,6 +9009,10 @@ msgstr "Bare teksten nedenfor og din årsak sendes privat til operatøren av {0}
 msgid "Only this device schedules the notification."
 msgstr "Bare denne enheten planlegger varslingen."
 
+#: src/features/portfolio/publish.tsx
+msgid "Only you can preview this draft."
+msgstr ""
+
 #: src/features/share/link.tsx
 msgid "Only you see these"
 msgstr "Bare du ser disse"
@@ -8744,16 +9078,20 @@ msgstr ""
 msgid "Open menu, {unread} unread"
 msgstr ""
 
-#: src/shell/preparing-tab.tsx
-msgid "Open on the web"
-msgstr ""
-
 #: src/features/documents/unsynced-documents.tsx
 msgid "Open one to finish saving it."
 msgstr ""
 
+#: src/features/portfolio/create.tsx
+msgid "Open portfolio"
+msgstr ""
+
 #: src/shell/app-drawer.tsx
 msgid "Open Profile"
+msgstr ""
+
+#: src/features/portfolio/preview.tsx
+msgid "Open public page"
 msgstr ""
 
 #: src/features/assistant/assistant-screen.tsx
@@ -9188,6 +9526,10 @@ msgstr "Per time"
 msgid "Per month"
 msgstr "Per måned"
 
+#: src/features/portfolio/statistics.tsx
+msgid "Per work"
+msgstr ""
+
 #: src/features/profile/preferences.tsx
 msgid "Per year"
 msgstr "Per år"
@@ -9208,12 +9550,17 @@ msgstr ""
 #: src/features/entries/fields.ts
 #: src/features/letters/write.tsx
 #: src/features/onboarding/source-review.tsx
+#: src/features/portfolio/preview.tsx
 msgid "Phone"
 msgstr "Telefon"
 
 #: src/features/applications/detail/contacts.tsx
 msgid "Phone (optional)"
 msgstr "Telefon (valgfritt)"
+
+#: src/features/portfolio/statistics.tsx
+msgid "Phones"
+msgstr ""
 
 #: src/features/entries/photo-field.tsx
 #: src/features/onboarding/source-review.tsx
@@ -9332,9 +9679,18 @@ msgid "Polishing"
 msgstr "Finpusser"
 
 #: app/(tabs)/_layout.tsx
-#: app/(tabs)/portfolio/index.tsx
+#: src/features/portfolio/overview.tsx
 #: src/shell/app-tabs.tsx
 msgid "Portfolio"
+msgstr ""
+
+#: src/features/portfolio/preview.tsx
+msgid "Portfolio preview"
+msgstr ""
+
+#: src/features/portfolio/create.tsx
+#: src/features/portfolio/overview.tsx
+msgid "Portfolios aren't available for this account."
 msgstr ""
 
 #: src/features/write/picture-screen.tsx
@@ -9521,6 +9877,14 @@ msgstr ""
 msgid "Press and hold"
 msgstr "Hold inne"
 
+#: src/features/portfolio/overview.tsx
+msgid "Preview"
+msgstr ""
+
+#: src/features/portfolio/preview.tsx
+msgid "Preview size"
+msgstr "Forhåndsvisningsstørrelse"
+
 #: src/features/share/web-page.tsx
 msgid "Preview web page"
 msgstr "Forhåndsvis nettside"
@@ -9683,6 +10047,10 @@ msgstr "Leverandørens oppbevaring og bruk følger personvernreglene. Avvisning 
 msgid "Public"
 msgstr "Offentlig"
 
+#: src/features/portfolio/publish.tsx
+msgid "Public address"
+msgstr ""
+
 #: src/features/share/link.tsx
 msgid "Public link"
 msgstr "Offentlig lenke"
@@ -9694,6 +10062,11 @@ msgstr "Offentlig, med passord"
 #: src/features/entries/fields.ts
 msgid "Publications"
 msgstr "Publikasjoner"
+
+#: src/features/portfolio/overview.tsx
+#: src/features/portfolio/publish.tsx
+msgid "Publish portfolio"
+msgstr ""
 
 #: src/features/share/web-page.tsx
 msgid "Publish the web page first."
@@ -9707,13 +10080,23 @@ msgstr "Publiser nettsiden for å telle visninger og nedlastinger. Tellingen er 
 msgid "Publish this resume to open it at your short link and custom domain."
 msgstr "Publiser denne CV-en for å åpne den via den korte lenken og det egne domenet ditt."
 
-#: app/(tabs)/portfolio/index.tsx
-msgid "Publish, share and see who visited from your phone. Until then, manage it on the web."
+#: src/features/portfolio/card.tsx
+#: src/features/portfolio/overview.tsx
+msgid "Publish to share your QR code."
+msgstr ""
+
+#: src/features/portfolio/overview.tsx
+msgid "Published"
 msgstr ""
 
 #: src/features/entries/fields.ts
 msgid "Publisher"
 msgstr "Utgiver"
+
+#: src/features/portfolio/overview.tsx
+#: src/features/portfolio/publish.tsx
+msgid "Publishing settings"
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "Put a plain email address near the top of the first page. It is what most systems file you under."
@@ -9722,6 +10105,11 @@ msgstr "Plasser en enkel e-postadresse nær toppen av den første siden. Det er 
 #: src/features/share/link.tsx
 msgid "QR code"
 msgstr "QR-kode"
+
+#. placeholder {0}: address.shown
+#: src/features/portfolio/card.tsx
+msgid "QR code for {0}"
+msgstr ""
 
 #: src/features/share/link.tsx
 msgid "QR code for {url}"
@@ -9991,6 +10379,10 @@ msgstr "Referanser"
 msgid "Referral"
 msgstr "Henvisning"
 
+#: src/features/portfolio/statistics.tsx
+msgid "Referring sites"
+msgstr ""
+
 #: src/features/profile/stories-parts.ts
 msgid "Reflection"
 msgstr "Refleksjon"
@@ -10148,6 +10540,7 @@ msgstr "Fjern fil"
 msgid "Remove label"
 msgstr ""
 
+#: src/features/portfolio/publish.tsx
 #: src/features/share/web-page.tsx
 msgid "Remove password"
 msgstr "Fjern passord"
@@ -10182,6 +10575,10 @@ msgstr "Vil du fjerne denne filen?"
 #: src/features/entries/photo-field.tsx
 msgid "Remove this photo?"
 msgstr "Vil du fjerne dette bildet?"
+
+#: src/features/portfolio/publish.tsx
+msgid "Remove visitor password?"
+msgstr ""
 
 #: src/features/assistant/threads.tsx
 #: src/features/documents/document-menu.tsx
@@ -10248,6 +10645,10 @@ msgstr "Erstatter «{current}» i søknaden."
 #: src/features/workspace/working.ts
 msgid "Reply"
 msgstr "Svar"
+
+#: src/features/portfolio/inbox.tsx
+msgid "Reply by email"
+msgstr ""
 
 #: src/features/workspace/messages/reply-card.tsx
 msgid "Reply copied"
@@ -10390,6 +10791,10 @@ msgstr ""
 msgid "Resume tailoring"
 msgstr ""
 
+#: src/features/portfolio/publish.tsx
+msgid "Resume unavailable"
+msgstr ""
+
 #: src/features/documents/segment-header.tsx
 #: src/features/search/search-screen.tsx
 msgid "Resumes"
@@ -10435,6 +10840,9 @@ msgstr ""
 #: src/features/letters/write.tsx
 #: src/features/offers/offers-screen.tsx
 #: src/features/onboarding/source-progress.tsx
+#: src/features/portfolio/inbox.tsx
+#: src/features/portfolio/layout.tsx
+#: src/features/portfolio/statistics.tsx
 #: src/features/profile/facts.tsx
 #: src/features/profile/fill-sheet.tsx
 #: src/features/profile/preferences.tsx
@@ -10492,6 +10900,14 @@ msgstr ""
 #: src/features/workspace/apply/checklist.tsx
 msgid "Review required form answers and remove unsupported claims."
 msgstr "Se over obligatoriske skjemasvar og fjern påstander uten belegg."
+
+#: src/features/portfolio/create.tsx
+msgid "Review suggested writing before saving it to your draft."
+msgstr ""
+
+#: src/features/portfolio/create.tsx
+msgid "Review the AI draft"
+msgstr ""
 
 #: src/features/workspace/apply/checklist.tsx
 msgid "Review the selected resume and cover letter in their editors."
@@ -10727,6 +11143,10 @@ msgstr "Lagre endringer"
 msgid "Save contact"
 msgstr ""
 
+#: src/features/portfolio/publish.tsx
+msgid "Save contact button"
+msgstr ""
+
 #: src/features/profile/facts-detail.tsx
 msgid "Save correction"
 msgstr "Lagre korrigering"
@@ -10756,9 +11176,18 @@ msgstr ""
 msgid "Save new password"
 msgstr ""
 
+#: src/features/portfolio/export.ts
 #: src/features/share/files.ts
 msgid "Save or share file"
 msgstr "Lagre eller del fil"
+
+#: src/features/portfolio/card.tsx
+msgid "Save or share PNG"
+msgstr ""
+
+#: src/features/portfolio/publish.tsx
+msgid "Save password"
+msgstr ""
 
 #: src/features/career/schedule-sheet.tsx
 msgid "Save schedule"
@@ -10799,6 +11228,10 @@ msgstr ""
 
 #: src/features/onboarding/onboarding-screen.tsx
 msgid "Save to my Profile"
+msgstr ""
+
+#: src/features/portfolio/create.tsx
+msgid "Save to portfolio"
 msgstr ""
 
 #: src/features/workspace/fit/requirement-card.tsx
@@ -11293,6 +11726,7 @@ msgstr "Serveradresse"
 msgid "Set a follow-up…"
 msgstr "Sett en oppfølging..."
 
+#: src/features/portfolio/publish.tsx
 #: src/features/share/web-page.tsx
 msgid "Set password"
 msgstr "Angi passord"
@@ -11313,6 +11747,10 @@ msgstr "Sett opp en leverandør"
 #: src/features/documents/new-choices.tsx
 msgid "Set up AI provider"
 msgstr "Konfigurer AI-leverandør"
+
+#: src/features/portfolio/card.tsx
+msgid "Set up on the web"
+msgstr ""
 
 #: src/features/share/custom-domain.tsx
 msgid "Setting up HTTPS. This usually takes a few minutes, and this screen updates by itself."
@@ -11357,10 +11795,18 @@ msgstr "Del og eksporter"
 msgid "Share as file"
 msgstr ""
 
+#: src/features/portfolio/statistics.tsx
+msgid "Share CSV"
+msgstr ""
+
 #. placeholder {0}: provider.label
 #: src/api/ai-consent.ts
 msgid "Share data with {0}?"
 msgstr "Vil du dele data med {0}?"
+
+#: src/features/portfolio/overview.tsx
+msgid "Share link"
+msgstr ""
 
 #: src/features/share/download.tsx
 msgid "Share PDF"
@@ -11498,6 +11944,7 @@ msgstr "Vis overskrift"
 msgid "Show icons"
 msgstr "Vis ikoner"
 
+#: src/features/portfolio/publish.tsx
 #: src/features/share/web-page.tsx
 msgid "Show in search engines"
 msgstr "Vis i søkemotorer"
@@ -11541,6 +11988,10 @@ msgstr ""
 #: src/features/check/issues-tab.tsx
 msgid "Show them again"
 msgstr "Vis dem igjen"
+
+#: src/features/portfolio/overview.tsx
+msgid "Show your work on a personal page you can share."
+msgstr ""
 
 #: src/features/applications/detail/detail-body.tsx
 msgid "Showing the details saved on this device. They couldn't be refreshed."
@@ -11993,12 +12444,20 @@ msgstr "Begynn å skrive, eller utkast fra det vi vet: din CV."
 msgid "Start typing. To draft one, fill in your Profile, or link a resume or an application."
 msgstr ""
 
+#: src/features/portfolio/create.tsx
+msgid "Start with"
+msgstr ""
+
 #: src/features/write/add-section.tsx
 msgid "Start with the sections most resumes have."
 msgstr "Start med seksjonene de fleste CV'er har."
 
 #: src/features/onboarding/intro-screen.tsx
 msgid "Start with your dashboard project at Kopi Senja: it cut report time by half."
+msgstr ""
+
+#: src/features/portfolio/create.tsx
+msgid "Start with your name and a theme."
 msgstr ""
 
 #: src/features/home/coming-up.tsx
@@ -12017,6 +12476,10 @@ msgstr "Starter om under {0} timer, så brifingen kjøres nå."
 #: src/features/workspace/prepare/soon.tsx
 msgid "Starts now"
 msgstr "Starter nå"
+
+#: src/features/portfolio/statistics.tsx
+msgid "Statistics date range"
+msgstr ""
 
 #: src/features/share/link.tsx
 msgid "Statistics need a connection."
@@ -12225,6 +12688,10 @@ msgstr "Systemer arkiverer deg under navnet øverst på siden."
 msgid "Systems look for an experience section. Projects or volunteering can show the same history."
 msgstr "Systemer ser etter en opplevelsesseksjon. Prosjekter eller frivillig arbeid kan vise den samme historien."
 
+#: src/features/portfolio/statistics.tsx
+msgid "Tablets"
+msgstr ""
+
 #: src/features/applications/list/list-menus.tsx
 msgid "Tag: {tag}"
 msgstr ""
@@ -12281,6 +12748,10 @@ msgstr ""
 #. placeholder {0}: formatDate(entry.revokedAt)
 #: src/features/billing/credits.ts
 msgid "Taken back on {0}"
+msgstr ""
+
+#: src/features/portfolio/overview.tsx
+msgid "Taken down"
 msgstr ""
 
 #: src/features/documents/new-choices.tsx
@@ -12849,6 +13320,10 @@ msgstr "Tenker..."
 msgid "Third-party software notices. Tap a dependency to read its license."
 msgstr "Merknader om tredjepartsprogramvare. Trykk på en avhengighet for å lese lisensen."
 
+#: src/features/portfolio/queries.ts
+msgid "This account already has a portfolio."
+msgstr ""
+
 #: src/features/billing/plan-alert.ts
 msgid "This app always works. Other apps and assistants that connect with an API key need more."
 msgstr ""
@@ -13104,6 +13579,10 @@ msgstr "Dette måler hvor trofast programvare kan trekke ut denne filens tekst. 
 msgid "This needs {required} and you have {balance}. Switch to your own AI connection to continue."
 msgstr ""
 
+#: src/features/portfolio/queries.ts
+msgid "This option isn't included in your current plan."
+msgstr ""
+
 #: src/features/assistant/messages.tsx
 msgid "This page is clipped or incomplete. Check the original before using it."
 msgstr "Denne siden er klippet eller ufullstendig. Sjekk originalen før du bruker den."
@@ -13132,6 +13611,11 @@ msgstr ""
 msgid "This PDF is password protected. Save an unprotected copy and try again."
 msgstr "Denne PDF-en er passordbeskyttet. Lagre en ubeskyttet kopi og prøv igjen."
 
+#: src/features/portfolio/publish.tsx
+#: src/features/portfolio/queries.ts
+msgid "This portfolio has been taken down."
+msgstr ""
+
 #: src/features/auth/errors.ts
 msgid "This reset link expired or was already used. Ask for a new one."
 msgstr ""
@@ -13142,6 +13626,10 @@ msgstr "Denne CVen er endret andre steder"
 
 #: src/features/write/profile-link.tsx
 msgid "This resume couldn't be found. It may have been deleted."
+msgstr ""
+
+#: src/features/portfolio/publish.tsx
+msgid "This resume is in Trash. Choose another source."
 msgstr ""
 
 #: src/features/check/check-pane.tsx
@@ -13702,6 +14190,18 @@ msgstr "Låser opp…"
 msgid "Unnamed key"
 msgstr "Nøkkel uten navn"
 
+#: src/features/portfolio/publish.tsx
+msgid "Unpublish"
+msgstr ""
+
+#: src/features/portfolio/publish.tsx
+msgid "Unpublish your portfolio?"
+msgstr ""
+
+#: src/features/portfolio/inbox.tsx
+msgid "Unread"
+msgstr ""
+
 #: src/features/documents/document-item.tsx
 #: src/features/documents/unsynced-documents.tsx
 msgid "Unsynced on this device"
@@ -13809,6 +14309,10 @@ msgstr "Bruk {url}"
 #: src/features/settings/profile.tsx
 msgid "Use 3 to 64 lowercase letters, numbers, dots, hyphens and underscores."
 msgstr "Bruk 3 til 64 små bokstaver, tall, prikker, bindestreker og understreker."
+
+#: src/features/portfolio/publish.tsx
+msgid "Use 6 to 64 characters."
+msgstr ""
 
 #: src/features/share/web-page.tsx
 msgid "Use 6–64 characters."
@@ -14063,6 +14567,10 @@ msgstr "Muntlig tilbud"
 msgid "Verify"
 msgstr "Verifiser"
 
+#: src/features/portfolio/queries.ts
+msgid "Verify your email before publishing."
+msgstr ""
+
 #: src/features/auth/errors.ts
 msgid "Verify your email first. We sent you a link; open it on this phone, then sign in."
 msgstr ""
@@ -14156,6 +14664,10 @@ msgstr "Viser {0} · {1} · skrivebeskyttet"
 msgid "Viewing {0} · read-only"
 msgstr "Viser {0} · skrivebeskyttet"
 
+#: src/features/portfolio/statistics.tsx
+msgid "Views"
+msgstr ""
+
 #: src/features/share/link.tsx
 msgid "views · 30 days"
 msgstr "visninger · 30 dager"
@@ -14169,6 +14681,31 @@ msgstr "Vold eller overgrep"
 msgid "Visa sponsorship"
 msgstr ""
 
+#: src/features/portfolio/statistics.tsx
+msgid "Visit sources"
+msgstr ""
+
+#: src/features/portfolio/statistics.tsx
+msgid "Visitor breakdown"
+msgstr ""
+
+#: src/features/portfolio/statistics.tsx
+msgid "Visitor breakdown is available with Plus."
+msgstr ""
+
+#: src/features/portfolio/statistics.tsx
+msgid "Visitor breakdown isn't configured on this server."
+msgstr ""
+
+#: src/features/portfolio/publish.tsx
+msgid "Visitor password"
+msgstr ""
+
+#: src/features/portfolio/overview.tsx
+#: src/features/portfolio/statistics.tsx
+msgid "Visitor statistics"
+msgstr ""
+
 #: src/features/share/link.tsx
 msgid "Visitors"
 msgstr "Besøkende"
@@ -14177,9 +14714,17 @@ msgstr "Besøkende"
 msgid "Visitors can download the PDF"
 msgstr "Besøkende kan laste ned PDF"
 
+#: src/features/portfolio/publish.tsx
+msgid "Visitors can open your page."
+msgstr ""
+
 #: src/features/share/web-page.tsx
 msgid "Visitors enter it before they see the resume. Share it only with people you trust."
 msgstr "Besøkende skriver inn passordet før de ser CV-en. Del det bare med folk du stoler på."
+
+#: src/features/portfolio/publish.tsx
+msgid "Visitors will lose access. You can publish it again later."
+msgstr ""
 
 #: src/features/workspace/practice/answer-panel.tsx
 #: src/features/workspace/practice/voice-settings-sheet.tsx
@@ -14544,6 +15089,10 @@ msgstr "Ord flyter sammen når teksten hentes ut."
 msgid "Work arrangement"
 msgstr ""
 
+#: src/features/portfolio/statistics.tsx
+msgid "Work statistics"
+msgstr ""
+
 #: src/features/workspace/prepare/soon.tsx
 msgid "Works without AI or new research"
 msgstr "Fungerer uten AI eller ny research"
@@ -14648,6 +15197,10 @@ msgstr "I går {time}"
 msgid "You"
 msgstr "Du"
 
+#: src/features/portfolio/create.tsx
+msgid "You already have a portfolio"
+msgstr ""
+
 #: src/features/share/link.tsx
 msgid "You already use this for “{takenBy}”."
 msgstr "Dette er allerede brukt for «{takenBy}»."
@@ -14686,6 +15239,15 @@ msgstr "Du avbrøt innloggingen før den var ferdig."
 
 #: src/features/onboarding/messages.ts
 msgid "You chose not to share it, so it wasn't read. Retry to choose again."
+msgstr ""
+
+#: src/features/portfolio/publish.tsx
+#: src/features/portfolio/statistics.tsx
+msgid "You don't have a portfolio yet."
+msgstr ""
+
+#: src/features/portfolio/create.tsx
+msgid "You don't have a resume yet."
 msgstr ""
 
 #: src/features/workspace/debrief/review-card.tsx
@@ -14742,6 +15304,7 @@ msgstr "Du ser på en lagret versjon. Den kan ikke redigeres."
 #: src/features/applications/list/list-states.tsx
 #: src/features/jobs/jobs-states.tsx
 #: src/features/offers/offers-screen.tsx
+#: src/features/portfolio/layout.tsx
 msgid "You're offline"
 msgstr ""
 
@@ -14820,6 +15383,10 @@ msgstr ""
 
 #: src/features/onboarding/messages.ts
 msgid "Your account"
+msgstr ""
+
+#: src/features/portfolio/publish.tsx
+msgid "Your address follows your username or connected domain."
 msgstr ""
 
 #: src/features/workspace/debrief/debrief-form.tsx
@@ -15036,6 +15603,10 @@ msgstr ""
 msgid "Your page keeps its address on Rezumi."
 msgstr ""
 
+#: src/features/portfolio/publish.tsx
+msgid "Your page, uploads and messages will be permanently deleted."
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "Your phone number is written in an unusual shape."
 msgstr "Telefonnummeret ditt er skrevet i et uvanlig format."
@@ -15045,8 +15616,16 @@ msgstr "Telefonnummeret ditt er skrevet i et uvanlig format."
 msgid "Your plan"
 msgstr ""
 
-#: app/(tabs)/portfolio/index.tsx
-msgid "Your portfolio is coming to the app"
+#: src/features/portfolio/queries.ts
+msgid "Your portfolio changed on another device. Reload it and try again."
+msgstr ""
+
+#: src/features/portfolio/queries.ts
+msgid "Your portfolio is too large to save these changes."
+msgstr ""
+
+#: src/api/ai-consent.ts
+msgid "Your portfolio, its selected resume or Profile, and your instructions are sent through your server to this AI provider. They can contain personal information."
 msgstr ""
 
 #: src/features/assistant/coach.tsx
@@ -15058,6 +15637,8 @@ msgid "your Profile"
 msgstr ""
 
 #: src/features/letters/write.tsx
+#: src/features/portfolio/create.tsx
+#: src/features/portfolio/publish.tsx
 msgid "Your Profile"
 msgstr ""
 
@@ -15223,6 +15804,7 @@ msgid "Your two-minute introduction"
 msgstr "Introduksjonen din på to minutter"
 
 #: src/features/onboarding/messages.ts
+#: src/features/portfolio/overview.tsx
 msgid "Your website"
 msgstr ""
 

@@ -287,12 +287,15 @@ async function readAiState(userId: string): Promise<PortfolioAiState> {
 		.innerJoin(schema.user, eq(schema.portfolio.userId, schema.user.id))
 		.where(eq(schema.portfolio.userId, userId));
 	if (!row) throw portfolioErrors.notFound();
+	const data = parsePortfolioData(row.data);
 	const [source, sourceName, uploads, plan] = await Promise.all([
 		// A source resume whose data can't be read leaves the career sections out, as the page does.
-		readPortfolioSource(userId, row.sourceResumeId).catch((error: unknown) => {
-			if (error instanceof ORPCError && error.code === "PORTFOLIO_SOURCE_INVALID") return null;
-			throw error;
-		}),
+		data.useProfileSource === false && !row.sourceResumeId
+			? null
+			: readPortfolioSource(userId, row.sourceResumeId).catch((error: unknown) => {
+					if (error instanceof ORPCError && error.code === "PORTFOLIO_SOURCE_INVALID") return null;
+					throw error;
+				}),
 		row.sourceResumeId
 			? db
 					.select({ name: schema.resume.name })
@@ -304,7 +307,7 @@ async function readAiState(userId: string): Promise<PortfolioAiState> {
 		portfolioEditPlan(userId),
 	]);
 	return {
-		data: parsePortfolioData(row.data),
+		data,
 		source: { from: row.sourceResumeId ? "resume" : "profile", name: sourceName, resume: source?.data ?? null },
 		status: {
 			published: row.isPublic && row.suspendedAt === null,
@@ -411,11 +414,14 @@ export const portfolioService = {
 			 */
 			sourceResumeId?: string | null | undefined;
 			theme?: PortfolioTheme | undefined;
+			startEmpty?: boolean | undefined;
 			basics?: { name?: string | undefined; headline?: string | undefined; location?: string | undefined } | undefined;
 		},
 	): Promise<PortfolioDto> => {
 		await requireEnabled(userId);
-		const { resumeId, source } = await startingSource(userId, input.sourceResumeId);
+		const { resumeId, source } = input.startEmpty
+			? { resumeId: null, source: null }
+			: await startingSource(userId, input.sourceResumeId);
 
 		const { name, headline, location } = input.basics ?? {};
 		const basics = {
@@ -428,6 +434,7 @@ export const portfolioService = {
 			...(input.theme ? { theme: input.theme } : {}),
 			basics,
 		});
+		if (input.startEmpty) initial.useProfileSource = false;
 		// A source with more projects than the plan's works starts with the first ones, instead of refusing the portfolio.
 		const maxWorks = (await getEntitlements(userId)).limits.portfolioWorks;
 		if (maxWorks !== null) initial.works.items = initial.works.items.slice(0, maxWorks);
@@ -458,7 +465,12 @@ export const portfolioService = {
 			.from(schema.portfolio)
 			.where(eq(schema.portfolio.userId, userId));
 		if (!row) throw portfolioErrors.notFound();
-		return { data: parsePortfolioData(row.data), source: await readPortfolioSource(userId, row.sourceResumeId) };
+		const data = parsePortfolioData(row.data);
+		const source =
+			data.useProfileSource === false && !row.sourceResumeId
+				? null
+				: await readPortfolioSource(userId, row.sourceResumeId);
+		return { data, source };
 	},
 
 	/** The portfolio as AI works on it (`PortfolioAiState`): the in-app assistant keeps it as a reply's working copy. */
@@ -543,11 +555,11 @@ export const portfolioService = {
 		await requireEnabled(userId);
 		return db.transaction((tx) =>
 			saveVersionedData(tx, userId, input.expectedUpdatedAt, async (existing) => {
+				const current = parsePortfolioData(await readStoredData(tx, userId));
+				if (current.useProfileSource === false && !existing.sourceResumeId) throw portfolioErrors.sourceInvalid();
 				const source = await readPortfolioSource(userId, existing.sourceResumeId, tx);
 				if (!source) throw portfolioErrors.sourceInvalid();
 				const projects = source.data.sections.projects.items;
-
-				const current = parsePortfolioData(await readStoredData(tx, userId));
 				const wanted = new Set(input.resumeItemIds);
 				const imported = new Set(current.works.items.flatMap((work) => work.fromResumeItemId ?? []));
 				const taken = new Set(current.works.items.map((work) => work.slug));
@@ -618,10 +630,18 @@ export const portfolioService = {
 			throw portfolioErrors.sourceInvalid();
 		const changes = {
 			...(input.showInSearchEngines === undefined ? {} : { showInSearchEngines: input.showInSearchEngines }),
-			...(input.sourceResumeId === undefined ? {} : { sourceResumeId: input.sourceResumeId }),
+			...(input.sourceResumeId === undefined
+				? {}
+				: {
+						sourceResumeId: input.sourceResumeId,
+						data: sql`${schema.portfolio.data} - 'useProfileSource'`,
+						updatedAt: sql`case when ${schema.portfolio.data} ? 'useProfileSource'
+					then greatest(clock_timestamp(), ${schema.portfolio.updatedAt} + interval '1 millisecond')
+					else ${schema.portfolio.updatedAt} end`,
+					}),
 		};
 		const mine = eq(schema.portfolio.userId, userId);
-		// Like publishing, settings keep `updatedAt`.
+		// Settings keep the saved content version unless selecting a source changes a blank page's data.
 		const [row] = Object.keys(changes).length
 			? await db.update(schema.portfolio).set(changes).where(mine).returning(portfolioColumns)
 			: await db.select(portfolioColumns).from(schema.portfolio).where(mine);

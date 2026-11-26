@@ -17,9 +17,9 @@ import { orpc } from "@/libs/orpc/client";
  * without them; it never falls back to the Profile.
  */
 export function usePortfolioSource() {
-	const { sourceResume } = usePortfolioRecord();
+	const { sourceResume, sourceResumeId, data: portfolio } = usePortfolioRecord();
 	const id = sourceResume && !sourceResume.inTrash ? sourceResume.id : null;
-	const fromProfile = sourceResume === null;
+	const fromProfile = sourceResumeId === null && portfolio.useProfileSource !== false;
 	const query = useQuery({
 		...orpc.resume.getById.queryOptions({ input: { id: id ?? "" } }),
 		enabled: id !== null,

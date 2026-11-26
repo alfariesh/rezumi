@@ -1,0 +1,21 @@
+# Use a disposable signed-in account with a portfolio and one message from a sender passed in as SENDER.
+appId: app.rezumi
+---
+- launchApp
+- extendedWaitUntil:
+    visible:
+      id: open-drawer
+    timeout: 30000
+- tapOn:
+    id: open-drawer
+- tapOn:
+    id: drawer-portfolio
+- tapOn: Inbox.*
+- extendedWaitUntil:
+    visible: ${SENDER}
+    timeout: 15000
+- tapOn: ${SENDER}.*
+- assertVisible: Reply by email
+- extendedWaitUntil:
+    visible: Mark unread
+    timeout: 10000
