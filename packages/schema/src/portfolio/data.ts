@@ -229,6 +229,9 @@ function createPortfolioSchemas(kit: SchemaKit) {
 	const data = z.object({
 		version: kit.field(z.literal(1), 1),
 		theme: kit.field(portfolioThemeSchema, defaultPortfolioTheme),
+		useProfileSource: kit
+			.optional(z.literal(false))
+			.describe("A blank portfolio doesn't read the Profile until a source is selected."),
 		locale: kit.optional(localeSchema).describe("The page's language; missing uses the source resume's."),
 		basics: kit
 			.field(

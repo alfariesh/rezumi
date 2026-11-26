@@ -3,6 +3,7 @@ import { randomUUID } from "node:crypto";
 import { existsSync } from "node:fs";
 import { readdir, readFile } from "node:fs/promises";
 import { afterAll, beforeAll, beforeEach, describe, expect, it, vi } from "vite-plus/test";
+import { call } from "@orpc/server";
 import { eq } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/node-postgres";
 import { Pool } from "pg";
@@ -148,6 +149,77 @@ describe.skipIf(!databaseUrl)("who /<username> belongs to", () => {
 					}),
 				),
 			);
+	});
+
+	describe("the owner-only preview procedure", () => {
+		const preview = async (userId: string | null, input?: { width?: "phone" | "desktop"; workId?: string }) => {
+			const { portfolioRouter } = await import("./router");
+			const user = userId ? (await getDb().select().from(tables.user).where(eq(tables.user.id, userId)))[0] : null;
+			const resHeaders = new Headers();
+			const output = await call(portfolioRouter.preview, input, {
+				context: {
+					locale: "en-US",
+					reqHeaders: new Headers(),
+					resHeaders,
+					authentication: user ? { method: "session", user, permissions: ["read"] } : null,
+				},
+			});
+			expect(resHeaders.get("cache-control")).toBe("private, no-store");
+			return output;
+		};
+
+		it("renders a draft and the same page when published, with the public interactions disabled", async () => {
+			const portfolioId = await addPortfolio("member", {
+				isPublic: false,
+				data: parsePortfolioData({ version: 1, theme: "lugas", basics: { name: "Private Atelier" } }),
+			});
+			const draft = await preview("member");
+			expect(draft.html).toContain("Private Atelier");
+			expect(draft.html).toContain("Content-Security-Policy");
+			expect(draft.html).toContain("form-action");
+			expect(draft.html).not.toContain(`/api/portfolio/${username("member")}/event`);
+			expect(draft.html).toContain("width=device-width");
+			expect(await publicPortfolio.findPublicPortfolio(username("member"))).toBeNull();
+			await getDb().update(tables.portfolio).set({ isPublic: true }).where(eq(tables.portfolio.id, portfolioId));
+			expect((await preview("member")).html).toBe(draft.html);
+			expect((await preview("member", { width: "desktop" })).html).toContain("width=1200");
+		});
+
+		it("requires an authenticated owner with an eligible account", async () => {
+			await addPortfolio("member", { isPublic: false });
+			await expect(preview(null)).rejects.toMatchObject({ code: "UNAUTHORIZED" });
+			await expect(preview("nobody")).rejects.toMatchObject({ code: "NOT_FOUND" });
+			await expect(preview("member", { workId: "missing-work" })).rejects.toMatchObject({
+				code: "PORTFOLIO_WORK_NOT_FOUND",
+			});
+			fixture.mode = "off";
+			await expect(preview("member")).rejects.toMatchObject({ code: "PORTFOLIO_DISABLED" });
+		});
+
+		it("signs one still-attached draft image without making it public", async () => {
+			const { canReadPortfolioPreviewFile } = await import("./preview-file");
+			const key = "uploads/member/pictures/portfolio/preview.webp";
+			await addPortfolio("member", {
+				isPublic: false,
+				data: parsePortfolioData({
+					version: 1,
+					basics: { picture: { key, width: 200, height: 200, alt: "Portrait" } },
+				}),
+			});
+			await getDb().insert(tables.portfolioFile).values({ userId: "member", kind: "image", key, bytes: 1000 });
+			const { html } = await preview("member");
+			const token = /preview=(\d+\.[a-f0-9]{64})/.exec(html)?.[1];
+			if (!token) throw new Error("Expected a signed preview image.");
+			expect(await publicPortfolio.portfolioFileAccess(key)).toBe("none");
+			expect(await canReadPortfolioPreviewFile(key, token)).toBe(true);
+			expect(await canReadPortfolioPreviewFile("uploads/nobody/pictures/portfolio/preview.webp", token)).toBe(false);
+			expect(await canReadPortfolioPreviewFile(key, token, Date.now() + 20 * 60_000)).toBe(false);
+			await getDb()
+				.update(tables.portfolioFile)
+				.set({ unusedSince: new Date() })
+				.where(eq(tables.portfolioFile.key, key));
+			expect(await canReadPortfolioPreviewFile(key, token)).toBe(false);
+		});
 	});
 
 	describe("the published portfolio", () => {

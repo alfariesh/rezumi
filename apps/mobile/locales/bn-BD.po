@@ -377,6 +377,11 @@ msgstr "{1}টি মানানসই আবেদনের মধ্যে {0
 msgid "{0} only"
 msgstr "শুধুমাত্র {0}"
 
+#. placeholder {0}: i18n.number(details.totals.opens)
+#: src/features/portfolio/statistics.tsx
+msgid "{0} opens"
+msgstr ""
+
 #. placeholder {0}: document.posting.company
 #: src/features/assistant/assistant-screen.tsx
 msgid "{0} posting"
@@ -385,6 +390,16 @@ msgstr "{0} চাকরির পোস্টিং"
 #. placeholder {0}: metadata.typography.body.fontSize
 #: src/features/design/advanced-group.tsx
 msgid "{0} pt"
+msgstr ""
+
+#. placeholder {0}: i18n.number(stats.data.totals.views)
+#: src/features/portfolio/overview.tsx
+msgid "{0} views in 30 days"
+msgstr ""
+
+#. placeholder {0}: item.name
+#: src/features/portfolio/create.tsx
+msgid "{0}, available with Plus"
 msgstr ""
 
 #. placeholder {0}: getStageLabel(stage)
@@ -566,6 +581,10 @@ msgstr ""
 
 #: src/features/jobs/format.ts
 msgid "{days, plural, one {Posted # day ago} other {Posted # days ago}}"
+msgstr ""
+
+#: src/features/portfolio/statistics.tsx
+msgid "{days} days"
 msgstr ""
 
 #: src/features/applications/queries.ts
@@ -920,6 +939,11 @@ msgstr ""
 msgid "{TRASH_DAYS, plural, one {Documents you move here stay for # day.} other {Documents you move here stay for # days.}}"
 msgstr ""
 
+#: src/features/portfolio/inbox.tsx
+#: src/features/portfolio/overview.tsx
+msgid "{unread, plural, one {# unread message} other {# unread messages}}"
+msgstr ""
+
 #: app/account/membership.tsx
 msgid "{used} in use"
 msgstr ""
@@ -1007,6 +1031,10 @@ msgstr ""
 #: src/features/letters/share.tsx
 msgid "A backup of this letter. Imports back into Rezumi as a letter."
 msgstr "এই চিঠির একটি ব্যাকআপ. একটি চিঠি হিসাবে Rezumi এ আবার আমদানি করে।"
+
+#: src/features/portfolio/create.tsx
+msgid "A blank page"
+msgstr ""
 
 #: src/features/share/custom-domain.tsx
 msgid "A CAA record on this domain blocks its HTTPS certificate. Remove that record or allow the certificate authority, then check again."
@@ -1106,6 +1134,7 @@ msgid "A reminder to check in, shown as the next step until you do."
 msgstr "চেক ইন করার জন্য একটি অনুস্মারক, আপনি না করা পর্যন্ত পরবর্তী পদক্ষেপ হিসাবে দেখানো হয়েছে৷"
 
 #: src/features/letters/write.tsx
+#: src/features/portfolio/create.tsx
 msgid "A resume"
 msgstr ""
 
@@ -1132,6 +1161,10 @@ msgstr "সময় ধরে পরিকল্পনা, আপনার স�
 #: src/features/ats-checker/messages.ts
 msgid "A web address is written without https://."
 msgstr "একটি ওয়েব ঠিকানা https:// ছাড়া লেখা হয়েছে।"
+
+#: src/features/portfolio/card.tsx
+msgid "A4 print sheet"
+msgstr ""
 
 #. placeholder {0}: company.name
 #: src/features/jobs/listing-detail.tsx
@@ -1915,6 +1948,10 @@ msgstr ""
 msgid "Any level"
 msgstr ""
 
+#: src/features/portfolio/publish.tsx
+msgid "Anyone with the link can open your published portfolio."
+msgstr ""
+
 #: src/features/share/web-page.tsx
 msgid "Anyone with the link will be able to view your resume."
 msgstr "লিঙ্ক সহ যে কেউ আপনার জীবনবৃত্তান্ত দেখতে সক্ষম হবে."
@@ -2290,6 +2327,7 @@ msgstr "আজারবাইজানি"
 #: src/features/documents/new-copy.tsx
 #: src/features/entries/entry-editor.tsx
 #: src/features/onboarding/onboarding-screen.tsx
+#: src/features/portfolio/layout.tsx
 #: src/features/profile/bring-screen.tsx
 #: src/features/search/search-screen.tsx
 #: src/features/workspace/bar.tsx
@@ -2318,6 +2356,10 @@ msgstr ""
 #: src/features/letters/share.tsx
 msgid "Back to now"
 msgstr "এখন ফিরে যান"
+
+#: src/features/portfolio/preview.tsx
+msgid "Back to portfolio preview"
+msgstr ""
 
 #: src/features/auth/forgot-password-screen.tsx
 msgid "Back to sign in"
@@ -2490,6 +2532,10 @@ msgstr ""
 msgid "Bring in my details"
 msgstr ""
 
+#: src/features/portfolio/create.tsx
+msgid "Bring in work and career details from your Profile."
+msgstr ""
+
 #: src/features/documents/library-states.tsx
 #: src/features/home/home-screen.tsx
 msgid "Bring in your LinkedIn, GitHub or resume file and we fill in your Profile, or start a document blank or from a sample."
@@ -2536,6 +2582,11 @@ msgstr "বারগান্ডি"
 msgid "Business"
 msgstr ""
 
+#: src/features/portfolio/card.tsx
+#: src/features/portfolio/overview.tsx
+msgid "Business card"
+msgstr ""
+
 #: app/account/index.tsx
 msgid "by <0>Salman Alfariesh</0>"
 msgstr "তৈরি করেছেন <0>Salman Alfariesh</0>"
@@ -2576,6 +2627,7 @@ msgstr ""
 #: src/features/design/template-gallery.tsx
 #: src/features/documents/new-import.tsx
 #: src/features/entries/improve.tsx
+#: src/features/portfolio/publish.tsx
 #: src/features/profile/facts-detail.tsx
 #: src/features/profile/facts.tsx
 #: src/features/profile/stories.tsx
@@ -2626,6 +2678,10 @@ msgstr "ভাষা পরিবর্তন করুন…"
 #: src/features/offers/offer-header.tsx
 msgid "Change offer: {0}"
 msgstr ""
+
+#: src/features/portfolio/publish.tsx
+msgid "Change password"
+msgstr "পাসওয়ার্ড পরিবর্তন করুন"
 
 #: src/features/settings/profile.tsx
 msgid "Change photo"
@@ -2870,8 +2926,16 @@ msgstr "একটি তারিখ চয়ন করুন"
 msgid "Choose a day"
 msgstr ""
 
+#: src/features/portfolio/queries.ts
+msgid "Choose a different source. This one is unavailable."
+msgstr ""
+
 #: src/features/design/uploaded-fonts.tsx
 msgid "Choose a font file smaller than 8 MB."
+msgstr ""
+
+#: src/features/portfolio/inbox.tsx
+msgid "Choose a message to read it."
 msgstr ""
 
 #: src/features/auth/reset-password-screen.tsx
@@ -2899,13 +2963,29 @@ msgstr ""
 msgid "Choose a photo smaller than 10 MB."
 msgstr "10 MB এর চেয়ে ছোট একটি ফটো চয়ন করুন৷"
 
+#: src/features/portfolio/create.tsx
+msgid "Choose a resume"
+msgstr ""
+
+#: src/features/portfolio/create.tsx
+msgid "Choose a resume to use as your source."
+msgstr ""
+
 #: src/features/letters/design.tsx
 msgid "Choose a resume under From in Write to match its design. Until then, the letter has its own."
+msgstr ""
+
+#: src/features/portfolio/publish.tsx
+msgid "Choose a source"
 msgstr ""
 
 #: src/api/ai-consent.ts
 msgid "Choose a tested AI provider before sharing data."
 msgstr "ডেটা শেয়ার করার আগে একটি পরীক্ষিত AI প্রদানকারী বেছে নিন।"
+
+#: src/features/portfolio/create.tsx
+msgid "Choose a theme"
+msgstr ""
 
 #: src/features/applications/interview/when-fields.tsx
 msgid "Choose a time"
@@ -2958,6 +3038,10 @@ msgstr ""
 
 #: src/features/applications/list/bulk-bar.tsx
 msgid "Choose up to {BULK_LIMIT} applications at a time."
+msgstr ""
+
+#: src/features/portfolio/publish.tsx
+msgid "Choose where career and contact details come from."
 msgstr ""
 
 #: src/features/design/colors-screen.tsx
@@ -3041,6 +3125,10 @@ msgstr "সম্ভাষণ বা সমাপনী বাদ দিতে �
 msgid "Clears its entries; the section stays. You can undo."
 msgstr "এর এন্ট্রি সাফ করে; বিভাগ থেকে যায়। আপনি পূর্বাবস্থায় ফেরাতে পারেন."
 
+#: src/features/portfolio/statistics.tsx
+msgid "Clicks"
+msgstr ""
+
 #: src/features/ai/report-content.tsx
 #: src/features/applications/detail/activity.tsx
 #: src/features/applications/detail/contacts.tsx
@@ -3090,6 +3178,10 @@ msgstr "এর এন্ট্রি সাফ করে; বিভাগ থে
 #: src/features/letters/design.tsx
 #: src/features/letters/share.tsx
 #: src/features/letters/write.tsx
+#: src/features/portfolio/create.tsx
+#: src/features/portfolio/inbox.tsx
+#: src/features/portfolio/publish.tsx
+#: src/features/portfolio/statistics.tsx
 #: src/features/profile/career.tsx
 #: src/features/profile/facts.tsx
 #: src/features/profile/fill-sheet.tsx
@@ -3234,6 +3326,10 @@ msgstr "সম্পূর্ণ ডাটা ব্যাকআপ। Rezumi �
 msgid "Compress or remove large images to keep uploads quick."
 msgstr "আপলোড দ্রুত রাখতে বড় ছবি কমপ্রেস বা মুছে ফেলুন।"
 
+#: src/features/portfolio/statistics.tsx
+msgid "Computers"
+msgstr ""
+
 #: src/features/applications/detail/stage-sheets.tsx
 msgid "Confirm applied"
 msgstr "আবেদন নিশ্চিত করুন"
@@ -3286,6 +3382,10 @@ msgstr ""
 msgid "Connect the tools you use for writing, job search and working with your resumes."
 msgstr "আপনার জীবনবৃত্তান্তের সাথে লেখা, চাকরি অনুসন্ধান এবং কাজ করার জন্য আপনি যে সরঞ্জামগুলি ব্যবহার করেন তা সংযুক্ত করুন।"
 
+#: src/features/portfolio/layout.tsx
+msgid "Connect to load your portfolio."
+msgstr ""
+
 #: src/features/check/writing-tab.tsx
 msgid "Connect your own AI provider to have a language model read your bullets and suggest rewrites. Issues and Job match need no provider."
 msgstr "একটি ভাষা মডেল আপনার তালিকা এন্ট্রি পড়তে এবং পুনর্লিখনের পরামর্শ দিতে আপনার নিজস্ব AI প্রদানকারীকে সংযুক্ত করুন৷ সমস্যা এবং কাজের মিলের জন্য কোন প্রদানকারীর প্রয়োজন নেই।"
@@ -3309,6 +3409,10 @@ msgstr "সূত্রগুলো মেলানো হচ্ছে"
 #: src/features/share/custom-domain.tsx
 msgid "Connection progress"
 msgstr ""
+
+#: src/features/portfolio/publish.tsx
+msgid "Contact"
+msgstr "যোগাযোগ"
 
 #: app/account/index.tsx
 msgid "Contact & complaints"
@@ -3334,6 +3438,10 @@ msgstr "পুরোটা দেখান"
 #: src/features/ats-checker/messages.ts
 msgid "Content is laid out in a grid."
 msgstr "কনটেন্ট একটি গ্রিডে সাজানো আছে।"
+
+#: src/features/portfolio/publish.tsx
+msgid "Content source"
+msgstr ""
 
 #: src/preview/page.tsx
 msgid "Content still runs over. Hide a section or shorten entries."
@@ -3423,6 +3531,10 @@ msgstr "কপি তৈরি করা হয়েছে"
 msgid "Copy for a job…"
 msgstr "একটি কাজের জন্য অনুলিপি..."
 
+#: src/features/portfolio/overview.tsx
+msgid "Copy link"
+msgstr "লিঙ্ক কপি করুন"
+
 #: src/features/documents/library-menu.tsx
 msgid "Copy public link"
 msgstr "পাবলিক লিঙ্ক কপি করুন"
@@ -3496,6 +3608,10 @@ msgstr "এই ঠিকানা চেক বা সংরক্ষণ কর�
 msgid "Couldn't check your AI providers."
 msgstr "আপনার AI প্রদানকারীদের পরীক্ষা করা যায়নি।"
 
+#: src/features/portfolio/queries.ts
+msgid "Couldn't complete the action. Try again."
+msgstr ""
+
 #: src/features/applications/error.ts
 msgid "Couldn't complete the request. Check your connection and try again."
 msgstr "অনুরোধটি সম্পূর্ণ করা যায়নি। আপনার সংযোগ পরীক্ষা করে আবার চেষ্টা করুন।"
@@ -3508,6 +3624,10 @@ msgstr "এই কাজটি সম্পূর্ণ করা যায়�
 #: src/features/applications/interview/use-interview-actions.ts
 msgid "Couldn't confirm the save. Check the application before retrying to avoid a duplicate."
 msgstr "সংরক্ষণ নিশ্চিত করা যায়নি। ডুপ্লিকেট এড়াতে আবার চেষ্টা করার আগে আবেদনটি দেখে নিন।"
+
+#: src/features/portfolio/overview.tsx
+msgid "Couldn't copy the link."
+msgstr ""
 
 #: src/features/profile/bring-screen.tsx
 msgid "Couldn't copy the photo. You can add one in Details."
@@ -3651,6 +3771,10 @@ msgstr "জীবনবৃত্তান্তটি লোড করা যা
 msgid "Couldn't load the sample file. Try again."
 msgstr "নমুনা ফাইল লোড করা যায়নি. আবার চেষ্টা করুন"
 
+#: src/features/portfolio/statistics.tsx
+msgid "Couldn't load the visitor breakdown. Try again later."
+msgstr ""
+
 #: src/features/history/version-page.tsx
 #: src/features/letters/share.tsx
 msgid "Couldn't load this version's page."
@@ -3671,6 +3795,10 @@ msgstr ""
 #: src/features/history/history-panel.tsx
 msgid "Couldn't load versions."
 msgstr "সংস্করণ লোড করা যায়নি।"
+
+#: src/features/portfolio/statistics.tsx
+msgid "Couldn't load work statistics"
+msgstr ""
 
 #: src/features/applications/board/load-states.tsx
 #: src/features/applications/insights/insights-screen.tsx
@@ -3694,6 +3822,10 @@ msgstr ""
 msgid "Couldn't load your offers"
 msgstr ""
 
+#: src/features/portfolio/layout.tsx
+msgid "Couldn't load your portfolio"
+msgstr ""
+
 #: src/features/profile/preferences.tsx
 msgid "Couldn't load your preferences"
 msgstr ""
@@ -3711,6 +3843,7 @@ msgid "Couldn't load your public address."
 msgstr "আপনার সর্বজনীন ঠিকানা লোড করা যায়নি।"
 
 #: src/features/letters/write.tsx
+#: src/features/portfolio/create.tsx
 #: src/features/profile/fill-sheet.tsx
 msgid "Couldn't load your resumes."
 msgstr "আপনার জীবনবৃত্তান্তগুলো লোড করা যায়নি।"
@@ -3739,12 +3872,15 @@ msgstr ""
 #: app/account/index.tsx
 #: src/features/auth/welcome-screen.tsx
 #: src/features/settings/api-keys.tsx
-#: src/shell/preparing-tab.tsx
 msgid "Couldn't open the browser. Try again."
 msgstr "ব্রাউজার খুলতে পারেনি। আবার চেষ্টা করুন"
 
 #: src/features/documents/use-import.ts
 msgid "Couldn't open the file."
+msgstr ""
+
+#: src/features/portfolio/queries.ts
+msgid "Couldn't open the link. Try again."
 msgstr ""
 
 #: src/features/applications/detail/detail-body.tsx
@@ -3978,13 +4114,25 @@ msgstr "ক্যালেন্ডার ইভেন্টটি শেয়�
 msgid "Couldn't share the calendar file. Try again."
 msgstr "ক্যালেন্ডার ফাইলটি শেয়ার করা যায়নি। আবার চেষ্টা করুন।"
 
+#: src/features/portfolio/overview.tsx
+msgid "Couldn't share the link."
+msgstr ""
+
 #: src/features/applications/insights/pipeline-flow.tsx
 msgid "Couldn't share the picture. Try again."
 msgstr "ছবি শেয়ার করতে যায়নি। আবার চেষ্টা করুন"
 
+#: src/features/portfolio/card.tsx
+msgid "Couldn't share the QR image. Try again."
+msgstr ""
+
 #: src/features/workspace/practice/answer-editor.tsx
 msgid "Couldn't share the recording. Try again."
 msgstr "রেকর্ডিংটি শেয়ার করা যায়নি। আবার চেষ্টা করুন।"
+
+#: src/features/portfolio/statistics.tsx
+msgid "Couldn't share the statistics file."
+msgstr ""
 
 #: src/features/auth/errors.ts
 msgid "Couldn't sign in with this account. If you don't have a Rezumi account yet, sign-ups may be turned off."
@@ -4077,6 +4225,10 @@ msgstr "শব্দ গণনা"
 msgid "Counted separately from the parse score. Coverage does not predict anything."
 msgstr "এটি পার্স স্কোর থেকে আলাদাভাবে গোনা হয়। কভারেজ কোনো কিছুরই পূর্বাভাস দেয় না।"
 
+#: src/features/portfolio/statistics.tsx
+msgid "Countries"
+msgstr "দেশগুলো"
+
 #: src/features/career/schedule-fields.tsx
 #: src/features/jobs/filters-sheet.tsx
 msgid "Country"
@@ -4145,6 +4297,10 @@ msgstr "আপনার ব্রাউজারে অ্যাকাউন্�
 msgid "Create copy"
 msgstr "কপি তৈরি করুন"
 
+#: src/features/portfolio/create.tsx
+msgid "Create draft"
+msgstr ""
+
 #: src/features/onboarding/onboarding-screen.tsx
 msgid "Create my resume"
 msgstr ""
@@ -4152,6 +4308,15 @@ msgstr ""
 #: src/features/documents/new-copy.tsx
 msgid "Create or import a resume first, then return to copy it for this job."
 msgstr "প্রথমে একটি জীবনবৃত্তান্ত তৈরি করুন বা আমদানি করুন, তারপর এই কাজের জন্য এটি অনুলিপি করতে ফিরে যান।"
+
+#: src/features/portfolio/create.tsx
+#: src/features/portfolio/overview.tsx
+msgid "Create portfolio"
+msgstr ""
+
+#: src/features/portfolio/overview.tsx
+msgid "Create your portfolio"
+msgstr ""
 
 #: src/features/documents/document-menu-panels.tsx
 #: src/features/documents/library-toolbar.tsx
@@ -4202,6 +4367,10 @@ msgstr "কাস্টম"
 msgid "Custom color (hex)"
 msgstr "কাস্টম রং (hex)"
 
+#: src/features/portfolio/publish.tsx
+msgid "Custom domain"
+msgstr ""
+
 #: src/features/share/custom-domain.tsx
 msgid "Custom domains aren't available here."
 msgstr ""
@@ -4239,10 +4408,22 @@ msgstr ""
 msgid "Daily at {clock} · next {day}"
 msgstr ""
 
+#: src/features/portfolio/statistics.tsx
+msgid "Daily numbers"
+msgstr ""
+
+#: src/features/portfolio/statistics.tsx
+msgid "Daily views"
+msgstr ""
+
 #. placeholder {0}: summary.peak
 #: src/features/share/link.tsx
 msgid "Daily views over 30 days, peak {0}"
 msgstr "30 দিনে দৈনিক ভিউ, সর্বোচ্চ {0}"
+
+#: src/features/portfolio/statistics.tsx
+msgid "Daily work opens"
+msgstr ""
 
 #: src/features/ai/report-content.tsx
 msgid "Dangerous or illegal advice"
@@ -4375,6 +4556,7 @@ msgstr "ডিগ্রি"
 #: src/features/documents/document-item.tsx
 #: src/features/history/version-options.tsx
 #: src/features/letters/share.tsx
+#: src/features/portfolio/inbox.tsx
 #: src/features/profile/stories.tsx
 #: src/features/write/entry-sheet.tsx
 msgid "Delete"
@@ -4445,9 +4627,17 @@ msgstr "সাক্ষাৎকার মুছে দিন"
 msgid "Delete it. Hidden keywords are treated as a deliberate attempt to game the search."
 msgstr "এটি মুছে ফেলুন। লুকানো কীওয়ার্ডকে সার্চ কারসাজি করার ইচ্ছাকৃত প্রচেষ্টা হিসেবে গণ্য করা হয়।"
 
+#: src/features/portfolio/inbox.tsx
+msgid "Delete message"
+msgstr ""
+
 #: src/features/design/layout-screen.tsx
 msgid "Delete page"
 msgstr "পৃষ্ঠা মুছে ফেলুন"
+
+#: src/features/portfolio/publish.tsx
+msgid "Delete portfolio"
+msgstr ""
 
 #: src/features/ai/provider-editor.tsx
 msgid "Delete provider"
@@ -4478,6 +4668,10 @@ msgstr "এই এন্ট্রি মুছবেন?"
 msgid "Delete this interview?"
 msgstr ""
 
+#: src/features/portfolio/inbox.tsx
+msgid "Delete this message?"
+msgstr ""
+
 #: src/features/ai/provider-editor.tsx
 msgid "Delete this provider?"
 msgstr "এই প্রদানকারীকে মুছবেন?"
@@ -4486,6 +4680,10 @@ msgstr "এই প্রদানকারীকে মুছবেন?"
 #: src/features/letters/share.tsx
 msgid "Delete version"
 msgstr "সংস্করণ মুছে ফেলুন"
+
+#: src/features/portfolio/publish.tsx
+msgid "Delete your portfolio?"
+msgstr ""
 
 #: src/features/applications/detail/detail-header.tsx
 #: src/features/applications/list/bulk-bar.tsx
@@ -4555,6 +4753,10 @@ msgstr "ডিজাইন"
 msgid "Design reset to defaults"
 msgstr "ডিফল্টে ডিজাইন রিসেট"
 
+#: src/features/portfolio/preview.tsx
+msgid "Desktop"
+msgstr ""
+
 #. placeholder {0}: index + 1
 #: src/features/entries/custom-fields.tsx
 msgid "Detail {0}"
@@ -4570,6 +4772,10 @@ msgstr ""
 #: src/features/profile/profile-screen.tsx
 msgid "Details"
 msgstr "বিস্তারিত"
+
+#: src/features/portfolio/statistics.tsx
+msgid "Devices"
+msgstr ""
 
 #: src/features/workspace/debrief/debrief-form.tsx
 msgid "Didn't land"
@@ -4766,6 +4972,7 @@ msgstr "ডাউনলোড টোটালে পুনরাবৃত্ত�
 msgid "downloads"
 msgstr "ডাউনলোড"
 
+#: src/features/portfolio/overview.tsx
 #: src/features/workspace/apply/answer-card.tsx
 #: src/features/write/entry-row.tsx
 msgid "Draft"
@@ -4811,9 +5018,21 @@ msgstr "আপনার জীবনবৃত্তান্ত থেকে খ
 msgid "Draft kept. Edit anything you like."
 msgstr "খসড়া রাখা হয়েছে। আপনার পছন্দ মত কিছু সম্পাদনা করুন."
 
+#: src/features/portfolio/create.tsx
+msgid "Draft saved"
+msgstr ""
+
+#: src/features/portfolio/create.tsx
+msgid "Draft saved. Fill in the text in brackets before publishing."
+msgstr ""
+
 #: src/features/workspace/prepare/plan.tsx
 msgid "Draft story"
 msgstr "গল্পের খসড়া"
+
+#: src/features/portfolio/create.tsx
+msgid "Draft with AI"
+msgstr ""
 
 #: src/features/workspace/working.ts
 msgid "Drafting"
@@ -4957,6 +5176,10 @@ msgstr "লিঙ্ক সম্পাদনা করুন"
 #: src/features/applications/detail/activity.tsx
 msgid "Edit note"
 msgstr "নোট সম্পাদনা করুন"
+
+#: src/features/portfolio/overview.tsx
+msgid "Edit on the web"
+msgstr ""
 
 #: src/features/workspace/apply/answer-menu.tsx
 msgid "Edit question"
@@ -5335,6 +5558,7 @@ msgstr "ফাইলটি খুব বড়। 10 MB পর্যন্ত �
 msgid "File name"
 msgstr "ফাইলের নাম"
 
+#: src/features/portfolio/export.ts
 #: src/features/share/files.ts
 msgid "File sharing is unavailable on this device."
 msgstr "এই ডিভাইসে ফাইল শেয়ারিং অনুপলব্ধ৷"
@@ -5414,6 +5638,14 @@ msgstr ""
 #. Template gallery filter: finance, banking, law and consulting jobs
 #: src/features/design/preset-names.ts
 msgid "Finance"
+msgstr ""
+
+#: src/features/portfolio/create.tsx
+msgid "Find a resume"
+msgstr ""
+
+#: src/features/portfolio/publish.tsx
+msgid "Find a source"
 msgstr ""
 
 #: src/features/jobs/jobs-states.tsx
@@ -5752,6 +5984,10 @@ msgstr "পূর্ণ প্রস্থ"
 
 #: src/features/design/preset-names.ts
 msgid "Games and sports"
+msgstr ""
+
+#: src/features/portfolio/create.tsx
+msgid "Generate draft"
 msgstr ""
 
 #: src/features/settings/locale-names.ts
@@ -6230,6 +6466,11 @@ msgstr ""
 msgid "In your Profile"
 msgstr ""
 
+#: src/features/portfolio/inbox.tsx
+#: src/features/portfolio/overview.tsx
+msgid "Inbox"
+msgstr ""
+
 #: src/features/jobs/filters-sheet.tsx
 msgid "Include jobs that don't list pay"
 msgstr ""
@@ -6297,6 +6538,10 @@ msgstr "অন্তর্দৃষ্টি"
 
 #: src/features/applications/insights/insights-screen.tsx
 msgid "Insights show here once your applications have loaded."
+msgstr ""
+
+#: src/features/portfolio/create.tsx
+msgid "Instructions (optional)"
 msgstr ""
 
 #: src/features/entries/fields.ts
@@ -6448,6 +6693,10 @@ msgstr ""
 #: src/features/documents/purge-dialog.tsx
 msgid "It will be deleted for good and can't be restored."
 msgstr "এটি ভালভাবে মুছে ফেলা হবে এবং পুনরুদ্ধার করা যাবে না।"
+
+#: src/features/portfolio/inbox.tsx
+msgid "It will be permanently removed from your inbox."
+msgstr ""
 
 #: src/features/applications/detail/activity.tsx
 msgid "It's removed from the activity for good."
@@ -6665,6 +6914,10 @@ msgstr "সৎ থাকুন"
 msgid "Keep it under 2.5 MB, usually by removing or shrinking images."
 msgstr "সাধারণত ছবি সরিয়ে বা ছোট করে এটি ২.৫ MB-এর নিচে রাখুন।"
 
+#: src/features/portfolio/inbox.tsx
+msgid "Keep message"
+msgstr ""
+
 #: src/draft/conflict-sheet.tsx
 #: src/features/entries/improve.tsx
 msgid "Keep mine"
@@ -6677,6 +6930,10 @@ msgstr ""
 #: src/features/write/section-menu.tsx
 msgid "Keep on one page"
 msgstr "এক পৃষ্ঠায় রাখুন"
+
+#: src/features/portfolio/create.tsx
+msgid "Keep original draft"
+msgstr ""
 
 #: src/features/entries/photo-field.tsx
 msgid "Keep photo"
@@ -6928,6 +7185,10 @@ msgstr "দৈর্ঘ্য কোনো ত্রুটি নয়, এব�
 msgid "Let AI clients like Claude or Cursor read and edit your resumes, using an API key."
 msgstr "একটি API কী ব্যবহার করে AI ক্লায়েন্টদের যেমন Claude বা Cursor আপনার জীবনবৃত্তান্তগুলি পড়তে এবং সম্পাদনা করতে দিন৷"
 
+#: src/features/portfolio/publish.tsx
+msgid "Let visitors download a contact card from your page."
+msgstr ""
+
 #: src/features/documents/library-states.tsx
 #: src/features/home/home-screen.tsx
 msgid "Let's start with what you have"
@@ -7040,6 +7301,7 @@ msgid "Link an application…"
 msgstr "একটি চাকরির আবেদন লিঙ্ক করুন..."
 
 #: src/features/documents/library-menu.tsx
+#: src/features/portfolio/overview.tsx
 #: src/features/share/link.tsx
 #: src/features/share/web-page.tsx
 msgid "Link copied"
@@ -7140,6 +7402,10 @@ msgstr "{url} এ লাইভ"
 msgid "Load more"
 msgstr ""
 
+#: src/features/portfolio/inbox.tsx
+msgid "Load more messages"
+msgstr ""
+
 #: src/features/applications/detail/detail-sheet.tsx
 #: src/features/applications/list/list-states.tsx
 #: src/features/career/schedule-body.tsx
@@ -7197,6 +7463,10 @@ msgstr ""
 msgid "Loading offers"
 msgstr ""
 
+#: src/features/portfolio/layout.tsx
+msgid "Loading portfolio"
+msgstr ""
+
 #: src/features/ai/provider-editor.tsx
 #: src/features/ai/provider-list.tsx
 msgid "Loading providers…"
@@ -7210,6 +7480,7 @@ msgstr ""
 msgid "Loading resume…"
 msgstr "লোড হচ্ছে জীবনবৃত্তান্ত…"
 
+#: src/features/portfolio/create.tsx
 #: src/features/search/search-screen.tsx
 msgid "Loading resumes…"
 msgstr "জীবনবৃত্তান্ত লোড হচ্ছে…"
@@ -7230,6 +7501,7 @@ msgstr "ওয়ার্কস্পেস লোড হচ্ছে…"
 msgid "Loading your Profile before you send…"
 msgstr ""
 
+#: src/features/portfolio/publish.tsx
 #: src/features/share/link.tsx
 msgid "Loading your public address…"
 msgstr "আপনার সর্বজনীন ঠিকানা লোড হচ্ছে..."
@@ -7339,6 +7611,10 @@ msgstr "মালয়"
 msgid "Malayalam"
 msgstr "মালয়ালম"
 
+#: src/features/portfolio/publish.tsx
+msgid "Manage domain on the web"
+msgstr ""
+
 #: src/features/ai/provider-editor.tsx
 #: src/features/ai/provider-list.tsx
 msgid "Managed by your server"
@@ -7397,9 +7673,17 @@ msgstr "পড়া হয়েছে বলে চিহ্নিত কর�
 msgid "Mark it as applied in Apply first."
 msgstr "আগে আবেদন করুন ট্যাবে এটিকে আবেদন করা হয়েছে বলে চিহ্নিত করুন।"
 
+#: src/features/portfolio/inbox.tsx
+msgid "Mark read"
+msgstr ""
+
 #: src/features/workspace/apply/checklist.tsx
 msgid "Mark the application as applied to keep the versions you sent."
 msgstr "আপনার পাঠানো সংস্করণগুলো রাখতে আবেদনটিকে আবেদন করা হয়েছে বলে চিহ্নিত করুন।"
+
+#: src/features/portfolio/inbox.tsx
+msgid "Mark unread"
+msgstr ""
 
 #: src/features/letters/share.tsx
 #: src/features/share/download.tsx
@@ -7480,6 +7764,10 @@ msgstr "মাঝারি"
 msgid "Meets: {0}"
 msgstr ""
 
+#: src/features/portfolio/inbox.tsx
+msgid "Message"
+msgstr ""
+
 #: src/features/ai/report-content.tsx
 msgid "Message actions"
 msgstr ""
@@ -7488,9 +7776,14 @@ msgstr ""
 msgid "Message the assistant"
 msgstr "সহকারীকে মেসেজ করুন"
 
+#: src/features/portfolio/statistics.tsx
 #: src/features/workspace/working.ts
 msgid "Messages"
 msgstr "বার্তা"
+
+#: src/features/portfolio/inbox.tsx
+msgid "Messages sent through your portfolio contact form appear here."
+msgstr ""
 
 #: src/features/jobs/format.ts
 msgctxt "Job seniority"
@@ -7743,6 +8036,7 @@ msgstr ""
 #: src/features/history/version-options.tsx
 #: src/features/letters/share.tsx
 #: src/features/letters/write.tsx
+#: src/features/portfolio/create.tsx
 #: src/features/settings/profile.tsx
 msgid "Name"
 msgstr "নাম"
@@ -7935,6 +8229,10 @@ msgstr ""
 msgid "New to Rezumi? Create an account"
 msgstr ""
 
+#: src/features/portfolio/publish.tsx
+msgid "New visitor password"
+msgstr ""
+
 #: src/features/onboarding/intro-screen.tsx
 msgid "Next"
 msgstr ""
@@ -8061,6 +8359,14 @@ msgstr ""
 msgid "No credits to spend right now"
 msgstr ""
 
+#: src/features/share/custom-domain.tsx
+msgid "No custom domain connected."
+msgstr ""
+
+#: src/features/portfolio/statistics.tsx
+msgid "No data in this period."
+msgstr ""
+
 #: src/features/letters/write.tsx
 msgid "No date"
 msgstr "তারিখ নেই"
@@ -8161,6 +8467,14 @@ msgstr "অবস্থান নেই"
 msgid "No matches"
 msgstr "কোন মিল নেই"
 
+#: src/features/portfolio/publish.tsx
+msgid "No matching sources."
+msgstr ""
+
+#: src/features/portfolio/inbox.tsx
+msgid "No messages yet"
+msgstr ""
+
 #: src/features/home/new-roles.tsx
 msgid "No new roles. Your job alert checks again on {day} at {clock}."
 msgstr ""
@@ -8209,6 +8523,10 @@ msgstr ""
 msgid "No response"
 msgstr "কোন সাড়া নেই"
 
+#: src/features/portfolio/create.tsx
+msgid "No resumes found."
+msgstr ""
+
 #: src/features/documents/library-states.tsx
 msgid "No resumes yet"
 msgstr ""
@@ -8237,6 +8555,10 @@ msgstr ""
 #: src/features/ats-checker/messages.ts
 msgid "No skills section was found."
 msgstr "কোনো দক্ষতা সেকশন পাওয়া যায়নি।"
+
+#: src/features/portfolio/publish.tsx
+msgid "No source"
+msgstr ""
 
 #: src/features/applications/insights/insights-cards.tsx
 msgid "No source data yet."
@@ -8288,9 +8610,17 @@ msgstr ""
 msgid "No timezone matches."
 msgstr "কোনো টাইমজোন মেলেনি।"
 
+#: src/features/portfolio/statistics.tsx
+msgid "No visits in this period."
+msgstr ""
+
 #: src/features/check/messages.ts
 msgid "No work experience shows"
 msgstr "কাজের অভিজ্ঞতা নেই"
+
+#: src/features/portfolio/statistics.tsx
+msgid "No work was opened in this period."
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "No work-experience section was found."
@@ -8679,6 +9009,10 @@ msgstr "শুধুমাত্র নীচের পাঠ্য এবং �
 msgid "Only this device schedules the notification."
 msgstr "শুধুমাত্র এই ডিভাইসটি বিজ্ঞপ্তির সময়সূচী করে।"
 
+#: src/features/portfolio/publish.tsx
+msgid "Only you can preview this draft."
+msgstr ""
+
 #: src/features/share/link.tsx
 msgid "Only you see these"
 msgstr "এগুলো শুধু তুমিই দেখো"
@@ -8744,16 +9078,20 @@ msgstr ""
 msgid "Open menu, {unread} unread"
 msgstr ""
 
-#: src/shell/preparing-tab.tsx
-msgid "Open on the web"
-msgstr ""
-
 #: src/features/documents/unsynced-documents.tsx
 msgid "Open one to finish saving it."
 msgstr ""
 
+#: src/features/portfolio/create.tsx
+msgid "Open portfolio"
+msgstr ""
+
 #: src/shell/app-drawer.tsx
 msgid "Open Profile"
+msgstr ""
+
+#: src/features/portfolio/preview.tsx
+msgid "Open public page"
 msgstr ""
 
 #: src/features/assistant/assistant-screen.tsx
@@ -9188,6 +9526,10 @@ msgstr "প্রতি ঘণ্টায়"
 msgid "Per month"
 msgstr "প্রতি মাসে"
 
+#: src/features/portfolio/statistics.tsx
+msgid "Per work"
+msgstr ""
+
 #: src/features/profile/preferences.tsx
 msgid "Per year"
 msgstr "প্রতি বছর"
@@ -9208,12 +9550,17 @@ msgstr ""
 #: src/features/entries/fields.ts
 #: src/features/letters/write.tsx
 #: src/features/onboarding/source-review.tsx
+#: src/features/portfolio/preview.tsx
 msgid "Phone"
 msgstr "ফোন"
 
 #: src/features/applications/detail/contacts.tsx
 msgid "Phone (optional)"
 msgstr "ফোন (ঐচ্ছিক)"
+
+#: src/features/portfolio/statistics.tsx
+msgid "Phones"
+msgstr ""
 
 #: src/features/entries/photo-field.tsx
 #: src/features/onboarding/source-review.tsx
@@ -9332,9 +9679,18 @@ msgid "Polishing"
 msgstr "ঘষামাজা করা হচ্ছে"
 
 #: app/(tabs)/_layout.tsx
-#: app/(tabs)/portfolio/index.tsx
+#: src/features/portfolio/overview.tsx
 #: src/shell/app-tabs.tsx
 msgid "Portfolio"
+msgstr ""
+
+#: src/features/portfolio/preview.tsx
+msgid "Portfolio preview"
+msgstr ""
+
+#: src/features/portfolio/create.tsx
+#: src/features/portfolio/overview.tsx
+msgid "Portfolios aren't available for this account."
 msgstr ""
 
 #: src/features/write/picture-screen.tsx
@@ -9521,6 +9877,14 @@ msgstr ""
 msgid "Press and hold"
 msgstr "চেপে ধরে রাখুন"
 
+#: src/features/portfolio/overview.tsx
+msgid "Preview"
+msgstr ""
+
+#: src/features/portfolio/preview.tsx
+msgid "Preview size"
+msgstr "প্রিভিউয়ের আকার"
+
 #: src/features/share/web-page.tsx
 msgid "Preview web page"
 msgstr "ওয়েব পেজ প্রিভিউ করুন"
@@ -9683,6 +10047,10 @@ msgstr "প্রদানকারী ধারণ এবং ব্যবহা
 msgid "Public"
 msgstr "সর্বজনীন"
 
+#: src/features/portfolio/publish.tsx
+msgid "Public address"
+msgstr ""
+
 #: src/features/share/link.tsx
 msgid "Public link"
 msgstr "পাবলিক লিঙ্ক"
@@ -9694,6 +10062,11 @@ msgstr "পাবলিক, একটি পাসওয়ার্ড সহ"
 #: src/features/entries/fields.ts
 msgid "Publications"
 msgstr "প্রকাশনাসমূহ"
+
+#: src/features/portfolio/overview.tsx
+#: src/features/portfolio/publish.tsx
+msgid "Publish portfolio"
+msgstr ""
 
 #: src/features/share/web-page.tsx
 msgid "Publish the web page first."
@@ -9707,13 +10080,23 @@ msgstr "ভিউ ও ডাউনলোড গণনা করতে ওয়�
 msgid "Publish this resume to open it at your short link and custom domain."
 msgstr "আপনার ছোট লিঙ্ক ও কাস্টম ডোমেইনে খুলতে এই জীবনবৃত্তান্তটি প্রকাশ করুন।"
 
-#: app/(tabs)/portfolio/index.tsx
-msgid "Publish, share and see who visited from your phone. Until then, manage it on the web."
+#: src/features/portfolio/card.tsx
+#: src/features/portfolio/overview.tsx
+msgid "Publish to share your QR code."
+msgstr ""
+
+#: src/features/portfolio/overview.tsx
+msgid "Published"
 msgstr ""
 
 #: src/features/entries/fields.ts
 msgid "Publisher"
 msgstr "প্রকাশক"
+
+#: src/features/portfolio/overview.tsx
+#: src/features/portfolio/publish.tsx
+msgid "Publishing settings"
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "Put a plain email address near the top of the first page. It is what most systems file you under."
@@ -9722,6 +10105,11 @@ msgstr "প্রথম পৃষ্ঠার শীর্ষের কাছা
 #: src/features/share/link.tsx
 msgid "QR code"
 msgstr "QR কোড"
+
+#. placeholder {0}: address.shown
+#: src/features/portfolio/card.tsx
+msgid "QR code for {0}"
+msgstr ""
 
 #: src/features/share/link.tsx
 msgid "QR code for {url}"
@@ -9991,6 +10379,10 @@ msgstr "রেফারেন্সসমূহ"
 msgid "Referral"
 msgstr "রেফারেল"
 
+#: src/features/portfolio/statistics.tsx
+msgid "Referring sites"
+msgstr ""
+
 #: src/features/profile/stories-parts.ts
 msgid "Reflection"
 msgstr "প্রতিফলন"
@@ -10148,6 +10540,7 @@ msgstr "ফাইল সরান"
 msgid "Remove label"
 msgstr ""
 
+#: src/features/portfolio/publish.tsx
 #: src/features/share/web-page.tsx
 msgid "Remove password"
 msgstr "পাসওয়ার্ড সরান"
@@ -10182,6 +10575,10 @@ msgstr "এই ফাইলটি সরান?"
 #: src/features/entries/photo-field.tsx
 msgid "Remove this photo?"
 msgstr "এই ফটোটি সরাবেন?"
+
+#: src/features/portfolio/publish.tsx
+msgid "Remove visitor password?"
+msgstr ""
 
 #: src/features/assistant/threads.tsx
 #: src/features/documents/document-menu.tsx
@@ -10248,6 +10645,10 @@ msgstr "আবেদনে “{current}”-এর জায়গা নেয�
 #: src/features/workspace/working.ts
 msgid "Reply"
 msgstr "জবাব"
+
+#: src/features/portfolio/inbox.tsx
+msgid "Reply by email"
+msgstr ""
 
 #: src/features/workspace/messages/reply-card.tsx
 msgid "Reply copied"
@@ -10390,6 +10791,10 @@ msgstr ""
 msgid "Resume tailoring"
 msgstr ""
 
+#: src/features/portfolio/publish.tsx
+msgid "Resume unavailable"
+msgstr ""
+
 #: src/features/documents/segment-header.tsx
 #: src/features/search/search-screen.tsx
 msgid "Resumes"
@@ -10435,6 +10840,9 @@ msgstr ""
 #: src/features/letters/write.tsx
 #: src/features/offers/offers-screen.tsx
 #: src/features/onboarding/source-progress.tsx
+#: src/features/portfolio/inbox.tsx
+#: src/features/portfolio/layout.tsx
+#: src/features/portfolio/statistics.tsx
 #: src/features/profile/facts.tsx
 #: src/features/profile/fill-sheet.tsx
 #: src/features/profile/preferences.tsx
@@ -10492,6 +10900,14 @@ msgstr ""
 #: src/features/workspace/apply/checklist.tsx
 msgid "Review required form answers and remove unsupported claims."
 msgstr "ফর্মের আবশ্যিক উত্তরগুলো পর্যালোচনা করুন এবং সমর্থনহীন দাবি সরিয়ে দিন।"
+
+#: src/features/portfolio/create.tsx
+msgid "Review suggested writing before saving it to your draft."
+msgstr ""
+
+#: src/features/portfolio/create.tsx
+msgid "Review the AI draft"
+msgstr ""
 
 #: src/features/workspace/apply/checklist.tsx
 msgid "Review the selected resume and cover letter in their editors."
@@ -10727,6 +11143,10 @@ msgstr "পরিবর্তনগুলি সংরক্ষণ করুন"
 msgid "Save contact"
 msgstr ""
 
+#: src/features/portfolio/publish.tsx
+msgid "Save contact button"
+msgstr ""
+
 #: src/features/profile/facts-detail.tsx
 msgid "Save correction"
 msgstr "সংশোধন সংরক্ষণ করুন"
@@ -10756,9 +11176,18 @@ msgstr ""
 msgid "Save new password"
 msgstr ""
 
+#: src/features/portfolio/export.ts
 #: src/features/share/files.ts
 msgid "Save or share file"
 msgstr "ফাইল সংরক্ষণ বা শেয়ার করুন"
+
+#: src/features/portfolio/card.tsx
+msgid "Save or share PNG"
+msgstr ""
+
+#: src/features/portfolio/publish.tsx
+msgid "Save password"
+msgstr ""
 
 #: src/features/career/schedule-sheet.tsx
 msgid "Save schedule"
@@ -10799,6 +11228,10 @@ msgstr ""
 
 #: src/features/onboarding/onboarding-screen.tsx
 msgid "Save to my Profile"
+msgstr ""
+
+#: src/features/portfolio/create.tsx
+msgid "Save to portfolio"
 msgstr ""
 
 #: src/features/workspace/fit/requirement-card.tsx
@@ -11293,6 +11726,7 @@ msgstr "সার্ভার ঠিকানা"
 msgid "Set a follow-up…"
 msgstr "একটি ফলো-আপ সেট করুন..."
 
+#: src/features/portfolio/publish.tsx
 #: src/features/share/web-page.tsx
 msgid "Set password"
 msgstr "পাসওয়ার্ড সেট করুন"
@@ -11313,6 +11747,10 @@ msgstr "একটি প্রদানকারী সেট আপ করু�
 #: src/features/documents/new-choices.tsx
 msgid "Set up AI provider"
 msgstr "AI প্রদানকারী সেট আপ করুন"
+
+#: src/features/portfolio/card.tsx
+msgid "Set up on the web"
+msgstr ""
 
 #: src/features/share/custom-domain.tsx
 msgid "Setting up HTTPS. This usually takes a few minutes, and this screen updates by itself."
@@ -11357,10 +11795,18 @@ msgstr "শেয়ার এবং রপ্তানি"
 msgid "Share as file"
 msgstr ""
 
+#: src/features/portfolio/statistics.tsx
+msgid "Share CSV"
+msgstr ""
+
 #. placeholder {0}: provider.label
 #: src/api/ai-consent.ts
 msgid "Share data with {0}?"
 msgstr "{0} এর সাথে ডেটা শেয়ার করবেন?"
+
+#: src/features/portfolio/overview.tsx
+msgid "Share link"
+msgstr ""
 
 #: src/features/share/download.tsx
 msgid "Share PDF"
@@ -11498,6 +11944,7 @@ msgstr "শিরোনাম দেখান"
 msgid "Show icons"
 msgstr "আইকন দেখান"
 
+#: src/features/portfolio/publish.tsx
 #: src/features/share/web-page.tsx
 msgid "Show in search engines"
 msgstr "সার্চ ইঞ্জিনে দেখান"
@@ -11541,6 +11988,10 @@ msgstr ""
 #: src/features/check/issues-tab.tsx
 msgid "Show them again"
 msgstr "তাদের আবার দেখান"
+
+#: src/features/portfolio/overview.tsx
+msgid "Show your work on a personal page you can share."
+msgstr ""
 
 #: src/features/applications/detail/detail-body.tsx
 msgid "Showing the details saved on this device. They couldn't be refreshed."
@@ -11993,12 +12444,20 @@ msgstr "টাইপ করা শুরু করুন, বা আমরা �
 msgid "Start typing. To draft one, fill in your Profile, or link a resume or an application."
 msgstr ""
 
+#: src/features/portfolio/create.tsx
+msgid "Start with"
+msgstr ""
+
 #: src/features/write/add-section.tsx
 msgid "Start with the sections most resumes have."
 msgstr "বেশিরভাগ জীবনবৃত্তান্তের বিভাগগুলি দিয়ে শুরু করুন।"
 
 #: src/features/onboarding/intro-screen.tsx
 msgid "Start with your dashboard project at Kopi Senja: it cut report time by half."
+msgstr ""
+
+#: src/features/portfolio/create.tsx
+msgid "Start with your name and a theme."
 msgstr ""
 
 #: src/features/home/coming-up.tsx
@@ -12017,6 +12476,10 @@ msgstr "{0} ঘণ্টার কম সময়ের মধ্যে শু�
 #: src/features/workspace/prepare/soon.tsx
 msgid "Starts now"
 msgstr "এখনই শুরু"
+
+#: src/features/portfolio/statistics.tsx
+msgid "Statistics date range"
+msgstr ""
 
 #: src/features/share/link.tsx
 msgid "Statistics need a connection."
@@ -12225,6 +12688,10 @@ msgstr "সিস্টেমগুলি আপনাকে নামের ন
 msgid "Systems look for an experience section. Projects or volunteering can show the same history."
 msgstr "সিস্টেমগুলি একটি অভিজ্ঞতা বিভাগের সন্ধান করে। প্রকল্প বা স্বেচ্ছাসেবী একই ইতিহাস দেখাতে পারে।"
 
+#: src/features/portfolio/statistics.tsx
+msgid "Tablets"
+msgstr ""
+
 #: src/features/applications/list/list-menus.tsx
 msgid "Tag: {tag}"
 msgstr ""
@@ -12281,6 +12748,10 @@ msgstr ""
 #. placeholder {0}: formatDate(entry.revokedAt)
 #: src/features/billing/credits.ts
 msgid "Taken back on {0}"
+msgstr ""
+
+#: src/features/portfolio/overview.tsx
+msgid "Taken down"
 msgstr ""
 
 #: src/features/documents/new-choices.tsx
@@ -12849,6 +13320,10 @@ msgstr "ভাবছেন…"
 msgid "Third-party software notices. Tap a dependency to read its license."
 msgstr "তৃতীয় পক্ষের সফটওয়্যারের নোটিশ। কোনো নির্ভরতার লাইসেন্স পড়তে সেটিতে ট্যাপ করুন।"
 
+#: src/features/portfolio/queries.ts
+msgid "This account already has a portfolio."
+msgstr ""
+
 #: src/features/billing/plan-alert.ts
 msgid "This app always works. Other apps and assistants that connect with an API key need more."
 msgstr ""
@@ -13104,6 +13579,10 @@ msgstr "এটি পরিমাপ করে যে সফ্টওয়্�
 msgid "This needs {required} and you have {balance}. Switch to your own AI connection to continue."
 msgstr ""
 
+#: src/features/portfolio/queries.ts
+msgid "This option isn't included in your current plan."
+msgstr ""
+
 #: src/features/assistant/messages.tsx
 msgid "This page is clipped or incomplete. Check the original before using it."
 msgstr "এই পৃষ্ঠাটি ক্লিপ বা অসম্পূর্ণ। এটি ব্যবহার করার আগে আসলটি পরীক্ষা করুন।"
@@ -13132,6 +13611,11 @@ msgstr ""
 msgid "This PDF is password protected. Save an unprotected copy and try again."
 msgstr "এই PDF-টি পাসওয়ার্ড সুরক্ষিত। একটি অসুরক্ষিত কপি সংরক্ষণ করে আবার চেষ্টা করুন।"
 
+#: src/features/portfolio/publish.tsx
+#: src/features/portfolio/queries.ts
+msgid "This portfolio has been taken down."
+msgstr ""
+
 #: src/features/auth/errors.ts
 msgid "This reset link expired or was already used. Ask for a new one."
 msgstr ""
@@ -13142,6 +13626,10 @@ msgstr "এই জীবনবৃত্তান্ত অন্যত্র প
 
 #: src/features/write/profile-link.tsx
 msgid "This resume couldn't be found. It may have been deleted."
+msgstr ""
+
+#: src/features/portfolio/publish.tsx
+msgid "This resume is in Trash. Choose another source."
 msgstr ""
 
 #: src/features/check/check-pane.tsx
@@ -13702,6 +14190,18 @@ msgstr "আনলক হচ্ছে..."
 msgid "Unnamed key"
 msgstr "নামহীন কী"
 
+#: src/features/portfolio/publish.tsx
+msgid "Unpublish"
+msgstr ""
+
+#: src/features/portfolio/publish.tsx
+msgid "Unpublish your portfolio?"
+msgstr ""
+
+#: src/features/portfolio/inbox.tsx
+msgid "Unread"
+msgstr ""
+
 #: src/features/documents/document-item.tsx
 #: src/features/documents/unsynced-documents.tsx
 msgid "Unsynced on this device"
@@ -13809,6 +14309,10 @@ msgstr "{url} ব্যবহার করুন"
 #: src/features/settings/profile.tsx
 msgid "Use 3 to 64 lowercase letters, numbers, dots, hyphens and underscores."
 msgstr "3 থেকে 64 ছোট হাতের অক্ষর, সংখ্যা, বিন্দু, হাইফেন এবং আন্ডারস্কোর ব্যবহার করুন।"
+
+#: src/features/portfolio/publish.tsx
+msgid "Use 6 to 64 characters."
+msgstr ""
 
 #: src/features/share/web-page.tsx
 msgid "Use 6–64 characters."
@@ -14063,6 +14567,10 @@ msgstr "মৌখিক অফার"
 msgid "Verify"
 msgstr "যাচাই করুন"
 
+#: src/features/portfolio/queries.ts
+msgid "Verify your email before publishing."
+msgstr ""
+
 #: src/features/auth/errors.ts
 msgid "Verify your email first. We sent you a link; open it on this phone, then sign in."
 msgstr ""
@@ -14156,6 +14664,10 @@ msgstr "{0} দেখা হচ্ছে · {1} · শুধুমাত্র �
 msgid "Viewing {0} · read-only"
 msgstr "দেখা হচ্ছে {0} · শুধুমাত্র পড়ার জন্য৷"
 
+#: src/features/portfolio/statistics.tsx
+msgid "Views"
+msgstr ""
+
 #: src/features/share/link.tsx
 msgid "views · 30 days"
 msgstr "ভিউ · 30 দিন"
@@ -14169,6 +14681,31 @@ msgstr "সহিংসতা বা অপব্যবহার"
 msgid "Visa sponsorship"
 msgstr ""
 
+#: src/features/portfolio/statistics.tsx
+msgid "Visit sources"
+msgstr ""
+
+#: src/features/portfolio/statistics.tsx
+msgid "Visitor breakdown"
+msgstr ""
+
+#: src/features/portfolio/statistics.tsx
+msgid "Visitor breakdown is available with Plus."
+msgstr ""
+
+#: src/features/portfolio/statistics.tsx
+msgid "Visitor breakdown isn't configured on this server."
+msgstr ""
+
+#: src/features/portfolio/publish.tsx
+msgid "Visitor password"
+msgstr ""
+
+#: src/features/portfolio/overview.tsx
+#: src/features/portfolio/statistics.tsx
+msgid "Visitor statistics"
+msgstr ""
+
 #: src/features/share/link.tsx
 msgid "Visitors"
 msgstr "দর্শক"
@@ -14177,9 +14714,17 @@ msgstr "দর্শক"
 msgid "Visitors can download the PDF"
 msgstr "দর্শকরা PDF ডাউনলোড করতে পারেন"
 
+#: src/features/portfolio/publish.tsx
+msgid "Visitors can open your page."
+msgstr ""
+
 #: src/features/share/web-page.tsx
 msgid "Visitors enter it before they see the resume. Share it only with people you trust."
 msgstr "দর্শকরা জীবনবৃত্তান্ত দেখার আগে পাসওয়ার্ডটি দেন। এটি শুধুমাত্র আপনার বিশ্বাসযোগ্য ব্যক্তিদের সাথে ভাগ করুন৷"
+
+#: src/features/portfolio/publish.tsx
+msgid "Visitors will lose access. You can publish it again later."
+msgstr ""
 
 #: src/features/workspace/practice/answer-panel.tsx
 #: src/features/workspace/practice/voice-settings-sheet.tsx
@@ -14544,6 +15089,10 @@ msgstr "টেক্সট এক্সট্র্যাক্ট করা হ
 msgid "Work arrangement"
 msgstr ""
 
+#: src/features/portfolio/statistics.tsx
+msgid "Work statistics"
+msgstr ""
+
 #: src/features/workspace/prepare/soon.tsx
 msgid "Works without AI or new research"
 msgstr "এআই বা নতুন গবেষণা ছাড়াই কাজ করে"
@@ -14648,6 +15197,10 @@ msgstr "গতকাল {time}"
 msgid "You"
 msgstr "আপনি"
 
+#: src/features/portfolio/create.tsx
+msgid "You already have a portfolio"
+msgstr ""
+
 #: src/features/share/link.tsx
 msgid "You already use this for “{takenBy}”."
 msgstr "আপনি ইতিমধ্যেই এটি “{takenBy}”-এর জন্য ব্যবহার করছেন।"
@@ -14686,6 +15239,15 @@ msgstr "সাইন-ইন শেষ হওয়ার আগেই আপন�
 
 #: src/features/onboarding/messages.ts
 msgid "You chose not to share it, so it wasn't read. Retry to choose again."
+msgstr ""
+
+#: src/features/portfolio/publish.tsx
+#: src/features/portfolio/statistics.tsx
+msgid "You don't have a portfolio yet."
+msgstr ""
+
+#: src/features/portfolio/create.tsx
+msgid "You don't have a resume yet."
 msgstr ""
 
 #: src/features/workspace/debrief/review-card.tsx
@@ -14742,6 +15304,7 @@ msgstr "আপনি একটি সংরক্ষিত সংস্করণ
 #: src/features/applications/list/list-states.tsx
 #: src/features/jobs/jobs-states.tsx
 #: src/features/offers/offers-screen.tsx
+#: src/features/portfolio/layout.tsx
 msgid "You're offline"
 msgstr ""
 
@@ -14820,6 +15383,10 @@ msgstr ""
 
 #: src/features/onboarding/messages.ts
 msgid "Your account"
+msgstr ""
+
+#: src/features/portfolio/publish.tsx
+msgid "Your address follows your username or connected domain."
 msgstr ""
 
 #: src/features/workspace/debrief/debrief-form.tsx
@@ -15036,6 +15603,10 @@ msgstr ""
 msgid "Your page keeps its address on Rezumi."
 msgstr ""
 
+#: src/features/portfolio/publish.tsx
+msgid "Your page, uploads and messages will be permanently deleted."
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "Your phone number is written in an unusual shape."
 msgstr "আপনার ফোন নম্বর অস্বাভাবিক আকারে লেখা।"
@@ -15045,8 +15616,16 @@ msgstr "আপনার ফোন নম্বর অস্বাভাবিক
 msgid "Your plan"
 msgstr ""
 
-#: app/(tabs)/portfolio/index.tsx
-msgid "Your portfolio is coming to the app"
+#: src/features/portfolio/queries.ts
+msgid "Your portfolio changed on another device. Reload it and try again."
+msgstr ""
+
+#: src/features/portfolio/queries.ts
+msgid "Your portfolio is too large to save these changes."
+msgstr ""
+
+#: src/api/ai-consent.ts
+msgid "Your portfolio, its selected resume or Profile, and your instructions are sent through your server to this AI provider. They can contain personal information."
 msgstr ""
 
 #: src/features/assistant/coach.tsx
@@ -15058,6 +15637,8 @@ msgid "your Profile"
 msgstr ""
 
 #: src/features/letters/write.tsx
+#: src/features/portfolio/create.tsx
+#: src/features/portfolio/publish.tsx
 msgid "Your Profile"
 msgstr ""
 
@@ -15223,6 +15804,7 @@ msgid "Your two-minute introduction"
 msgstr "আপনার দুই মিনিটের পরিচিতি"
 
 #: src/features/onboarding/messages.ts
+#: src/features/portfolio/overview.tsx
 msgid "Your website"
 msgstr ""
 

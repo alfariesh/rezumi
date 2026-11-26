@@ -471,14 +471,31 @@ export const usePortfolioEditorStore = create<PortfolioEditorStore>()((set, get)
 		},
 
 		applySettings: (portfolio) =>
-			set((state) =>
-				state.portfolio
-					? {
-							// Settings keep the data's version (`updatedAt`) as it was, so pending edits still save.
-							portfolio: { ...portfolio, data: state.portfolio.data, updatedAt: state.portfolio.updatedAt },
-						}
-					: state,
-			),
+			set((state) => {
+				const current = state.portfolio;
+				if (!current) return state;
+				if (current.data.useProfileSource === false && portfolio.data.useProfileSource !== false) {
+					const linked = (data: PortfolioData) => {
+						const { useProfileSource: _blank, ...rest } = data;
+						return rest;
+					};
+					const sameContent = known.some((previous) => isEqual(linked(previous), portfolio.data));
+					if (!sameContent && (state.dirty || state.status === "saving")) {
+						return {
+							status: "conflict",
+							conflict: { server: portfolio, updatedAt: portfolio.updatedAt },
+						};
+					}
+					known = [portfolio.data];
+					return {
+						portfolio: sameContent ? { ...portfolio, data: linked(current.data) } : portfolio,
+						undoStack: sameContent ? state.undoStack.map(linked) : [],
+						redoStack: sameContent ? state.redoStack.map(linked) : [],
+					};
+				}
+				// Other settings keep the data's version, so pending edits still save.
+				return { portfolio: { ...portfolio, data: current.data, updatedAt: current.updatedAt } };
+			}),
 
 		applyServerEdit: (portfolio) => {
 			const current = get().portfolio;

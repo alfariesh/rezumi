@@ -1,0 +1,45 @@
+# Use a disposable signed-in, email-verified account with PORTFOLIO_MODE=on, English UI, and no portfolio.
+appId: app.rezumi
+---
+- launchApp
+- extendedWaitUntil:
+    visible:
+      id: open-drawer
+    timeout: 30000
+- tapOn:
+    id: open-drawer
+- tapOn:
+    id: drawer-portfolio
+- tapOn: Create portfolio
+- tapOn: A blank page, Start with your name and a theme.
+- scrollUntilVisible:
+    element:
+      id: portfolio-create-submit
+    direction: DOWN
+- tapOn:
+    id: portfolio-create-submit
+- extendedWaitUntil:
+    visible:
+      id: portfolio-publish
+    timeout: 20000
+- tapOn:
+    id: portfolio-publish
+- extendedWaitUntil:
+    visible: Published
+    timeout: 15000
+- tapOn:
+    id: portfolio-preview
+- extendedWaitUntil:
+    visible:
+      id: portfolio-webview
+    timeout: 15000
+- tapOn: Desktop
+- tapOn: Back
+- tapOn: Publishing settings
+- tapOn:
+    id: portfolio-publish-switch
+- tapOn: Unpublish
+- tapOn: Back
+- extendedWaitUntil:
+    visible: Draft
+    timeout: 15000

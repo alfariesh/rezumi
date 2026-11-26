@@ -131,8 +131,17 @@ export type PublicPortfolio = {
  * The portfolio `/<username>` shows, or null when that address still opens the primary resume (no portfolio, not
  * published, suspended, switched off for its owner, or the owner is banned). A lookup only: nothing is counted.
  */
-export async function findPublicPortfolio(username: string): Promise<PublicPortfolio | null> {
-	if (getPortfolioMode() === "off") return null;
+export function findPublicPortfolio(username: string): Promise<PublicPortfolio | null> {
+	if (getPortfolioMode() === "off") return Promise.resolve(null);
+	return findPortfolioPage({ username: username.toLowerCase() });
+}
+
+/** Owner previews use the authenticated account id and may render its saved draft. */
+export function findOwnerPortfolio(userId: string): Promise<PublicPortfolio | null> {
+	return findPortfolioPage({ userId });
+}
+
+async function findPortfolioPage(lookup: { username: string } | { userId: string }): Promise<PublicPortfolio | null> {
 	const [row] = await db
 		.select({
 			id: schema.portfolio.id,
@@ -150,15 +159,16 @@ export async function findPublicPortfolio(username: string): Promise<PublicPortf
 		.innerJoin(schema.user, eq(schema.portfolio.userId, schema.user.id))
 		.where(
 			and(
-				// Usernames are stored lowercase, so `/Jane` opens the same page as `/jane`.
-				eq(schema.user.username, username.toLowerCase()),
-				portfolioOwnsProfilePath(schema.user.id),
+				"userId" in lookup
+					? eq(schema.portfolio.userId, lookup.userId)
+					: and(eq(schema.user.username, lookup.username), portfolioOwnsProfilePath(schema.user.id)),
 				ownerIsNotBanned(),
 			),
 		)
 		.limit(1);
 	if (!row) return null;
 
+	const data = parsePortfolioData(row.data);
 	const [resume, profile, domain, entitlements] = await Promise.all([
 		row.sourceResumeId
 			? db
@@ -181,7 +191,7 @@ export async function findPublicPortfolio(username: string): Promise<PublicPortf
 					.then(([found]) => found)
 			: undefined,
 		// A Profile change shows on the next view: the page is never cached, and its render cache is keyed on what it draws.
-		row.sourceResumeId ? undefined : profileService.read(row.userId),
+		row.sourceResumeId || data.useProfileSource === false ? undefined : profileService.read(row.userId),
 		isCustomDomainsEnabled()
 			? db
 					.select({ hostname: schema.customDomain.hostname })
@@ -199,7 +209,7 @@ export async function findPublicPortfolio(username: string): Promise<PublicPortf
 		username: row.username,
 		ownerName: row.ownerName,
 		timezone: row.timezone,
-		data: parsePortfolioData(row.data),
+		data,
 		// Search engines read it as the page's last change, which a Profile edit is too.
 		updatedAt: new Date(Math.max(row.updatedAt.getTime(), profile?.updatedAt?.getTime() ?? 0)),
 		indexable: row.indexable === true,

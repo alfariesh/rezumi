@@ -39,6 +39,8 @@ export function creditActionOf(operation: string, input: unknown): CreditAction 
 			return field(input, "kind") === "cover-letter" ? "cover-letter" : "draft-answer";
 		case "applications.ai.tailorResume":
 			return "tailor-resume";
+		case "portfolio.ai.draft":
+			return "portfolio-draft";
 		case "coverLetters.draft":
 			return "cover-letter";
 		case "profile.sources.website":

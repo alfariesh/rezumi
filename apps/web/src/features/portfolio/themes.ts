@@ -1,14 +1,14 @@
 import type { PortfolioHeroEffect, PortfolioTheme } from "@rezumi/schema/portfolio/themes";
 import { t } from "@lingui/core/macro";
+import { portfolioThemePicture } from "@rezumi/portfolio/sharing";
 
 /**
  * A theme's gallery picture (`pnpm --filter @rezumi/tooling portfolio:previews`): the top of its sample page with a
  * fictional persona. Indonesian pages show the Indonesian one, every other language the English one.
  */
 export function themePicture(theme: PortfolioTheme, locale: string) {
-	const file = `${locale.split("-")[0] === "id" ? "id/" : ""}${theme}.webp`;
-	const src = `/portfolio-themes/thumb/${file}?v=2`;
-	return { src, srcSet: `${src} 600w, /portfolio-themes/webp/${file} 1200w` };
+	const { thumb, full } = portfolioThemePicture(theme, locale);
+	return { src: thumb, srcSet: `${thumb} 600w, ${full} 1200w` };
 }
 
 /**

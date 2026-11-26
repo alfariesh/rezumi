@@ -22,6 +22,7 @@ export type AppTab = "home" | "documents" | "applications" | "portfolio" | "prof
 /** The Profile's sections, in the order of its tab row. */
 export const PROFILE_TABS = ["details", "career", "facts", "stories", "preferences"] as const;
 export type ProfileTab = (typeof PROFILE_TABS)[number];
+export type PortfolioPane = "create" | "publish" | "card" | "statistics" | "messages" | "preview";
 export type ApplicationTab = WorkspaceTab;
 /** The Applications tab's views; List is the tab's index. Jobs searches current listings (Phase 09). */
 export type ApplicationsView = "list" | "board" | "calendar" | "insights" | "jobs" | "offers";
@@ -58,7 +59,7 @@ export const routes = {
 	/** An application's detail sheet over List, Board or Calendar (`?open=`); tablets show it beside the list. */
 	applicationOpen: (id: string, view: "list" | "board" | "calendar" = "list") =>
 		`${view === "list" ? "/applications" : `/applications/${view}`}?open=${segment(id)}` as const,
-	portfolio: () => "/portfolio" as const,
+	portfolio: (pane?: PortfolioPane) => (pane ? (`/portfolio/${pane}` as const) : ("/portfolio" as const)),
 	/** `tab`: the Profile section to open (Details by default). */
 	profile: (tab?: ProfileTab) => (tab && tab !== "details" ? (`/profile?tab=${tab}` as const) : ("/profile" as const)),
 	/** One Profile entry (Career), full screen. */

@@ -1,7 +1,36 @@
-import type { RouterOutput } from "@/libs/orpc/client";
+import type {
+	PortfolioClickKind,
+	PortfolioStatisticsRange,
+	PortfolioVisitSource,
+	PortfolioDevice,
+} from "@rezumi/schema/portfolio/statistics";
 import { PORTFOLIO_CLICK_KINDS, PORTFOLIO_VISIT_SOURCES } from "@rezumi/schema/portfolio/statistics";
 
-export type PortfolioStatisticsResult = NonNullable<RouterOutput["portfolio"]["statistics"]>;
+type Counts<Key extends string> = Record<Key, number>;
+
+export type PortfolioStatisticsResult = {
+	range: { days: PortfolioStatisticsRange; from: string; to: string };
+	days: {
+		date: string;
+		views: number;
+		messages: number;
+		workOpens: number;
+		clicks: Counts<PortfolioClickKind>;
+		sources: Counts<PortfolioVisitSource>;
+	}[];
+	totals: { views: number; clicks: Counts<PortfolioClickKind>; messages: number };
+	sources: Counts<PortfolioVisitSource>;
+	works: { id: string; title: string; opens: number }[];
+	details:
+		| { state: "locked" | "not-configured" | "unavailable" }
+		| {
+				state: "ready";
+				countries: { code: string; views: number }[];
+				devices: { device: PortfolioDevice; views: number }[];
+				referrers: { domain: string; views: number }[];
+				workDays: { date: string; workId: string; title: string; opens: number }[];
+		  };
+};
 
 /** What a CSV download holds (Phase 13 3.7): the days, the works, or the breakdown (Plus). */
 export type StatisticsCsvKind = "daily" | "works" | "details";

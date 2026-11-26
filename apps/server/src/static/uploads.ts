@@ -137,7 +137,16 @@ async function servePortfolioFile(request: Request, userId: string, filePath: st
 	let isPublic =
 		gate.access === "public" ||
 		(gate.access === "protected" && isValidPortfolioFileToken(key, gate.passwordHash, token));
-	if (!isPublic && !(await isOwner())) return notFound();
+	const url = new URL(request.url);
+	const previewToken = url.searchParams.get("preview");
+	const preview = Boolean(
+		previewToken &&
+		PORTFOLIO_PICTURE_PATH.test(filePath) &&
+		(await import("@rezumi/api/features/portfolio/preview-file").then(({ canReadPortfolioPreviewFile }) =>
+			canReadPortfolioPreviewFile(key, previewToken),
+		)),
+	);
+	if (!isPublic && !preview && !(await isOwner())) return notFound();
 
 	const storedFile = await getStorageService().read(key);
 	if (!storedFile) return notFound();
@@ -152,10 +161,13 @@ async function servePortfolioFile(request: Request, userId: string, filePath: st
 
 	const etag = createEtag(storedFile);
 	// A locked portfolio's file, even with a valid token: no shared cache keeps it.
-	const cacheControl =
-		isPublic && access === "public" ? PUBLIC_PICTURE_CACHE_CONTROL : OWNER_PORTFOLIO_FILE_CACHE_CONTROL;
-	const resourcePolicy = isPublic ? "cross-origin" : "same-site";
-	if ((asPdf || asPicture) && matchesIfNoneMatch(request.headers.get("If-None-Match"), etag))
+	const cacheControl = preview
+		? "private, no-store"
+		: isPublic && access === "public"
+			? PUBLIC_PICTURE_CACHE_CONTROL
+			: OWNER_PORTFOLIO_FILE_CACHE_CONTROL;
+	const resourcePolicy = isPublic || preview ? "cross-origin" : "same-site";
+	if (!preview && (asPdf || asPicture) && matchesIfNoneMatch(request.headers.get("If-None-Match"), etag))
 		return new Response(null, {
 			status: 304,
 			headers: { ETag: etag, "Cache-Control": cacheControl, "Cross-Origin-Resource-Policy": resourcePolicy },
