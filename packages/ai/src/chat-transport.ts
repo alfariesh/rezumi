@@ -1,5 +1,5 @@
-// The assistant's chat transport, ported from apps/web/src/features/assistant/chat.ts. It has no React Native imports,
-// so the Node scenarios in reports/M6-T3 drive it with mocked event iterators.
+import type { AiSource } from "@rezumi/schema/billing";
+import type { WorkspaceTab } from "@rezumi/schema/career";
 import type { ChatTransport, UIMessage, UIMessageChunk } from "ai";
 import { eventIteratorToUnproxiedDataStream } from "@orpc/client";
 import { parseJsonEventStream, uiMessageChunkSchema } from "ai";
@@ -8,15 +8,19 @@ import { parseJsonEventStream, uiMessageChunkSchema } from "ai";
 export type MessageContext = {
 	document: boolean;
 	posting: boolean;
+	work?: boolean;
+	workId?: string;
 	applicationId?: string;
 	application?: boolean;
 	memory?: boolean;
 	web?: boolean;
-	tab?: "fit" | "apply" | "prepare" | "practise" | "debrief" | "messages" | "saved";
+	tab?: WorkspaceTab;
 	offerIds?: string[];
 };
 
-type SendInput = {
+type SourceFields = { aiSource?: AiSource; idempotencyKey?: string };
+
+type SendInput = SourceFields & {
 	threadId: string;
 	message: UIMessage;
 	context: MessageContext;
@@ -58,19 +62,20 @@ export async function sendAgentMessage(
 	threadId: string,
 	context: MessageContext,
 	options: Pick<SendOptions, "messages" | "body" | "abortSignal">,
+	source: SourceFields = {},
 ): Promise<ReadableStream<UIMessageChunk>> {
 	const message = options.messages.at(-1);
 	if (!message) throw new Error("No message to send.");
 	const attachmentIds = attachmentIdsOf(options.body);
 	const iterator = await api.send(
-		{ threadId, message, context, ...(attachmentIds ? { attachmentIds } : {}) },
+		{ threadId, message, context, ...source, ...(attachmentIds ? { attachmentIds } : {}) },
 		options.abortSignal ? { signal: options.abortSignal } : {},
 	);
 	return parseSse(eventIteratorToUnproxiedDataStream(iterator));
 }
 
 /** A resumed stream that sends nothing for this long is treated as hung: it ends, and the chat reloads the thread. */
-export const RESUME_IDLE_MS = 45_000;
+const RESUME_IDLE_MS = 45_000;
 
 type UIPart = UIMessage["parts"][number];
 
@@ -81,7 +86,7 @@ type UIPart = UIMessage["parts"][number];
  * message and in the server's saved draft alike), so the current run starts at the first step after the last answer.
  * With no step of it there yet, the whole message came before it.
  */
-export function partsBeforeRun(message: UIMessage | undefined): UIPart[] {
+function partsBeforeRun(message: UIMessage | undefined): UIPart[] {
 	if (message?.role !== "assistant") return [];
 	const answered = message.parts.findLastIndex(
 		(part) => part.type === "tool-ask_user_question" && (part as { state?: string }).state === "output-available",
@@ -132,8 +137,8 @@ function chunksFor(parts: readonly UIPart[]): UIMessageChunk[] {
 type ResumeOptions = {
 	signal?: AbortSignal | undefined;
 	/** The message a replayed `start` names, to keep its parts from before the run. */
-	messageById: (id: string) => UIMessage | undefined;
-	idleMs?: number;
+	messageById?: (id: string) => UIMessage | undefined;
+	idleMs?: number | null;
 };
 
 /**
@@ -141,26 +146,30 @@ type ResumeOptions = {
  * restarts the message, so the parts from before the run are rebuilt first. A stream that goes quiet for `idleMs`
  * is cancelled and ends, rather than spinning forever on a run the server lost.
  */
-export async function resumeAgentStream(api: AgentMessagesApi, threadId: string, options: ResumeOptions) {
+export async function resumeAgentStream(api: AgentMessagesApi, threadId: string, options: ResumeOptions = {}) {
 	const controller = new AbortController();
 	const abort = () => controller.abort();
 	if (options.signal?.aborted) abort();
 	options.signal?.addEventListener("abort", abort, { once: true });
-	const iterator = await api.resume({ threadId }, { signal: controller.signal });
-	const idleMs = options.idleMs ?? RESUME_IDLE_MS;
+	const iterator = await api.resume({ threadId }, { signal: controller.signal }).catch((error: unknown) => {
+		options.signal?.removeEventListener("abort", abort);
+		throw error;
+	});
+	const idleMs = options.idleMs === null ? null : (options.idleMs ?? RESUME_IDLE_MS);
 	let timer: ReturnType<typeof setTimeout> | undefined;
-	const quiet = () =>
+	const quiet = (ms: number) =>
 		new Promise<IteratorResult<string>>((resolve) => {
 			timer = setTimeout(() => {
 				abort();
-				void iterator.return?.();
+				void Promise.resolve(iterator.return?.()).catch(() => undefined);
 				resolve({ done: true, value: undefined });
-			}, idleMs);
+			}, ms);
 		});
 	const watched: AsyncIterator<string> = {
 		next: async () => {
+			if (idleMs === null) return iterator.next();
 			try {
-				return await Promise.race([iterator.next(), quiet()]);
+				return await Promise.race([iterator.next(), quiet(idleMs)]);
 			} finally {
 				clearTimeout(timer);
 			}
@@ -178,7 +187,7 @@ export async function resumeAgentStream(api: AgentMessagesApi, threadId: string,
 				stream.enqueue(chunk);
 				if (chunk.type !== "start" || !first) return;
 				first = false;
-				const before = chunk.messageId ? partsBeforeRun(options.messageById(chunk.messageId)) : [];
+				const before = chunk.messageId ? partsBeforeRun(options.messageById?.(chunk.messageId)) : [];
 				for (const rebuilt of chunksFor(before)) stream.enqueue(rebuilt);
 			},
 			flush() {

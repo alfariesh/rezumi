@@ -69,12 +69,6 @@ msgstr "\"{value}\" இன்றிலிருந்து தொடங்க�
 msgid "{0, plural, =0 {No interviews} one {# interview} other {# interviews}}"
 msgstr ""
 
-#. placeholder {0}: proposals.length
-#: src/features/assistant/document.ts
-#: src/features/assistant/proposals.ts
-msgid "{0, plural, =1 {Edit applied} other {# edits applied}}"
-msgstr "{0, plural, =1 {திருத்தம் பயன்படுத்தப்பட்டது} other {# திருத்தங்கள் பயன்படுத்தப்பட்டன}}"
-
 #. placeholder {0}: term.jdCount
 #. placeholder {1}: term.label
 #. placeholder {2}: term.label
@@ -148,8 +142,8 @@ msgstr "{0, plural, one {# நாள்} other {# நாட்கள்}}"
 msgid "{0, plural, one {# document} other {# documents}}"
 msgstr "{0, plural, one {# ஆவணம்} other {# ஆவணங்கள்}}"
 
-#. placeholder {0}: knowledge.facts
-#: src/features/assistant/coach-screen.tsx
+#. placeholder {0}: profile.facts
+#: src/features/assistant/coach.tsx
 msgid "{0, plural, one {# fact} other {# facts}}"
 msgstr "{0, plural, one {# உண்மை} other {# உண்மைகள்}}"
 
@@ -188,7 +182,7 @@ msgid "{0, plural, one {# page} other {# pages}}"
 msgstr "{0, plural, one {# பக்கம்} other {# பக்கங்கள்}}"
 
 #. placeholder {0}: proposals.length
-#: src/features/assistant/messages.tsx
+#: src/features/assistant/change-set.tsx
 msgid "{0, plural, one {# proposed edit} other {# proposed edits}}"
 msgstr "{0, plural, one {# முன்மொழியப்பட்ட திருத்தம்} other {# முன்மொழியப்பட்ட திருத்தங்கள்}}"
 
@@ -198,7 +192,7 @@ msgid "{0, plural, one {# resume} other {# resumes}}"
 msgstr ""
 
 #. placeholder {0}: offerIds.length
-#: src/features/assistant/coach-screen.tsx
+#: src/features/assistant/coach.tsx
 msgid "{0, plural, one {# saved offer} other {# saved offers}}"
 msgstr "{0, plural, one {# சேமித்த சலுகை} other {# சேமித்த சலுகைகள்}}"
 
@@ -226,11 +220,6 @@ msgstr "{0, plural, one {# நாளுக்கு} other {# நாட்கள
 #: src/features/applications/next-step.ts
 msgid "{0, plural, one {No reply in # day} other {No reply in # days}}"
 msgstr "{0, plural, one {# நாளில் பதில் இல்லை} other {# நாட்களில் பதில் இல்லை}}"
-
-#. placeholder {0}: knowledge.facts
-#: src/features/assistant/coach-screen.tsx
-msgid "{0, plural, one {Profile · # fact} other {Profile · # facts}}"
-msgstr ""
 
 #. placeholder {0}: passages.length
 #: src/features/check/writing-tab.tsx
@@ -398,12 +387,6 @@ msgstr "{0} வேலை இடுகை"
 msgid "{0} pt"
 msgstr ""
 
-#. placeholder {0}: props.connection
-#. placeholder {1}: errorText(error, t`an error`)
-#: src/features/assistant/chat-view.tsx
-msgid "{0} returned “{1}”. Your message is kept."
-msgstr "{0} \"{1}\" திரும்பியது. உங்கள் செய்தி வைக்கப்பட்டுள்ளது."
-
 #. placeholder {0}: getStageLabel(stage)
 #: src/features/applications/detail/detail-header.tsx
 msgid "{0}, current stage"
@@ -421,7 +404,7 @@ msgid "{0}%"
 msgstr "{0}%"
 
 #. placeholder {0}: proposals.length
-#: src/features/assistant/messages.tsx
+#: src/features/assistant/change-set.tsx
 msgid "{accepted} of {0} applied"
 msgstr "{0}-இல் {accepted} பயன்படுத்தப்பட்டன"
 
@@ -692,10 +675,6 @@ msgstr ""
 #: src/features/applications/calendar/grid-event.tsx
 msgid "{kind} interview, {0}, {1}, {2}, {3} – {4}"
 msgstr ""
-
-#: src/features/assistant/coach-screen.tsx
-msgid "{label} connection"
-msgstr "{label} இணைப்பு"
 
 #: src/shell/app-tabs.tsx
 msgid "{label}, {count} unread"
@@ -1184,13 +1163,13 @@ msgstr "உச்சரிப்பு நிறம்"
 msgid "Accent is used for headings, icons and the header band. Body text stays near-black for print and ATS."
 msgstr "தலைப்புகள், ஐகான்கள் மற்றும் ஹெடர் பேண்ட் ஆகியவற்றிற்கு உச்சரிப்பு பயன்படுத்தப்படுகிறது. உடல் உரை அச்சிடுவதற்கும், ATS க்கும் கிட்டத்தட்ட கருப்பு நிறத்தில் இருக்கும்."
 
-#: src/features/assistant/messages.tsx
+#: src/features/assistant/change-set.tsx
 #: src/features/check/proposal-card.tsx
 #: src/features/workspace/apply/answer-diff.tsx
 msgid "Accept"
 msgstr "ஏற்றுக்கொள்"
 
-#: src/features/assistant/messages.tsx
+#: src/features/assistant/change-set.tsx
 msgid "Accept all"
 msgstr "அனைத்தையும் ஏற்றுக்கொள்"
 
@@ -1585,6 +1564,10 @@ msgstr "உங்கள் பெயரைச் சேர்க்கவும�
 msgid "Add your own AI connection in Settings, or choose Rezumi AI."
 msgstr ""
 
+#: src/features/assistant/provider.tsx
+msgid "Add your own connection to start a conversation."
+msgstr ""
+
 #: src/features/billing/credits.ts
 msgid "Added by Rezumi"
 msgstr ""
@@ -1717,6 +1700,10 @@ msgstr ""
 msgid "AI edit"
 msgstr "AI திருத்தம்"
 
+#: src/features/assistant/provider.tsx
+msgid "AI is unavailable"
+msgstr ""
+
 #: src/features/check/provider-sheet.tsx
 msgid "AI provider"
 msgstr "AI வழங்குநர்"
@@ -1749,6 +1736,10 @@ msgstr ""
 
 #: src/features/check/writing-tab.tsx
 msgid "AI review"
+msgstr ""
+
+#: src/features/assistant/provider.tsx
+msgid "AI settings"
 msgstr ""
 
 #: src/features/settings/locale-names.ts
@@ -1860,10 +1851,6 @@ msgstr "உட்பொதிக்கப்பட்ட எழுத்து�
 #: src/features/check/messages.ts
 msgid "An entry has no dates"
 msgstr "ஒரு நுழைவுக்கு தேதிகள் இல்லை"
-
-#: src/features/assistant/chat-view.tsx
-msgid "an error"
-msgstr "ஒரு பிழை"
 
 #: src/features/auth/create-account-screen.tsx
 msgid "Ana Putri"
@@ -2044,7 +2031,7 @@ msgstr "விண்ணப்ப விவரங்கள்"
 msgid "Application options"
 msgstr "வேலை விண்ணப்ப விருப்பங்கள்"
 
-#: src/features/assistant/coach-screen.tsx
+#: src/features/assistant/coach.tsx
 msgid "application summaries"
 msgstr "விண்ணப்பச் சுருக்கங்கள்"
 
@@ -2060,7 +2047,7 @@ msgstr "விண்ணப்பக் காட்சிகள்"
 #: app/(tabs)/applications/_layout.tsx
 #: src/features/applications/frame.tsx
 #: src/features/applications/insights/insights-screen.tsx
-#: src/features/assistant/coach-screen.tsx
+#: src/features/assistant/coach.tsx
 #: src/features/jobs/jobs-screen.tsx
 #: src/features/offers/offers-screen.tsx
 #: src/features/search/search-screen.tsx
@@ -2088,7 +2075,7 @@ msgstr ""
 msgid "Applied"
 msgstr "விண்ணப்பிக்கப்பட்டது"
 
-#: src/features/assistant/messages.tsx
+#: src/features/assistant/change-set.tsx
 #: src/features/workspace/messages/proposal-card.tsx
 msgctxt "A proposed change has been applied"
 msgid "Applied"
@@ -2155,13 +2142,9 @@ msgstr "{0}-இடம் கேள்"
 msgid "Ask about this application…"
 msgstr "இந்த விண்ணப்பம் பற்றிக் கேளுங்கள்…"
 
-#: src/features/assistant/coach-screen.tsx
+#: src/features/assistant/coach.tsx
 msgid "Ask about your next career step…"
 msgstr "உங்கள் அடுத்த தொழில் படி பற்றிக் கேளுங்கள்…"
-
-#: src/features/assistant/coach-screen.tsx
-msgid "Ask about your search, or bring an accomplishment you want to explain better. Answers use what's switched on below and say what they relied on."
-msgstr "உங்கள் தேடல் பற்றிக் கேளுங்கள், அல்லது இன்னும் தெளிவாக விளக்க விரும்பும் ஒரு சாதனையைக் கொண்டு வாருங்கள். பதில்கள் கீழே இயக்கப்பட்டவற்றைப் பயன்படுத்தும், எதைச் சார்ந்திருந்தன என்பதையும் சொல்லும்."
 
 #: src/features/workspace/coach-sheet.tsx
 msgid "Ask anything about this job. The coach reads the posting, your notes and what you sent, and knows you're on {part}."
@@ -2243,7 +2226,7 @@ msgstr "ATS-பாதுகாப்பானது"
 msgid "ATS-safe template"
 msgstr ""
 
-#: src/features/assistant/chat-view.tsx
+#: src/features/assistant/composer.tsx
 msgid "Attach a file"
 msgstr "ஒரு கோப்பை இணைக்கவும்"
 
@@ -2255,7 +2238,7 @@ msgstr ""
 msgid "Attach a resume (PDF)"
 msgstr ""
 
-#: src/features/assistant/chat-view.tsx
+#: src/features/assistant/composer.tsx
 msgid "Attach up to 10 files to a message."
 msgstr "ஒரு செய்தியில் 10 கோப்புகள் வரை இணைக்கவும்."
 
@@ -2263,7 +2246,7 @@ msgstr "ஒரு செய்தியில் 10 கோப்புகள் 
 msgid "Attachment"
 msgstr "இணைப்பு"
 
-#: src/features/assistant/chat-view.tsx
+#: src/features/assistant/composer.tsx
 msgid "Attachments can be up to 100 MB in all."
 msgstr "இணைப்புகள் அனைத்தும் 100 MB வரை இருக்கலாம்."
 
@@ -2586,7 +2569,7 @@ msgstr ""
 #: src/features/applications/board/close-reason-sheet.tsx
 #: src/features/applications/calendar/application-picker.tsx
 #: src/features/applications/save-posting.tsx
-#: src/features/assistant/coach-screen.tsx
+#: src/features/assistant/threads.tsx
 #: src/features/ats-checker/checker.tsx
 #: src/features/check/parser-view.tsx
 #: src/features/check/writing-tab.tsx
@@ -3058,6 +3041,7 @@ msgstr "விளிப்பு அல்லது நிறைவு வாச
 msgid "Clears its entries; the section stays. You can undo."
 msgstr "உள்ளீடுகளை அழிக்கிறது ஆனால் பிரிவை வைத்திருக்கிறது. இதை நீங்கள் செயல்தவிர்க்கலாம்."
 
+#: src/features/ai/report-content.tsx
 #: src/features/applications/detail/activity.tsx
 #: src/features/applications/detail/contacts.tsx
 #: src/features/applications/detail/detail-sheet.tsx
@@ -3072,6 +3056,10 @@ msgstr "உள்ளீடுகளை அழிக்கிறது ஆனா�
 #: src/features/applications/list/list-row.tsx
 #: src/features/applications/list/row-menu.tsx
 #: src/features/applications/save-sheet.tsx
+#: src/features/assistant/coach.tsx
+#: src/features/assistant/panel-bar.tsx
+#: src/features/assistant/provider.tsx
+#: src/features/assistant/threads.tsx
 #: src/features/auth/welcome-screen.tsx
 #: src/features/career/schedule-fields.tsx
 #: src/features/career/schedule-sheet.tsx
@@ -3140,10 +3128,6 @@ msgstr "தேடலை மூடு"
 msgid "Close the application"
 msgstr ""
 
-#: src/features/assistant/assistant-screen.tsx
-msgid "Close the assistant"
-msgstr "உதவியாளரை மூடு"
-
 #: src/features/applications/detail/stage-sheets.tsx
 #: src/features/applications/list/row-menu.tsx
 msgid "Close this application"
@@ -3165,8 +3149,7 @@ msgstr "மூடப்பட்டது"
 msgid "Closed: {closed}"
 msgstr "மூடப்பட்டது: {closed}"
 
-#: app/_layout.tsx
-#: src/features/assistant/coach-screen.tsx
+#: src/features/assistant/coach.tsx
 #: src/features/billing/credits.ts
 #: src/features/workspace/coach-sheet.tsx
 #: src/shell/tab-chrome.tsx
@@ -3179,6 +3162,10 @@ msgstr ""
 
 #: src/features/auth/two-factor-screen.tsx
 msgid "Codes look like a1b2c-d3e4f."
+msgstr ""
+
+#: src/features/assistant/panel-bar.tsx
+msgid "Collapse Coach"
 msgstr ""
 
 #: src/features/design/design-pane.tsx
@@ -3295,10 +3282,6 @@ msgstr "தானாகப் புதுப்பிக்க, அமைப்
 msgid "Connect an AI provider to read pasted text. Filling in by hand works without AI."
 msgstr ""
 
-#: src/features/assistant/provider.tsx
-msgid "Connect another…"
-msgstr "இன்னொன்றை இணைக்கவும்…"
-
 #: app/account/ai.tsx
 msgid "Connect the tools you use for writing, job search and working with your resumes."
 msgstr "எழுதுவதற்கும், வேலை தேடுவதற்கும், வேலை செய்வதற்கும் நீங்கள் பயன்படுத்தும் கருவிகளை உங்கள் ரெஸ்யூம்களுடன் இணைக்கவும்."
@@ -3360,17 +3343,13 @@ msgstr "உள்ளடக்கம் இன்னும் பக்கத்�
 msgid "Content to report"
 msgstr "புகாரளிக்க உள்ளடக்கம்"
 
-#: src/features/assistant/chat-view.tsx
-msgid "Context"
-msgstr "சூழல்"
-
-#: src/features/assistant/chat-view.tsx
+#: src/features/assistant/conversation.tsx
 #: src/features/assistant/messages.tsx
 msgid "Context is left out, so reply with a new message instead."
 msgstr "சூழல் விடுபட்டுள்ளது, அதற்கு பதிலாக புதிய செய்தியுடன் பதிலளிக்கவும்."
 
 #: app/(auth)/server.tsx
-#: src/features/assistant/chat-view.tsx
+#: src/features/assistant/conversation.tsx
 #: src/features/auth/check-email-screen.tsx
 #: src/features/onboarding/onboarding-screen.tsx
 #: src/features/profile/bring-screen.tsx
@@ -3391,24 +3370,21 @@ msgstr ""
 msgid "Contrast {0} to 1"
 msgstr ""
 
-#: src/features/assistant/chat-view.tsx
+#: src/features/assistant/conversation.tsx
 msgid "Conversation"
 msgstr "உரையாடல்"
 
-#: src/features/assistant/coach-screen.tsx
+#: src/features/assistant/threads.tsx
 msgid "Conversation name"
 msgstr "உரையாடலின் பெயர்"
 
-#: src/features/assistant/coach-screen.tsx
+#: src/features/assistant/panel-bar.tsx
 #: src/features/workspace/coach-sheet.tsx
 msgid "Conversations"
 msgstr "உரையாடல்கள்"
 
-#: src/features/assistant/coach-screen.tsx
-msgid "Conversations about one job live in its workspace."
-msgstr "ஒரு வேலை பற்றிய உரையாடல்கள் அதன் பணியிடத்தில் இருக்கும்."
-
 #: src/features/assistant/assistant-screen.tsx
+#: src/features/assistant/coach.tsx
 #: src/features/workspace/coach-sheet.tsx
 msgid "Conversations couldn't load."
 msgstr "உரையாடல்களை ஏற்ற முடியவில்லை."
@@ -3463,7 +3439,7 @@ msgstr "மறுமொழியை நகலெடு"
 msgid "Copy the text out of the exported file and read it through; fix anything that arrives in the wrong place."
 msgstr "ஏற்றுமதி செய்யப்பட்ட கோப்பிலிருந்து உரையை நகலெடுத்து முழுவதும் படிக்கவும்; தவறான இடத்தில் வருவதைச் சரிசெய்யவும்."
 
-#: src/features/assistant/chat-view.tsx
+#: src/features/assistant/conversation.tsx
 msgid "Copy transcript"
 msgstr "டிரான்ஸ்கிரிப்டை நகலெடுக்கவும்"
 
@@ -3492,7 +3468,7 @@ msgstr ""
 msgid "Correction by Rezumi"
 msgstr ""
 
-#: src/features/assistant/chat-view.tsx
+#: src/features/assistant/composer.tsx
 msgid "Couldn't attach the file. Try again."
 msgstr "கோப்பை இணைக்க முடியவில்லை. மீண்டும் முயற்சிக்கவும்."
 
@@ -3545,7 +3521,7 @@ msgstr ""
 msgid "Couldn't copy the questions. Try again."
 msgstr ""
 
-#: src/features/assistant/chat-view.tsx
+#: src/features/assistant/conversation.tsx
 msgid "Couldn't copy the transcript. Try again."
 msgstr "டிரான்ஸ்கிரிப்டை நகலெடுக்க முடியவில்லை. மீண்டும் முயற்சிக்கவும்."
 
@@ -3867,7 +3843,7 @@ msgstr "விண்ணப்பங்களிலிருந்து அத�
 msgid "Couldn't remove the file. Try again."
 msgstr "கோப்பை அகற்ற முடியவில்லை. மீண்டும் முயற்சிக்கவும்."
 
-#: src/features/assistant/coach-screen.tsx
+#: src/features/assistant/threads.tsx
 msgid "Couldn't rename the conversation. Try again."
 msgstr "உரையாடலை மறுபெயரிட முடியவில்லை. மீண்டும் முயற்சிக்கவும்."
 
@@ -4034,6 +4010,10 @@ msgstr "உரையாடலைத் தொடங்க முடியவி�
 #: src/features/assistant/provider.tsx
 msgid "Couldn't switch models. Try again."
 msgstr "மாடல்களை மாற்ற முடியவில்லை. மீண்டும் முயற்சிக்கவும்."
+
+#: src/features/assistant/use-conversation.ts
+msgid "Couldn't sync the edit status. Try again online."
+msgstr ""
 
 #: src/features/workspace/practice/recorder-control.tsx
 msgid "Couldn't transcribe. Your recording is still here."
@@ -4416,8 +4396,6 @@ msgstr "\"{title}\" ஐ நீக்கவா?"
 
 #. placeholder {0}: item.title
 #. placeholder {0}: title(thread)
-#: src/features/assistant/coach-screen.tsx
-#: src/features/assistant/threads.tsx
 #: src/features/workspace/coach-sheet.tsx
 #: src/features/workspace/saved/saved-row.tsx
 msgid "Delete {0}"
@@ -4923,7 +4901,11 @@ msgstr ""
 msgid "Each run looks for jobs that appeared since the last one. New ones wait in Home for your review; applications and documents are never created for you."
 msgstr ""
 
-#: src/features/assistant/coach-screen.tsx
+#: src/features/assistant/assistant-screen.tsx
+msgid "Each send starts fresh with this message and selected files. Previous conversation history stays here."
+msgstr ""
+
+#: src/features/assistant/coach.tsx
 msgid "earlier messages in this chat"
 msgstr "இந்த அரட்டையின் முந்தைய செய்திகள்"
 
@@ -4935,12 +4917,6 @@ msgstr "இந்த அரட்டையின் முந்தைய செ
 #: src/features/write/basics-screen.tsx
 msgid "Edit"
 msgstr "திருத்து"
-
-#. placeholder {0}: index + 1
-#. placeholder {1}: proposal.location
-#: src/features/assistant/messages.tsx
-msgid "Edit {0}: {1}"
-msgstr "திருத்து {0}: {1}"
 
 #: src/features/home/schedules.tsx
 msgid "Edit {name}"
@@ -5249,6 +5225,10 @@ msgstr ""
 msgid "Exit full screen"
 msgstr ""
 
+#: src/features/assistant/panel-bar.tsx
+msgid "Expand Coach"
+msgstr ""
+
 #: src/features/entries/fields.ts
 #: src/features/onboarding/intro-screen.tsx
 #: src/features/profile/facts-labels.ts
@@ -5363,7 +5343,7 @@ msgstr "இந்தச் சாதனத்தில் கோப்புப�
 msgid "Files"
 msgstr ""
 
-#: src/features/assistant/chat-view.tsx
+#: src/features/assistant/composer.tsx
 msgid "Files can be up to 5 MB each."
 msgstr ""
 
@@ -5932,7 +5912,7 @@ msgstr "உதவி & ஆவணங்கள்"
 msgid "Help & legal"
 msgstr ""
 
-#: src/features/assistant/coach-screen.tsx
+#: src/features/assistant/coach.tsx
 msgid "Help me turn an accomplishment into a Situation, Task, Action, Result and Reflection story."
 msgstr "ஒரு சாதனையை சூழ்நிலை, பணி, செயல், முடிவு, பிரதிபலிப்பு கொண்ட கதையாக மாற்ற எனக்கு உதவுங்கள்."
 
@@ -6113,22 +6093,6 @@ msgstr ""
 #: src/features/design/typography-screen.tsx
 msgid "Hyphenation"
 msgstr "இணைப்புக்குறி"
-
-#: src/features/assistant/assistant-screen.tsx
-msgid "I can see this letter and the {company} posting. Suggestions come back as edits you can accept one by one."
-msgstr "இந்தக் கடிதத்தையும் {company} நிறுவனத்தின் வேலைவாய்ப்பு அறிவிப்பையும் என்னால் பார்க்க முடியும். பரிந்துரைகள் நீங்கள் ஒவ்வொன்றாக ஏற்கக்கூடிய திருத்தங்களாகக் காட்டப்படும்."
-
-#: src/features/assistant/assistant-screen.tsx
-msgid "I can see this letter. Suggestions come back as edits you can accept one by one."
-msgstr "இந்தக் கடிதத்தை என்னால் பார்க்க முடியும். பரிந்துரைகள் நீங்கள் ஒவ்வொன்றாக ஏற்கக்கூடிய திருத்தங்களாகக் காட்டப்படும்."
-
-#: src/features/assistant/assistant-screen.tsx
-msgid "I can see this resume and the {company} posting. Suggestions come back as edits you can accept one by one."
-msgstr "இந்த ரெஸ்யூமையும் {company} வேலை இடுகையையும் என்னால் பார்க்க முடிகிறது. நீங்கள் ஒவ்வொன்றாக ஏற்றுக்கொள்ளக்கூடிய திருத்தங்களாக பரிந்துரைகள் மீண்டும் வரும்."
-
-#: src/features/assistant/assistant-screen.tsx
-msgid "I can see this resume. Suggestions come back as edits you can accept one by one."
-msgstr "இந்த ரெஸ்யூமை என்னால் பார்க்க முடிகிறது. நீங்கள் ஒவ்வொன்றாக ஏற்றுக்கொள்ளக்கூடிய திருத்தங்களாக பரிந்துரைகள் மீண்டும் வரும்."
 
 #: src/features/applications/stages.ts
 msgid "I withdrew"
@@ -6656,6 +6620,10 @@ msgstr ""
 msgid "Keep both"
 msgstr "இரண்டையும் வைத்திருங்கள்"
 
+#: src/features/assistant/threads.tsx
+msgid "Keep conversation"
+msgstr ""
+
 #: src/features/applications/interview-sheet.tsx
 #: src/features/applications/save-sheet.tsx
 #: src/features/career/schedule-sheet.tsx
@@ -6871,7 +6839,7 @@ msgstr ""
 msgid "Later"
 msgstr "பின்னர்"
 
-#: src/features/assistant/chat-view.tsx
+#: src/features/assistant/conversation.tsx
 msgid "Latest"
 msgstr "சமீபத்தியது"
 
@@ -7258,7 +7226,7 @@ msgstr ""
 msgid "Loading workspace…"
 msgstr "பணியிடத்தை ஏற்றுகிறது…"
 
-#: src/features/assistant/coach-screen.tsx
+#: src/features/assistant/coach.tsx
 msgid "Loading your Profile before you send…"
 msgstr ""
 
@@ -7512,7 +7480,11 @@ msgstr "நடுத்தர"
 msgid "Meets: {0}"
 msgstr ""
 
-#: src/features/assistant/chat-view.tsx
+#: src/features/ai/report-content.tsx
+msgid "Message actions"
+msgstr ""
+
+#: src/features/assistant/composer.tsx
 msgid "Message the assistant"
 msgstr "உதவியாளருக்கு செய்தி அனுப்பவும்"
 
@@ -7587,10 +7559,6 @@ msgstr "மேலும் விருப்பங்கள்"
 #: src/features/letters/write.tsx
 msgid "More personal"
 msgstr "மேலும் தனிப்பட்ட"
-
-#: src/features/assistant/provider.tsx
-msgid "More providers and options are in Settings. Editing, design, Check issues and downloads work without AI."
-msgstr "மேலும் வழங்குநர்கள் மற்றும் விருப்பங்கள் “அமைப்புகள்” இல் கிடைக்கின்றன. எடிட்டிங், “வடிவமைப்பு”, “சரிபார்ப்பு” இல் சிக்கலைக் கண்டறிதல் மற்றும் பதிவிறக்கங்கள் AI இல்லாமல் வேலை செய்யும்."
 
 #: src/features/onboarding/template-choice.tsx
 msgid "More templates"
@@ -7889,7 +7857,8 @@ msgid "New application"
 msgstr "புதிய விண்ணப்பம்"
 
 #: src/features/assistant/assistant-screen.tsx
-#: src/features/assistant/coach-screen.tsx
+#: src/features/assistant/coach.tsx
+#: src/features/assistant/panel-bar.tsx
 #: src/features/assistant/threads.tsx
 #: src/features/workspace/coach-sheet.tsx
 msgid "New conversation"
@@ -7955,6 +7924,10 @@ msgstr "புதிய பிரிவு"
 
 #: src/features/profile/stories.tsx
 msgid "New story"
+msgstr ""
+
+#: src/features/assistant/conversation.tsx
+msgid "New suggested edits"
 msgstr ""
 
 #: src/features/auth/email-sign-in-screen.tsx
@@ -8068,8 +8041,8 @@ msgid "No conventional section headings were found."
 msgstr "வழக்கமான பிரிவு தலைப்புகள் எதுவும் காணப்படவில்லை."
 
 #: src/features/assistant/threads.tsx
-msgid "No conversations about this document yet."
-msgstr "இந்த ஆவணம் பற்றி இதுவரை எந்த உரையாடலும் இல்லை."
+msgid "No conversations yet."
+msgstr ""
 
 #: src/features/profile/facts-detail.tsx
 msgid "No corrections"
@@ -8099,10 +8072,6 @@ msgstr "தேதிகள் எதுவும் காணப்படவி�
 #: src/features/share/custom-domain.tsx
 msgid "No domain is connected anymore. Pull to refresh."
 msgstr ""
-
-#: src/features/assistant/threads.tsx
-msgid "no edits"
-msgstr "திருத்தங்கள் இல்லை"
 
 #: src/features/ats-checker/messages.ts
 msgid "No education section was found."
@@ -8915,6 +8884,10 @@ msgstr "{0} க்கான விருப்பங்கள்"
 msgid "Options for {0} at {1}"
 msgstr "{1} இல் {0} க்கான விருப்பங்கள்"
 
+#: src/features/assistant/threads.tsx
+msgid "Options for {label}"
+msgstr ""
+
 #: src/features/write/entry-row.tsx
 msgid "Options for {name}"
 msgstr ""
@@ -8972,7 +8945,7 @@ msgstr ""
 msgid "Other documents · {0}"
 msgstr "பிற ஆவணங்கள் · {0}"
 
-#: src/features/assistant/messages.tsx
+#: src/features/assistant/change-set.tsx
 msgid "Out of date: the text has changed since."
 msgstr "காலாவதியானது: உரை மாற்றப்பட்டது."
 
@@ -9113,10 +9086,6 @@ msgstr ""
 #: src/features/share/web-page.tsx
 msgid "Passwords do not match."
 msgstr "கடவுச்சொற்கள் பொருந்தவில்லை."
-
-#: src/features/assistant/assistant-screen.tsx
-msgid "Past conversations"
-msgstr "கடந்த உரையாடல்கள்"
 
 #: src/features/applications/save-posting.tsx
 msgid "Paste a job link or the posting's text, then check the role and company."
@@ -9338,7 +9307,6 @@ msgid "Planning your week"
 msgstr "உங்கள் வாரத்தைத் திட்டமிடுகிறது"
 
 #: app/account/membership.tsx
-#: src/features/billing/ai-source.ts
 #: src/features/billing/plan-alert.ts
 msgid "Plans can be bought on the rezumi.app website."
 msgstr ""
@@ -9574,6 +9542,10 @@ msgstr ""
 msgid "Previous issue"
 msgstr "முந்தைய இதழ்"
 
+#: src/features/assistant/assistant-screen.tsx
+msgid "Previous messages, including document details, are also sent."
+msgstr ""
+
 #: src/features/applications/calendar/calendar-toolbar.tsx
 msgid "Previous month"
 msgstr "முந்தைய மாதம்"
@@ -9644,6 +9616,7 @@ msgstr "திறமைத் தரம்"
 #: app/(tabs)/_layout.tsx
 #: app/(tabs)/profile/_layout.tsx
 #: app/account/account.tsx
+#: src/features/assistant/coach.tsx
 #: src/features/profile/profile-screen.tsx
 #: src/features/search/search-screen.tsx
 #: src/shell/app-tabs.tsx
@@ -10042,12 +10015,12 @@ msgstr ""
 msgid "Rehearse aloud"
 msgstr "சத்தமாக ஒத்திகை பார்"
 
-#: src/features/assistant/messages.tsx
+#: src/features/assistant/change-set.tsx
 #: src/features/check/proposal-card.tsx
 msgid "Reject"
 msgstr "நிராகரிக்கவும்"
 
-#: src/features/assistant/messages.tsx
+#: src/features/assistant/change-set.tsx
 #: src/features/check/proposal-card.tsx
 msgid "Rejected"
 msgstr "நிராகரிக்கப்பட்டது"
@@ -10210,15 +10183,11 @@ msgstr "இந்தக் கோப்பை அகற்றவா?"
 msgid "Remove this photo?"
 msgstr "இந்தப் படத்தை அகற்றவா?"
 
+#: src/features/assistant/threads.tsx
 #: src/features/documents/document-menu.tsx
 #: src/features/documents/library-menu.tsx
 msgid "Rename"
 msgstr "மறுபெயரிடவும்"
-
-#. placeholder {0}: title(thread)
-#: src/features/assistant/coach-screen.tsx
-msgid "Rename {0}"
-msgstr "{0} என மறுபெயரிடவும்"
 
 #: src/features/write/section-sheet.tsx
 msgid "Rename section"
@@ -10443,7 +10412,8 @@ msgstr ""
 #: src/features/applications/list/list-states.tsx
 #: src/features/assistant/assistant-screen.tsx
 #: src/features/assistant/chat-view.tsx
-#: src/features/assistant/coach-screen.tsx
+#: src/features/assistant/coach.tsx
+#: src/features/assistant/conversation.tsx
 #: src/features/assistant/provider.tsx
 #: src/features/career/schedule-body.tsx
 #: src/features/check/application-picker.tsx
@@ -10558,6 +10528,12 @@ msgstr "இந்த API விசையைத் திரும்பப் �
 #: src/features/check/writing-tab.tsx
 msgid "Rewrite accepted"
 msgstr "மீண்டும் எழுதுதல் ஏற்கப்பட்டது"
+
+#. placeholder {0}: CREDIT_COSTS["coach-turn"]
+#. placeholder {1}: providers.balance
+#: src/features/assistant/provider.tsx
+msgid "Rezumi AI · {0} credit per reply · {1} left"
+msgstr ""
 
 #: app/account/membership.tsx
 msgid "Rezumi AI credits"
@@ -10694,7 +10670,7 @@ msgstr "மாதிரி ரெஸ்யூம் சேர்க்கப்�
 
 #: src/features/applications/detail/activity.tsx
 #: src/features/applications/detail/follow-up-sheet.tsx
-#: src/features/assistant/coach-screen.tsx
+#: src/features/assistant/threads.tsx
 #: src/features/documents/menu-panels.tsx
 #: src/features/history/history-panel.tsx
 #: src/features/history/version-options.tsx
@@ -11078,7 +11054,7 @@ msgstr ""
 msgid "Search role, company or contact"
 msgstr "தேடல் பங்கு, நிறுவனம் அல்லது தொடர்பு"
 
-#: src/features/assistant/coach-screen.tsx
+#: src/features/assistant/coach.tsx
 msgid "Search terms go to your web search service."
 msgstr "தேடல் சொற்கள் உங்கள் இணையத் தேடல் சேவைக்குச் செல்லும்."
 
@@ -11173,7 +11149,7 @@ msgstr ""
 msgid "Selects or clears this application"
 msgstr ""
 
-#: src/features/assistant/chat-view.tsx
+#: src/features/assistant/composer.tsx
 #: src/features/assistant/messages.tsx
 msgid "Send"
 msgstr "அனுப்பு"
@@ -11227,6 +11203,30 @@ msgstr ""
 #. placeholder {0}: connection.defaultProvider?.label ?? ""
 #: src/features/jobs/listing-fit.tsx
 msgid "Sends this job's posting and your Profile (details, and the facts and stories that are switched on) to {0}."
+msgstr ""
+
+#: src/features/assistant/assistant-screen.tsx
+msgid "Sends this letter and the posting to {provider}, only when you tap send."
+msgstr ""
+
+#: src/features/assistant/assistant-screen.tsx
+msgid "Sends this letter to {provider}, only when you tap send."
+msgstr ""
+
+#: src/features/assistant/assistant-screen.tsx
+msgid "Sends this resume and the posting to {provider}, only when you tap send."
+msgstr ""
+
+#: src/features/assistant/assistant-screen.tsx
+msgid "Sends this resume to {provider}, only when you tap send."
+msgstr ""
+
+#: src/features/assistant/assistant-screen.tsx
+msgid "Sends your message and the posting to {provider}, only when you tap send."
+msgstr ""
+
+#: src/features/assistant/assistant-screen.tsx
+msgid "Sends your message to {provider}, only when you tap send."
 msgstr ""
 
 #: src/features/workspace/coach-sheet.tsx
@@ -11626,6 +11626,10 @@ msgstr "ஆவணங்களை உருவாக்க அல்லது இ
 msgid "Sign in to edit this resume."
 msgstr "இந்த ரெஸ்யூமைத் திருத்த உள்நுழையவும்."
 
+#: src/features/assistant/coach.tsx
+msgid "Sign in to use Coach"
+msgstr ""
+
 #: src/features/assistant/assistant-screen.tsx
 msgid "Sign in to use the assistant."
 msgstr "உதவியாளரைப் பயன்படுத்த உள்நுழையவும்."
@@ -11846,7 +11850,7 @@ msgstr ""
 msgid "Source"
 msgstr "ஆதாரம்"
 
-#: src/features/assistant/chat-view.tsx
+#: src/features/assistant/conversation.tsx
 #: src/features/assistant/messages.tsx
 msgid "Sources"
 msgstr "ஆதாரங்கள்"
@@ -12036,7 +12040,7 @@ msgstr ""
 msgid "Step {index} of {total}"
 msgstr ""
 
-#: src/features/assistant/chat-view.tsx
+#: src/features/assistant/composer.tsx
 #: src/features/letters/write.tsx
 msgid "Stop"
 msgstr "நிறுத்து"
@@ -12054,11 +12058,11 @@ msgstr "பதிவை நிறுத்து"
 msgid "Stop when you're done. Nothing is sent until then."
 msgstr "முடிந்ததும் நிறுத்துங்கள். அதுவரை எதுவும் அனுப்பப்படாது."
 
-#: src/features/assistant/chat-view.tsx
+#: src/features/assistant/conversation.tsx
 msgid "Stopped"
 msgstr "நிறுத்தப்பட்டது"
 
-#: src/features/assistant/chat-view.tsx
+#: src/features/assistant/conversation.tsx
 msgid "Stopped. No edits were proposed."
 msgstr "நிறுத்தப்பட்டது. திருத்தங்கள் எதுவும் முன்மொழியப்படவில்லை."
 
@@ -12187,7 +12191,7 @@ msgstr "தொடக்க மற்றும் முடிவு தேதி
 msgid "Swedish"
 msgstr "ஸ்வீடிஷ்"
 
-#: src/features/assistant/chat-view.tsx
+#: src/features/assistant/conversation.tsx
 msgid "Switch model"
 msgstr "ஸ்விட்ச் மாடல்"
 
@@ -12516,14 +12520,6 @@ msgstr ""
 msgid "The application this letter is for."
 msgstr "இந்த கடிதம் வேலைக்கான விண்ணப்பம்."
 
-#: src/features/assistant/assistant-screen.tsx
-msgid "The assistant isn't set up on this server. Whoever runs it needs to set ENCRYPTION_SECRET. Everything else works without it."
-msgstr "இந்தச் சேவையகத்தில் உதவியாளர் அமைக்கப்படவில்லை. அதை இயக்குபவர் ENCRYPTION_SECRET மதிப்பை அமைக்க வேண்டும். அது இல்லாமலும் மற்ற அனைத்தும் செயல்படும்."
-
-#: src/features/assistant/provider.tsx
-msgid "The assistant uses your own key. Nothing is sent anywhere until you connect one."
-msgstr "உதவியாளர் உங்கள் சொந்த விசையைப் பயன்படுத்துகிறார். நீங்கள் ஒன்றை இணைக்கும் வரை எதுவும் எங்கும் அனுப்பப்படாது."
-
 #: src/features/profile/conflict-sheet.tsx
 msgid "The changes you made on this device since then will be lost."
 msgstr ""
@@ -12547,10 +12543,6 @@ msgstr "உங்கள் செய்திகளிலிருந்து �
 #: src/features/workspace/coach-sheet.tsx
 msgid "The coach isn't set up on this server. Whoever runs it needs to set ENCRYPTION_SECRET."
 msgstr "இந்தச் சேவையகத்தில் பயிற்சியாளர் அமைக்கப்படவில்லை. சேவையக நிர்வாகி ENCRYPTION_SECRET என்பதை அமைக்க வேண்டும்."
-
-#: src/features/assistant/coach-screen.tsx
-msgid "The coach isn't set up on this server. Whoever runs it needs to set ENCRYPTION_SECRET. Your Profile, Offers and your applications work without it."
-msgstr ""
 
 #: src/features/profile/preferences.tsx
 msgid "The coach proposes each fact in the chat. Nothing is saved until you agree."
@@ -12706,6 +12698,10 @@ msgstr "காரணம் நுண்ணறிவுக்காக வைக�
 msgid "The records aren't visible yet. Check again later."
 msgstr "பதிவுகள் இன்னும் தெரியவில்லை. பின்னர் மீண்டும் சரிபார்க்கவும்."
 
+#: src/features/assistant/conversation.tsx
+msgid "The reply was interrupted."
+msgstr ""
+
 #: src/features/ats-checker/checker.tsx
 msgid "The rest of the file isn't in this report."
 msgstr "மீதமுள்ள கோப்பு இந்த அறிக்கையில் இல்லை."
@@ -12741,6 +12737,14 @@ msgstr "மென்பொருள் உங்கள் ரெஸ்யூம�
 #: src/features/ats-checker/checker.tsx
 msgid "The score reflects how reliably text is extracted, not your chances."
 msgstr "மதிப்பெண் எவ்வளவு நம்பகத்தன்மையுடன் உரை பிரித்தெடுக்கப்படுகிறது என்பதை பிரதிபலிக்கிறது, உங்கள் வாய்ப்புகள் அல்ல."
+
+#: src/features/assistant/coach.tsx
+msgid "The server operator needs to configure AI before Coach can start."
+msgstr ""
+
+#: src/features/assistant/assistant-screen.tsx
+msgid "The server operator needs to configure AI before the assistant can start."
+msgstr ""
 
 #: src/features/documents/import-file.ts
 msgid "The server returned an invalid import result. Refresh Documents before retrying."
@@ -12837,7 +12841,7 @@ msgstr ""
 msgid "Thinking"
 msgstr "சிந்திக்கிறது"
 
-#: src/features/assistant/chat-view.tsx
+#: src/features/assistant/conversation.tsx
 msgid "Thinking…"
 msgstr "சிந்திக்கிறது…"
 
@@ -12871,6 +12875,7 @@ msgstr ""
 
 #: src/features/assistant/assistant-screen.tsx
 #: src/features/assistant/chat-view.tsx
+#: src/features/assistant/coach.tsx
 msgid "This conversation couldn't be opened."
 msgstr "இந்த உரையாடலைத் திறக்க முடியவில்லை."
 
@@ -13096,7 +13101,7 @@ msgid "This measures how faithfully software can extract this file's text. It do
 msgstr "இந்த கோப்பின் உரையை மென்பொருள் எவ்வளவு உண்மையாக பிரித்தெடுக்க முடியும் என்பதை இது அளவிடுகிறது. வேலை விண்ணப்பம் நிராகரிக்கப்படுமா என்பதை இது கணிக்கவில்லை, மேலும் எந்த கருவியும் முடியாது."
 
 #: src/features/billing/ai-source.ts
-msgid "This needs {required} and you have {balance}. Use your own AI connection instead: set it as the default in Settings → AI providers."
+msgid "This needs {required} and you have {balance}. Switch to your own AI connection to continue."
 msgstr ""
 
 #: src/features/assistant/messages.tsx
@@ -13439,7 +13444,7 @@ msgstr "படியெடுத்தது · {spokenFor} · பயன்ப�
 msgid "Transcribing with {model}…"
 msgstr "{model} மூலம் எழுத்தாக்குகிறது…"
 
-#: src/features/assistant/chat-view.tsx
+#: src/features/assistant/conversation.tsx
 msgid "Transcript copied"
 msgstr "டிரான்ஸ்கிரிப்ட் நகலெடுக்கப்பட்டது"
 
@@ -13635,9 +13640,8 @@ msgstr "இணைப்புகளை அடிக்கோடிடவும�
 #: src/features/applications/detail/contacts.tsx
 #: src/features/applications/interview/use-reschedule.ts
 #: src/features/applications/queries.ts
-#: src/features/assistant/document.ts
+#: src/features/assistant/change-set.tsx
 #: src/features/assistant/messages.tsx
-#: src/features/assistant/proposals.ts
 #: src/features/career/undo.ts
 #: src/features/check/actions.ts
 #: src/features/design/draft.ts
@@ -13949,8 +13953,6 @@ msgstr "#3E6B4F போன்ற ஆறு Hex இலக்கங்களைப�
 msgid "Use the authenticator app"
 msgstr ""
 
-#: src/features/assistant/document.ts
-#: src/features/assistant/proposals.ts
 #: src/features/check/actions.ts
 msgid "Use the builder's Undo to undo earlier changes."
 msgstr "முந்தைய மாற்றங்களைச் செயல்தவிர்க்க ரெஸ்யூம் திருத்தியின் செயல்தவிர் பொத்தானைப் பயன்படுத்தவும்."
@@ -14242,7 +14244,7 @@ msgstr ""
 msgid "Web page"
 msgstr "வலைப்பக்கம்"
 
-#: src/features/assistant/coach-screen.tsx
+#: src/features/assistant/coach.tsx
 msgid "Web research"
 msgstr "இணைய ஆய்வு"
 
@@ -14299,7 +14301,7 @@ msgstr "ஒரு பார்சர் என்ன படிக்கிறத
 msgid "What a person sees"
 msgstr "ஒரு நபர் என்ன பார்க்கிறார்"
 
-#: src/features/assistant/coach-screen.tsx
+#: src/features/assistant/coach.tsx
 msgid "What are you working on?"
 msgstr "நீங்கள் எதில் வேலை செய்கிறீர்கள்?"
 
@@ -14323,7 +14325,7 @@ msgstr "நினைவிருக்கும் அளவுக்குத�
 msgid "What goes in it?"
 msgstr "அதில் என்ன நடக்கிறது?"
 
-#: src/features/assistant/coach-screen.tsx
+#: src/features/assistant/coach.tsx
 msgid "What interview answers should I practice?"
 msgstr "நான் எந்த நேர்காணல் பதில்களைப் பயிற்சி செய்ய வேண்டும்?"
 
@@ -14427,9 +14429,9 @@ msgstr ""
 msgid "When do they need your answer?"
 msgstr "அவர்களுக்கு உங்கள் பதில் எப்போது தேவை?"
 
-#: src/features/assistant/coach-screen.tsx
-msgid "When you tap send, {list} go to {connection}."
-msgstr "நீங்கள் அனுப்பு என்பதைத் தட்டும்போது, {list} {connection}-க்குச் செல்லும்."
+#: src/features/assistant/coach.tsx
+msgid "When you tap send, {list} go to {label}."
+msgstr ""
 
 #: src/features/applications/insights/insights-cards.tsx
 msgid "Where applications come from"
@@ -14463,7 +14465,7 @@ msgstr "உங்கள் விண்ணப்பங்கள் எங்க�
 msgid "Which application is it for?"
 msgstr ""
 
-#: src/features/assistant/coach-screen.tsx
+#: src/features/assistant/coach.tsx
 msgid "Which opportunities best match my priorities?"
 msgstr "எந்த வாய்ப்புகள் என் முன்னுரிமைகளுக்கு மிகவும் பொருந்துகின்றன?"
 
@@ -14642,7 +14644,7 @@ msgstr "நேற்று"
 msgid "Yesterday {time}"
 msgstr "நேற்று {time}"
 
-#: src/features/assistant/chat-view.tsx
+#: src/features/assistant/conversation.tsx
 msgid "You"
 msgstr "நீங்கள்"
 
@@ -14830,6 +14832,11 @@ msgstr "உங்கள் AI இணைப்பு"
 msgid "Your AI connection"
 msgstr "உங்கள் AI இணைப்பு"
 
+#. placeholder {0}: provider.label
+#: src/features/assistant/provider.tsx
+msgid "Your AI connection · {0}"
+msgstr ""
+
 #: src/api/ai-consent.ts
 msgid "Your AI settings changed while you were deciding. Nothing was sent; try again."
 msgstr "நீங்கள் முடிவு செய்யும் போது உங்கள் AI அமைப்புகள் மாற்றப்பட்டன. எதுவும் அனுப்பப்படவில்லை; மீண்டும் முயற்சிக்கவும்."
@@ -14958,9 +14965,13 @@ msgstr "உங்கள் வரிகள் மிகவும் இறுக
 msgid "Your margins are very narrow."
 msgstr "உங்கள் ஓரங்கள் மிகவும் குறுகியவை."
 
-#: src/features/assistant/coach-screen.tsx
+#: src/features/assistant/coach.tsx
 msgid "your message"
 msgstr "உங்கள் செய்தி"
+
+#: src/features/assistant/conversation.tsx
+msgid "Your message is kept. Try again to continue."
+msgstr ""
 
 #: src/features/write/write-header.tsx
 msgid "Your name"
@@ -15038,7 +15049,7 @@ msgstr ""
 msgid "Your portfolio is coming to the app"
 msgstr ""
 
-#: src/features/assistant/coach-screen.tsx
+#: src/features/assistant/coach.tsx
 msgid "your preferences"
 msgstr "உங்கள் விருப்பங்கள்"
 
@@ -15074,7 +15085,7 @@ msgstr ""
 msgid "Your Profile changed somewhere else. Try again."
 msgstr ""
 
-#: src/features/assistant/coach-screen.tsx
+#: src/features/assistant/coach.tsx
 msgid "Your Profile couldn't load. Try again or switch Profile off before sending."
 msgstr ""
 
@@ -15190,7 +15201,7 @@ msgstr "நீங்கள் மீண்டும் வெளியிடு�
 msgid "Your sources"
 msgstr ""
 
-#: src/features/assistant/coach-screen.tsx
+#: src/features/assistant/coach.tsx
 msgid "your stories"
 msgstr "உங்கள் கதைகள்"
 

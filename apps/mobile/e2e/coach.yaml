@@ -1,0 +1,26 @@
+appId: app.rezumi
+name: Ask Coach from Home with the local AI stub
+---
+- launchApp
+- openLink: app.rezumi://home
+- extendedWaitUntil:
+    visible:
+      id: open-coach
+    timeout: 30000
+- tapOn:
+    id: open-coach
+- extendedWaitUntil:
+    visible:
+      id: assistant-message
+    timeout: 15000
+- tapOn:
+    id: coach-expand
+- tapOn:
+    id: assistant-message
+- inputText: What should I do next?
+- tapOn:
+    id: assistant-send
+- tapOn: Allow this operation
+- extendedWaitUntil:
+    visible: Start with one role that matches your priorities.
+    timeout: 30000

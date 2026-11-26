@@ -1,6 +1,5 @@
 import type { Proposal, ProposalState } from "@rezumi/resume/proposals";
 import type { ResumeData } from "@rezumi/schema/resume/data";
-import { plural, t } from "@lingui/core/macro";
 import { useMemo } from "react";
 import { applyTo, getProposalState, getStateIn } from "@rezumi/resume/proposals";
 import { acceptResumeProposals } from "./proposals";
@@ -8,7 +7,6 @@ import { getAccountScope } from "@/auth/session";
 import { useLetterStore, useResumeStore } from "@/draft";
 import { letterAdapter } from "@/draft/adapters";
 import { useApplications } from "@/features/applications/queries";
-import { dismissToast, showToast } from "@/ui-legacy";
 
 /** The document the assistant works on (web: AssistantDocument). Each builder layout owns its draft. */
 export type AssistantDocument = {
@@ -20,8 +18,10 @@ export type AssistantDocument = {
 	posting: { id: string; company: string; role: string } | null;
 	/** A proposal's state against the document as it reads now. */
 	stateOf: (proposal: Proposal) => ProposalState;
-	/** Applies proposals to the draft as one undo step, with Undo in the toast. */
-	accept: (proposals: readonly Proposal[]) => void;
+	/** Applies proposals to the draft as one undo step. */
+	accept: (
+		proposals: readonly Proposal[],
+	) => { applied: Proposal[]; canUndo: () => boolean; undo: () => void } | undefined;
 	/** Confirm the server has this draft before the model reads it. */
 	flush: () => Promise<boolean>;
 };
@@ -53,7 +53,7 @@ export function useResumeAssistantDocument(resumeId: string, applicationId?: str
 			stateOf: (proposal) => getProposalState(data, proposal),
 			accept: (proposals) => {
 				if (getAccountScope() !== scope || useResumeStore.getState().document?.id !== resumeId) return;
-				acceptResumeProposals(proposals);
+				return acceptResumeProposals(proposals);
 			},
 			flush: async () => {
 				if (!scope || getAccountScope() !== scope || useResumeStore.getState().document?.id !== resumeId) return false;
@@ -92,46 +92,34 @@ export function useLetterAssistantDocument(letterId: string, applicationId?: str
 			stateOf: (proposal) => getStateIn(document.content, proposal),
 			accept: (proposals) => {
 				if (!isCurrent() || useLetterStore.getState().locked) return;
-				const before = useLetterStore.getState().data?.content;
+				const before = useLetterStore.getState().data;
+				const applied: Proposal[] = [];
 				useLetterStore.getState().update(
 					(draft) => {
-						for (const proposal of proposals) draft.content = applyTo(draft.content, proposal) ?? draft.content;
+						for (const proposal of proposals) {
+							const next = applyTo(draft.content, proposal);
+							if (next === undefined || next === draft.content) continue;
+							draft.content = next;
+							applied.push(proposal);
+						}
 					},
 					{ newStep: true },
 				);
 				const accepted = useLetterStore.getState().data;
-				if (!accepted || accepted.content === before) return;
-				let eligible = true;
-				const toastId = showToast({
-					message: plural(proposals.length, { 1: "Edit applied", other: "# edits applied" }),
-					action: {
-						label: t`Undo`,
-						onPress: () => {
-							const current = useLetterStore.getState();
-							if (
-								eligible &&
-								isCurrent() &&
-								current.document &&
-								!current.locked &&
-								letterAdapter.matches(current.document, accepted)
-							)
-								current.undo();
-							else showToast({ message: t`Use the builder's Undo to undo earlier changes.` });
-						},
+				if (!accepted || accepted === before || !applied.length) return;
+				const canUndo = () => {
+					const current = useLetterStore.getState();
+					return (
+						isCurrent() && !current.locked && !!current.document && letterAdapter.matches(current.document, accepted)
+					);
+				};
+				return {
+					applied,
+					canUndo,
+					undo: () => {
+						if (canUndo()) useLetterStore.getState().undo();
 					},
-				});
-				const unsubscribe = useLetterStore.subscribe((current) => {
-					// Saves replace the whole letter; compare authored fields, ignoring revision and server metadata.
-					if (isCurrent() && current.document && letterAdapter.matches(current.document, accepted)) return;
-					eligible = false;
-					dismissToast(toastId);
-					unsubscribe();
-				});
-				// Action toasts last up to 12 seconds with a screen reader; eligibility ends with monitoring.
-				setTimeout(() => {
-					eligible = false;
-					unsubscribe();
-				}, 12000);
+				};
 			},
 			flush: async () => {
 				if (!isCurrent()) return false;

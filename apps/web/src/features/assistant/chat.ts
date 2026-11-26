@@ -1,25 +1,12 @@
 import type { AssistantDocument } from "./document";
-import type { WorkspaceTab } from "@rezumi/schema/career";
+import type { MessageContext } from "@rezumi/ai/chat-transport";
 import type { FileUIPart, UIMessage } from "ai";
 import { useQueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";
 import { agentWebSources } from "@rezumi/ai/tools/agent-tool-contracts";
 import { client, orpc } from "@/libs/orpc/client";
 
-/** What a message shares with the model; each context chip turns one off. The career coach uses the last four. */
-export type MessageContext = {
-	document: boolean;
-	posting: boolean;
-	/** The portfolio's open work (its chip); on unless removed. Sent as `workId`. */
-	work?: boolean;
-	workId?: string;
-	applicationId?: string;
-	application?: boolean;
-	memory?: boolean;
-	web?: boolean;
-	tab?: WorkspaceTab;
-	offerIds?: string[];
-};
+export type { MessageContext } from "@rezumi/ai/chat-transport";
 
 export type ChatAttachment = { id: string; filename: string; mediaType: string };
 

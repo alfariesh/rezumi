@@ -1,23 +1,30 @@
 import type { MessageContext, ThreadSummary } from "./chat";
 import type { AssistantDocument } from "./document";
-import type { IconName } from "@/ui-legacy";
+import type { IconName } from "@/ui";
+import { t as translate } from "@lingui/core/macro";
 import { Trans, useLingui } from "@lingui/react/macro";
+import { useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "expo-router";
 import { useState } from "react";
-import { ActivityIndicator, Pressable, View } from "react-native";
+import { View } from "react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { useThreads } from "./chat";
-import { ChatView, ContextChip } from "./chat-view";
+import { ChatView } from "./chat-view";
+import { ContextChip } from "./composer";
 import { useLetterAssistantDocument, useResumeAssistantDocument } from "./document";
+import { PanelBar } from "./panel-bar";
 import { publishProposals } from "./proposals";
 import { ModelButton, ModelSheet, ProviderGate, useConversationProvider } from "./provider";
 import { PastConversations } from "./threads";
-import { client } from "@/api/client";
+import { client, orpc } from "@/api/client";
 import { getAccountScope, useSession } from "@/auth/session";
 import { useLetterStore, useResumeStore } from "@/draft";
 import { useHasAIProvider } from "@/features/ai/providers";
 import { routes } from "@/routes";
-import { Banner, Button, Icon, IconButton, Text, useTheme } from "@/ui-legacy";
+import { Button, EmptyState, Icon, ListGroup, ListRow, Spinner, Text, Typography, cx } from "@/ui";
+import { NativeKeyboardBoundary } from "@/ui/keyboard";
+
+const fill = { flex: 1 };
 
 export type AssistantScreenProps = {
 	resumeId: string;
@@ -95,7 +102,7 @@ type DocumentAssistantScreenProps = Omit<AssistantScreenProps, "resumeId"> & {
 function DocumentAssistantScreen(props: DocumentAssistantScreenProps) {
 	const router = useRouter();
 	const { t } = useLingui();
-	const { colors, space } = useTheme();
+	const queryClient = useQueryClient();
 	const session = useSession();
 	const { document, loadFailed } = props;
 	const store = props.kind === "letter" ? useLetterStore : useResumeStore;
@@ -115,7 +122,7 @@ function DocumentAssistantScreen(props: DocumentAssistantScreenProps) {
 	const mine = document ? (threads.data ?? []).filter((thread) => belongsTo(thread, document)) : [];
 	const threadId = selected === "new" ? null : (selected ?? mine[0]?.id ?? null);
 	const summary = mine.find((thread) => thread.id === threadId);
-	const { provider, label, choose } = useConversationProvider(providers, summary, threadId);
+	const { provider, label, sourceNote, switching, choose } = useConversationProvider(providers, summary, threadId);
 
 	const newConversation = () => {
 		if (props.kind === "resume") publishProposals(props.documentId, []);
@@ -138,29 +145,31 @@ function DocumentAssistantScreen(props: DocumentAssistantScreenProps) {
 	const linkInvalid = linked && threads.data && document && !mine.some((thread) => thread.id === linked);
 
 	const waiting = (message: string, action?: { label: string; onPress: () => void }) => (
-		<View style={{ flex: 1, alignItems: "center", justifyContent: "center", gap: space.s2, padding: space.s4 }}>
-			<ActivityIndicator />
-			<Text color="ink2" align="center">
+		<View className="flex-1 items-center justify-center gap-3 p-4">
+			<Spinner />
+			<Text tone="muted" className="text-center">
 				{message}
 			</Text>
-			{action ? <Button variant="link" label={action.label} onPress={action.onPress} /> : null}
+			{action ? (
+				<Button variant="tertiary" onPress={action.onPress}>
+					<Button.Label>{action.label}</Button.Label>
+				</Button>
+			) : null}
 		</View>
 	);
-	const notice = (tone: "warn" | "danger", message: string, action: { label: string; onPress: () => void }) => (
-		<View style={{ padding: space.s4 }}>
-			<Banner tone={tone} message={message} action={action} />
-		</View>
+	const notice = (message: string, action: { label: string; onPress: () => void }) => (
+		<EmptyState kind="page" icon="warning-circle" title={message} action={action} />
 	);
 
 	// Chat (and Accept) mounts only after every check passes; each other state says what it waits for or offers a way on.
 	const body =
 		session.status !== "signed-in" ? (
-			notice("warn", t`Sign in to use the assistant.`, {
+			notice(t`Sign in to use the assistant.`, {
 				label: t`Sign in`,
 				onPress: () => router.push(routes.signIn()),
 			})
 		) : loadFailed ? (
-			notice("danger", props.kind === "letter" ? t`Couldn't load the cover letter.` : t`Couldn't load the resume.`, {
+			notice(props.kind === "letter" ? t`Couldn't load the cover letter.` : t`Couldn't load the resume.`, {
 				label: t`Retry`,
 				onPress: () =>
 					void store
@@ -175,24 +184,14 @@ function DocumentAssistantScreen(props: DocumentAssistantScreenProps) {
 					router.replace(props.kind === "letter" ? routes.letter(props.documentId) : routes.builder(props.documentId)),
 			})
 		) : threads.isError ? (
-			notice("danger", t`Conversations couldn't load.`, { label: t`Retry`, onPress: () => void threads.refetch() })
+			notice(t`Conversations couldn't load.`, { label: t`Retry`, onPress: () => void threads.refetch() })
 		) : !threads.data ? (
 			waiting(t`Loading conversations…`)
-		) : linkInvalid && view !== "history" ? (
-			notice("warn", t`This conversation couldn't be opened.`, {
+		) : linkInvalid ? (
+			notice(t`This conversation couldn't be opened.`, {
 				label: t`New conversation`,
 				onPress: () => setSelected("new"),
 			})
-		) : view === "history" ? (
-			<PastConversations
-				threads={threads.data ?? []}
-				isMine={(thread) => belongsTo(thread, document)}
-				currentId={threadId}
-				onOpen={openThread}
-				onDeleted={(id) => {
-					if (id === threadId) setSelected("new");
-				}}
-			/>
 		) : (
 			<ChatView
 				key={draftKey}
@@ -215,11 +214,12 @@ function DocumentAssistantScreen(props: DocumentAssistantScreenProps) {
 				}}
 				context={{ ...context, ...(document.posting ? { applicationId: document.posting.id } : {}) }}
 				document={document}
-				connection={label}
-				privacy={disclosure(t, document, context, label)}
+				sourceNote={sourceNote}
+				onFinish={() => void queryClient.invalidateQueries({ queryKey: orpc.billing.summary.key() })}
+				privacy={disclosure(document, context, label)}
 				placeholder={t`Ask, or describe a change…`}
 				assistantName={t`Assistant`}
-				disabled={document.locked || !providers.hasAIProvider}
+				disabled={document.locked || switching || !providers.hasAIProvider}
 				prompt={ask}
 				onPromptSent={() => setAsk(null)}
 				onSwitchModel={() => setModelOpen(true)}
@@ -257,79 +257,79 @@ function DocumentAssistantScreen(props: DocumentAssistantScreenProps) {
 				providers.retry();
 				void threads.refetch();
 			}}
-			notSetUp={t`The assistant isn't set up on this server. Whoever runs it needs to set ENCRYPTION_SECRET. Everything else works without it.`}
+			notSetUp={t`The server operator needs to configure AI before the assistant can start.`}
 		>
-			{body}
+			{view === "history" && document && threads.data ? (
+				<PastConversations
+					threads={threads.data ?? []}
+					isMine={(thread) => belongsTo(thread, document)}
+					currentId={threadId}
+					onOpen={openThread}
+					onDeleted={(id) => {
+						if (id === threadId) setSelected("new");
+					}}
+				/>
+			) : null}
+			<View className={cx("flex-1", view === "history" && !!document && !!threads.data && "hidden")}>{body}</View>
 		</ProviderGate>
 	);
 
 	return (
-		<SafeAreaProvider>
-			<SafeAreaView edges={["top", "bottom", "left", "right"]} style={{ flex: 1, backgroundColor: colors.surface }}>
-				<View
-					style={{
-						flexDirection: "row",
-						alignItems: "center",
-						minHeight: 52,
-						paddingStart: space.s3,
-						paddingEnd: space.s1,
-						borderBottomWidth: 1,
-						borderColor: colors.line,
-					}}
-				>
-					<Icon name="sparkle" size={20} color={colors.accent} />
-					<View style={{ flex: 1, paddingStart: space.s2 }}>
-						<Text variant="title" accessibilityRole="header">
-							<Trans>Assistant</Trans>
-						</Text>
-						{providers.hasAIProvider ? (
-							<ModelButton label={provider?.model ?? label} onPress={() => setModelOpen(true)} />
-						) : null}
+		<NativeKeyboardBoundary>
+			<SafeAreaProvider>
+				<SafeAreaView edges={["top", "bottom", "left", "right"]} style={fill}>
+					<View className="flex-1 bg-surface">
+						<View className="pt-3">
+							<PanelBar
+								title={t`Assistant`}
+								onNew={newConversation}
+								onHistory={() => setView(view === "history" ? "thread" : "history")}
+								showHistory={view === "history"}
+								onClose={() =>
+									router.canGoBack()
+										? router.back()
+										: router.replace(
+												props.kind === "letter" ? routes.letter(props.documentId) : routes.builder(props.documentId),
+											)
+								}
+								subtitle={provider ? <ModelButton label={provider.model} onPress={() => setModelOpen(true)} /> : null}
+							/>
+						</View>
+
+						{gate}
+
+						<ModelSheet
+							open={modelOpen}
+							onClose={() => setModelOpen(false)}
+							providers={providers.usableProviders}
+							currentId={provider?.id}
+							onChoose={(id) => void choose(id)}
+						/>
 					</View>
-					<IconButton icon="note-pencil" label={t`New conversation`} onPress={newConversation} />
-					<IconButton
-						icon="clock-counter-clockwise"
-						label={t`Past conversations`}
-						selected={view === "history"}
-						onPress={() => setView(view === "history" ? "thread" : "history")}
-					/>
-					<IconButton icon="x" label={t`Close the assistant`} onPress={() => router.back()} />
-				</View>
-
-				{gate}
-
-				<ModelSheet
-					open={modelOpen}
-					onClose={() => setModelOpen(false)}
-					providers={providers.usableProviders}
-					currentId={provider?.id}
-					onChoose={(id) => void choose(id)}
-				/>
-			</SafeAreaView>
-		</SafeAreaProvider>
+				</SafeAreaView>
+			</SafeAreaProvider>
+		</NativeKeyboardBoundary>
 	);
 }
 
-type Translate = ReturnType<typeof useLingui>["t"];
-
 /** What a send shares, and with whom (web's disclosure line). */
-function disclosure(t: Translate, document: AssistantDocument, context: MessageContext, provider: string) {
+function disclosure(document: AssistantDocument, context: MessageContext, provider: string) {
 	const posting = context.posting && document.posting;
 	const sends = context.document
 		? document.kind === "letter"
 			? posting
-				? t`Sends this letter and the posting to ${provider} with your key, only when you tap send.`
-				: t`Sends this letter to ${provider} with your key, only when you tap send.`
+				? translate`Sends this letter and the posting to ${provider}, only when you tap send.`
+				: translate`Sends this letter to ${provider}, only when you tap send.`
 			: posting
-				? t`Sends this resume and the posting to ${provider} with your key, only when you tap send.`
-				: t`Sends this resume to ${provider} with your key, only when you tap send.`
+				? translate`Sends this resume and the posting to ${provider}, only when you tap send.`
+				: translate`Sends this resume to ${provider}, only when you tap send.`
 		: posting
-			? t`Sends your message and the posting to ${provider} with your key, only when you tap send.`
-			: t`Sends your message to ${provider} with your key, only when you tap send.`;
+			? translate`Sends your message and the posting to ${provider}, only when you tap send.`
+			: translate`Sends your message to ${provider}, only when you tap send.`;
 	const history =
 		!context.document || !context.posting
-			? t`Each send starts fresh with this message and selected files. Previous conversation history stays here.`
-			: t`Previous messages, including document details, are also sent.`;
+			? translate`Each send starts fresh with this message and selected files. Previous conversation history stays here.`
+			: translate`Previous messages, including document details, are also sent.`;
 	return `${sends} ${history}`;
 }
 
@@ -340,7 +340,6 @@ type SuggestionsProps = { document: AssistantDocument; prepare: boolean; onPick:
 /** "What should we work on?" with starters that send at once. */
 function Suggestions({ document, prepare, onPick }: SuggestionsProps) {
 	const { t } = useLingui();
-	const { colors, radius, space } = useTheme();
 	const company = document.posting?.company;
 	const tailor: Suggestion[] = company
 		? [{ icon: "briefcase", label: t`Tailor to the ${company} posting`, hint: t`Uses the linked application` }]
@@ -376,69 +375,28 @@ function Suggestions({ document, prepare, onPick }: SuggestionsProps) {
 		];
 
 	return (
-		<View style={{ gap: space.s4, paddingTop: space.s4 }}>
-			<View style={{ gap: space.s2 }}>
-				<Text variant="heading" accessibilityRole="header">
-					<Trans>What should we work on?</Trans>
+		<View className="gap-4">
+			<Icon name="sparkle" size={24} tone="accent" />
+			<Typography.Heading type="h4">
+				<Trans>What should we work on?</Trans>
+			</Typography.Heading>
+			{document.locked ? (
+				<Text tone="warning">
+					<Trans>This document is locked. Unlock it to get suggestions.</Trans>
 				</Text>
-				<Text color="ink2">
-					{document.kind === "letter" ? (
-						company ? (
-							<Trans>
-								I can see this letter and the {company} posting. Suggestions come back as edits you can accept one by
-								one.
-							</Trans>
-						) : (
-							<Trans>I can see this letter. Suggestions come back as edits you can accept one by one.</Trans>
-						)
-					) : company ? (
-						<Trans>
-							I can see this resume and the {company} posting. Suggestions come back as edits you can accept one by one.
-						</Trans>
-					) : (
-						<Trans>I can see this resume. Suggestions come back as edits you can accept one by one.</Trans>
-					)}
-				</Text>
-				{document.locked ? (
-					<Text variant="callout" color="warnText">
-						<Trans>This document is locked. Unlock it to get suggestions.</Trans>
-					</Text>
-				) : null}
-			</View>
-			<View style={{ gap: space.s2 }}>
-				{suggestions.map((suggestion) => (
-					<Pressable
-						key={suggestion.label}
-						accessibilityRole="button"
-						accessibilityHint={suggestion.hint}
-						disabled={document.locked}
-						onPress={() => onPick(suggestion.label)}
-						style={({ pressed }) => ({
-							flexDirection: "row",
-							alignItems: "center",
-							gap: space.s3,
-							minHeight: 52,
-							paddingHorizontal: space.s3,
-							paddingVertical: space.s2,
-							borderWidth: 1,
-							borderColor: colors.line,
-							borderRadius: radius.rLg,
-							backgroundColor: pressed ? colors.press : "transparent",
-							opacity: document.locked ? 0.45 : 1,
-						})}
-					>
-						<Icon name={suggestion.icon} size={20} color={colors.ink2} />
-						<View style={{ flex: 1 }}>
-							<Text variant="label" numberOfLines={1}>
-								{suggestion.label}
-							</Text>
-							<Text variant="caption" color="ink3" numberOfLines={1}>
-								{suggestion.hint}
-							</Text>
-						</View>
-					</Pressable>
+			) : null}
+			<ListGroup>
+				{suggestions.map(({ icon, label, hint }) => (
+					<ListRow
+						key={label}
+						title={label}
+						description={hint}
+						icon={icon}
+						isDisabled={document.locked}
+						onPress={() => onPick(label)}
+					/>
 				))}
-			</View>
+			</ListGroup>
 		</View>
 	);
 }

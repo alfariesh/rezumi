@@ -1,5 +1,5 @@
 import type { ChatAttachment, MessageContext } from "./chat";
-import type { AssistantDocument, TextAssistantDocument } from "./document";
+import type { AssistantDocument } from "./document";
 import type { PromptChip, PromptFile } from "./prompt-box";
 import type { ProposeEditsOutput } from "@rezumi/ai/tools/agent-tool-contracts";
 import type { Proposal } from "@rezumi/resume/proposals";
@@ -12,6 +12,7 @@ import { Plural, Trans } from "@lingui/react/macro";
 import { useQueryClient } from "@tanstack/react-query";
 import { lastAssistantMessageIsCompleteWithApprovalResponses, lastAssistantMessageIsCompleteWithToolCalls } from "ai";
 import { lazy, memo, Suspense, useEffect, useEffectEvent, useLayoutEffect, useMemo, useRef, useState } from "react";
+import { isProposeEdits, toProposals } from "@rezumi/ai/assistant-proposals";
 import { agentWebSources, readPageOutputSchema } from "@rezumi/ai/tools/agent-tool-contracts";
 import { Icon } from "@rezumi/ui/components/icon";
 import {
@@ -186,7 +187,9 @@ export function Conversation(props: ConversationProps) {
 		() =>
 			textDocument
 				? messages.flatMap((message) =>
-						message.parts.flatMap((part) => (isProposeEdits(part) ? toProposals(part, statuses, textDocument) : [])),
+						message.parts.flatMap((part) =>
+							isProposeEdits(part) ? toProposals(part, statuses, textDocument.locationOf) : [],
+						),
 					)
 				: [],
 		[messages, statuses, textDocument],
@@ -223,7 +226,7 @@ export function Conversation(props: ConversationProps) {
 		for (const message of messages) {
 			for (const part of message.parts) {
 				if (!isProposeEdits(part)) continue;
-				const undone = toProposals(part, statuses, textDocument).filter(
+				const undone = toProposals(part, statuses, textDocument.locationOf).filter(
 					(proposal) => proposal.status === "accepted" && textDocument.stateOf(proposal) === "pending",
 				);
 				if (undone.length > 0) record(message, part, undone, "pending");
@@ -391,34 +394,8 @@ export function Conversation(props: ConversationProps) {
 	);
 }
 
-const isProposeEdits = (part: Part): part is ToolPart =>
-	part.type === "tool-propose_edits" && (part as ToolPart).state === "output-available";
-
 const isEditPortfolio = (part: Part): part is ToolPart =>
 	part.type === "tool-edit_portfolio" && (part as ToolPart).state === "output-available";
-
-function toProposals(
-	part: ToolPart,
-	statuses: ReadonlyMap<string, EditStatus>,
-	document: TextAssistantDocument,
-): Proposal[] {
-	const output = part.output as ProposeEditsOutput | undefined;
-	return (output?.edits ?? []).map((edit) => {
-		const target = {
-			sectionId: edit.target.sectionId,
-			field: edit.target.field,
-			...(edit.target.itemId === undefined ? {} : { itemId: edit.target.itemId }),
-			...(edit.target.roleId === undefined ? {} : { roleId: edit.target.roleId }),
-		};
-		return {
-			...edit,
-			target,
-			location: document.locationOf({ ...edit, target }) ?? edit.location,
-			status: statuses.get(edit.id) ?? edit.status,
-			source: "assistant",
-		};
-	});
-}
 
 type MessageViewProps = {
 	threadId: string;
@@ -767,7 +744,7 @@ function ToolPartView({
 				);
 			if (part.state !== "output-available" || document.kind === "portfolio") return null;
 			const output = part.output as ProposeEditsOutput;
-			const proposals = toProposals(part, statuses, document);
+			const proposals = toProposals(part, statuses, document.locationOf);
 			const states = proposals.map(document.stateOf);
 			const pending = states.filter((state) => state === "pending").length;
 			const accepted = states.filter((state) => state === "accepted").length;

@@ -9,7 +9,9 @@
 		"./tools/agent-tool-contracts": "./src/tools/agent-tool-contracts.ts",
 		"./tools/resume-tool-contracts": "./src/tools/resume-tool-contracts.ts",
 		"./resume/extraction-template": "./src/resume/extraction-template.ts",
-		"./resume/sanitize": "./src/resume/sanitize.ts"
+		"./resume/sanitize": "./src/resume/sanitize.ts",
+		"./chat-transport": "./src/chat-transport.ts",
+		"./assistant-proposals": "./src/assistant-proposals.ts"
 	},
 	"scripts": {
 		"typecheck": "tsrs --noEmit",
@@ -22,11 +24,12 @@
 		"@rezumi/schema": "workspace:*",
 		"@rezumi/utils": "workspace:*",
 		"jsonrepair": "catalog:",
-		"zod": "catalog:"
+		"zod": "catalog:",
+		"@orpc/client": "catalog:",
+		"ai": "catalog:"
 	},
 	"devDependencies": {
 		"@rezumi/config": "workspace:*",
-		"ai": "catalog:",
 		"tsrs": "catalog:",
 		"typescript": "catalog:",
 		"vite-plus": "catalog:"

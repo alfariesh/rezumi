@@ -1,7 +1,7 @@
-// The assistant's chat on oRPC, ported from apps/web/src/features/assistant/chat.ts.
-import type { MessageContext } from "./transport";
-import type { AgentMessagesApi } from "./transport";
 import type { RouterOutput } from "@/api/client";
+import type { MessageContext } from "@rezumi/ai/chat-transport";
+import type { AgentMessagesApi } from "@rezumi/ai/chat-transport";
+import type { AgentUIMessage } from "@rezumi/ai/tools/agent-tool-contracts";
 import type { FileUIPart, UIMessage } from "ai";
 import { Chat, useChat } from "@ai-sdk/react";
 import { t } from "@lingui/core/macro";
@@ -9,11 +9,13 @@ import { ORPCError } from "@orpc/client";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { lastAssistantMessageIsCompleteWithApprovalResponses, lastAssistantMessageIsCompleteWithToolCalls } from "ai";
 import { useEffect, useLayoutEffect, useMemo, useRef } from "react";
-import { resumeAgentStream, sendAgentMessage } from "./transport";
+import { resumeAgentStream, sendAgentMessage } from "@rezumi/ai/chat-transport";
+import { agentWebSources } from "@rezumi/ai/tools/agent-tool-contracts";
+import { AiConsentDeclined } from "@/api/ai-consent";
 import { client, orpc, streamClient } from "@/api/client";
 import { getAccountScope, useSession } from "@/auth/session";
 
-export type { MessageContext } from "./transport";
+export type { MessageContext } from "@rezumi/ai/chat-transport";
 export type ChatAttachment = { id: string; filename: string; mediaType: string };
 export type ThreadSummary = RouterOutput["agent"]["threads"]["list"][number];
 
@@ -30,57 +32,13 @@ export const textOf = (message: UIMessage) =>
 		.join("")
 		.trim();
 
-export type WebSource = { url: string; title: string };
-
-// Hosts only: IP literals and local names are never shown as sources (web: agentWebSources).
-const PUBLIC_URL = /^(https?):\/\/([^/?#@\s]+)([^#\s]*)/i;
-
-function publicSourceUrl(value: string) {
-	const match = PUBLIC_URL.exec(value.trim());
-	const host = match?.[2]?.toLowerCase().replace(/\.$/, "");
-	if (!match || !host) return null;
-	if (
-		!host.includes(".") ||
-		/^[\d.]+$/.test(host) ||
-		host.includes(":") ||
-		/(?:^|\.)(?:localhost|local|internal|lan)$/.test(host) ||
-		host.endsWith(".home.arpa")
-	)
-		return null;
-	return `${match[1]?.toLowerCase()}://${host}${match[3] ?? ""}`;
-}
-
-/** Sources from successful retrieval and native source parts, never links invented in response text. */
-export function webSources(message: UIMessage): WebSource[] {
-	const sources = new Map<string, WebSource>();
-	const add = (value: unknown, title: unknown) => {
-		const url = typeof value === "string" ? publicSourceUrl(value) : null;
-		if (url && !sources.has(url)) sources.set(url, { url, title: (typeof title === "string" && title.trim()) || url });
-	};
-	for (const part of message.parts) {
-		if (part.type === "source-url") {
-			add(part.url, part.title);
-			continue;
-		}
-		const tool = part as { state?: string; output?: unknown };
-		if (tool.state !== "output-available") continue;
-		if (part.type === "tool-search_web" && Array.isArray(tool.output))
-			for (const result of tool.output as { url?: unknown; title?: unknown }[]) add(result.url, result.title);
-		if (part.type === "tool-read_page" && tool.output && typeof tool.output === "object") {
-			const page = tool.output as { resolvedUrl?: unknown; requestedUrl?: unknown };
-			add(page.resolvedUrl ?? page.requestedUrl, "");
-		}
-	}
-	return [...sources.values()];
-}
-
 type TranscriptLabels = { user: string; assistant: string; sources: string };
 
 /** The conversation as plain text, speaker by speaker, for Copy transcript. Tool steps are left out. */
 export function transcriptOf(messages: readonly UIMessage[], labels: TranscriptLabels) {
 	return messages
 		.flatMap((message) => {
-			const sources = webSources(message)
+			const sources = agentWebSources(message)
 				.map((source) => `${source.title}: ${source.url}`)
 				.join("\n");
 			const content = [textOf(message), ...(sources ? [`${labels.sources}:\n${sources}`] : [])]
@@ -113,14 +71,14 @@ type UseAssistantChatInput = {
 	context: MessageContext;
 	onFinish: () => void;
 	scope: string;
-	beforeSend?: (() => Promise<boolean>) | undefined;
+	beforeSend?: ((context: MessageContext) => Promise<boolean>) | undefined;
 };
 
 /**
  * The conversation's chat: messages stream in over oRPC, answers to the assistant's questions continue the reply,
  * and only the newest message is sent (the server keeps the transcript).
  */
-/** Running replies are picked up by the caller (chat-view.tsx `recoverRun`), not on mount. */
+/** Running replies are picked up by the conversation controller, not on mount. */
 export function useAssistantChat({
 	threadId,
 	initialMessages,
@@ -142,7 +100,11 @@ export function useAssistantChat({
 	const instance = useMemo(() => {
 		const agentMessages: AgentMessagesApi = {
 			// The server validates the UI message; bind every request to this conversation's account.
-			send: (input, options) => streamClient.agent.messages.send(input as never, { ...options, context: { scope } }),
+			send: (input, options) =>
+				streamClient.agent.messages.send(
+					{ ...input, message: input.message as AgentUIMessage },
+					{ ...options, context: { scope } },
+				),
 			resume: (input, options) => streamClient.agent.messages.resume(input, { ...options, context: { scope } }),
 		};
 		const chat: Chat<UIMessage> = new Chat<UIMessage>({
@@ -152,10 +114,17 @@ export function useAssistantChat({
 				// The server's resumable stream replays the reply from its start, so the client starts the message over.
 				resumeStreamIsReplay: true,
 				sendMessages: async (options) => {
-					if (beforeSendRef.current && !(await beforeSendRef.current()))
+					const context = contextRef.current;
+					if (beforeSendRef.current && !(await beforeSendRef.current(context)))
 						throw new ORPCError("PRECONDITION_FAILED", { message: t`Save the document before sending.` });
 					options.abortSignal?.throwIfAborted();
-					return sendAgentMessage(agentMessages, threadId, contextRef.current, options);
+					return sendAgentMessage(agentMessages, threadId, context, options).catch((error: unknown) => {
+						// An SDK abort silences the failure and drops Retry. Keep the unsent prompt visible.
+						if (error instanceof AiConsentDeclined) {
+							throw new ORPCError("PRECONDITION_FAILED", { message: error.message, cause: error });
+						}
+						throw error;
+					});
 				},
 				// A resumed run keeps the parts of the message from before it, as the chat shows them now.
 				reconnectToStream: ({ abortSignal }) =>

@@ -1,14 +1,15 @@
 // Ask coach from the workspace: the application's own conversations in a sheet, knowing which part is open. The chat
-// itself is the assistant's (Phase 11 rebuilds it); this frame is on the design system.
+// itself is shared with the career Coach and document assistants.
 import type { Application } from "@/features/applications/types";
 import type { MessageContext } from "@/features/assistant/chat";
 import type { WorkspaceTab } from "@rezumi/schema/career";
 import { useLingui } from "@lingui/react/macro";
+import { useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { View, useWindowDimensions } from "react-native";
 import { Notice } from "./blocks";
 import { partLabel } from "./working";
-import { client } from "@/api/client";
+import { client, orpc } from "@/api/client";
 import { getAccountScope, useSession } from "@/auth/session";
 import { useHasAIProvider } from "@/features/ai/providers";
 import { useThreads } from "@/features/assistant/chat";
@@ -51,6 +52,7 @@ type ApplicationCoachProps = { application: Application; tab: WorkspaceTab };
 function ApplicationCoach({ application, tab }: ApplicationCoachProps) {
 	const { t } = useLingui();
 	const { height } = useWindowDimensions();
+	const queryClient = useQueryClient();
 	const providers = useHasAIProvider();
 	const threads = useThreads();
 	const [selected, setSelected] = useState<string | null>(null);
@@ -62,7 +64,7 @@ function ApplicationCoach({ application, tab }: ApplicationCoachProps) {
 	);
 	const threadId = selected === "new" ? null : (selected ?? list[0]?.id ?? null);
 	const summary = list.find((thread) => thread.id === threadId);
-	const { provider, label, choose } = useConversationProvider(providers, summary, threadId);
+	const { provider, label, sourceNote, switching, choose } = useConversationProvider(providers, summary, threadId);
 	const title = useThreadTitle();
 	const time = useThreadTime();
 	const open = (id: string) => {
@@ -152,8 +154,9 @@ function ApplicationCoach({ application, tab }: ApplicationCoachProps) {
 						}}
 						context={context}
 						document={null}
-						disabled={!providers.hasAIProvider}
-						connection={label}
+						disabled={switching || !providers.hasAIProvider}
+						sourceNote={sourceNote}
+						onFinish={() => void queryClient.invalidateQueries({ queryKey: orpc.billing.summary.key() })}
 						privacy={privacy}
 						placeholder={t`Ask about this application…`}
 						assistantName={t`Coach`}

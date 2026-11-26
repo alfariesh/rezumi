@@ -95,6 +95,8 @@ mocks["@/shell/tab-chrome"] = { TabBarActions: "TabBarActions", useInTabs: () =>
 mocks["@/ui"] = { size: { wide: 700 }, ...pullRefresh };
 // Bottom bars report their height so toasts clear them; layout fixtures do not show toasts.
 mocks["@/ui/toast"] = { setToastBarHeight() {} };
+const sectionLayout = load("shell/section-width.ts");
+mocks["./section-width"] = sectionLayout;
 const { useIsTablet: isTablet } = load("shell/use-is-tablet.ts");
 mocks["./use-is-tablet"] = { useIsTablet: isTablet };
 const keyboardLayout = load("ui/keyboard.tsx");
@@ -131,6 +133,11 @@ for (const [width, right, expected] of [
 	insets = { ...insets, right };
 	assert.equal(isTablet(), expected);
 }
+window = { ...window, width: 834 };
+sectionLayout.SectionWidth.current = 418;
+assert.equal(isTablet(), false, "A section beside Coach uses the space that remains");
+assert.equal(isTablet("window"), true, "The sidebar remains available when the section becomes narrow");
+sectionLayout.SectionWidth.current = null;
 for (const scroll of [false, true]) {
 	const measure = () => {};
 	const screen = Screen({ scroll, edges: ["top"], onLayout: measure });

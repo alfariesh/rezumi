@@ -69,12 +69,6 @@ msgstr "“{value}” dimulai setelah hari ini. Periksa tahunnya, atau tandai se
 msgid "{0, plural, =0 {No interviews} one {# interview} other {# interviews}}"
 msgstr "{0, plural, =0 {Tidak ada wawancara} one {# wawancara} other {# wawancara}}"
 
-#. placeholder {0}: proposals.length
-#: src/features/assistant/document.ts
-#: src/features/assistant/proposals.ts
-msgid "{0, plural, =1 {Edit applied} other {# edits applied}}"
-msgstr "{0, plural, =1 {Suntingan diterapkan} other {# suntingan diterapkan}}"
-
 #. placeholder {0}: term.jdCount
 #. placeholder {1}: term.label
 #. placeholder {2}: term.label
@@ -148,8 +142,8 @@ msgstr "{0, plural, one {# hari} other {# hari}}"
 msgid "{0, plural, one {# document} other {# documents}}"
 msgstr "{0, plural, one {# dokumen} other {# dokumen}}"
 
-#. placeholder {0}: knowledge.facts
-#: src/features/assistant/coach-screen.tsx
+#. placeholder {0}: profile.facts
+#: src/features/assistant/coach.tsx
 msgid "{0, plural, one {# fact} other {# facts}}"
 msgstr "{0, plural, other {# fakta}}"
 
@@ -188,9 +182,9 @@ msgid "{0, plural, one {# page} other {# pages}}"
 msgstr "{0, plural, other {# halaman}}"
 
 #. placeholder {0}: proposals.length
-#: src/features/assistant/messages.tsx
+#: src/features/assistant/change-set.tsx
 msgid "{0, plural, one {# proposed edit} other {# proposed edits}}"
-msgstr "{0, plural, one {# mengusulkan pengeditan} other {# mengusulkan pengeditan}}"
+msgstr "{0, plural, other {# usulan suntingan}}"
 
 #. placeholder {0}: counts.resume
 #: src/features/documents/segment-header.tsx
@@ -198,7 +192,7 @@ msgid "{0, plural, one {# resume} other {# resumes}}"
 msgstr "{0, plural, other {# CV}}"
 
 #. placeholder {0}: offerIds.length
-#: src/features/assistant/coach-screen.tsx
+#: src/features/assistant/coach.tsx
 msgid "{0, plural, one {# saved offer} other {# saved offers}}"
 msgstr "{0, plural, other {# penawaran tersimpan}}"
 
@@ -226,11 +220,6 @@ msgstr "{0, plural, one {Selama # hari} other {Selama # hari}}"
 #: src/features/applications/next-step.ts
 msgid "{0, plural, one {No reply in # day} other {No reply in # days}}"
 msgstr "{0, plural, one {Tidak ada balasan di hari #} other {Tidak ada balasan dalam # hari}}"
-
-#. placeholder {0}: knowledge.facts
-#: src/features/assistant/coach-screen.tsx
-msgid "{0, plural, one {Profile · # fact} other {Profile · # facts}}"
-msgstr "{0, plural, other {Profil · # fakta}}"
 
 #. placeholder {0}: passages.length
 #: src/features/check/writing-tab.tsx
@@ -398,12 +387,6 @@ msgstr "Postingan pekerjaan {0}"
 msgid "{0} pt"
 msgstr "{0} pt"
 
-#. placeholder {0}: props.connection
-#. placeholder {1}: errorText(error, t`an error`)
-#: src/features/assistant/chat-view.tsx
-msgid "{0} returned “{1}”. Your message is kept."
-msgstr "{0} mengembalikan “{1}”. Pesan Anda disimpan."
-
 #. placeholder {0}: getStageLabel(stage)
 #: src/features/applications/detail/detail-header.tsx
 msgid "{0}, current stage"
@@ -421,7 +404,7 @@ msgid "{0}%"
 msgstr "{0}%"
 
 #. placeholder {0}: proposals.length
-#: src/features/assistant/messages.tsx
+#: src/features/assistant/change-set.tsx
 msgid "{accepted} of {0} applied"
 msgstr "{accepted} dari {0} diterapkan"
 
@@ -692,10 +675,6 @@ msgstr "Wawancara {kind} · {0}, {1}"
 #: src/features/applications/calendar/grid-event.tsx
 msgid "{kind} interview, {0}, {1}, {2}, {3} – {4}"
 msgstr "Wawancara {kind}, {0}, {1}, {2}, {3} – {4}"
-
-#: src/features/assistant/coach-screen.tsx
-msgid "{label} connection"
-msgstr "Koneksi {label}"
 
 #: src/shell/app-tabs.tsx
 msgid "{label}, {count} unread"
@@ -1184,13 +1163,13 @@ msgstr "Warna aksen"
 msgid "Accent is used for headings, icons and the header band. Body text stays near-black for print and ATS."
 msgstr "Aksen digunakan untuk judul, ikon, dan pita header. Teks isi tetap hampir hitam untuk dicetak dan ATS."
 
-#: src/features/assistant/messages.tsx
+#: src/features/assistant/change-set.tsx
 #: src/features/check/proposal-card.tsx
 #: src/features/workspace/apply/answer-diff.tsx
 msgid "Accept"
-msgstr "Menerima"
+msgstr "Terima"
 
-#: src/features/assistant/messages.tsx
+#: src/features/assistant/change-set.tsx
 msgid "Accept all"
 msgstr "Terima semuanya"
 
@@ -1585,6 +1564,10 @@ msgstr "Tambahkan nama Anda"
 msgid "Add your own AI connection in Settings, or choose Rezumi AI."
 msgstr "Tambahkan koneksi AI sendiri di Pengaturan, atau pilih Rezumi AI."
 
+#: src/features/assistant/provider.tsx
+msgid "Add your own connection to start a conversation."
+msgstr "Tambahkan koneksi AI sendiri untuk memulai percakapan."
+
 #: src/features/billing/credits.ts
 msgid "Added by Rezumi"
 msgstr "Ditambahkan oleh Rezumi"
@@ -1717,6 +1700,10 @@ msgstr "AI tidak dapat membaca semuanya. Periksa detailnya, atau isi secara manu
 msgid "AI edit"
 msgstr "Sunting AI"
 
+#: src/features/assistant/provider.tsx
+msgid "AI is unavailable"
+msgstr "AI tidak tersedia"
+
 #: src/features/check/provider-sheet.tsx
 msgid "AI provider"
 msgstr "penyedia AI"
@@ -1750,6 +1737,10 @@ msgstr "AI hanya membaca teks tempelan saat Anda minta. Tautan memakai data lowo
 #: src/features/check/writing-tab.tsx
 msgid "AI review"
 msgstr "Tinjauan AI"
+
+#: src/features/assistant/provider.tsx
+msgid "AI settings"
+msgstr "Pengaturan AI"
 
 #: src/features/settings/locale-names.ts
 msgid "Albanian"
@@ -1860,10 +1851,6 @@ msgstr "Font yang disematkan tidak dapat dibaca."
 #: src/features/check/messages.ts
 msgid "An entry has no dates"
 msgstr "Sebuah entri tidak memiliki tanggal"
-
-#: src/features/assistant/chat-view.tsx
-msgid "an error"
-msgstr "sebuah kesalahan"
 
 #: src/features/auth/create-account-screen.tsx
 msgid "Ana Putri"
@@ -2044,7 +2031,7 @@ msgstr "Detail lamaran"
 msgid "Application options"
 msgstr "pilihan lamaran pekerjaan"
 
-#: src/features/assistant/coach-screen.tsx
+#: src/features/assistant/coach.tsx
 msgid "application summaries"
 msgstr "ringkasan lamaran"
 
@@ -2060,7 +2047,7 @@ msgstr "Tampilan lamaran"
 #: app/(tabs)/applications/_layout.tsx
 #: src/features/applications/frame.tsx
 #: src/features/applications/insights/insights-screen.tsx
-#: src/features/assistant/coach-screen.tsx
+#: src/features/assistant/coach.tsx
 #: src/features/jobs/jobs-screen.tsx
 #: src/features/offers/offers-screen.tsx
 #: src/features/search/search-screen.tsx
@@ -2086,9 +2073,9 @@ msgstr "Lamaran terkirim per minggu: {0}"
 #: src/features/check/proposal-card.tsx
 #: src/features/onboarding/intro-screen.tsx
 msgid "Applied"
-msgstr "Dilamar"
+msgstr "Diterapkan"
 
-#: src/features/assistant/messages.tsx
+#: src/features/assistant/change-set.tsx
 #: src/features/workspace/messages/proposal-card.tsx
 msgctxt "A proposed change has been applied"
 msgid "Applied"
@@ -2155,13 +2142,9 @@ msgstr "Tanya {0}"
 msgid "Ask about this application…"
 msgstr "Tanyakan tentang lamaran ini…"
 
-#: src/features/assistant/coach-screen.tsx
+#: src/features/assistant/coach.tsx
 msgid "Ask about your next career step…"
 msgstr "Tanyakan tentang langkah karier Anda berikutnya…"
-
-#: src/features/assistant/coach-screen.tsx
-msgid "Ask about your search, or bring an accomplishment you want to explain better. Answers use what's switched on below and say what they relied on."
-msgstr "Tanyakan tentang pencarian Anda, atau bawa pencapaian yang ingin Anda jelaskan dengan lebih baik. Jawaban memakai apa yang diaktifkan di bawah dan menyebutkan apa yang menjadi dasarnya."
 
 #: src/features/workspace/coach-sheet.tsx
 msgid "Ask anything about this job. The coach reads the posting, your notes and what you sent, and knows you're on {part}."
@@ -2243,7 +2226,7 @@ msgstr "ATS-aman"
 msgid "ATS-safe template"
 msgstr "Template aman ATS"
 
-#: src/features/assistant/chat-view.tsx
+#: src/features/assistant/composer.tsx
 msgid "Attach a file"
 msgstr "Lampirkan file"
 
@@ -2255,7 +2238,7 @@ msgstr "Lampirkan surat (PDF)"
 msgid "Attach a resume (PDF)"
 msgstr "Lampirkan CV (PDF)"
 
-#: src/features/assistant/chat-view.tsx
+#: src/features/assistant/composer.tsx
 msgid "Attach up to 10 files to a message."
 msgstr "Lampirkan hingga 10 file ke pesan."
 
@@ -2263,7 +2246,7 @@ msgstr "Lampirkan hingga 10 file ke pesan."
 msgid "Attachment"
 msgstr "Lampiran"
 
-#: src/features/assistant/chat-view.tsx
+#: src/features/assistant/composer.tsx
 msgid "Attachments can be up to 100 MB in all."
 msgstr "Lampirannya bisa berukuran hingga 100 MB."
 
@@ -2586,7 +2569,7 @@ msgstr "Belum bisa dipastikan: {0}"
 #: src/features/applications/board/close-reason-sheet.tsx
 #: src/features/applications/calendar/application-picker.tsx
 #: src/features/applications/save-posting.tsx
-#: src/features/assistant/coach-screen.tsx
+#: src/features/assistant/threads.tsx
 #: src/features/ats-checker/checker.tsx
 #: src/features/check/parser-view.tsx
 #: src/features/check/writing-tab.tsx
@@ -3058,6 +3041,7 @@ msgstr "Kosongkan salam pembuka atau salam penutup untuk menghilangkannya. Mengo
 msgid "Clears its entries; the section stays. You can undo."
 msgstr "Menghapus entri-entrinya; bagian itu tetap ada. Anda dapat membatalkan."
 
+#: src/features/ai/report-content.tsx
 #: src/features/applications/detail/activity.tsx
 #: src/features/applications/detail/contacts.tsx
 #: src/features/applications/detail/detail-sheet.tsx
@@ -3072,6 +3056,10 @@ msgstr "Menghapus entri-entrinya; bagian itu tetap ada. Anda dapat membatalkan."
 #: src/features/applications/list/list-row.tsx
 #: src/features/applications/list/row-menu.tsx
 #: src/features/applications/save-sheet.tsx
+#: src/features/assistant/coach.tsx
+#: src/features/assistant/panel-bar.tsx
+#: src/features/assistant/provider.tsx
+#: src/features/assistant/threads.tsx
 #: src/features/auth/welcome-screen.tsx
 #: src/features/career/schedule-fields.tsx
 #: src/features/career/schedule-sheet.tsx
@@ -3140,10 +3128,6 @@ msgstr "Tutup pencarian"
 msgid "Close the application"
 msgstr "Tutup lamaran"
 
-#: src/features/assistant/assistant-screen.tsx
-msgid "Close the assistant"
-msgstr "Tutup asisten"
-
 #: src/features/applications/detail/stage-sheets.tsx
 #: src/features/applications/list/row-menu.tsx
 msgid "Close this application"
@@ -3165,8 +3149,7 @@ msgstr "Tertutup"
 msgid "Closed: {closed}"
 msgstr "Tutup: {closed}"
 
-#: app/_layout.tsx
-#: src/features/assistant/coach-screen.tsx
+#: src/features/assistant/coach.tsx
 #: src/features/billing/credits.ts
 #: src/features/workspace/coach-sheet.tsx
 #: src/shell/tab-chrome.tsx
@@ -3180,6 +3163,10 @@ msgstr "Ingatan coach"
 #: src/features/auth/two-factor-screen.tsx
 msgid "Codes look like a1b2c-d3e4f."
 msgstr "Bentuk kodenya seperti a1b2c-d3e4f."
+
+#: src/features/assistant/panel-bar.tsx
+msgid "Collapse Coach"
+msgstr "Perkecil Coach"
 
 #: src/features/design/design-pane.tsx
 #: src/features/letters/design.tsx
@@ -3295,10 +3282,6 @@ msgstr "Hubungkan penyedia AI di Pengaturan untuk menyegarkannya secara otomatis
 msgid "Connect an AI provider to read pasted text. Filling in by hand works without AI."
 msgstr "Hubungkan penyedia AI untuk membaca teks tempelan. Mengisi manual tetap bisa tanpa AI."
 
-#: src/features/assistant/provider.tsx
-msgid "Connect another…"
-msgstr "Hubungkan yang lain…"
-
 #: app/account/ai.tsx
 msgid "Connect the tools you use for writing, job search and working with your resumes."
 msgstr "Hubungkan alat yang Anda gunakan untuk menulis, mencari pekerjaan, dan mengerjakan resume Anda."
@@ -3360,17 +3343,13 @@ msgstr "Konten masih berjalan. Sembunyikan bagian atau persingkat entri."
 msgid "Content to report"
 msgstr "Konten untuk dilaporkan"
 
-#: src/features/assistant/chat-view.tsx
-msgid "Context"
-msgstr "Konteks"
-
-#: src/features/assistant/chat-view.tsx
+#: src/features/assistant/conversation.tsx
 #: src/features/assistant/messages.tsx
 msgid "Context is left out, so reply with a new message instead."
 msgstr "Konteksnya tidak disertakan, jadi balas dengan pesan baru."
 
 #: app/(auth)/server.tsx
-#: src/features/assistant/chat-view.tsx
+#: src/features/assistant/conversation.tsx
 #: src/features/auth/check-email-screen.tsx
 #: src/features/onboarding/onboarding-screen.tsx
 #: src/features/profile/bring-screen.tsx
@@ -3391,24 +3370,21 @@ msgstr "Lanjut dengan Google"
 msgid "Contrast {0} to 1"
 msgstr "Kontras {0} banding 1"
 
-#: src/features/assistant/chat-view.tsx
+#: src/features/assistant/conversation.tsx
 msgid "Conversation"
 msgstr "Percakapan"
 
-#: src/features/assistant/coach-screen.tsx
+#: src/features/assistant/threads.tsx
 msgid "Conversation name"
 msgstr "Nama percakapan"
 
-#: src/features/assistant/coach-screen.tsx
+#: src/features/assistant/panel-bar.tsx
 #: src/features/workspace/coach-sheet.tsx
 msgid "Conversations"
 msgstr "Percakapan"
 
-#: src/features/assistant/coach-screen.tsx
-msgid "Conversations about one job live in its workspace."
-msgstr "Percakapan tentang satu pekerjaan ada di ruang kerjanya."
-
 #: src/features/assistant/assistant-screen.tsx
+#: src/features/assistant/coach.tsx
 #: src/features/workspace/coach-sheet.tsx
 msgid "Conversations couldn't load."
 msgstr "Percakapan tidak dapat dimuat."
@@ -3463,7 +3439,7 @@ msgstr "Salin balasan"
 msgid "Copy the text out of the exported file and read it through; fix anything that arrives in the wrong place."
 msgstr "Salin teks dari file yang diekspor dan baca seluruhnya; perbaiki apa pun yang muncul di tempat yang salah."
 
-#: src/features/assistant/chat-view.tsx
+#: src/features/assistant/conversation.tsx
 msgid "Copy transcript"
 msgstr "Salin transkrip"
 
@@ -3492,7 +3468,7 @@ msgstr "Dikoreksi {0} · versi asli disimpan"
 msgid "Correction by Rezumi"
 msgstr "Koreksi oleh Rezumi"
 
-#: src/features/assistant/chat-view.tsx
+#: src/features/assistant/composer.tsx
 msgid "Couldn't attach the file. Try again."
 msgstr "Tidak dapat melampirkan file. Coba lagi."
 
@@ -3545,7 +3521,7 @@ msgstr "Foto tidak bisa disalin. Anda bisa menambahkannya nanti di Profil."
 msgid "Couldn't copy the questions. Try again."
 msgstr "Tidak dapat menyalin pertanyaan. Coba lagi."
 
-#: src/features/assistant/chat-view.tsx
+#: src/features/assistant/conversation.tsx
 msgid "Couldn't copy the transcript. Try again."
 msgstr "Tidak dapat menyalin transkrip. Coba lagi."
 
@@ -3867,7 +3843,7 @@ msgstr "Tidak dapat menghapusnya dari Lamaran. Coba lagi."
 msgid "Couldn't remove the file. Try again."
 msgstr "Tidak dapat menghapus file. Coba lagi."
 
-#: src/features/assistant/coach-screen.tsx
+#: src/features/assistant/threads.tsx
 msgid "Couldn't rename the conversation. Try again."
 msgstr "Tidak dapat mengganti nama percakapan. Coba lagi."
 
@@ -4034,6 +4010,10 @@ msgstr "Tidak dapat memulai percakapan. Coba lagi."
 #: src/features/assistant/provider.tsx
 msgid "Couldn't switch models. Try again."
 msgstr "Tidak dapat berganti model. Coba lagi."
+
+#: src/features/assistant/use-conversation.ts
+msgid "Couldn't sync the edit status. Try again online."
+msgstr "Status suntingan gagal disinkronkan. Coba lagi saat terhubung."
 
 #: src/features/workspace/practice/recorder-control.tsx
 msgid "Couldn't transcribe. Your recording is still here."
@@ -4416,8 +4396,6 @@ msgstr "Hapus “{title}”?"
 
 #. placeholder {0}: item.title
 #. placeholder {0}: title(thread)
-#: src/features/assistant/coach-screen.tsx
-#: src/features/assistant/threads.tsx
 #: src/features/workspace/coach-sheet.tsx
 #: src/features/workspace/saved/saved-row.tsx
 msgid "Delete {0}"
@@ -4923,7 +4901,11 @@ msgstr "Tiap CV memilih apakah menampilkannya."
 msgid "Each run looks for jobs that appeared since the last one. New ones wait in Home for your review; applications and documents are never created for you."
 msgstr "Setiap kali berjalan, Rezumi mencari lowongan yang muncul sejak pengecekan sebelumnya. Lowongan baru menunggu di Beranda untuk kamu tinjau; lamaran dan dokumen tidak pernah dibuat otomatis."
 
-#: src/features/assistant/coach-screen.tsx
+#: src/features/assistant/assistant-screen.tsx
+msgid "Each send starts fresh with this message and selected files. Previous conversation history stays here."
+msgstr "Setiap pengiriman dimulai dengan pesan ini dan berkas terpilih. Riwayat percakapan tetap di sini."
+
+#: src/features/assistant/coach.tsx
 msgid "earlier messages in this chat"
 msgstr "pesan sebelumnya di chat ini"
 
@@ -4935,12 +4917,6 @@ msgstr "pesan sebelumnya di chat ini"
 #: src/features/write/basics-screen.tsx
 msgid "Edit"
 msgstr "Edit"
-
-#. placeholder {0}: index + 1
-#. placeholder {1}: proposal.location
-#: src/features/assistant/messages.tsx
-msgid "Edit {0}: {1}"
-msgstr "Sunting {0}: {1}"
 
 #: src/features/home/schedules.tsx
 msgid "Edit {name}"
@@ -5249,6 +5225,10 @@ msgstr "Eksekutif"
 msgid "Exit full screen"
 msgstr "Keluar dari layar penuh"
 
+#: src/features/assistant/panel-bar.tsx
+msgid "Expand Coach"
+msgstr "Perbesar Coach"
+
 #: src/features/entries/fields.ts
 #: src/features/onboarding/intro-screen.tsx
 #: src/features/profile/facts-labels.ts
@@ -5363,7 +5343,7 @@ msgstr "Berbagi file tidak tersedia di perangkat ini."
 msgid "Files"
 msgstr "File"
 
-#: src/features/assistant/chat-view.tsx
+#: src/features/assistant/composer.tsx
 msgid "Files can be up to 5 MB each."
 msgstr "Ukuran tiap file maksimal 5 MB."
 
@@ -5932,7 +5912,7 @@ msgstr "Bantuan & dokumen"
 msgid "Help & legal"
 msgstr "Bantuan & legal"
 
-#: src/features/assistant/coach-screen.tsx
+#: src/features/assistant/coach.tsx
 msgid "Help me turn an accomplishment into a Situation, Task, Action, Result and Reflection story."
 msgstr "Bantu saya mengubah pencapaian menjadi cerita Situasi, Tugas, Tindakan, Hasil, dan Refleksi."
 
@@ -6113,22 +6093,6 @@ msgstr "Hybrid"
 #: src/features/design/typography-screen.tsx
 msgid "Hyphenation"
 msgstr "Pemisahan kata dengan tanda hubung"
-
-#: src/features/assistant/assistant-screen.tsx
-msgid "I can see this letter and the {company} posting. Suggestions come back as edits you can accept one by one."
-msgstr "Saya dapat melihat surat ini dan lowongan kerja dari {company}. Saran ditampilkan sebagai perubahan yang dapat Anda terima satu per satu."
-
-#: src/features/assistant/assistant-screen.tsx
-msgid "I can see this letter. Suggestions come back as edits you can accept one by one."
-msgstr "Saya dapat melihat surat ini. Saran ditampilkan sebagai perubahan yang dapat Anda terima satu per satu."
-
-#: src/features/assistant/assistant-screen.tsx
-msgid "I can see this resume and the {company} posting. Suggestions come back as edits you can accept one by one."
-msgstr "Saya dapat melihat CV ini dan lowongan {company}. Saran muncul kembali sebagai hasil edit yang dapat Anda terima satu per satu."
-
-#: src/features/assistant/assistant-screen.tsx
-msgid "I can see this resume. Suggestions come back as edits you can accept one by one."
-msgstr "Saya dapat melihat CV ini. Saran muncul kembali sebagai hasil edit yang dapat Anda terima satu per satu."
 
 #: src/features/applications/stages.ts
 msgid "I withdrew"
@@ -6656,6 +6620,10 @@ msgstr "Pertahankan lamaran"
 msgid "Keep both"
 msgstr "Pertahankan keduanya"
 
+#: src/features/assistant/threads.tsx
+msgid "Keep conversation"
+msgstr "Simpan percakapan"
+
 #: src/features/applications/interview-sheet.tsx
 #: src/features/applications/save-sheet.tsx
 #: src/features/career/schedule-sheet.tsx
@@ -6871,7 +6839,7 @@ msgstr "1 minggu terakhir"
 msgid "Later"
 msgstr "Nanti"
 
-#: src/features/assistant/chat-view.tsx
+#: src/features/assistant/conversation.tsx
 msgid "Latest"
 msgstr "Terbaru"
 
@@ -7258,7 +7226,7 @@ msgstr "Memuat deskripsi"
 msgid "Loading workspace…"
 msgstr "Memuat ruang kerja…"
 
-#: src/features/assistant/coach-screen.tsx
+#: src/features/assistant/coach.tsx
 msgid "Loading your Profile before you send…"
 msgstr "Memuat Profilmu sebelum dikirim…"
 
@@ -7512,7 +7480,11 @@ msgstr "Sedang"
 msgid "Meets: {0}"
 msgstr "Memenuhi: {0}"
 
-#: src/features/assistant/chat-view.tsx
+#: src/features/ai/report-content.tsx
+msgid "Message actions"
+msgstr "Tindakan pesan"
+
+#: src/features/assistant/composer.tsx
 msgid "Message the assistant"
 msgstr "Kirim pesan ke asisten"
 
@@ -7587,10 +7559,6 @@ msgstr "Opsi lainnya"
 #: src/features/letters/write.tsx
 msgid "More personal"
 msgstr "Lebih pribadi"
-
-#: src/features/assistant/provider.tsx
-msgid "More providers and options are in Settings. Editing, design, Check issues and downloads work without AI."
-msgstr "Penyedia dan opsi lainnya ada di Pengaturan. Pengeditan, desain, masalah Pemeriksaan, dan pengunduhan berfungsi tanpa AI."
 
 #: src/features/onboarding/template-choice.tsx
 msgid "More templates"
@@ -7889,7 +7857,8 @@ msgid "New application"
 msgstr "Lamaran baru"
 
 #: src/features/assistant/assistant-screen.tsx
-#: src/features/assistant/coach-screen.tsx
+#: src/features/assistant/coach.tsx
+#: src/features/assistant/panel-bar.tsx
 #: src/features/assistant/threads.tsx
 #: src/features/workspace/coach-sheet.tsx
 msgid "New conversation"
@@ -7956,6 +7925,10 @@ msgstr "Bagian baru"
 #: src/features/profile/stories.tsx
 msgid "New story"
 msgstr "Cerita baru"
+
+#: src/features/assistant/conversation.tsx
+msgid "New suggested edits"
+msgstr "Ada usulan suntingan baru"
 
 #: src/features/auth/email-sign-in-screen.tsx
 #: src/features/auth/welcome-screen.tsx
@@ -8068,8 +8041,8 @@ msgid "No conventional section headings were found."
 msgstr "Tidak ditemukan judul bagian yang konvensional."
 
 #: src/features/assistant/threads.tsx
-msgid "No conversations about this document yet."
-msgstr "Belum ada pembicaraan tentang dokumen ini."
+msgid "No conversations yet."
+msgstr "Belum ada percakapan."
 
 #: src/features/profile/facts-detail.tsx
 msgid "No corrections"
@@ -8099,10 +8072,6 @@ msgstr "Tidak ditemukan tanggal."
 #: src/features/share/custom-domain.tsx
 msgid "No domain is connected anymore. Pull to refresh."
 msgstr "Tidak ada domain yang tersambung lagi. Tarik untuk menyegarkan."
-
-#: src/features/assistant/threads.tsx
-msgid "no edits"
-msgstr "tidak ada editan"
 
 #: src/features/ats-checker/messages.ts
 msgid "No education section was found."
@@ -8915,6 +8884,10 @@ msgstr "Opsi untuk {0}"
 msgid "Options for {0} at {1}"
 msgstr "Opsi untuk {0} di {1}"
 
+#: src/features/assistant/threads.tsx
+msgid "Options for {label}"
+msgstr "Opsi untuk {label}"
+
 #: src/features/write/entry-row.tsx
 msgid "Options for {name}"
 msgstr "Pilihan untuk {name}"
@@ -8972,7 +8945,7 @@ msgstr "Detail lain"
 msgid "Other documents · {0}"
 msgstr "Dokumen lain · {0}"
 
-#: src/features/assistant/messages.tsx
+#: src/features/assistant/change-set.tsx
 msgid "Out of date: the text has changed since."
 msgstr "Kedaluwarsa: teks telah berubah sejak saat itu."
 
@@ -9113,10 +9086,6 @@ msgstr "Kekuatan kata sandi: {label}"
 #: src/features/share/web-page.tsx
 msgid "Passwords do not match."
 msgstr "Kata sandi tidak cocok."
-
-#: src/features/assistant/assistant-screen.tsx
-msgid "Past conversations"
-msgstr "Percakapan masa lalu"
 
 #: src/features/applications/save-posting.tsx
 msgid "Paste a job link or the posting's text, then check the role and company."
@@ -9338,7 +9307,6 @@ msgid "Planning your week"
 msgstr "Merencanakan minggu Anda"
 
 #: app/account/membership.tsx
-#: src/features/billing/ai-source.ts
 #: src/features/billing/plan-alert.ts
 msgid "Plans can be bought on the rezumi.app website."
 msgstr "Paket bisa dibeli di situs rezumi.app."
@@ -9574,6 +9542,10 @@ msgstr "Hari sebelumnya"
 msgid "Previous issue"
 msgstr "Edisi sebelumnya"
 
+#: src/features/assistant/assistant-screen.tsx
+msgid "Previous messages, including document details, are also sent."
+msgstr "Pesan sebelumnya, termasuk rincian dokumen, juga dikirim."
+
 #: src/features/applications/calendar/calendar-toolbar.tsx
 msgid "Previous month"
 msgstr "Bulan sebelumnya"
@@ -9644,6 +9616,7 @@ msgstr "Kemahiran"
 #: app/(tabs)/_layout.tsx
 #: app/(tabs)/profile/_layout.tsx
 #: app/account/account.tsx
+#: src/features/assistant/coach.tsx
 #: src/features/profile/profile-screen.tsx
 #: src/features/search/search-screen.tsx
 #: src/shell/app-tabs.tsx
@@ -10042,12 +10015,12 @@ msgstr "Kebijakan Pengembalian Dana"
 msgid "Rehearse aloud"
 msgstr "Latih dengan bersuara"
 
-#: src/features/assistant/messages.tsx
+#: src/features/assistant/change-set.tsx
 #: src/features/check/proposal-card.tsx
 msgid "Reject"
-msgstr "Menolak"
+msgstr "Tolak"
 
-#: src/features/assistant/messages.tsx
+#: src/features/assistant/change-set.tsx
 #: src/features/check/proposal-card.tsx
 msgid "Rejected"
 msgstr "Ditolak"
@@ -10210,15 +10183,11 @@ msgstr "Hapus berkas ini?"
 msgid "Remove this photo?"
 msgstr "Hapus foto ini?"
 
+#: src/features/assistant/threads.tsx
 #: src/features/documents/document-menu.tsx
 #: src/features/documents/library-menu.tsx
 msgid "Rename"
 msgstr "Ganti nama"
-
-#. placeholder {0}: title(thread)
-#: src/features/assistant/coach-screen.tsx
-msgid "Rename {0}"
-msgstr "Ganti nama {0}"
 
 #: src/features/write/section-sheet.tsx
 msgid "Rename section"
@@ -10443,7 +10412,8 @@ msgstr "CV, surat lamaran, lamaran kerja, dan portofoliomu, di satu tempat."
 #: src/features/applications/list/list-states.tsx
 #: src/features/assistant/assistant-screen.tsx
 #: src/features/assistant/chat-view.tsx
-#: src/features/assistant/coach-screen.tsx
+#: src/features/assistant/coach.tsx
+#: src/features/assistant/conversation.tsx
 #: src/features/assistant/provider.tsx
 #: src/features/career/schedule-body.tsx
 #: src/features/check/application-picker.tsx
@@ -10479,7 +10449,7 @@ msgstr "CV, surat lamaran, lamaran kerja, dan portofoliomu, di satu tempat."
 #: src/preview/page-parts.tsx
 #: src/shell/builder-chrome/top-bar.tsx
 msgid "Retry"
-msgstr "Mencoba kembali"
+msgstr "Coba lagi"
 
 #: src/features/career/schedule-body.tsx
 msgid "Retry AI connections"
@@ -10558,6 +10528,12 @@ msgstr "Cabut kunci API ini"
 #: src/features/check/writing-tab.tsx
 msgid "Rewrite accepted"
 msgstr "Penulisan ulang diterima"
+
+#. placeholder {0}: CREDIT_COSTS["coach-turn"]
+#. placeholder {1}: providers.balance
+#: src/features/assistant/provider.tsx
+msgid "Rezumi AI · {0} credit per reply · {1} left"
+msgstr "Rezumi AI · {0} kredit per balasan · sisa {1}"
 
 #: app/account/membership.tsx
 msgid "Rezumi AI credits"
@@ -10694,7 +10670,7 @@ msgstr "Contoh resume ditambahkan. Hapus kapan saja."
 
 #: src/features/applications/detail/activity.tsx
 #: src/features/applications/detail/follow-up-sheet.tsx
-#: src/features/assistant/coach-screen.tsx
+#: src/features/assistant/threads.tsx
 #: src/features/documents/menu-panels.tsx
 #: src/features/history/history-panel.tsx
 #: src/features/history/version-options.tsx
@@ -11078,7 +11054,7 @@ msgstr "Cari CV"
 msgid "Search role, company or contact"
 msgstr "Cari peran, perusahaan atau kontak"
 
-#: src/features/assistant/coach-screen.tsx
+#: src/features/assistant/coach.tsx
 msgid "Search terms go to your web search service."
 msgstr "Kata pencarian dikirim ke layanan pencarian web Anda."
 
@@ -11173,10 +11149,10 @@ msgstr "Pilihan"
 msgid "Selects or clears this application"
 msgstr "Memilih atau membatalkan pilihan lamaran ini"
 
-#: src/features/assistant/chat-view.tsx
+#: src/features/assistant/composer.tsx
 #: src/features/assistant/messages.tsx
 msgid "Send"
-msgstr "Mengirim"
+msgstr "Kirim"
 
 #: src/features/auth/reset-password-screen.tsx
 msgid "Send a new link"
@@ -11229,6 +11205,30 @@ msgstr "Mengirim lowongan, catatan, dan dokumen lamaran ini, ditambah Profilmu b
 msgid "Sends this job's posting and your Profile (details, and the facts and stories that are switched on) to {0}."
 msgstr "Mengirim posting lowongan ini dan Profil Anda (detail, serta fakta dan cerita yang aktif) ke {0}."
 
+#: src/features/assistant/assistant-screen.tsx
+msgid "Sends this letter and the posting to {provider}, only when you tap send."
+msgstr "Surat ini dan lowongan dikirim ke {provider} saat Anda mengetuk Kirim."
+
+#: src/features/assistant/assistant-screen.tsx
+msgid "Sends this letter to {provider}, only when you tap send."
+msgstr "Surat ini dikirim ke {provider} saat Anda mengetuk Kirim."
+
+#: src/features/assistant/assistant-screen.tsx
+msgid "Sends this resume and the posting to {provider}, only when you tap send."
+msgstr "CV ini dan lowongan dikirim ke {provider} saat Anda mengetuk Kirim."
+
+#: src/features/assistant/assistant-screen.tsx
+msgid "Sends this resume to {provider}, only when you tap send."
+msgstr "CV ini dikirim ke {provider} saat Anda mengetuk Kirim."
+
+#: src/features/assistant/assistant-screen.tsx
+msgid "Sends your message and the posting to {provider}, only when you tap send."
+msgstr "Pesan Anda dan lowongan dikirim ke {provider} saat Anda mengetuk Kirim."
+
+#: src/features/assistant/assistant-screen.tsx
+msgid "Sends your message to {provider}, only when you tap send."
+msgstr "Pesan Anda dikirim ke {provider} saat Anda mengetuk Kirim."
+
 #: src/features/workspace/coach-sheet.tsx
 msgid "Sends your message, earlier messages, this application (posting, notes, documents sent) and your Profile, if switched on, to {label}."
 msgstr "Mengirim pesanmu, pesan sebelumnya, lamaran ini (lowongan, catatan, dokumen terkirim) dan Profilmu, bila dinyalakan, ke {label}."
@@ -11279,7 +11279,7 @@ msgstr "Serbia"
 #: src/api/ai-consent.ts
 #: src/features/settings/sign-out.tsx
 msgid "Server"
-msgstr "pelayan"
+msgstr "Server"
 
 #: src/features/auth/welcome-screen.tsx
 msgid "Server (development builds only)"
@@ -11626,6 +11626,10 @@ msgstr "Masuk untuk membuat atau mengimpor dokumen."
 msgid "Sign in to edit this resume."
 msgstr "Masuk untuk mengedit CV ini."
 
+#: src/features/assistant/coach.tsx
+msgid "Sign in to use Coach"
+msgstr "Masuk untuk menggunakan Coach"
+
 #: src/features/assistant/assistant-screen.tsx
 msgid "Sign in to use the assistant."
 msgstr "Masuk untuk menggunakan asisten."
@@ -11846,7 +11850,7 @@ msgstr "Urutkan: {0}, {1}"
 msgid "Source"
 msgstr "Sumber"
 
-#: src/features/assistant/chat-view.tsx
+#: src/features/assistant/conversation.tsx
 #: src/features/assistant/messages.tsx
 msgid "Sources"
 msgstr "Sumber"
@@ -12036,7 +12040,7 @@ msgstr "Langkah {0} dari {1}"
 msgid "Step {index} of {total}"
 msgstr "Langkah {index} dari {total}"
 
-#: src/features/assistant/chat-view.tsx
+#: src/features/assistant/composer.tsx
 #: src/features/letters/write.tsx
 msgid "Stop"
 msgstr "Berhenti"
@@ -12054,11 +12058,11 @@ msgstr "Hentikan rekaman"
 msgid "Stop when you're done. Nothing is sent until then."
 msgstr "Hentikan jika sudah selesai. Tidak ada yang dikirim sebelum itu."
 
-#: src/features/assistant/chat-view.tsx
+#: src/features/assistant/conversation.tsx
 msgid "Stopped"
 msgstr "Dihentikan"
 
-#: src/features/assistant/chat-view.tsx
+#: src/features/assistant/conversation.tsx
 msgid "Stopped. No edits were proposed."
 msgstr "Berhenti. Tidak ada pengeditan yang diusulkan."
 
@@ -12187,7 +12191,7 @@ msgstr "Tukar tanggal mulai dan berakhir."
 msgid "Swedish"
 msgstr "Swedia"
 
-#: src/features/assistant/chat-view.tsx
+#: src/features/assistant/conversation.tsx
 msgid "Switch model"
 msgstr "Ganti model"
 
@@ -12516,14 +12520,6 @@ msgstr "Lamaran sudah disimpan, tetapi belum berhasil ditautkan ke resume ini."
 msgid "The application this letter is for."
 msgstr "Lamaran pekerjaan untuk surat ini."
 
-#: src/features/assistant/assistant-screen.tsx
-msgid "The assistant isn't set up on this server. Whoever runs it needs to set ENCRYPTION_SECRET. Everything else works without it."
-msgstr "Asisten belum disiapkan di server ini. Siapa pun yang menjalankannya perlu menyetel ENCRYPTION_SECRET. Segala sesuatu yang lain berfungsi tanpanya."
-
-#: src/features/assistant/provider.tsx
-msgid "The assistant uses your own key. Nothing is sent anywhere until you connect one."
-msgstr "Asisten menggunakan kunci Anda sendiri. Tidak ada yang dikirim ke mana pun sampai Anda menghubungkannya."
-
 #: src/features/profile/conflict-sheet.tsx
 msgid "The changes you made on this device since then will be lost."
 msgstr "Perubahan yang kamu buat di perangkat ini sejak itu akan hilang."
@@ -12547,10 +12543,6 @@ msgstr "Coach tidak mengingat apa pun dari pesan Anda."
 #: src/features/workspace/coach-sheet.tsx
 msgid "The coach isn't set up on this server. Whoever runs it needs to set ENCRYPTION_SECRET."
 msgstr "Pelatih belum disiapkan di server ini. Pengelola server perlu mengatur ENCRYPTION_SECRET."
-
-#: src/features/assistant/coach-screen.tsx
-msgid "The coach isn't set up on this server. Whoever runs it needs to set ENCRYPTION_SECRET. Your Profile, Offers and your applications work without it."
-msgstr "Coach belum diatur di server ini. Pengelolanya perlu mengatur ENCRYPTION_SECRET. Profil, Penawaran, dan lamaran Anda tetap berfungsi tanpanya."
 
 #: src/features/profile/preferences.tsx
 msgid "The coach proposes each fact in the chat. Nothing is saved until you agree."
@@ -12706,6 +12698,10 @@ msgstr "Alasannya disimpan untuk Insights. Dokumen tertaut tidak disentuh."
 msgid "The records aren't visible yet. Check again later."
 msgstr "Record belum terlihat. Periksa lagi nanti."
 
+#: src/features/assistant/conversation.tsx
+msgid "The reply was interrupted."
+msgstr "Balasan terputus."
+
 #: src/features/ats-checker/checker.tsx
 msgid "The rest of the file isn't in this report."
 msgstr "File lainnya tidak ada dalam laporan ini."
@@ -12741,6 +12737,14 @@ msgstr "Skor tersebut menghitung seberapa andal perangkat lunak membaca resume A
 #: src/features/ats-checker/checker.tsx
 msgid "The score reflects how reliably text is extracted, not your chances."
 msgstr "Skor mencerminkan seberapa andal teks diekstraksi, bukan peluang Anda."
+
+#: src/features/assistant/coach.tsx
+msgid "The server operator needs to configure AI before Coach can start."
+msgstr "Pengelola server perlu menyiapkan AI agar Coach dapat digunakan."
+
+#: src/features/assistant/assistant-screen.tsx
+msgid "The server operator needs to configure AI before the assistant can start."
+msgstr "Pengelola server perlu menyiapkan AI agar asisten dapat digunakan."
 
 #: src/features/documents/import-file.ts
 msgid "The server returned an invalid import result. Refresh Documents before retrying."
@@ -12837,9 +12841,9 @@ msgstr "Semuanya dihapus beserta garis waktu dan filenya. Hal ini tidak dapat di
 msgid "Thinking"
 msgstr "Berpikir"
 
-#: src/features/assistant/chat-view.tsx
+#: src/features/assistant/conversation.tsx
 msgid "Thinking…"
-msgstr "Pemikiran…"
+msgstr "Sedang berpikir…"
 
 #: app/account/licences.tsx
 msgid "Third-party software notices. Tap a dependency to read its license."
@@ -12871,6 +12875,7 @@ msgstr "Percakapan ini tidak bisa dilanjutkan di aplikasi ini. Mulai percakapan 
 
 #: src/features/assistant/assistant-screen.tsx
 #: src/features/assistant/chat-view.tsx
+#: src/features/assistant/coach.tsx
 msgid "This conversation couldn't be opened."
 msgstr "Percakapan ini tidak dapat dibuka."
 
@@ -13096,8 +13101,8 @@ msgid "This measures how faithfully software can extract this file's text. It do
 msgstr "Ini mengukur seberapa setia perangkat lunak dapat mengekstrak teks file ini. Ia tidak memprediksi apakah lamaran pekerjaan akan ditolak, dan tidak ada alat yang bisa melakukannya."
 
 #: src/features/billing/ai-source.ts
-msgid "This needs {required} and you have {balance}. Use your own AI connection instead: set it as the default in Settings → AI providers."
-msgstr "Tindakan ini butuh {required}, sedangkan kamu punya {balance}. Pakai koneksi AI sendiri: jadikan default di Pengaturan → Penyedia AI."
+msgid "This needs {required} and you have {balance}. Switch to your own AI connection to continue."
+msgstr "Diperlukan {required} dan Anda memiliki {balance}. Beralih ke koneksi AI sendiri untuk melanjutkan."
 
 #: src/features/assistant/messages.tsx
 msgid "This page is clipped or incomplete. Check the original before using it."
@@ -13439,7 +13444,7 @@ msgstr "Ditranskripsikan · {spokenFor} · periksa nomor dan nama sebelum menggu
 msgid "Transcribing with {model}…"
 msgstr "Mentranskripsi dengan {model}…"
 
-#: src/features/assistant/chat-view.tsx
+#: src/features/assistant/conversation.tsx
 msgid "Transcript copied"
 msgstr "Transkrip disalin"
 
@@ -13635,9 +13640,8 @@ msgstr "Garis bawahi tautan"
 #: src/features/applications/detail/contacts.tsx
 #: src/features/applications/interview/use-reschedule.ts
 #: src/features/applications/queries.ts
-#: src/features/assistant/document.ts
+#: src/features/assistant/change-set.tsx
 #: src/features/assistant/messages.tsx
-#: src/features/assistant/proposals.ts
 #: src/features/career/undo.ts
 #: src/features/check/actions.ts
 #: src/features/design/draft.ts
@@ -13652,7 +13656,7 @@ msgstr "Garis bawahi tautan"
 #: src/shell/builder-chrome/top-bar.tsx
 #: src/ui-legacy/overlays.tsx
 msgid "Undo"
-msgstr "Membuka"
+msgstr "Urungkan"
 
 #: src/preview/page.tsx
 msgid "Undo fit"
@@ -13949,8 +13953,6 @@ msgstr "Gunakan enam digit heksadesimal, seperti #3E6B4F."
 msgid "Use the authenticator app"
 msgstr "Pakai aplikasi autentikator"
 
-#: src/features/assistant/document.ts
-#: src/features/assistant/proposals.ts
 #: src/features/check/actions.ts
 msgid "Use the builder's Undo to undo earlier changes."
 msgstr "Gunakan Membuka pembuat untuk membatalkan perubahan sebelumnya."
@@ -14242,7 +14244,7 @@ msgstr "Lemah"
 msgid "Web page"
 msgstr "Halaman web"
 
-#: src/features/assistant/coach-screen.tsx
+#: src/features/assistant/coach.tsx
 msgid "Web research"
 msgstr "Riset web"
 
@@ -14299,7 +14301,7 @@ msgstr "Apa yang dibaca oleh pengurai"
 msgid "What a person sees"
 msgstr "Apa yang dilihat oleh seseorang"
 
-#: src/features/assistant/coach-screen.tsx
+#: src/features/assistant/coach.tsx
 msgid "What are you working on?"
 msgstr "Apa yang sedang Anda kerjakan?"
 
@@ -14323,7 +14325,7 @@ msgstr "Apa yang Anda katakan, sedekat mungkin dengan yang Anda ingat?"
 msgid "What goes in it?"
 msgstr "Apa isinya?"
 
-#: src/features/assistant/coach-screen.tsx
+#: src/features/assistant/coach.tsx
 msgid "What interview answers should I practice?"
 msgstr "Jawaban wawancara apa yang sebaiknya saya latih?"
 
@@ -14427,9 +14429,9 @@ msgstr "Saat paket berakhir, tidak ada yang dikunci atau dihapus: semua dokumen 
 msgid "When do they need your answer?"
 msgstr "Kapan mereka membutuhkan jawaban Anda?"
 
-#: src/features/assistant/coach-screen.tsx
-msgid "When you tap send, {list} go to {connection}."
-msgstr "Saat Anda mengetuk kirim, {list} dikirim ke {connection}."
+#: src/features/assistant/coach.tsx
+msgid "When you tap send, {list} go to {label}."
+msgstr "Saat Anda mengetuk Kirim, {list} dikirim ke {label}."
 
 #: src/features/applications/insights/insights-cards.tsx
 msgid "Where applications come from"
@@ -14463,7 +14465,7 @@ msgstr "Ke mana lamaranmu berakhir"
 msgid "Which application is it for?"
 msgstr "Untuk lamaran yang mana?"
 
-#: src/features/assistant/coach-screen.tsx
+#: src/features/assistant/coach.tsx
 msgid "Which opportunities best match my priorities?"
 msgstr "Peluang mana yang paling cocok dengan prioritas saya?"
 
@@ -14642,7 +14644,7 @@ msgstr "Kemarin"
 msgid "Yesterday {time}"
 msgstr "Kemarin {time}"
 
-#: src/features/assistant/chat-view.tsx
+#: src/features/assistant/conversation.tsx
 msgid "You"
 msgstr "Anda"
 
@@ -14830,6 +14832,11 @@ msgstr "koneksi AI Anda"
 msgid "Your AI connection"
 msgstr "Koneksi AI Anda"
 
+#. placeholder {0}: provider.label
+#: src/features/assistant/provider.tsx
+msgid "Your AI connection · {0}"
+msgstr "Koneksi AI Anda · {0}"
+
 #: src/api/ai-consent.ts
 msgid "Your AI settings changed while you were deciding. Nothing was sent; try again."
 msgstr "Pengaturan AI Anda berubah saat Anda mengambil keputusan. Tidak ada yang terkirim; coba lagi."
@@ -14958,9 +14965,13 @@ msgstr "Garis Anda dikemas sangat rapat."
 msgid "Your margins are very narrow."
 msgstr "Margin Anda sangat sempit."
 
-#: src/features/assistant/coach-screen.tsx
+#: src/features/assistant/coach.tsx
 msgid "your message"
 msgstr "pesan Anda"
+
+#: src/features/assistant/conversation.tsx
+msgid "Your message is kept. Try again to continue."
+msgstr "Pesan Anda tetap ada. Coba lagi untuk melanjutkan."
 
 #: src/features/write/write-header.tsx
 msgid "Your name"
@@ -15038,7 +15049,7 @@ msgstr "Paketmu"
 msgid "Your portfolio is coming to the app"
 msgstr "Portofolio segera hadir di app"
 
-#: src/features/assistant/coach-screen.tsx
+#: src/features/assistant/coach.tsx
 msgid "your preferences"
 msgstr "preferensi Anda"
 
@@ -15074,7 +15085,7 @@ msgstr "Profil Anda berubah sejak pemeriksaan ini. Memeriksa lagi memakai AI lag
 msgid "Your Profile changed somewhere else. Try again."
 msgstr "Profil Anda diubah di tempat lain. Coba lagi."
 
-#: src/features/assistant/coach-screen.tsx
+#: src/features/assistant/coach.tsx
 msgid "Your Profile couldn't load. Try again or switch Profile off before sending."
 msgstr "Profilmu tidak bisa dimuat. Coba lagi atau matikan Profil sebelum mengirim."
 
@@ -15190,7 +15201,7 @@ msgstr "Tautan pendek dan domain kustom Anda menyatakan bahwa CV ini tidak dibag
 msgid "Your sources"
 msgstr "Sumber Anda"
 
-#: src/features/assistant/coach-screen.tsx
+#: src/features/assistant/coach.tsx
 msgid "your stories"
 msgstr "cerita Anda"
 

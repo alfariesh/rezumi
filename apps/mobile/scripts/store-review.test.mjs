@@ -71,6 +71,7 @@ function load(path) {
 	);
 	return module.exports;
 }
+modules["@/ui/operation-consent"] = load("src/ui/operation-consent.ts");
 modules["./ai-consent"] = load("src/api/ai-consent.ts");
 const { client, streamClient, rest } = load("src/api/client.ts");
 async function waitForDialog() {

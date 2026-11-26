@@ -12,6 +12,8 @@ import { routes } from "@/routes";
 import { BuilderChrome, DraftChrome } from "@/shell/builder-chrome";
 import { IconButton } from "@/ui";
 
+export const unstable_settings = { anchor: "write" };
+
 /**
  * Cover letter editor. Phone: Write, Page and Design in the mode bar (no Check). Tablet: the
  * Write / Design panel with the Page beside it. Share opens Share & export (Download, History) as a sheet.
@@ -57,6 +59,7 @@ export default function LetterLayout() {
 					<IconButton
 						icon="sparkle"
 						label={t`Assistant`}
+						testID="open-editor-assistant"
 						size="sm"
 						onPress={() => router.push(routes.letterAssistant(id))}
 					/>

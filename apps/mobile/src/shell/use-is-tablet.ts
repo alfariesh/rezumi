@@ -1,10 +1,10 @@
-import { useWindowDimensions } from "react-native";
+import { useSectionWidth } from "./section-width";
 import { size } from "@/ui";
 
 /**
  * True when the window is wide enough for the sidebar and the builder's panel + page split (700 pt, `size.wide`). It
- * goes by the window, not the device: an iPad in Split View or a narrow Stage Manager window gets the phone layout.
+ * uses the space left to the section when Coach is beside it. Navigation chrome can use the whole window.
  */
-export function useIsTablet() {
-	return useWindowDimensions().width >= size.wide;
+export function useIsTablet(scope: "section" | "window" = "section") {
+	return useSectionWidth(scope) >= size.wide;
 }

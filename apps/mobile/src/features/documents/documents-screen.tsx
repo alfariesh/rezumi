@@ -8,7 +8,7 @@ import type { LibraryView } from "./library-toolbar";
 import { useLingui } from "@lingui/react/macro";
 import { useRouter } from "expo-router";
 import { useLayoutEffect, useRef, useState } from "react";
-import { View, useWindowDimensions } from "react-native";
+import { View } from "react-native";
 import { useDocumentActions } from "./document-actions";
 import { DocumentList } from "./document-list";
 import { collectTags, documentKey, filterDocuments } from "./filter";
@@ -29,6 +29,7 @@ import { useDocuments } from "./queries";
 import { SegmentHeader, type LibrarySegment } from "./segment-header";
 import { UnsyncedDocuments } from "./unsynced-documents";
 import { useDocumentCounts } from "@/features/home/queries";
+import { useSectionWidth } from "@/shell/section-width";
 import { NewFab, TabTopBar } from "@/shell/tab-chrome";
 import { size } from "@/ui";
 
@@ -40,7 +41,7 @@ const columnsFor = (width: number) => (width >= 1100 ? 5 : width >= 900 ? 4 : wi
 export function DocumentsScreen({ segment }: DocumentsScreenProps) {
 	const { t } = useLingui();
 	const router = useRouter();
-	const { width } = useWindowDimensions();
+	const width = useSectionWidth();
 	const trash = segment === "trash";
 	const live = useDocuments(false);
 	const trashed = useDocuments(true, trash);

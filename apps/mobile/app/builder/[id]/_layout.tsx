@@ -11,6 +11,8 @@ import { BuilderChrome, DraftChrome } from "@/shell/builder-chrome";
 import { CheckBadge } from "@/shell/builder-chrome/check-badge";
 import { IconButton } from "@/ui";
 
+export const unstable_settings = { anchor: "write" };
+
 /**
  * Resume builder. Phone: Write, Page, Design, Check and Share in the mode bar. Tablet: the Write / Design / Check /
  * Share panel with the page beside it. Entries and History push inside the editor; Download & history and the
@@ -56,7 +58,13 @@ export default function BuilderLayout() {
 			<DraftChrome
 				useStore={useResumeStore}
 				actions={
-					<IconButton icon="sparkle" label={t`Assistant`} size="sm" onPress={() => router.push(routes.assistant(id))} />
+					<IconButton
+						icon="sparkle"
+						label={t`Assistant`}
+						testID="open-editor-assistant"
+						size="sm"
+						onPress={() => router.push(routes.assistant(id))}
+					/>
 				}
 			/>
 			<DocumentMenu id={id} inChrome />

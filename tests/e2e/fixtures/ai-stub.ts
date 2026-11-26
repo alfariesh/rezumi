@@ -88,6 +88,9 @@ function reply(request: ChatRequest, response: ServerResponse) {
 
 	response.writeHead(200, { "content-type": "text/event-stream", "cache-control": "no-cache" });
 
+	if (said === "what should i do next?") {
+		return streamText(response, ["Start ", "with ", "one ", "role ", "that ", "matches ", "your ", "priorities."], 120);
+	}
 	if (said.includes("slowly"))
 		return streamText(
 			response,

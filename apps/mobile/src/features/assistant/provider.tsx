@@ -1,26 +1,24 @@
 import type { ThreadSummary } from "./chat";
 import type { useHasAIProvider } from "@/features/ai/providers";
 import type { ReactNode } from "react";
-import { Trans, useLingui } from "@lingui/react/macro";
+import { useLingui } from "@lingui/react/macro";
 import { ORPCError } from "@orpc/client";
 import { useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "expo-router";
 import { useState } from "react";
-import { ActivityIndicator, Pressable, View } from "react-native";
-import { refreshThreads, useConversationConnection } from "./chat";
-import { client } from "@/api/client";
+import { View } from "react-native";
+import { CREDIT_COSTS } from "@rezumi/schema/billing";
+import { useConversationConnection } from "./chat";
+import { client, orpc } from "@/api/client";
 import { getAccountScope } from "@/auth/session";
 import { AIProviderSetupSheet } from "@/features/ai/providers";
 import { routes } from "@/routes";
-import { Banner, Button, Icon, ListRow, Sheet, Text, showToast, useTheme } from "@/ui-legacy";
+import { Button, EmptyState, Icon, ListGroup, ListRow, Sheet, Spinner, showToast } from "@/ui";
 
 type Providers = ReturnType<typeof useHasAIProvider>;
 export type UsableProvider = Providers["usableProviders"][number];
 
-/**
- * The connection a conversation runs on: its own, or (new conversation) the one picked, else the default. A
- * conversation whose connection was switched off or removed moves to the default.
- */
+/** Keep sends paused until the server confirms a change to the conversation's connection. */
 export function useConversationProvider(
 	providers: Providers,
 	summary: ThreadSummary | undefined,
@@ -29,23 +27,40 @@ export function useConversationProvider(
 	const { t } = useLingui();
 	const queryClient = useQueryClient();
 	const [picked, setPicked] = useState<string | null>(null);
+	const [switching, setSwitching] = useState(false);
 	const usable = providers.usableProviders;
 	const provider = usable.find((item) => item.id === (threadId ? summary?.aiProviderId : picked)) ?? usable[0];
-	useConversationConnection(threadId ? summary : undefined, provider);
+	useConversationConnection(threadId ? summary : undefined, switching ? undefined : provider);
+	const sourceNote = provider
+		? provider.managed
+			? providers.choice
+				? t`Rezumi AI · ${CREDIT_COSTS["coach-turn"]} credit per reply · ${providers.balance} left`
+				: provider.label
+			: t`Your AI connection · ${provider.label}`
+		: undefined;
 
 	const scope = getAccountScope();
 	const choose = async (id: string) => {
 		setPicked(id);
-		if (!threadId || !scope) return;
+		if (!threadId || !scope || switching) return;
+		setSwitching(true);
 		try {
 			await client.agent.threads.update({ id: threadId, aiProviderId: id }, { context: { scope } });
-			refreshThreads(queryClient);
+			await queryClient.invalidateQueries({ queryKey: orpc.agent.threads.list.key() });
 		} catch {
-			showToast({ message: t`Couldn't switch models. Try again.` });
+			showToast({ title: t`Couldn't switch models. Try again.` });
+		} finally {
+			setSwitching(false);
 		}
 	};
 
-	return { provider, label: provider?.label ?? summary?.providerLabel ?? t`your provider`, choose };
+	return {
+		provider,
+		label: provider?.label ?? summary?.providerLabel ?? t`your provider`,
+		sourceNote,
+		switching,
+		choose,
+	};
 }
 
 type ModelSheetProps = {
@@ -56,77 +71,76 @@ type ModelSheetProps = {
 	onChoose: (id: string) => void;
 };
 
-/** The connections this conversation can switch to, and Connect another… in Settings. */
 export function ModelSheet({ open, onClose, providers, currentId, onChoose }: ModelSheetProps) {
 	const router = useRouter();
 	const { t } = useLingui();
-	const { colors } = useTheme();
+	const [settings, setSettings] = useState(false);
 	return (
-		<Sheet open={open} onClose={onClose} title={t`Model`}>
-			{providers.map((item) => (
+		<Sheet
+			isOpen={open}
+			onOpenChange={(next) => {
+				if (!next) onClose();
+			}}
+			title={t`Model`}
+			closeLabel={t`Close`}
+			onDidDismiss={() => {
+				if (!settings) return;
+				setSettings(false);
+				router.push(routes.account("ai-providers"));
+			}}
+		>
+			<ListGroup>
+				{providers.map((item) => (
+					<ListRow
+						key={item.id}
+						title={item.label}
+						description={item.model}
+						isSelected={item.id === currentId}
+						onPress={() => {
+							onChoose(item.id);
+							onClose();
+						}}
+					/>
+				))}
 				<ListRow
-					key={item.id}
-					title={item.label}
-					subtitle={item.model}
-					selected={item.id === currentId}
-					trailing={item.id === currentId ? <Icon name="check" color={colors.accentText} /> : null}
+					title={t`AI settings`}
+					icon="gear-six"
 					onPress={() => {
-						onChoose(item.id);
+						setSettings(true);
 						onClose();
 					}}
 				/>
-			))}
-			<ListRow
-				title={t`Connect another…`}
-				leading="plus-circle"
-				chevron
-				onPress={() => {
-					onClose();
-					router.push(routes.account("ai-providers"));
-				}}
-			/>
+			</ListGroup>
 		</Sheet>
 	);
 }
 
-/** The model chip in the header: "gpt-4.1 ▾". */
 export function ModelButton({ label, onPress }: { label: string; onPress: () => void }) {
 	const { t } = useLingui();
-	const { colors, space } = useTheme();
 	return (
-		<Pressable
-			accessibilityRole="button"
+		<Button
+			size="sm"
+			variant="tertiary"
+			className="self-start"
 			accessibilityLabel={t`Model: ${label}`}
 			onPress={onPress}
-			hitSlop={10}
-			style={{ flexDirection: "row", alignItems: "center", gap: space.s0, minHeight: 24, paddingEnd: space.s1 }}
 		>
-			<Text variant="caption" color="ink3" numberOfLines={1} style={{ flexShrink: 1 }}>
-				{label}
-			</Text>
-			<Icon name="caret-down" size={12} color={colors.ink3} />
-		</Pressable>
+			<Button.Label numberOfLines={1}>{label}</Button.Label>
+			<Icon name="caret-down" size={16} tone="muted" />
+		</Button>
 	);
 }
 
 type ProviderGateProps = {
 	providers: Providers;
-	/** The thread list failed: PRECONDITION_FAILED means the server has no ENCRYPTION_SECRET. */
 	threadsError: unknown;
 	loading: boolean;
 	onRetry: () => void;
-	/** "The coach isn't set up on this server…" */
 	notSetUp: string;
-	/** History may load without a provider; its caller disables sending. */
 	readOnly?: boolean;
-	/** The chat, once it can run. */
 	children: ReactNode;
 };
 
-/**
- * What stands in for the chat until it can run: the server isn't set up, connections didn't load, still loading,
- * or no provider yet (connect one in place, M6-T4's setup sheet). `children` once the chat can run.
- */
 export function ProviderGate({
 	providers,
 	threadsError,
@@ -138,49 +152,36 @@ export function ProviderGate({
 }: ProviderGateProps) {
 	const router = useRouter();
 	const { t } = useLingui();
-	const { space } = useTheme();
 	const [setupOpen, setSetupOpen] = useState(false);
-
 	if (threadsError instanceof ORPCError && threadsError.code === "PRECONDITION_FAILED")
-		return (
-			<View style={{ padding: space.s4 }}>
-				<Banner tone="info" message={notSetUp} />
-			</View>
-		);
+		return <EmptyState kind="page" icon="warning-circle" title={t`AI is unavailable`} description={notSetUp} />;
 	if (providers.error && !readOnly)
 		return (
-			<View style={{ padding: space.s4 }}>
-				<Banner
-					tone="danger"
-					message={t`AI connections couldn't load.`}
-					action={{ label: t`Retry`, onPress: onRetry }}
-				/>
-			</View>
+			<EmptyState
+				kind="page"
+				icon="warning-circle"
+				title={t`AI connections couldn't load.`}
+				action={{ label: t`Retry`, onPress: onRetry }}
+			/>
 		);
 	if ((providers.isLoading && !readOnly) || loading)
 		return (
-			<View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-				<ActivityIndicator />
+			<View className="flex-1 items-center justify-center">
+				<Spinner />
 			</View>
 		);
 	if (providers.hasAIProvider || readOnly) return children;
-
 	return (
-		<View style={{ gap: space.s3, padding: space.s4 }}>
-			<Text variant="title" accessibilityRole="header">
-				<Trans>Connect an AI provider</Trans>
-			</Text>
-			<Text color="ink2">
-				<Trans>The assistant uses your own key. Nothing is sent anywhere until you connect one.</Trans>
-			</Text>
-			<Button label={t`Connect`} icon="plus-circle" onPress={() => setSetupOpen(true)} />
-			<Text variant="callout" color="ink3">
-				<Trans>
-					More providers and options are in Settings. Editing, design, Check issues and downloads work without AI.
-				</Trans>
-			</Text>
-			<Button variant="link" label={t`Open AI settings`} onPress={() => router.push(routes.account("ai-providers"))} />
-			<AIProviderSetupSheet open={setupOpen} onClose={() => setSetupOpen(false)} />
-		</View>
+		<>
+			<EmptyState
+				kind="page"
+				icon="sparkle"
+				title={t`Connect an AI provider`}
+				description={t`Add your own connection to start a conversation.`}
+				action={{ label: t`Connect`, onPress: () => setSetupOpen(true) }}
+				secondaryAction={{ label: t`Open AI settings`, onPress: () => router.push(routes.account("ai-providers")) }}
+			/>
+			<AIProviderSetupSheet open={setupOpen} onClose={() => setSetupOpen(false)} onReady={onRetry} />
+		</>
 	);
 }
