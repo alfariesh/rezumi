@@ -5,7 +5,7 @@ import type { ComponentProps, ReactNode } from "react";
 import { Checkbox, Description, Disclosure, FieldError, Input, Label, TextField as FieldRoot } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
-import { useCallback, useState } from "react";
+import { createContext, use, useCallback, useState } from "react";
 import { findEntry } from "@rezumi/resume/write";
 import { FormControl, FormItem, FormLabel, FormMessage } from "@rezumi/ui/components/form";
 import { cn } from "@rezumi/utils/style";
@@ -81,6 +81,17 @@ type TextFieldProps = Omit<ComponentProps<"input">, "value" | "onChange"> & {
 	labelAction?: ReactNode;
 };
 
+/**
+ * True inside an entry's card: fields there go without a visible label, their name shown as the placeholder (and kept
+ * as the accessible name), so the open entry reads as a short form inside its row.
+ */
+export const LabelsAsPlaceholders = createContext(false);
+
+/** The class for a label that names its field for screen readers only, inside an entry's card. */
+export function useFieldLabelClass() {
+	return use(LabelsAsPlaceholders) ? "sr-only" : undefined;
+}
+
 /** A labelled text field. Errors appear after the first blur and say how to fix them. */
 export function TextField({
 	label,
@@ -97,6 +108,9 @@ export function TextField({
 }: TextFieldProps) {
 	const [touched, setTouched] = useState(false);
 	const error = touched ? validate?.(value) : undefined;
+	const labelClass = useFieldLabelClass();
+	// Without a visible label, the field's name shows as its placeholder unless it has one of its own.
+	const placeholder = props.placeholder ?? (labelClass && typeof label === "string" ? label : undefined);
 
 	return (
 		<FieldRoot
@@ -108,7 +122,7 @@ export function TextField({
 			className={cn("gap-1.5", wide && "col-span-full")}
 		>
 			<LabelLine action={labelAction}>
-				<Label>{label}</Label>
+				<Label className={labelClass}>{label}</Label>
 			</LabelLine>
 			<WithInputIcon icon={icon}>
 				<Input
@@ -119,6 +133,7 @@ export function TextField({
 					}}
 					className={cn(icon && INPUT_WITH_ICON, className)}
 					{...(props as ComponentProps<typeof Input>)}
+					{...(placeholder !== undefined && { placeholder })}
 				/>
 			</WithInputIcon>
 			<FieldError>{error}</FieldError>
@@ -154,12 +169,13 @@ export function WebsiteField({ label, labelAction, value, onChange, allowInlineL
 	const [touched, setTouched] = useState(false);
 	const error = touched ? validateUrl(value.url) : undefined;
 	const inline = value.inlineLink ?? false;
+	const labelClass = useFieldLabelClass();
 
 	return (
 		<div className="col-span-full grid gap-2">
 			<FormItem hasError={Boolean(error)}>
 				<LabelLine action={labelAction}>
-					<FormLabel>{label ?? <Trans>Link</Trans>}</FormLabel>
+					<FormLabel className={labelClass}>{label ?? <Trans>Link</Trans>}</FormLabel>
 				</LabelLine>
 				<FormControl
 					render={
@@ -169,6 +185,7 @@ export function WebsiteField({ label, labelAction, value, onChange, allowInlineL
 							value={value}
 							onChange={onChange}
 							hideLabelButton={inline}
+							{...(labelClass && { placeholder: t`Link` })}
 							onBlur={() => setTouched(true)}
 						/>
 					}

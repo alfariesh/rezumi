@@ -41,6 +41,21 @@ export function getNetworkIcon(network?: string): IconName {
 	return NETWORK_ICON_MAP.find((entry) => entry.match.test(networkLower))?.icon ?? "";
 }
 
+/** A web address written without its scheme or with it: "itch.io/name", "https://example.com". */
+const ADDRESS = /^(?:https?:\/\/)?(?:www\.)?[a-z0-9-]+(?:\.[a-z0-9-]+)*\.[a-z]{2,}(?:[/?#]\S*)?$/i;
+
+/**
+ * The icon a contact line's text suggests: the network's logo ("github.com/name"), a globe for any other web address,
+ * or "" for plain text. Custom fields take it while their icon still follows the text.
+ */
+export function getContactIcon(text: string): IconName {
+	const trimmed = text.trim();
+	if (!trimmed) return "";
+	const network = getNetworkIcon(trimmed);
+	if (network) return network;
+	return ADDRESS.test(trimmed) ? "globe-02" : "";
+}
+
 /**
  * Tools and technologies with a logo in the resume icon set, by the words people write for them. Keys are lower
  * case with spaces, dots and dashes removed; see `getBrandIcon`.

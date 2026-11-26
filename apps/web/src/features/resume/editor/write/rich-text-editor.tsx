@@ -35,6 +35,7 @@ function RichTextPreview({
 	className,
 	id,
 	heightClassName = "max-h-[360px] min-h-[88px]",
+	placeholder,
 	onFocusRequest,
 }: RichTextPreviewProps) {
 	const html = useMemo(() => toPreviewHtml(value), [value]);
@@ -63,6 +64,7 @@ function RichTextPreview({
 			<div
 				id={id}
 				aria-busy="true"
+				data-placeholder={placeholder}
 				tabIndex={editable ? -1 : undefined}
 				onPointerDown={(event) => editable && onFocusRequest(() => ({ x: event.clientX, y: event.clientY }))}
 				onFocus={() => editable && onFocusRequest((current) => current ?? "end")}
@@ -72,6 +74,8 @@ function RichTextPreview({
 					"typeset typeset-field overflow-y-auto px-3 py-2 text-sm leading-(--typeset-leading) outline-none",
 					heightClassName,
 					"[&_[data-resume-whitespace=preserve]]:whitespace-pre-wrap",
+					// The loaded editor's placeholder, so the empty text doesn't change as it mounts.
+					"empty:before:text-(--field-placeholder) empty:before:content-[attr(data-placeholder)]",
 				)}
 				// oxlint-disable-next-line react/no-danger -- toPreviewHtml keeps only the editor's own allowlisted markup.
 				dangerouslySetInnerHTML={{ __html: html }}

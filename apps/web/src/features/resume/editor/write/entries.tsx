@@ -3,7 +3,6 @@ import type { Entry } from "@rezumi/resume/write";
 import type { CustomSectionType, RoleItem, Website } from "@rezumi/schema/resume/data";
 import type { DateFormat, ResumeDates } from "@rezumi/schema/resume/dates";
 import type { IconName } from "@rezumi/ui/components/icon";
-import type { ReactNode } from "react";
 import { CellSlider } from "@heroui-pro/react";
 import { Button, Label } from "@heroui/react";
 import { t } from "@lingui/core/macro";
@@ -13,7 +12,7 @@ import { FormControl, FormItem, FormLabel } from "@rezumi/ui/components/form";
 import { IconButton } from "@rezumi/ui/components/icon-button";
 import { generateId } from "@rezumi/utils/string";
 import { DatesField } from "./dates-field";
-import { MoreOptions, TextField, WebsiteField } from "./fields";
+import { MoreOptions, TextField, useFieldLabelClass, WebsiteField } from "./fields";
 import { RichTextEditor } from "./rich-text-editor";
 import { useWriteIconStyle, useWriteSource } from "./source";
 import { ChipInput } from "@/components/input/chip-input";
@@ -66,7 +65,7 @@ function Text({
 	label,
 	wide,
 	autoFocus,
-}: FieldSetProps & { field: string; label: ReactNode; wide?: boolean; autoFocus?: boolean | undefined }) {
+}: FieldSetProps & { field: string; label: string; wide?: boolean; autoFocus?: boolean | undefined }) {
 	return (
 		<TextField
 			label={label}
@@ -124,11 +123,16 @@ function Description({
 	field = "description",
 	label,
 }: FieldSetProps & { field?: string; label?: string }) {
+	const labelClass = useFieldLabelClass();
+	const name = label ?? t`Description`;
 	return (
 		<div className="col-span-full grid gap-1.5">
-			<Label elementType="span">{label ?? t`Description`}</Label>
+			<Label elementType="span" className={labelClass}>
+				{name}
+			</Label>
 			<RichTextEditor
-				label={label ?? t`Description`}
+				label={name}
+				placeholder={labelClass && name}
 				value={str(valuesOf(entry)[field])}
 				onChange={(html) =>
 					write(field, (target) => {
@@ -140,14 +144,16 @@ function Description({
 	);
 }
 
-function Keywords({ entry, write, label }: FieldSetProps & { label: ReactNode }) {
+function Keywords({ entry, write, label }: FieldSetProps & { label: string }) {
+	const labelClass = useFieldLabelClass();
 	return (
 		<FormItem className="col-span-full">
-			<FormLabel>{label}</FormLabel>
+			<FormLabel className={labelClass}>{label}</FormLabel>
 			<FormControl
 				render={
 					<ChipInput
 						allowCommas
+						{...(labelClass && { placeholder: label })}
 						value={valuesOf(entry).keywords ?? []}
 						onChange={(keywords) =>
 							write("keywords", (target) => {
@@ -230,6 +236,7 @@ function IconAndColor({ entry, write }: FieldSetProps) {
 
 function Roles({ entry, write, page }: FieldSetProps) {
 	const roles = valuesOf(entry).roles ?? [];
+	const labelClass = useFieldLabelClass();
 
 	const writeRoles = (key: string, mutate: (roles: RoleItem[]) => void) =>
 		write(`roles:${key}`, (target) => {
@@ -272,7 +279,7 @@ function Roles({ entry, write, page }: FieldSetProps) {
 						</div>
 					</div>
 					<TextField
-						label={<Trans>Position</Trans>}
+						label={t`Position`}
 						value={role.position}
 						wide
 						onChange={(value) =>
@@ -295,11 +302,12 @@ function Roles({ entry, write, page }: FieldSetProps) {
 						}
 					/>
 					<div className="col-span-full grid gap-1.5">
-						<Label elementType="span">
+						<Label elementType="span" className={labelClass}>
 							<Trans>Description</Trans>
 						</Label>
 						<RichTextEditor
 							label={t`Description of role ${index + 1}`}
+							placeholder={labelClass && t`Description`}
 							value={role.description}
 							onChange={(html) =>
 								writeRoles(`${role.id}:description`, (list) => {
@@ -344,9 +352,9 @@ export function EntryFields({
 		case "experience":
 			return (
 				<>
-					<Text {...props} field="position" label={<Trans>Position</Trans>} autoFocus={autoFocus} />
-					<Text {...props} field="company" label={<Trans>Company</Trans>} />
-					<Text {...props} field="location" label={<Trans>Location</Trans>} wide />
+					<Text {...props} field="position" label={t`Position`} autoFocus={autoFocus} />
+					<Text {...props} field="company" label={t`Company`} />
+					<Text {...props} field="location" label={t`Location`} wide />
 					<Dates {...props} />
 					<Link {...props} />
 					<Description {...props} />
@@ -356,11 +364,11 @@ export function EntryFields({
 		case "education":
 			return (
 				<>
-					<Text {...props} field="school" label={<Trans>School</Trans>} wide autoFocus={autoFocus} />
-					<Text {...props} field="degree" label={<Trans>Degree</Trans>} />
-					<Text {...props} field="area" label={<Trans>Area of study</Trans>} />
-					<Text {...props} field="grade" label={<Trans>Grade</Trans>} />
-					<Text {...props} field="location" label={<Trans>Location</Trans>} />
+					<Text {...props} field="school" label={t`School`} wide autoFocus={autoFocus} />
+					<Text {...props} field="degree" label={t`Degree`} />
+					<Text {...props} field="area" label={t`Area of study`} />
+					<Text {...props} field="grade" label={t`Grade`} />
+					<Text {...props} field="location" label={t`Location`} />
 					<Dates {...props} />
 					<Link {...props} />
 					<Description {...props} />
@@ -369,7 +377,7 @@ export function EntryFields({
 		case "projects":
 			return (
 				<>
-					<Text {...props} field="name" label={<Trans>Name</Trans>} wide autoFocus={autoFocus} />
+					<Text {...props} field="name" label={t`Name`} wide autoFocus={autoFocus} />
 					<Dates {...props} />
 					<Link {...props} />
 					<Description {...props} />
@@ -378,9 +386,9 @@ export function EntryFields({
 		case "skills":
 			return (
 				<>
-					<Text {...props} field="name" label={<Trans>Name</Trans>} autoFocus={autoFocus} />
-					<Text {...props} field="proficiency" label={<Trans>Proficiency</Trans>} />
-					<Keywords {...props} label={<Trans>Keywords</Trans>} />
+					<Text {...props} field="name" label={t`Name`} autoFocus={autoFocus} />
+					<Text {...props} field="proficiency" label={t`Proficiency`} />
+					<Keywords {...props} label={t`Keywords`} />
 					<MoreOptions>
 						<Level {...props} />
 						<IconAndColor {...props} />
@@ -390,8 +398,8 @@ export function EntryFields({
 		case "languages":
 			return (
 				<>
-					<Text {...props} field="language" label={<Trans>Language</Trans>} autoFocus={autoFocus} />
-					<Text {...props} field="fluency" label={<Trans>Fluency</Trans>} />
+					<Text {...props} field="language" label={t`Language`} autoFocus={autoFocus} />
+					<Text {...props} field="fluency" label={t`Fluency`} />
 					<MoreOptions>
 						<Level {...props} />
 					</MoreOptions>
@@ -400,8 +408,8 @@ export function EntryFields({
 		case "interests":
 			return (
 				<>
-					<Text {...props} field="name" label={<Trans>Name</Trans>} wide autoFocus={autoFocus} />
-					<Keywords {...props} label={<Trans>Keywords</Trans>} />
+					<Text {...props} field="name" label={t`Name`} wide autoFocus={autoFocus} />
+					<Keywords {...props} label={t`Keywords`} />
 					<MoreOptions>
 						<IconAndColor {...props} />
 					</MoreOptions>
@@ -410,8 +418,8 @@ export function EntryFields({
 		case "awards":
 			return (
 				<>
-					<Text {...props} field="title" label={<Trans>Title</Trans>} autoFocus={autoFocus} />
-					<Text {...props} field="awarder" label={<Trans>Awarder</Trans>} />
+					<Text {...props} field="title" label={t`Title`} autoFocus={autoFocus} />
+					<Text {...props} field="awarder" label={t`Awarder`} />
 					<Dates {...props} single />
 					<Link {...props} />
 					<Description {...props} />
@@ -420,8 +428,8 @@ export function EntryFields({
 		case "certifications":
 			return (
 				<>
-					<Text {...props} field="title" label={<Trans>Title</Trans>} autoFocus={autoFocus} />
-					<Text {...props} field="issuer" label={<Trans>Issuer</Trans>} />
+					<Text {...props} field="title" label={t`Title`} autoFocus={autoFocus} />
+					<Text {...props} field="issuer" label={t`Issuer`} />
 					<Dates {...props} single />
 					<Link {...props} />
 					<Description {...props} />
@@ -430,8 +438,8 @@ export function EntryFields({
 		case "publications":
 			return (
 				<>
-					<Text {...props} field="title" label={<Trans>Title</Trans>} autoFocus={autoFocus} />
-					<Text {...props} field="publisher" label={<Trans>Publisher</Trans>} />
+					<Text {...props} field="title" label={t`Title`} autoFocus={autoFocus} />
+					<Text {...props} field="publisher" label={t`Publisher`} />
 					<Dates {...props} single />
 					<Link {...props} />
 					<Description {...props} />
@@ -440,8 +448,8 @@ export function EntryFields({
 		case "volunteer":
 			return (
 				<>
-					<Text {...props} field="organization" label={<Trans>Organization</Trans>} autoFocus={autoFocus} />
-					<Text {...props} field="location" label={<Trans>Location</Trans>} />
+					<Text {...props} field="organization" label={t`Organization`} autoFocus={autoFocus} />
+					<Text {...props} field="location" label={t`Location`} />
 					<Dates {...props} />
 					<Link {...props} />
 					<Description {...props} />
@@ -450,9 +458,9 @@ export function EntryFields({
 		case "references":
 			return (
 				<>
-					<Text {...props} field="name" label={<Trans>Name</Trans>} autoFocus={autoFocus} />
-					<Text {...props} field="position" label={<Trans>Position</Trans>} />
-					<Text {...props} field="phone" label={<Trans>Phone</Trans>} wide />
+					<Text {...props} field="name" label={t`Name`} autoFocus={autoFocus} />
+					<Text {...props} field="position" label={t`Position`} />
+					<Text {...props} field="phone" label={t`Phone`} wide />
 					<Link {...props} />
 					<Description {...props} />
 				</>
@@ -460,8 +468,8 @@ export function EntryFields({
 		case "profiles":
 			return (
 				<>
-					<Text {...props} field="network" label={<Trans>Network</Trans>} autoFocus={autoFocus} />
-					<Text {...props} field="username" label={<Trans>Username</Trans>} />
+					<Text {...props} field="network" label={t`Network`} autoFocus={autoFocus} />
+					<Text {...props} field="username" label={t`Username`} />
 					<Link {...props} />
 					<MoreOptions>
 						<IconAndColor {...props} />

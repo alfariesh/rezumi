@@ -61,10 +61,26 @@
  * Segment or Tabs, whose track and indicator would both turn white.
  */
 @utility fields-on-card {
-	--default: var(--field-background);
-	--default-hover: var(--field-hover);
 	--field-fill: var(--field-background);
 	--field-fill-hover: var(--field-hover);
+	--control-fill: var(--field-background);
+	--control-fill-hover: var(--field-hover);
+}
+
+/*
+ * A white card inside a panel (a section's entries): the panel's white field fill would vanish on it, so the controls on
+ * it (fields, the rich text frame, switch rows, chips, buttons) take the light fill a field has on any white surface, the
+ * page `background`, a step lighter than `default`; a switch's track keeps `default`, so it still shows on its row. The
+ * counterpart of `fields-on-card`.
+ */
+@utility fields-on-surface {
+	--field-background: var(--background);
+	--field-focus: var(--background);
+	--field-hover: color-mix(in oklab, var(--background) 94%, var(--foreground));
+	--field-fill: var(--field-background);
+	--field-fill-hover: var(--field-hover);
+	--control-fill: var(--field-background);
+	--control-fill-hover: var(--field-hover);
 }
 
 @utility wavy-underline {

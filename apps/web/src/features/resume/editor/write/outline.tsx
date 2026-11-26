@@ -177,14 +177,17 @@ export function OutlineSection({ sectionId, index, locked, page, onMove }: Outli
 					<SummaryEditor locked={locked} />
 				</>
 			) : (
-				<>
+				// One card for the section's entries, as wide as the section's row, rows split by hairlines and the ways to
+				// add one as its last row.
+				<div className="divide-y divide-separator rounded-xl border border-separator bg-surface empty:hidden">
 					<EntryList section={stableSection} locked={locked} page={page} />
 					{!locked && (
-						<div className="flex flex-wrap items-center gap-1">
+						// Flush with the rows above: the icon starts where their titles do, the row is as tall as theirs.
+						<div className="flex flex-wrap items-center gap-1 pe-1">
 							<Button
 								variant="ghost"
 								onPress={() => addEntryTo(source, stableSection)}
-								className="w-fit text-accent-soft-foreground"
+								className="h-10 w-fit px-3 text-accent-soft-foreground"
 							>
 								<Icon name="plus" size={18} />
 								{i18n._(ADD_LABELS[stableSection.type])}
@@ -192,7 +195,7 @@ export function OutlineSection({ sectionId, index, locked, page, onMove }: Outli
 							<AddFromProfile section={stableSection} />
 						</div>
 					)}
-				</>
+				</div>
 			)}
 		</SectionRow>
 	);
@@ -200,7 +203,7 @@ export function OutlineSection({ sectionId, index, locked, page, onMove }: Outli
 
 type EntryListProps = { section: WriteSection; locked: boolean; page: PageSettings };
 
-/** Entries reorder like sections: drag the card's handle, or ⌥↑ / ⌥↓ on its title. */
+/** Entries reorder like sections: drag the row (or its grip), or ⌥↑ / ⌥↓ on its title. */
 function EntryList({ section, locked, page }: EntryListProps) {
 	const ids = useWriteSelector((data) =>
 		getEntries(data, section)
