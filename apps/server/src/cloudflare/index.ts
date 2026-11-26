@@ -31,6 +31,7 @@ import { configurePortfolioAnalytics } from "@rezumi/api/features/portfolio/anal
 import { runPortfolioJobs } from "@rezumi/api/features/portfolio/jobs";
 import { portfolioFileAccess } from "@rezumi/api/features/portfolio/public";
 import { configurePortfolioPublicLimiter } from "@rezumi/api/features/portfolio/public-limit";
+import { runWebsiteImportJobs } from "@rezumi/api/features/profile/website-import-jobs";
 import {
 	configureImageProcessor,
 	configureStorageService,
@@ -324,6 +325,7 @@ export default {
 				await runJobListingJobs().catch((error: unknown) =>
 					console.error("[jobs] Daily listing upkeep failed; it retries next run.", error),
 				);
+				await runWebsiteImportJobs().catch(() => console.error("[website-import] Upkeep failed; it retries next run."));
 			}
 		};
 		ctx.waitUntil(run(jobs).finally(() => closePool(pool, store)));

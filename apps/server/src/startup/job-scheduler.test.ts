@@ -13,6 +13,9 @@ vi.mock("@rezumi/api/features/applications/extension-jobs", () => ({
 vi.mock("@rezumi/api/features/jobs/maintenance", () => ({
 	runJobListingJobs: vi.fn().mockResolvedValue(undefined),
 }));
+vi.mock("@rezumi/api/features/profile/website-import-jobs", () => ({
+	runWebsiteImportJobs: vi.fn(async () => ({ clearedResults: 0, failedStale: 0 })),
+}));
 
 beforeEach(() => {
 	vi.useFakeTimers();

@@ -125,6 +125,7 @@ describe("billing catalog", () => {
 			"portfolio-metrics": 1,
 			"draft-answer": 2,
 			"profile-website": 2,
+			"profile-website-import": 5,
 			"cover-letter": 3,
 			"portfolio-draft": 3,
 			"interview-practice": 3,

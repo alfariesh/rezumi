@@ -351,6 +351,33 @@ describe.skipIf(!databaseUrl)("Rezumi AI metering", () => {
 			expect((await usagesOf("owner")).map((usage) => usage.status).toSorted()).toEqual(["committed", "released"]);
 		});
 
+		it("runs free work without taking credits, still counting its tokens and holding it to the work's limits", async () => {
+			const run = await metered.startAiRun({
+				userId: "owner",
+				action: "profile-website-import",
+				aiSource: "rezumi",
+				free: true,
+			});
+			if (!run) throw new Error("Rezumi AI didn't start.");
+			expect(run).toMatchObject({ metered: true, credits: 0 });
+			await generateText({ model: run.model, prompt: "Read the site" });
+			await run.succeed();
+			expect(run.spent()).toMatchObject({ model: "server-model", inputTokens: 1_000, outputTokens: 200 });
+			expect(await usagesOf("owner")).toEqual([]);
+
+			const tooLong = await metered.startAiRun({
+				userId: "owner",
+				action: "profile-website-import",
+				aiSource: "rezumi",
+				free: true,
+			});
+			if (!tooLong) throw new Error("Rezumi AI didn't start.");
+			await expect(generateText({ model: tooLong.model, prompt: "x".repeat(130_000) })).rejects.toMatchObject({
+				code: "AI_INPUT_TOO_LARGE",
+			});
+			expect(fixture.calls).toHaveLength(1);
+		});
+
 		it("never runs voice or scheduled work", async () => {
 			await expect(metered.startAiRun({ userId: "owner", action: null, aiSource: "rezumi" })).rejects.toMatchObject({
 				code: "REZUMI_AI_UNAVAILABLE",

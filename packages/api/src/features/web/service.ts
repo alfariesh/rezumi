@@ -10,7 +10,7 @@ import { jobCounters } from "../jobs/counters";
 import { recordJobEvent } from "../jobs/events";
 import { isTregConfigured } from "../jobs/treg";
 import { isBrowserRunConfigured, readBrowserPage } from "./browser";
-import { assertPublicTarget, htmlToText, readBuiltinPage } from "./builtin";
+import { assertPublicTarget, htmlToText, readBuiltinPage, XML_TYPES } from "./builtin";
 import {
 	MAX_PAGE_BYTES,
 	MAX_SEARCH_QUERY_CHARS,
@@ -33,6 +33,8 @@ export const WEB_SEARCHES_PER_DAY = 50;
 export const WEB_SEARCH_SPEND_PER_DAY_MICRO = 200_000;
 /** The direct reader's share of a read's deadline when the browser can take over. */
 const DIRECT_BUDGET_MS = 12_000;
+/** A sitemap is a nicety: a slow one is skipped rather than waited for. */
+const SITEMAP_DEADLINE_MS = 8_000;
 
 const limiter = createRateLimiter("web", rateLimitConfig.orpc.aiRequest);
 
@@ -92,8 +94,9 @@ export function looksUnrendered(html: string, text: string): boolean {
 
 async function readThroughBrowser(url: URL, context: WebContext, signal: AbortSignal, reason: BrowserReason) {
 	if (!isBrowserRunConfigured()) return null;
+	const counted = context.allowance !== "import";
 	const reads = today("web-browser", context.userId);
-	if ((await reads.used()) >= BROWSER_READS_PER_DAY) {
+	if (counted && (await reads.used()) >= BROWSER_READS_PER_DAY) {
 		console.info("[web]", { operation: "read", method: "browser", outcome: "daily-limit" });
 		return null;
 	}
@@ -104,7 +107,7 @@ async function readThroughBrowser(url: URL, context: WebContext, signal: AbortSi
 		browserMs = page.browserMs;
 		if (page.html.length > MAX_PAGE_BYTES) throw new WebError("too-large");
 		const content = pageContent(htmlToText(page.html));
-		await reads.add(1);
+		if (counted) await reads.add(1);
 		recordJobEvent({
 			provider: "browser-run",
 			tool: "content",
@@ -153,7 +156,7 @@ export async function readPage(input: string, context: WebContext): Promise<Read
 	const started = Date.now();
 	let reason: BrowserReason | undefined;
 	try {
-		await consume(context.userId, signal);
+		if (context.allowance !== "import") await consume(context.userId, signal);
 		const url = await assertPublicTarget(input, signal);
 		const browser = isBrowserRunConfigured();
 		// Leave the browser time to work when it can take over.
@@ -199,6 +202,22 @@ export async function readPage(input: string, context: WebContext): Promise<Read
 			signal.aborted ? "aborted" : error instanceof WebError ? error.reason : "unreachable",
 		);
 		throw safeFailure(error, signal);
+	}
+}
+
+/**
+ * A site's sitemap (`/sitemap.xml`), read directly with the page reader's checks; null when there is none or it can't be
+ * read. Only website imports ask for it, so it has no throttle of its own.
+ */
+export async function readSitemapXml(origin: string, signal?: AbortSignal): Promise<string | null> {
+	const read = deadline(SITEMAP_DEADLINE_MS, signal);
+	try {
+		const url = await assertPublicTarget(new URL("/sitemap.xml", origin).toString(), read);
+		const page = await readBuiltinPage(url.toString(), read, 0, XML_TYPES);
+		return page.html;
+	} catch {
+		signal?.throwIfAborted();
+		return null;
 	}
 }
 

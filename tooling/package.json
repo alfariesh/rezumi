@@ -26,6 +26,7 @@
 		"benchmark:ai": "tsx --tsconfig ../tsconfig.json benchmark/rezumi-ai.ts",
 		"benchmark:ai:report": "tsx benchmark/report.ts",
 		"jobs:probe": "tsx --tsconfig ../tsconfig.json jobs/probe.ts",
+		"website:probe": "tsx --tsconfig ../tsconfig.json website-import/probe.ts",
 		"extension:backfill-keys": "tsx extension/backfill-source-keys.ts"
 	},
 	"dependencies": {
@@ -42,9 +43,11 @@
 		"@rezumi/api": "workspace:*",
 		"@rezumi/config": "workspace:*",
 		"@rezumi/docx": "workspace:*",
+		"@rezumi/env": "workspace:*",
 		"@rezumi/resume": "workspace:*",
 		"@rezumi/utils": "workspace:*",
 		"@types/pg": "catalog:",
+		"ai": "catalog:",
 		"bcryptjs": "catalog:",
 		"esbuild": "catalog:",
 		"pg": "catalog:",

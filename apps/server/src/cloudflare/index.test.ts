@@ -58,6 +58,9 @@ vi.mock("@rezumi/api/features/career/jobs", () => ({ runCareerJobs: mocks.run, r
 vi.mock("@rezumi/api/features/billing/jobs", () => ({ runBillingJobs: mocks.billing }));
 vi.mock("@rezumi/api/features/portfolio/jobs", () => ({ runPortfolioJobs: mocks.portfolio }));
 vi.mock("@rezumi/api/features/applications/extension-jobs", () => ({ runExtensionJobs: mocks.extension }));
+vi.mock("@rezumi/api/features/profile/website-import-jobs", () => ({
+	runWebsiteImportJobs: vi.fn(async () => ({ clearedResults: 0, failedStale: 0 })),
+}));
 vi.mock("@rezumi/api/features/agent/streams", () => ({
 	configureAgentStreamLifetime: (lifetime: (promise: Promise<unknown>) => void) => {
 		mocks.lifetime = lifetime;

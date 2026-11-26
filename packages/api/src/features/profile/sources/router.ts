@@ -1,6 +1,8 @@
+import { eventIterator } from "@orpc/server";
 import z from "zod";
 import { profileFromResume } from "@rezumi/resume/profile";
 import { sourceResultSchema, sourcesStatusSchema } from "@rezumi/schema/profile/sources";
+import { websiteImportEventSchema, websiteImportResultSchema } from "@rezumi/schema/profile/website-import";
 import { protectedProcedure } from "../../../context";
 import { aiRequestRateLimit, storageUploadRateLimit } from "../../../middleware/rate-limit";
 import { aiErrors } from "../../ai/procedure";
@@ -13,6 +15,7 @@ import { readLinkedIn } from "./linkedin";
 import { adoptPhoto } from "./photo";
 import { sourcesStatus } from "./status";
 import { readWebsite } from "./website";
+import { importWebsite, readWebsiteImportResult } from "./website-import/run";
 
 // The onboarding's own calls: kept out of the public API and its OpenAPI spec.
 const route = { tags: ["Internal"] };
@@ -93,6 +96,46 @@ export const profileSourcesRouter = {
 			await assertNotGuest(context.user.id);
 			return readWebsite(context.user.id, input, signal);
 		}),
+
+	websiteImport: protectedProcedure
+		.route({
+			...route,
+			method: "POST",
+			path: "/profile/sources/website/import",
+			operationId: "importProfileSourceWebsite",
+			summary: "Import the person's own website",
+			description:
+				"Reads the person's own website (its home page and up to ten pages about their work) into a Profile draft and portfolio work drafts to review, streaming its progress and then the result. Nothing is saved. The person confirms the site is theirs. Three imports per account per day; not for guests. (The account's first import on Rezumi AI is free, then 5 credits.)",
+		})
+		.use(aiRequestRateLimit)
+		.input(
+			z.object({
+				url: z.string().trim().min(1).max(2048).describe("The site's address."),
+				own: z.literal(true).describe("The person confirms the site is their own."),
+				...aiSourceInput,
+			}),
+		)
+		.errors({ ...aiErrors, ...SOURCE_ERRORS })
+		.output(eventIterator(websiteImportEventSchema))
+		.handler(async function* ({ context, input, signal }) {
+			await assertNotGuest(context.user.id);
+			yield* importWebsite(context.user.id, input, signal);
+		}),
+
+	websiteImportResult: protectedProcedure
+		.route({
+			...route,
+			method: "GET",
+			path: "/profile/sources/website/import/{runId}",
+			operationId: "getProfileSourceWebsiteImport",
+			summary: "A website import's result",
+			description:
+				"The result of a finished website import, kept for a day so the review survives a reload. Not found once it's gone.",
+		})
+		.input(z.object({ runId: z.string().trim().min(1).max(64) }))
+		.errors(SOURCE_ERRORS)
+		.output(websiteImportResultSchema)
+		.handler(({ context, input }) => readWebsiteImportResult(context.user.id, input.runId)),
 
 	file: protectedProcedure
 		.route({

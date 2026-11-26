@@ -51,6 +51,9 @@ export const AI_WORK_LIMITS: Record<CreditAction, AiWorkLimits> = {
 	"portfolio-metrics": { maxOutputTokens: 8_192, maxInputChars: 120_000, maxSteps: 1 },
 	// A page is read up to 20,000 characters; the answer is Profile data in the import template's shape.
 	"profile-website": { maxOutputTokens: 16_384, maxInputChars: 120_000, maxSteps: 1 },
+	// Three calls: the Profile from the home page, the pages about works from its links, and up to ten work drafts
+	// from those pages (8,000 characters each, or a one-page portfolio's 30,000).
+	"profile-website-import": { maxOutputTokens: 32_768, maxInputChars: 120_000, maxSteps: 3 },
 };
 
 export type AiRunRequest = AiSourceRequest & {
@@ -67,6 +70,11 @@ export type AiRunRequest = AiSourceRequest & {
 	 * run on gets no AI instead of an error.
 	 */
 	optional?: boolean;
+	/**
+	 * Rezumi AI runs it without taking credits (an account's free website import): the work's limits still apply and its
+	 * tokens are counted, for the caller to keep (`spent`). The user's own connection ignores it.
+	 */
+	free?: boolean;
 };
 
 export type AiRun = {
@@ -92,6 +100,8 @@ export type AiRun = {
 	 * such as an answer cut off at its limit) settles the same way, with `code` as the release reason.
 	 */
 	stop: (code?: string) => Promise<void>;
+	/** What a Rezumi AI run used so far (tokens and cost); null on the user's own connection. */
+	spent: () => CreditUsageResult | null;
 };
 
 /**
@@ -254,6 +264,7 @@ function ownRun(provider: RunnableAiProvider): AiRun {
 		succeed: async () => {},
 		fail: async () => {},
 		stop: async () => {},
+		spent: () => null,
 	};
 }
 
@@ -262,11 +273,11 @@ async function rezumiRun(
 	userId: string,
 	action: CreditAction,
 	idempotencyKey: string | undefined,
+	free = false,
 ): Promise<AiRun> {
 	// Built first: a provider setup that can't work fails here, before any credits are taken.
 	const base = ownRun(provider).model;
-	await db.transaction((tx) => ensureTrialCredits(tx, userId));
-	const reservation = await reserve(userId, action, idempotencyKey ?? generateId());
+	const reservation = free ? null : await reserveRun(userId, action, idempotencyKey);
 	const limits = AI_WORK_LIMITS[action];
 	const tally: TokenTally = { inputTokens: 0, outputTokens: 0 };
 	const streamed: StreamedText = { chars: 0 };
@@ -282,6 +293,7 @@ async function rezumiRun(
 	const succeed = async () => {
 		if (settled) return;
 		settled = true;
+		if (!reservation) return;
 		// A failed commit leaves the reservation to the billing job, which gives the credits back: the user keeps the
 		// result either way.
 		await commitCredits(reservation.usageId, spent()).catch(() =>
@@ -291,6 +303,7 @@ async function rezumiRun(
 	const fail = async (code: string) => {
 		if (settled) return;
 		settled = true;
+		if (!reservation) return;
 		// The provider is paid for failed work too: its tokens are kept, for the cost reports.
 		await releaseCredits(reservation.usageId, code.slice(0, 100), new Date(), spent()).catch(() =>
 			console.error("[billing] Releasing Rezumi AI credits failed; the reservation is released later."),
@@ -299,14 +312,20 @@ async function rezumiRun(
 	return {
 		provider,
 		metered: true,
-		credits: reservation.credits,
+		credits: reservation?.credits ?? 0,
 		limits,
 		model: wrap(base),
 		wrap,
 		succeed,
 		fail,
 		stop: (code = "aborted") => (streamed.chars > STOPPED_ANSWER_KEEPS_CREDITS_CHARS ? succeed() : fail(code)),
+		spent,
 	};
+}
+
+async function reserveRun(userId: string, action: CreditAction, idempotencyKey: string | undefined) {
+	await db.transaction((tx) => ensureTrialCredits(tx, userId));
+	return await reserve(userId, action, idempotencyKey ?? generateId());
 }
 
 /**
@@ -350,11 +369,11 @@ export async function resolveAiSource(
 /** Starts a run on a resolved source: for Rezumi AI, takes the work's credits first. */
 export async function startResolvedAiRun(
 	resolved: { provider: RunnableAiProvider; rezumi: boolean },
-	request: Pick<AiRunRequest, "userId" | "action" | "idempotencyKey">,
+	request: Pick<AiRunRequest, "userId" | "action" | "idempotencyKey" | "free">,
 ): Promise<AiRun> {
 	if (!resolved.rezumi) return ownRun(resolved.provider);
 	if (!request.action) throw rezumiAiUnavailable();
-	return await rezumiRun(resolved.provider, request.userId, request.action, request.idempotencyKey);
+	return await rezumiRun(resolved.provider, request.userId, request.action, request.idempotencyKey, request.free);
 }
 
 /** Resolves which AI runs a request (see `resolveAiSource`) and, for Rezumi AI, takes its credits. */

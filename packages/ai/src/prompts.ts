@@ -69,6 +69,8 @@ const portfolioDraftSystemPrompt = readPrompt("portfolio-draft-system.md");
 const portfolioMetricsSystemPrompt = readPrompt("portfolio-metrics-system.md");
 const portfolioRewriteSystemPrompt = readPrompt("portfolio-rewrite-system.md");
 const websiteParserUserPrompt = readPrompt("website-parser-user.md");
+const websiteWorkPagesSystemPrompt = readPrompt("website-work-pages-system.md");
+const websiteWorksSystemPrompt = readPrompt("website-works-system.md");
 
 export {
 	assistantSystemPromptTemplate,
@@ -87,4 +89,6 @@ export {
 	portfolioRewriteSystemPrompt,
 	websiteParserSystemPrompt,
 	websiteParserUserPrompt,
+	websiteWorkPagesSystemPrompt,
+	websiteWorksSystemPrompt,
 };

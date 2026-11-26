@@ -28,7 +28,9 @@ vi.mock("@rezumi/env/server", () => ({ env: fixtures.env }));
 
 vi.mock("@rezumi/db/client", async () => {
 	const schema = await vi.importActual<typeof import("@rezumi/db/schema")>("@rezumi/db/schema");
-	const rows = (table: unknown) => (table === schema.user ? [fixtures.user] : fixtures.logins);
+	// No website import yet: the account's free one is still there.
+	const rows = (table: unknown) =>
+		table === schema.user ? [fixtures.user] : table === schema.websiteImport ? [] : fixtures.logins;
 	return {
 		db: {
 			select: () => ({
@@ -504,6 +506,7 @@ describe("profile.sources.status", () => {
 			linkedin: true,
 			github: true,
 			website: true,
+			websiteImportFree: true,
 			account: {
 				name: "Dewi Lestari",
 				email: "dewi@example.test",
@@ -517,7 +520,13 @@ describe("profile.sources.status", () => {
 	it("offers a guest GitHub only, and LinkedIn only with a treg or Apify token", async () => {
 		fixtures.user.isAnonymous = true;
 		const guest = await client().call.status();
-		expect(guest).toMatchObject({ linkedin: false, github: true, website: false, account: { name: "", email: "" } });
+		expect(guest).toMatchObject({
+			linkedin: false,
+			github: true,
+			website: false,
+			websiteImportFree: false,
+			account: { name: "", email: "" },
+		});
 
 		fixtures.user.isAnonymous = false;
 		fixtures.env.APIFY_TOKEN = undefined;

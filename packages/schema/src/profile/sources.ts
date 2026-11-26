@@ -37,6 +37,12 @@ export const sourcesStatusSchema = z.object({
 		),
 	github: z.boolean().describe("Whether GitHub accounts can be read. Always true."),
 	website: z.boolean().describe("Whether personal websites can be read: the account isn't a guest."),
+	websiteImportFree: z
+		.boolean()
+		.optional()
+		.describe(
+			"Whether the account's next website import on Rezumi AI is free: its free one wasn't used yet. Left out by servers from before website imports.",
+		),
 	account: z.object({
 		name: z.string().describe("The account's name; empty for a guest."),
 		email: z.string().describe("The account's email address; empty for a guest."),

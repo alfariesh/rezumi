@@ -103,6 +103,7 @@ const WORST_CASE: Record<CreditAction, { input: number; output: number }> = {
 	"portfolio-rewrite": { input: 40_000, output: 16_384 },
 	"portfolio-metrics": { input: 40_000, output: 8_192 },
 	"profile-website": { input: 40_000, output: 16_384 },
+	"profile-website-import": { input: 90_000, output: 32_768 },
 };
 
 // --- Session ----------------------------------------------------------------------------------------------------
