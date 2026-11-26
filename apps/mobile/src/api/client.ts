@@ -7,7 +7,7 @@ import type { InferRouterInputs, InferRouterOutputs, RouterClient } from "@orpc/
 // the mobile override in the root vite.config.ts rejects value imports from it.
 // @boundaries-ignore type-only import of the server router
 import type router from "@rezumi/api/routers";
-import { createORPCClient, onError } from "@orpc/client";
+import { createORPCClient, createORPCErrorFromJson, isORPCErrorJson, onError } from "@orpc/client";
 import { RPCLink } from "@orpc/client/fetch";
 import { createTanstackQueryUtils } from "@orpc/tanstack-query";
 import { fetch as expoFetch } from "expo/fetch";
@@ -148,4 +148,36 @@ export async function rest(path: `/${string}`, init: RequestInit = {}, scope = g
 		});
 		return response as unknown as Response;
 	}, scope ?? undefined);
+}
+
+/** Uses oRPC's multipart envelope with on-disk Expo files, which the browser RPCLink's Blob check cannot see. */
+export async function portfolioUpload<K extends "uploadImage" | "uploadPdf">(
+	procedure: K,
+	fields: Record<string, number>,
+	files: Record<string, Blob>,
+	scope: string,
+): Promise<RouterOutput["portfolio"][K]> {
+	const entries = Object.entries(files);
+	const body = new FormData();
+	const json = { ...fields, ...Object.fromEntries(entries.map(([key]) => [key, null])) };
+	body.append("data", JSON.stringify({ json, maps: entries.map(([key]) => [key]) }));
+	entries.forEach(([, file], index) => body.append(String(index), file));
+	const response = await withCredentials(async (credentials) => {
+		const result = await expoFetch(`${credentials.server}/api/rpc/portfolio/${procedure}`, {
+			method: "POST",
+			headers: bearer(credentials, new Headers()),
+			body,
+		});
+		return result as unknown as Response;
+	}, scope);
+	const payload = (await response.json()) as { json?: unknown };
+	if (!response.ok) {
+		if (isORPCErrorJson(payload.json)) {
+			const error = createORPCErrorFromJson(payload.json);
+			showPlanAlertForError(error);
+			throw error;
+		}
+		throw new Error("Portfolio upload failed.");
+	}
+	return payload.json as RouterOutput["portfolio"][K];
 }

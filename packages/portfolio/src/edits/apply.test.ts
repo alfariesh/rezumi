@@ -7,7 +7,7 @@ import { createDefaultPortfolioData } from "@rezumi/schema/portfolio/default";
 import { RICH_TEXT_MARKUP_FACTOR } from "@rezumi/schema/portfolio/limits";
 import { fullPortfolioData, testImage } from "../fixtures.test-helpers";
 import { sanitizePortfolioData } from "../rich-text";
-import { applyPortfolioEdits } from "./apply";
+import { applyPortfolioEdits } from "./index";
 import { portfolioEditItemName } from "./lists";
 
 /** The test fixture as stored: every section and block type, rich text cleaned. */

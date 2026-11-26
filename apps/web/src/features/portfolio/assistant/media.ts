@@ -2,11 +2,11 @@ import type { PortfolioBlock, PortfolioBlockOf } from "@rezumi/schema/portfolio/
 import type { PortfolioData } from "@rezumi/schema/portfolio/data";
 import type { PortfolioEdit } from "@rezumi/schema/portfolio/edits";
 import type { Draft } from "immer";
+import { stillPlays } from "@rezumi/portfolio/editing";
 import { embedPageUrl } from "@rezumi/schema/portfolio/embed";
 import { editPortfolio, usePortfolioEditorStore } from "../editor/store";
 import { discardUploadedImages } from "../images/upload";
 import { embedFromUrl, importEmbedThumbnail, stillEmbeds } from "../media/embeds";
-import { stillPlays } from "../media/link-blocks";
 import { importVideoThumbnail } from "../media/remote";
 
 // Video and Embed blocks the assistant adds get what the editor gives a pasted link (`blocks/add-media-block.tsx`):

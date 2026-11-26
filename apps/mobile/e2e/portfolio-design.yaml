@@ -1,0 +1,29 @@
+# Use a disposable account with a portfolio on Lugas and the app in English.
+appId: app.rezumi
+---
+- launchApp
+- extendedWaitUntil:
+    visible:
+      id: open-drawer
+    timeout: 30000
+- tapOn:
+    id: open-drawer
+- tapOn:
+    id: drawer-portfolio
+- tapOn:
+    id: portfolio-edit
+- tapOn: Design
+- tapOn:
+    id: portfolio-editor-theme-prima
+- extendedWaitUntil:
+    visible: Saved
+    timeout: 15000
+- tapOn:
+    id: portfolio-editor-preview
+- extendedWaitUntil:
+    visible:
+      id: portfolio-webview
+    timeout: 15000
+- tapOn: Replay intro
+- assertVisible:
+    id: portfolio-webview

@@ -110,3 +110,59 @@ test("creates a portfolio from a resume, publishes it, and a guest sees each cha
 		await guest.close();
 	}
 });
+
+test("reads portfolio edits and images across mobile RPC and the web editor", async ({ authPage: page }) => {
+	const created = await page.request.post("/api/rpc/portfolio/create", {
+		data: { json: { startEmpty: true, basics: { name: "Maya Santoso" } } },
+	});
+	expect(created.ok()).toBe(true);
+	const png = Buffer.from(
+		"iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+/eioAAAAASUVORK5CYII=",
+		"base64",
+	);
+	const uploaded = await page.request.post("/api/rpc/portfolio/uploadImage", {
+		multipart: {
+			data: JSON.stringify({ json: { file: null, thumbnail: null }, maps: [["file"], ["thumbnail"]] }),
+			"0": { name: "sample.png", mimeType: "image/png", buffer: png },
+			"1": { name: "sample-small.png", mimeType: "image/png", buffer: png },
+		},
+	});
+	expect(uploaded.ok()).toBe(true);
+	const { json: image } = await uploaded.json();
+	expect(image).toMatchObject({ width: 1, height: 1, key: expect.any(String), thumbKey: expect.any(String) });
+	const { json: initial } = await created.json();
+	const mobileSave = await page.request.post("/api/rpc/portfolio/update", {
+		data: {
+			json: {
+				expectedUpdatedAt: initial.updatedAt,
+				data: {
+					...initial.data,
+					basics: {
+						...initial.data.basics,
+						picture: {
+							key: image.key,
+							thumbKey: image.thumbKey,
+							width: image.width,
+							height: image.height,
+							alt: "Sample photo",
+						},
+					},
+					hero: { ...initial.data.hero, showPicture: true, greeting: "Edited from the phone" },
+				},
+			},
+			meta: [[1, "expectedUpdatedAt"]],
+		},
+	});
+	expect(mobileSave.ok()).toBe(true);
+
+	await page.goto("/builder/portfolio");
+	const greeting = page.getByRole("textbox", { name: "Greeting" });
+	await expect(greeting).toHaveValue("Edited from the phone");
+	await greeting.fill("Edited from the web");
+	await expect(page.getByTitle("Saved", { exact: true })).toBeVisible();
+	const preview = await page.request.post("/api/rpc/portfolio/preview", { data: { json: { width: "phone" } } });
+	expect(preview.ok()).toBe(true);
+	const { json: rendered } = await preview.json();
+	expect(rendered.html).toContain("Edited from the web");
+	expect(rendered.html).toContain("Sample photo");
+});

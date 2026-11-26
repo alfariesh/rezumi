@@ -30,7 +30,7 @@ export function useConversation(props: ConversationProps) {
 	const statusRequest = useRef<Promise<unknown>>(Promise.resolve());
 	const beforeSend = async (context: MessageContext) => {
 		await stopRequest.current;
-		return !context.document || !document || document.flush();
+		return !context.document || (props.flushDocument?.() ?? document?.flush() ?? true);
 	};
 
 	const refresh = () => {

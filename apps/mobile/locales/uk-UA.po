@@ -397,8 +397,10 @@ msgstr ""
 msgid "{0} views in 30 days"
 msgstr ""
 
+#. placeholder {0}: effects[effect]
 #. placeholder {0}: item.name
 #: src/features/portfolio/create.tsx
+#: src/features/portfolio/editor/design.tsx
 msgid "{0}, available with Plus"
 msgstr ""
 
@@ -1125,6 +1127,10 @@ msgstr "Сторінка повернута."
 msgid "A pasted posting can be saved as an application afterwards."
 msgstr "Вставлене оголошення про роботу можна згодом зберегти як заяву на роботу."
 
+#: src/features/portfolio/editor/screen.tsx
+msgid "A picture or file is unavailable."
+msgstr ""
+
 #: src/features/onboarding/intro-screen.tsx
 msgid "A portfolio and a coach"
 msgstr ""
@@ -1166,6 +1172,10 @@ msgstr "Веб-адреса записана без https://."
 msgid "A4 print sheet"
 msgstr ""
 
+#: src/features/portfolio/editor/content.tsx
+msgid "About"
+msgstr "Про цю програму"
+
 #. placeholder {0}: company.name
 #: src/features/jobs/listing-detail.tsx
 msgid "About {0}"
@@ -1174,6 +1184,10 @@ msgstr ""
 #: src/features/workspace/practice/answer-editor.tsx
 msgid "About 90 seconds when spoken"
 msgstr "Приблизно 90 секунд уголос"
+
+#: src/features/portfolio/editor/content.tsx
+msgid "About me"
+msgstr ""
 
 #: src/features/jobs/listing-detail.tsx
 msgid "About the job"
@@ -1273,6 +1287,11 @@ msgstr "Додати"
 msgid "Add “{0}”"
 msgstr "Додати «{0}»"
 
+#. placeholder {0}: buttonLabels[kind]
+#: src/features/portfolio/editor/content.tsx
+msgid "Add {0} button"
+msgstr ""
+
 #: src/features/profile/search-regions-field.tsx
 msgid "Add a country"
 msgstr "Додайте країну"
@@ -1311,6 +1330,10 @@ msgstr ""
 
 #: src/features/profile/preferences.tsx
 msgid "Add a place, then Return"
+msgstr ""
+
+#: src/features/portfolio/editor/work.tsx
+msgid "Add a project, a set of images or a link."
 msgstr ""
 
 #: src/features/workspace/apply/apply-part.tsx
@@ -1357,6 +1380,14 @@ msgstr "Додайте тег"
 
 #: src/features/profile/stories-editor.tsx
 msgid "Add a tag, then Return"
+msgstr ""
+
+#: src/features/portfolio/editor/assistant.tsx
+msgid "Add a tested AI connection to use the portfolio assistant."
+msgstr ""
+
+#: src/features/portfolio/editor/content.tsx
+msgid "Add a testimonial?"
 msgstr ""
 
 #: src/features/ai/provider-list.tsx
@@ -1413,9 +1444,21 @@ msgstr "Додати заявку"
 msgid "Add award"
 msgstr "Додати нагороду"
 
+#: src/features/portfolio/editor/blocks.tsx
+msgid "Add block"
+msgstr ""
+
+#: src/features/portfolio/editor/blocks.tsx
+msgid "Add blocks to show what you did and what changed."
+msgstr ""
+
 #: src/features/entries/fields.ts
 msgid "Add certification"
 msgstr "Додайте сертифікат"
+
+#: src/features/portfolio/editor/content.tsx
+msgid "Add client"
+msgstr ""
 
 #: src/features/applications/detail/contacts.tsx
 msgid "Add contact"
@@ -1475,6 +1518,11 @@ msgstr "Додайте його на сторінку 1"
 msgid "Add language"
 msgstr "Додайте мову"
 
+#: src/features/portfolio/editor/blocks.tsx
+#: src/features/portfolio/editor/content.tsx
+msgid "Add metric"
+msgstr ""
+
 #: src/features/letters/write.tsx
 msgid "Add one in Applications first."
 msgstr ""
@@ -1490,6 +1538,18 @@ msgstr "Додайте номер із кодом країни; деякі фо�
 #: src/features/design/layout-screen.tsx
 msgid "Add page"
 msgstr "Додати сторінку"
+
+#: src/features/portfolio/editor/assistant.tsx
+msgid "Add picture"
+msgstr ""
+
+#: src/features/portfolio/editor/blocks.tsx
+msgid "Add pictures"
+msgstr ""
+
+#: src/features/portfolio/editor/blocks.tsx
+msgid "Add pictures to this work"
+msgstr ""
 
 #: src/features/entries/fields.ts
 msgid "Add profile"
@@ -1531,6 +1591,10 @@ msgstr "Додайте трохи вільного простору між ро�
 
 #: src/features/profile/facts.tsx
 msgid "Add something true you can support. The coach and your documents use the facts you turn on."
+msgstr ""
+
+#: src/features/portfolio/editor/content.tsx
+msgid "Add testimonial"
 msgstr ""
 
 #: src/features/entries/fields.ts
@@ -1589,6 +1653,10 @@ msgstr "Додайте волонтерство"
 msgid "Add what happened before you can save."
 msgstr "Щоб зберегти, опишіть, що сталося."
 
+#: src/features/portfolio/editor/work.tsx
+msgid "Add work"
+msgstr ""
+
 #: src/features/check/messages.ts
 msgid "Add your name"
 msgstr "Додайте своє ім'я"
@@ -1626,6 +1694,10 @@ msgstr ""
 msgid "Added. It saves once you're back online."
 msgstr ""
 
+#: src/features/portfolio/editor/blocks.tsx
+msgid "Adding block…"
+msgstr ""
+
 #: src/features/profile/bring-screen.tsx
 #: src/features/profile/facts-add.tsx
 msgid "Adding…"
@@ -1634,6 +1706,10 @@ msgstr ""
 #: src/features/ai/report-content.tsx
 msgid "Additional details (optional)"
 msgstr "Додаткові відомості (необов'язково)"
+
+#: src/features/portfolio/editor/design.tsx
+msgid "Additional roles for the effect"
+msgstr ""
 
 #: src/features/entries/custom-fields.tsx
 #: src/features/entries/rich-text-toolbar.tsx
@@ -1816,6 +1892,10 @@ msgstr ""
 msgid "All tags"
 msgstr "Всі теги"
 
+#: src/features/portfolio/editor/work.tsx
+msgid "All work"
+msgstr ""
+
 #: src/features/applications/list/list-states.tsx
 msgid "All your applications are closed"
 msgstr "Усі ваші заявки закрито"
@@ -1869,6 +1949,11 @@ msgstr ""
 msgid "Also filtered by: {list}"
 msgstr ""
 
+#: src/features/portfolio/editor/blocks.tsx
+#: src/features/portfolio/editor/work.tsx
+msgid "Alternative text"
+msgstr ""
+
 #: src/features/settings/locale-names.ts
 msgid "Amharic"
 msgstr "Амхарська"
@@ -1891,6 +1976,10 @@ msgstr ""
 
 #: src/features/onboarding/intro-screen.tsx
 msgid "Analytics lead"
+msgstr ""
+
+#: src/features/portfolio/editor/design.tsx
+msgid "Animate"
 msgstr ""
 
 #: src/features/share/link.tsx
@@ -2118,6 +2207,10 @@ msgctxt "A proposed change has been applied"
 msgid "Applied"
 msgstr "Застосовано"
 
+#: src/features/portfolio/editor/assistant.tsx
+msgid "Applied to draft"
+msgstr ""
+
 #: src/features/applications/next-step.ts
 msgid "Applied today"
 msgstr "Подано сьогодні"
@@ -2143,6 +2236,14 @@ msgstr "Діє лише на цьому пристрої."
 #: src/features/workspace/working.ts
 msgid "Apply"
 msgstr "Подання"
+
+#: src/features/portfolio/editor/assistant.tsx
+msgid "Apply edits"
+msgstr ""
+
+#: src/features/portfolio/editor/work.tsx
+msgid "Approach"
+msgstr ""
 
 #. placeholder {0}: selected?.name ?? ""
 #: src/features/settings/api-keys.tsx
@@ -2202,6 +2303,10 @@ msgstr ""
 #: src/features/profile/preferences.tsx
 msgid "Ask first"
 msgstr "Спершу питати"
+
+#: src/features/portfolio/editor/assistant.tsx
+msgid "Ask for a portfolio change…"
+msgstr ""
 
 #: src/features/entries/improve.tsx
 msgid "Ask for something else…"
@@ -2291,6 +2396,10 @@ msgstr "Загальний розмір вкладень може станови
 msgid "audio file"
 msgstr "звуковий файл"
 
+#: src/features/portfolio/editor/design.tsx
+msgid "Automatic"
+msgstr ""
+
 #: src/features/profile/preferences.tsx
 msgid "Automatically"
 msgstr "Автоматично"
@@ -2303,6 +2412,10 @@ msgstr "автозбережено"
 msgid "Autosaves are grouped by session and kept for 90 days. Named versions are kept until you delete them. Restoring saves the current state first."
 msgstr "Автозбереження групуються за сеансами та зберігаються 90 днів. Іменовані версії зберігаються, доки ви їх не видалите. Відновлення спочатку зберігає поточний стан."
 
+#: src/features/portfolio/editor/content.tsx
+msgid "Availability text"
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "Avoid heavy letter-spacing effects, then re-export."
 msgstr "Уникайте сильних ефектів міжлітерного інтервалу, потім експортуйте знову."
@@ -2313,6 +2426,7 @@ msgstr "Нагороджувач"
 
 #: src/features/design/preset-names.ts
 #: src/features/entries/fields.ts
+#: src/features/portfolio/editor/content.tsx
 msgid "Awards"
 msgstr "Нагороди"
 
@@ -2347,6 +2461,10 @@ msgstr "Назад до заявок"
 #: src/features/workspace/part-body.tsx
 msgid "Back to current"
 msgstr "До поточної версії"
+
+#: src/features/portfolio/editor/assistant.tsx
+msgid "Back to editor"
+msgstr ""
 
 #: src/features/jobs/filters-sheet.tsx
 msgid "Back to filters"
@@ -2451,6 +2569,14 @@ msgstr "Бенгальська"
 
 #: src/features/onboarding/intro-screen.tsx
 msgid "BI analyst"
+msgstr ""
+
+#: src/features/portfolio/editor/blocks.tsx
+msgid "Block text"
+msgstr ""
+
+#: src/features/portfolio/editor/blocks.tsx
+msgid "Blocks"
 msgstr ""
 
 #: src/features/applications/views-row.tsx
@@ -2587,6 +2713,14 @@ msgstr ""
 msgid "Business card"
 msgstr ""
 
+#: src/features/portfolio/editor/content.tsx
+msgid "Button label"
+msgstr ""
+
+#: src/features/portfolio/editor/content.tsx
+msgid "Button URL"
+msgstr ""
+
 #: app/account/index.tsx
 msgid "by <0>Salman Alfariesh</0>"
 msgstr "автор: <0>Salman Alfariesh</0>"
@@ -2601,6 +2735,10 @@ msgstr ""
 
 #: src/features/applications/detail/activity.tsx
 msgid "Called the recruiter…"
+msgstr ""
+
+#: src/features/portfolio/editor/media.ts
+msgid "Camera access is off. You can still choose a picture from your library."
 msgstr ""
 
 #: src/features/ats-checker/checker.tsx
@@ -2627,6 +2765,7 @@ msgstr ""
 #: src/features/design/template-gallery.tsx
 #: src/features/documents/new-import.tsx
 #: src/features/entries/improve.tsx
+#: src/features/portfolio/editor/content.tsx
 #: src/features/portfolio/publish.tsx
 #: src/features/profile/facts-detail.tsx
 #: src/features/profile/facts.tsx
@@ -2642,17 +2781,34 @@ msgstr "Скасувати"
 msgid "Cancel recording"
 msgstr "Скасувати запис"
 
+#: src/features/portfolio/editor/blocks.tsx
+msgid "Caption"
+msgstr ""
+
 #: src/features/profile/profile-screen.tsx
 msgid "Career"
+msgstr ""
+
+#: src/features/portfolio/editor/blocks.tsx
+msgid "Carousel"
 msgstr ""
 
 #: src/features/settings/locale-names.ts
 msgid "Catalan"
 msgstr "Каталонська"
 
+#: src/features/portfolio/editor/pictures.tsx
+msgid "Center the cover"
+msgstr ""
+
 #: src/features/entries/fields.ts
+#: src/features/portfolio/editor/content.tsx
 msgid "Certifications"
 msgstr "Сертифікати"
+
+#: src/features/portfolio/editor/work.tsx
+msgid "Challenge"
+msgstr ""
 
 #: src/features/check/posting.tsx
 #: src/features/check/writing-tab.tsx
@@ -2954,6 +3110,10 @@ msgstr "Виберіть файл PDF. Вибраний файл не було �
 msgid "Choose a PDF smaller than 10 MB. The selected file was not uploaded."
 msgstr "Виберіть PDF розміром менше 10 МБ. Вибраний файл не було завантажено."
 
+#: src/features/portfolio/editor/media.ts
+msgid "Choose a PDF that opens without a password."
+msgstr ""
+
 #: src/features/documents/new-choices.tsx
 msgid "Choose a PDF, Word, JSON or LinkedIn export file"
 msgstr ""
@@ -2962,6 +3122,10 @@ msgstr ""
 #: src/features/settings/profile.tsx
 msgid "Choose a photo smaller than 10 MB."
 msgstr "Виберіть фотографію розміром менше 10 МБ."
+
+#: src/features/portfolio/editor/media.ts
+msgid "Choose a raster picture, such as JPEG or PNG."
+msgstr ""
 
 #: src/features/portfolio/create.tsx
 msgid "Choose a resume"
@@ -2977,6 +3141,10 @@ msgstr ""
 
 #: src/features/portfolio/publish.tsx
 msgid "Choose a source"
+msgstr ""
+
+#: src/features/portfolio/editor/media.ts
+msgid "Choose a still picture."
 msgstr ""
 
 #: src/api/ai-consent.ts
@@ -3019,13 +3187,45 @@ msgstr "Виберіть інший файл"
 msgid "Choose any of the fonts in Design instead."
 msgstr ""
 
+#: src/features/portfolio/editor/design.tsx
+msgid "Choose background picture"
+msgstr ""
+
+#: src/features/portfolio/editor/content.tsx
+msgid "Choose client logo"
+msgstr ""
+
+#: src/features/portfolio/editor/work.tsx
+msgid "Choose cover picture"
+msgstr ""
+
 #: src/features/entries/photo-field.tsx
 #: src/features/settings/profile.tsx
 msgid "Choose from library"
 msgstr "Вибрати з бібліотеки"
 
+#: src/features/portfolio/editor/pictures.tsx
+msgid "Choose from photo library"
+msgstr ""
+
 #: src/features/entries/custom-fields.tsx
 msgid "Choose icon"
+msgstr ""
+
+#: src/features/portfolio/editor/content.tsx
+msgid "Choose intro photo"
+msgstr ""
+
+#: src/features/portfolio/editor/work.tsx
+msgid "Choose pictures"
+msgstr ""
+
+#: src/features/portfolio/editor/blocks.tsx
+msgid "Choose preview picture"
+msgstr ""
+
+#: src/features/portfolio/editor/content.tsx
+msgid "Choose testimonial photo"
 msgstr ""
 
 #: src/features/applications/save-review.tsx
@@ -3129,6 +3329,14 @@ msgstr "Очищає свої записи; розділ залишається.
 msgid "Clicks"
 msgstr ""
 
+#: src/features/portfolio/editor/content.tsx
+msgid "Client name"
+msgstr ""
+
+#: src/features/portfolio/editor/content.tsx
+msgid "Clients"
+msgstr ""
+
 #: src/features/ai/report-content.tsx
 #: src/features/applications/detail/activity.tsx
 #: src/features/applications/detail/contacts.tsx
@@ -3179,6 +3387,12 @@ msgstr ""
 #: src/features/letters/share.tsx
 #: src/features/letters/write.tsx
 #: src/features/portfolio/create.tsx
+#: src/features/portfolio/editor/ai.tsx
+#: src/features/portfolio/editor/assistant.tsx
+#: src/features/portfolio/editor/blocks.tsx
+#: src/features/portfolio/editor/metric.tsx
+#: src/features/portfolio/editor/pictures.tsx
+#: src/features/portfolio/editor/work.tsx
 #: src/features/portfolio/inbox.tsx
 #: src/features/portfolio/publish.tsx
 #: src/features/portfolio/statistics.tsx
@@ -3293,6 +3507,10 @@ msgctxt "Entry header layout"
 msgid "Compact"
 msgstr ""
 
+#: src/features/portfolio/editor/metric.tsx
+msgid "Compact number"
+msgstr ""
+
 #: src/features/applications/detail/facts.tsx
 #: src/features/applications/save-review.tsx
 #: src/features/check/save-posting-sheet.tsx
@@ -3337,6 +3555,10 @@ msgstr "Підтвердити подання"
 #: src/features/share/web-page.tsx
 msgid "Confirm password"
 msgstr "Підтвердити пароль"
+
+#: src/features/portfolio/editor/content.tsx
+msgid "Confirm the testimonial is genuine and its author has agreed to share it publicly."
+msgstr ""
 
 #: src/features/workspace/messages/proposal-card.tsx
 msgid "Confirm the time before adding a new interview."
@@ -3410,6 +3632,7 @@ msgstr "Поєдную факти"
 msgid "Connection progress"
 msgstr ""
 
+#: src/features/portfolio/editor/content.tsx
 #: src/features/portfolio/publish.tsx
 msgid "Contact"
 msgstr "контакт"
@@ -3427,6 +3650,10 @@ msgstr "Контактні дані"
 msgid "Contact line"
 msgstr ""
 
+#: src/features/portfolio/editor/content.tsx
+msgid "Contact note"
+msgstr ""
+
 #: src/features/applications/detail/contacts.tsx
 msgid "Contacts"
 msgstr "Контакти"
@@ -3434,6 +3661,10 @@ msgstr "Контакти"
 #: src/features/write/picture-screen.tsx
 msgid "Contain"
 msgstr "Вмістити"
+
+#: src/features/portfolio/editor/screen.tsx
+msgid "Content"
+msgstr "Зміст"
 
 #: src/features/ats-checker/messages.ts
 msgid "Content is laid out in a grid."
@@ -3456,6 +3687,10 @@ msgstr "Вміст для звіту"
 msgid "Context is left out, so reply with a new message instead."
 msgstr "Контекст пропущено, тому надішліть нове повідомлення у відповідь."
 
+#: src/features/portfolio/editor/assistant.tsx
+msgid "Context: entire portfolio"
+msgstr ""
+
 #: app/(auth)/server.tsx
 #: src/features/assistant/conversation.tsx
 #: src/features/auth/check-email-screen.tsx
@@ -3473,6 +3708,10 @@ msgstr ""
 msgid "Continue with Google"
 msgstr ""
 
+#: src/features/portfolio/editor/content.tsx
+msgid "Contract"
+msgstr ""
+
 #. placeholder {0}: ratio.toFixed(1)
 #: src/features/design/color-group.tsx
 msgid "Contrast {0} to 1"
@@ -3487,6 +3726,7 @@ msgid "Conversation name"
 msgstr "Назва розмови"
 
 #: src/features/assistant/panel-bar.tsx
+#: src/features/portfolio/editor/assistant.tsx
 #: src/features/workspace/coach-sheet.tsx
 msgid "Conversations"
 msgstr "Розмови"
@@ -3535,6 +3775,10 @@ msgstr "Копія для роботи…"
 msgid "Copy link"
 msgstr "Копіювати посилання"
 
+#: src/features/portfolio/editor/work.tsx
+msgid "Copy of {title}"
+msgstr ""
+
 #: src/features/documents/library-menu.tsx
 msgid "Copy public link"
 msgstr "Копіювати публічне посилання"
@@ -3580,6 +3824,14 @@ msgstr ""
 msgid "Correction by Rezumi"
 msgstr ""
 
+#: src/features/portfolio/editor/blocks.tsx
+msgid "Couldn't add the block. Try again."
+msgstr ""
+
+#: src/features/portfolio/editor/assistant.tsx
+msgid "Couldn't add the picture. Use a public JPEG, PNG or WebP link."
+msgstr ""
+
 #: src/features/assistant/composer.tsx
 msgid "Couldn't attach the file. Try again."
 msgstr "Не вдалося прикріпити файл. Спробуйте ще раз."
@@ -3610,6 +3862,10 @@ msgstr "Не вдалося перевірити ваших постачальн
 
 #: src/features/portfolio/queries.ts
 msgid "Couldn't complete the action. Try again."
+msgstr ""
+
+#: src/features/portfolio/editor/ai.tsx
+msgid "Couldn't complete the AI request."
 msgstr ""
 
 #: src/features/applications/error.ts
@@ -3672,6 +3928,10 @@ msgstr ""
 #: src/features/home/home-screen.tsx
 msgid "Couldn't delete this schedule. Try again."
 msgstr "Не вдалося видалити цей розклад. Спробуйте ще раз."
+
+#: src/features/portfolio/editor/media.ts
+msgid "Couldn't draw the first page of this PDF."
+msgstr ""
 
 #: src/features/settings/export.tsx
 #: src/features/share/download.tsx
@@ -3883,6 +4143,10 @@ msgstr ""
 msgid "Couldn't open the link. Try again."
 msgstr ""
 
+#: src/features/portfolio/editor/pictures.tsx
+msgid "Couldn't open the picture picker."
+msgstr ""
+
 #: src/features/applications/detail/detail-body.tsx
 #: src/features/applications/detail/posting.tsx
 #: src/features/home/new-roles.tsx
@@ -3929,6 +4193,10 @@ msgstr ""
 #: src/features/ats-checker/checker.tsx
 msgid "Couldn't read that file. Try again."
 msgstr "Не вдалося прочитати цей файл. Спробуйте ще раз."
+
+#: src/features/portfolio/editor/work.tsx
+msgid "Couldn't read that link."
+msgstr ""
 
 #: src/features/write/hooks.ts
 msgid "Couldn't read the dates on {names}, so they stay at the end. Fix their dates and sort again."
@@ -3992,9 +4260,17 @@ msgstr "Не вдалося відобразити попередній пере
 msgid "Couldn't render this resume."
 msgstr "Не вдалося відобразити це резюме."
 
+#: src/features/portfolio/editor/blocks.tsx
+msgid "Couldn't replace this block."
+msgstr ""
+
 #: src/features/settings/api-keys.tsx
 msgid "Couldn't revoke the key. Try again."
 msgstr "Не вдалося відкликати ключ. Спробуйте знову."
+
+#: src/features/portfolio/editor/ai.tsx
+msgid "Couldn't rewrite this text."
+msgstr ""
 
 #: src/features/career/hooks.ts
 #: src/features/profile/facts.tsx
@@ -4091,6 +4367,10 @@ msgstr ""
 
 #: src/features/onboarding/onboarding-screen.tsx
 msgid "Couldn't save your Profile. Try again."
+msgstr ""
+
+#: src/features/portfolio/editor/screen.tsx
+msgid "Couldn't save. Retrying…"
 msgstr ""
 
 #: src/features/settings/profile.tsx
@@ -4209,6 +4489,10 @@ msgstr ""
 msgid "Couldn't upload the photo."
 msgstr "Не вдалося завантажити фото."
 
+#: src/features/portfolio/editor/pictures.tsx
+msgid "Couldn't upload this picture."
+msgstr ""
+
 #: src/features/applications/insights/insights-cards.tsx
 msgid "Count by source"
 msgstr "Кількість за джерелом"
@@ -4312,6 +4596,10 @@ msgstr "Спочатку створіть або імпортуйте резюм
 #: src/features/portfolio/create.tsx
 #: src/features/portfolio/overview.tsx
 msgid "Create portfolio"
+msgstr ""
+
+#: src/features/portfolio/editor/work.tsx
+msgid "Create work from link"
 msgstr ""
 
 #: src/features/portfolio/overview.tsx
@@ -4435,6 +4723,7 @@ msgstr "Данська"
 
 #: app/account/index.tsx
 #: app/account/preferences.tsx
+#: src/features/portfolio/editor/design.tsx
 msgid "Dark"
 msgstr "Темна"
 
@@ -4461,6 +4750,7 @@ msgstr "Обмін даними скасовано. Нічого не було �
 #: src/features/entries/dates-field.tsx
 #: src/features/entries/fields.ts
 #: src/features/letters/write.tsx
+#: src/features/portfolio/editor/work.tsx
 msgid "Date"
 msgstr "Дата"
 
@@ -4735,6 +5025,7 @@ msgid "Describe the role"
 msgstr "Опишіть роль"
 
 #: src/features/entries/fields.ts
+#: src/features/portfolio/editor/blocks.tsx
 msgid "Description"
 msgstr "Опис"
 
@@ -4746,6 +5037,7 @@ msgstr "Опис ролі {0}"
 #: app/builder/[id]/_layout.tsx
 #: app/letter/[id]/_layout.tsx
 #: src/features/letters/write.tsx
+#: src/features/portfolio/editor/screen.tsx
 msgid "Design"
 msgstr "Дизайн"
 
@@ -5002,6 +5294,14 @@ msgstr "Створіть наступний електронний лист"
 msgid "Draft a summary"
 msgstr "Скласти резюме"
 
+#: src/features/portfolio/editor/ai.tsx
+msgid "Draft an intro, About section and work stories from your selected source. You can undo the draft."
+msgstr ""
+
+#: src/features/portfolio/editor/ai.tsx
+msgid "Draft applied. Review the text before publishing."
+msgstr ""
+
 #: src/features/letters/write.tsx
 msgid "Draft from the posting"
 msgstr "Чернетка з оголошення про роботу"
@@ -5031,6 +5331,7 @@ msgid "Draft story"
 msgstr "Скласти розповідь"
 
 #: src/features/portfolio/create.tsx
+#: src/features/portfolio/editor/ai.tsx
 msgid "Draft with AI"
 msgstr ""
 
@@ -5091,10 +5392,18 @@ msgstr "Дублювати"
 msgid "Duplicate resume"
 msgstr "Дублювати резюме"
 
+#: src/features/portfolio/editor/work.tsx
+msgid "Duplicate work"
+msgstr ""
+
 #. placeholder {0}: document.name
 #: src/features/documents/document-actions.ts
 msgid "Duplicated “{0}”"
 msgstr "«{0}» дубльовано"
+
+#: src/features/portfolio/editor/metric.tsx
+msgid "Duration"
+msgstr ""
 
 #: src/features/settings/locale-names.ts
 msgid "Dutch"
@@ -5177,8 +5486,9 @@ msgstr "Редагувати посилання"
 msgid "Edit note"
 msgstr "Редагувати нотатку"
 
+#: src/features/portfolio/editor/screen.tsx
 #: src/features/portfolio/overview.tsx
-msgid "Edit on the web"
+msgid "Edit portfolio"
 msgstr ""
 
 #: src/features/workspace/apply/answer-menu.tsx
@@ -5246,6 +5556,7 @@ msgstr ""
 
 #: src/features/design/preset-names.ts
 #: src/features/entries/fields.ts
+#: src/features/portfolio/editor/content.tsx
 msgid "Education"
 msgstr "Освіта"
 
@@ -5256,6 +5567,7 @@ msgstr "Освіта"
 #: src/features/entries/basics-form.tsx
 #: src/features/letters/write.tsx
 #: src/features/onboarding/source-review.tsx
+#: src/features/portfolio/editor/content.tsx
 msgid "Email"
 msgstr "Ел. пошта"
 
@@ -5270,6 +5582,10 @@ msgstr "Адреса електронної пошти не буде розпі�
 #: src/features/applications/detail/follow-up-sheet.tsx
 msgid "Email the recruiter"
 msgstr "Надішліть електронного листа рекрутеру"
+
+#: src/features/portfolio/editor/blocks.tsx
+msgid "Embed"
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "Embed all fonts when exporting, so characters map the way you intended."
@@ -5454,6 +5770,7 @@ msgstr ""
 
 #: src/features/entries/fields.ts
 #: src/features/onboarding/intro-screen.tsx
+#: src/features/portfolio/editor/content.tsx
 #: src/features/profile/facts-labels.ts
 msgid "Experience"
 msgstr "Досвід"
@@ -5519,6 +5836,14 @@ msgstr "Не вдалося"
 
 #: src/features/auth/create-account-screen.tsx
 msgid "Fair"
+msgstr ""
+
+#: src/features/portfolio/editor/work.tsx
+msgid "Feature this work"
+msgstr ""
+
+#: src/features/portfolio/editor/work.tsx
+msgid "Featured metric"
 msgstr ""
 
 #: app/account/preferences.tsx
@@ -5652,6 +5977,14 @@ msgstr ""
 msgid "Find jobs that fit"
 msgstr ""
 
+#: src/features/portfolio/editor/ai.tsx
+msgid "Find measurable results in your source and add them to your intro."
+msgstr ""
+
+#: src/features/portfolio/editor/ai.tsx
+msgid "Find numbers"
+msgstr ""
+
 #: src/features/assistant/assistant-screen.tsx
 msgid "Find weak bullets"
 msgstr "Знайдіть слабкі записи списку"
@@ -5730,6 +6063,11 @@ msgstr "Володіння мовою"
 #: src/features/workspace/prepare/soon.tsx
 msgid "Focus, experience, why this role"
 msgstr "Фокус, досвід, чому ця посада"
+
+#. placeholder {0}: work.title
+#: src/features/portfolio/editor/assistant.tsx
+msgid "Focused on {0}"
+msgstr ""
 
 #: src/features/applications/calendar/event-card.tsx
 #: src/features/applications/next-step.ts
@@ -5895,6 +6233,10 @@ msgstr ""
 msgid "Free-form"
 msgstr "Вільна форма"
 
+#: src/features/portfolio/editor/content.tsx
+msgid "Freelance"
+msgstr ""
+
 #: src/features/settings/locale-names.ts
 msgid "French"
 msgstr "Французька"
@@ -5979,8 +6321,13 @@ msgstr ""
 
 #. Layout editor toggle label that makes a page single-column
 #: src/features/design/layout-screen.tsx
+#: src/features/portfolio/editor/blocks.tsx
 msgid "Full width"
 msgstr "На всю ширину"
+
+#: src/features/portfolio/editor/content.tsx
+msgid "Full-time"
+msgstr ""
 
 #: src/features/design/preset-names.ts
 msgid "Games and sports"
@@ -5988,6 +6335,10 @@ msgstr ""
 
 #: src/features/portfolio/create.tsx
 msgid "Generate draft"
+msgstr ""
+
+#: src/features/portfolio/editor/design.tsx
+msgid "Gentle fade-in"
 msgstr ""
 
 #: src/features/settings/locale-names.ts
@@ -6069,10 +6420,12 @@ msgid "Greek"
 msgstr "Грецька"
 
 #: src/features/letters/write.tsx
+#: src/features/portfolio/editor/content.tsx
 msgid "Greeting"
 msgstr "Звертання"
 
 #: src/features/documents/library-toolbar.tsx
+#: src/features/portfolio/editor/blocks.tsx
 msgid "Grid"
 msgstr "Сітка"
 
@@ -6121,6 +6474,8 @@ msgstr "Заголовок змінено"
 #: src/features/entries/basics-form.tsx
 #: src/features/letters/write.tsx
 #: src/features/onboarding/source-review.tsx
+#: src/features/portfolio/editor/content.tsx
+#: src/features/portfolio/editor/design.tsx
 msgid "Headline"
 msgstr "Заголовна інформація"
 
@@ -6228,9 +6583,21 @@ msgstr "Сховати фото"
 msgid "Hide this job"
 msgstr ""
 
+#: src/features/portfolio/editor/work.tsx
+msgid "Hide this work"
+msgstr ""
+
 #: src/features/check/writing-tab.tsx
 msgid "High"
 msgstr "Високий"
+
+#: src/features/portfolio/editor/ai.tsx
+msgid "Highlight added"
+msgstr ""
+
+#: src/features/portfolio/editor/content.tsx
+msgid "Highlights"
+msgstr ""
 
 #: src/features/settings/locale-names.ts
 msgid "Hindi"
@@ -6330,6 +6697,10 @@ msgstr ""
 msgid "Hyphenation"
 msgstr "Розділення слів"
 
+#: src/features/portfolio/editor/content.tsx
+msgid "I have permission"
+msgstr ""
+
 #: src/features/applications/stages.ts
 msgid "I withdrew"
 msgstr "Я відступив"
@@ -6391,6 +6762,10 @@ msgstr "Ігнорувати"
 msgid "Ignored issues are back"
 msgstr "Проігноровані проблеми повернулися"
 
+#: src/features/portfolio/editor/design.tsx
+msgid "Image"
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "Images cover most of the page."
 msgstr "Зображення займають більшу частину сторінки."
@@ -6409,6 +6784,10 @@ msgstr "Імпорт скасовано."
 
 #: src/features/documents/use-import.ts
 msgid "Import canceled. Refresh Documents before retrying if the upload had finished."
+msgstr ""
+
+#: src/features/portfolio/editor/work.tsx
+msgid "Import from projects"
 msgstr ""
 
 #: src/features/write/add-section.tsx
@@ -6541,16 +6920,22 @@ msgid "Insights show here once your applications have loaded."
 msgstr ""
 
 #: src/features/portfolio/create.tsx
+#: src/features/portfolio/editor/ai.tsx
 msgid "Instructions (optional)"
 msgstr ""
 
 #: src/features/entries/fields.ts
+#: src/features/portfolio/editor/content.tsx
 msgid "Interests"
 msgstr "Інтереси"
 
 #: app/account/preferences.tsx
 msgid "Interface only. Each resume sets its own language in Design."
 msgstr "Тільки інтерфейс. Кожне резюме встановлює власну мову в дизайні."
+
+#: src/features/portfolio/editor/content.tsx
+msgid "Internship"
+msgstr ""
 
 #: src/features/applications/calendar/month-grid.tsx
 #: src/features/applications/interview-sheet.tsx
@@ -6620,6 +7005,22 @@ msgstr "Інтерв'юер"
 
 #: src/features/applications/detail/interviews.tsx
 msgid "Interviews"
+msgstr ""
+
+#: src/features/portfolio/editor/content.tsx
+msgid "Intro"
+msgstr ""
+
+#: src/features/portfolio/editor/design.tsx
+msgid "Intro background"
+msgstr ""
+
+#: src/features/portfolio/editor/content.tsx
+msgid "Intro buttons"
+msgstr ""
+
+#: src/features/portfolio/editor/design.tsx
+msgid "Intro effect"
 msgstr ""
 
 #: src/features/offers/open-questions.tsx
@@ -6923,6 +7324,7 @@ msgstr ""
 msgid "Keep mine"
 msgstr "Тримай моє"
 
+#: src/features/portfolio/editor/screen.tsx
 #: src/features/profile/conflict-sheet.tsx
 msgid "Keep my changes"
 msgstr ""
@@ -7052,6 +7454,7 @@ msgid "Language"
 msgstr "Мова"
 
 #: src/features/entries/fields.ts
+#: src/features/portfolio/editor/content.tsx
 msgid "Languages"
 msgstr "Мови"
 
@@ -7254,6 +7657,7 @@ msgstr "Лігатури можуть губити літери у словах 
 
 #: app/account/index.tsx
 #: app/account/preferences.tsx
+#: src/features/portfolio/editor/design.tsx
 msgid "Light"
 msgstr "Світлий"
 
@@ -7285,6 +7689,8 @@ msgstr "Рядки так близько можуть збігатися під 
 #: src/features/entries/custom-fields.tsx
 #: src/features/entries/fields.ts
 #: src/features/entries/rich-text-toolbar.tsx
+#: src/features/portfolio/editor/blocks.tsx
+#: src/features/portfolio/editor/content.tsx
 msgid "Link"
 msgstr "Посилання"
 
@@ -7397,6 +7803,10 @@ msgstr "Живі · оновлення під час редагування"
 #: src/features/share/link.tsx
 msgid "Live at {url}"
 msgstr "Наживо {url}"
+
+#: src/features/portfolio/editor/design.tsx
+msgid "Living gradient"
+msgstr ""
 
 #: src/features/jobs/jobs-states.tsx
 msgid "Load more"
@@ -7522,6 +7932,10 @@ msgstr "Завантаження…"
 msgid "Location"
 msgstr "Місцеперебування"
 
+#: src/features/portfolio/editor/content.tsx
+msgid "Location card"
+msgstr ""
+
 #: src/features/documents/document-menu.tsx
 #: src/features/documents/library-menu.tsx
 msgid "Lock editing"
@@ -7583,9 +7997,17 @@ msgstr "Зробіть це більш конкретним"
 msgid "Make it shorter"
 msgstr "Зробіть його коротшим"
 
+#: src/features/portfolio/editor/ai.tsx
+msgid "Make more professional"
+msgstr ""
+
 #: src/features/share/web-page.tsx
 msgid "Make primary"
 msgstr "Зробити основним"
+
+#: src/features/portfolio/editor/ai.tsx
+msgid "Make shorter"
+msgstr ""
 
 #: src/features/assistant/assistant-screen.tsx
 msgid "Make the opening stronger"
@@ -7785,6 +8207,14 @@ msgstr "Повідомлення"
 msgid "Messages sent through your portfolio contact form appear here."
 msgstr ""
 
+#: src/features/portfolio/editor/metric.tsx
+msgid "Metric label"
+msgstr ""
+
+#: src/features/portfolio/editor/blocks.tsx
+msgid "Metrics"
+msgstr ""
+
 #: src/features/jobs/format.ts
 msgctxt "Job seniority"
 msgid "Mid level"
@@ -7943,6 +8373,8 @@ msgstr ""
 #: src/features/design/layout-column.tsx
 #: src/features/design/section-move-sheet.tsx
 #: src/features/entries/entry-editor.tsx
+#: src/features/portfolio/editor/fields.tsx
+#: src/features/portfolio/editor/work.tsx
 #: src/features/write/entry-row.tsx
 #: src/features/write/section-menu.tsx
 #: src/features/write/section-row.tsx
@@ -7997,6 +8429,8 @@ msgstr "Перейти до…"
 #: src/features/design/layout-column.tsx
 #: src/features/design/section-move-sheet.tsx
 #: src/features/entries/entry-editor.tsx
+#: src/features/portfolio/editor/fields.tsx
+#: src/features/portfolio/editor/work.tsx
 #: src/features/write/entry-row.tsx
 #: src/features/write/section-menu.tsx
 #: src/features/write/section-row.tsx
@@ -8020,6 +8454,10 @@ msgstr "Перенесено на {0}"
 msgid "Moves the application from {from}."
 msgstr "Переміщує заявку з {from}."
 
+#: src/features/portfolio/editor/metric.tsx
+msgid "Multiplier"
+msgstr ""
+
 #: src/features/design/preset-names.ts
 msgid "Music and video"
 msgstr ""
@@ -8037,6 +8475,8 @@ msgstr ""
 #: src/features/letters/share.tsx
 #: src/features/letters/write.tsx
 #: src/features/portfolio/create.tsx
+#: src/features/portfolio/editor/content.tsx
+#: src/features/portfolio/editor/design.tsx
 #: src/features/settings/profile.tsx
 msgid "Name"
 msgstr "Назва"
@@ -8154,6 +8594,7 @@ msgstr "Нова заявка"
 #: src/features/assistant/coach.tsx
 #: src/features/assistant/panel-bar.tsx
 #: src/features/assistant/threads.tsx
+#: src/features/portfolio/editor/assistant.tsx
 #: src/features/workspace/coach-sheet.tsx
 msgid "New conversation"
 msgstr "Нова розмова"
@@ -8231,6 +8672,10 @@ msgstr ""
 
 #: src/features/portfolio/publish.tsx
 msgid "New visitor password"
+msgstr ""
+
+#: src/features/portfolio/editor/work.tsx
+msgid "New work"
 msgstr ""
 
 #: src/features/onboarding/intro-screen.tsx
@@ -8383,6 +8828,10 @@ msgstr ""
 msgid "No education section was found."
 msgstr "Розділ освіти не знайдено."
 
+#: src/features/portfolio/editor/design.tsx
+msgid "No effect"
+msgstr ""
+
 #: src/features/check/messages.ts
 msgid "No email address"
 msgstr "Немає електронної адреси"
@@ -8473,6 +8922,10 @@ msgstr ""
 
 #: src/features/portfolio/inbox.tsx
 msgid "No messages yet"
+msgstr ""
+
+#: src/features/portfolio/editor/ai.tsx
+msgid "No metrics found in your source."
 msgstr ""
 
 #: src/features/home/new-roles.tsx
@@ -8620,6 +9073,10 @@ msgstr "Досвід роботи відсутній"
 
 #: src/features/portfolio/statistics.tsx
 msgid "No work was opened in this period."
+msgstr ""
+
+#: src/features/portfolio/editor/work.tsx
+msgid "No work yet"
 msgstr ""
 
 #: src/features/ats-checker/messages.ts
@@ -8857,6 +9314,14 @@ msgstr "Сповіщення вимкнено"
 msgid "Now"
 msgstr "Зараз"
 
+#: src/features/portfolio/editor/metric.tsx
+msgid "Number"
+msgstr ""
+
+#: src/features/portfolio/editor/metric.tsx
+msgid "Number format"
+msgstr ""
+
 #: src/features/entries/rich-text-toolbar.tsx
 msgid "Numbered list"
 msgstr "Нумерований список"
@@ -8912,9 +9377,17 @@ msgstr "Максимум днів в офісі на тиждень"
 msgid "Office days not stated"
 msgstr "Дні в офісі не вказано"
 
+#: src/features/portfolio/editor/screen.tsx
+msgid "Offline"
+msgstr ""
+
 #: src/shell/builder-chrome/top-bar.tsx
 msgid "Offline · saved on this device"
 msgstr "Офлайн · збережено на цьому пристрої"
+
+#: src/features/portfolio/editor/screen.tsx
+msgid "Offline. Changes are waiting to save."
+msgstr ""
 
 #: src/shell/offline-strip.tsx
 msgid "Offline. Edits are saved on this device and sync when you reconnect."
@@ -9129,6 +9602,10 @@ msgstr ""
 #: src/features/home/new-roles.tsx
 msgid "Open the schedule"
 msgstr "Відкрити розклад"
+
+#: src/features/portfolio/editor/content.tsx
+msgid "Open to work"
+msgstr ""
 
 #: src/features/share/link.tsx
 msgid "Open web page"
@@ -9360,6 +9837,10 @@ msgstr ""
 msgid "Page breaks"
 msgstr ""
 
+#: src/features/portfolio/editor/design.tsx
+msgid "Page color scheme"
+msgstr ""
+
 #: src/features/letters/design.tsx
 msgid "Page format"
 msgstr "Формат сторінки"
@@ -9368,9 +9849,18 @@ msgstr "Формат сторінки"
 msgid "Page reading didn't finish."
 msgstr "Читання сторінки не закінчено."
 
+#: src/features/portfolio/editor/content.tsx
+msgid "Page sections"
+msgstr ""
+
 #: src/features/check/check-page.tsx
 msgid "Page view"
 msgstr "Перегляд сторінки"
+
+#. placeholder {0}: block.pages
+#: src/features/portfolio/editor/blocks.tsx
+msgid "Pages: {0}"
+msgstr ""
 
 #: src/features/design/page-group.tsx
 msgid "Paper"
@@ -9383,6 +9873,10 @@ msgstr "Абзац"
 #: src/features/check/use-writing-review.ts
 msgid "paragraph {n}"
 msgstr "пункт {n}"
+
+#: src/features/portfolio/editor/content.tsx
+msgid "Part-time"
+msgstr ""
 
 #: src/features/jobs/listing-fit.tsx
 msgid "Partly"
@@ -9433,6 +9927,10 @@ msgstr ""
 msgid "Paste a job posting…"
 msgstr "Вставити оголошення про роботу…"
 
+#: src/features/portfolio/editor/work.tsx
+msgid "Paste a link"
+msgstr ""
+
 #: src/features/workspace/messages/paste-box.tsx
 msgid "Paste a message from {company}"
 msgstr "Вставте повідомлення від {company}"
@@ -9465,6 +9963,10 @@ msgstr ""
 msgid "Pasted posting"
 msgstr "Вставлено оголошення про роботу"
 
+#: src/features/portfolio/editor/design.tsx
+msgid "Pattern"
+msgstr ""
+
 #: src/features/home/schedules.tsx
 msgid "Paused · {line}"
 msgstr "Призупинено · {line}"
@@ -9486,6 +9988,10 @@ msgstr ""
 #: src/features/profile/preferences.tsx
 msgid "Pay period"
 msgstr "Період оплати"
+
+#: src/features/portfolio/editor/blocks.tsx
+msgid "PDF"
+msgstr ""
 
 #: src/features/letters/share.tsx
 #: src/features/share/download.tsx
@@ -9533,6 +10039,10 @@ msgstr ""
 #: src/features/profile/preferences.tsx
 msgid "Per year"
 msgstr "на рік"
+
+#: src/features/portfolio/editor/metric.tsx
+msgid "Percent"
+msgstr ""
 
 #: app/account/account.tsx
 msgid "Permanently removes everything. Opens your browser account settings."
@@ -9618,9 +10128,33 @@ msgstr "Виберіть два приклади"
 msgid "Picking your stories"
 msgstr "Добираю ваші розповіді"
 
+#: src/features/portfolio/editor/assistant.tsx
+msgid "Picture available to the assistant"
+msgstr ""
+
+#: src/features/portfolio/editor/blocks.tsx
+msgid "Picture layout"
+msgstr ""
+
+#: src/features/portfolio/editor/assistant.tsx
+msgid "Picture URL"
+msgstr ""
+
+#: src/features/portfolio/editor/blocks.tsx
+msgid "Pictures"
+msgstr ""
+
+#: src/features/portfolio/editor/assistant.tsx
+msgid "Pictures for AI"
+msgstr ""
+
 #: src/features/applications/insights/pipeline-flow.tsx
 msgid "Pipeline flow"
 msgstr "Рух по воронці"
+
+#: src/features/portfolio/editor/design.tsx
+msgid "Plain"
+msgstr ""
 
 #: src/features/workspace/apply/share-answers.tsx
 msgid "Plain text (.txt)"
@@ -9670,6 +10204,10 @@ msgstr "Відтворити запис"
 msgid "Plum"
 msgstr "Сливовий"
 
+#: src/features/portfolio/editor/design.tsx
+msgid "Plus"
+msgstr ""
+
 #: src/features/settings/locale-names.ts
 msgid "Polish"
 msgstr "Польська"
@@ -9682,6 +10220,27 @@ msgstr "Шліфую"
 #: src/features/portfolio/overview.tsx
 #: src/shell/app-tabs.tsx
 msgid "Portfolio"
+msgstr ""
+
+#: src/features/portfolio/editor/assistant.tsx
+#: src/features/portfolio/editor/screen.tsx
+msgid "Portfolio assistant"
+msgstr ""
+
+#: src/features/portfolio/editor/assistant.tsx
+msgid "Portfolio conversations"
+msgstr ""
+
+#: src/features/portfolio/editor/screen.tsx
+msgid "Portfolio editor sections"
+msgstr ""
+
+#: src/features/portfolio/editor/assistant.tsx
+msgid "Portfolio edits"
+msgstr ""
+
+#: src/features/portfolio/editor/pictures.tsx
+msgid "Portfolio picture"
 msgstr ""
 
 #: src/features/portfolio/preview.tsx
@@ -9877,6 +10436,7 @@ msgstr ""
 msgid "Press and hold"
 msgstr "Натисніть і утримуйте"
 
+#: src/features/portfolio/editor/screen.tsx
 #: src/features/portfolio/overview.tsx
 msgid "Preview"
 msgstr ""
@@ -9981,6 +10541,7 @@ msgstr "Рівень володіння"
 #: app/(tabs)/profile/_layout.tsx
 #: app/account/account.tsx
 #: src/features/assistant/coach.tsx
+#: src/features/portfolio/editor/content.tsx
 #: src/features/profile/profile-screen.tsx
 #: src/features/search/search-screen.tsx
 #: src/shell/app-tabs.tsx
@@ -10013,6 +10574,7 @@ msgid "Profile sections"
 msgstr ""
 
 #: src/features/entries/fields.ts
+#: src/features/portfolio/editor/content.tsx
 msgid "Profiles"
 msgstr "Профілі"
 
@@ -10060,8 +10622,13 @@ msgid "Public, with a password"
 msgstr "Публічний, з паролем"
 
 #: src/features/entries/fields.ts
+#: src/features/portfolio/editor/content.tsx
 msgid "Publications"
 msgstr "Публікації"
+
+#: src/features/portfolio/editor/screen.tsx
+msgid "Publish"
+msgstr "Опублікувати"
 
 #: src/features/portfolio/overview.tsx
 #: src/features/portfolio/publish.tsx
@@ -10143,6 +10710,14 @@ msgstr "Запитання скопійовано"
 #: src/features/workspace/prepare/soon.tsx
 msgid "Questions to ask"
 msgstr "Запитання для роботодавця"
+
+#: src/features/portfolio/editor/content.tsx
+msgid "Quote"
+msgstr ""
+
+#: src/features/portfolio/editor/metric.tsx
+msgid "Rating"
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "Re-export from a single-column layout, then copy the text out and check it reads top to bottom."
@@ -10366,6 +10941,8 @@ msgstr "Прямокутник"
 msgid "Rectangle (full width)"
 msgstr "Прямокутник (на всю ширину)"
 
+#: src/features/portfolio/editor/assistant.tsx
+#: src/features/portfolio/editor/screen.tsx
 #: src/shell/builder-chrome/draft-chrome.tsx
 #: src/shell/builder-chrome/top-bar.tsx
 msgid "Redo"
@@ -10483,6 +11060,7 @@ msgid "Remote in this country"
 msgstr ""
 
 #: src/features/design/uploaded-fonts.tsx
+#: src/features/portfolio/editor/fields.tsx
 #: src/features/share/custom-domain.tsx
 msgid "Remove"
 msgstr "видалити"
@@ -10512,6 +11090,8 @@ msgid "Remove {place}"
 msgstr ""
 
 #: src/features/onboarding/questions.tsx
+#: src/features/portfolio/editor/content.tsx
+#: src/features/portfolio/editor/design.tsx
 #: src/features/profile/preferences.tsx
 msgid "Remove {role}"
 msgstr ""
@@ -10519,6 +11099,7 @@ msgstr ""
 #: src/features/applications/detail/facts.tsx
 #: src/features/applications/save-review.tsx
 #: src/features/documents/menu-panels.tsx
+#: src/features/portfolio/editor/work.tsx
 #: src/features/profile/stories-editor.tsx
 msgid "Remove {tag}"
 msgstr ""
@@ -10580,6 +11161,10 @@ msgstr "Видалити це фото?"
 msgid "Remove visitor password?"
 msgstr ""
 
+#: src/features/portfolio/editor/work.tsx
+msgid "Remove work"
+msgstr ""
+
 #: src/features/assistant/threads.tsx
 #: src/features/documents/document-menu.tsx
 #: src/features/documents/library-menu.tsx
@@ -10622,9 +11207,14 @@ msgstr "Знову відкрити"
 msgid "Reorder {name}"
 msgstr ""
 
+#: src/features/portfolio/editor/work.tsx
 #: src/features/write/section-row.tsx
 msgid "Reorder {title}"
 msgstr "Перезамовити {title}"
+
+#: src/features/portfolio/preview.tsx
+msgid "Reorder in the web preview"
+msgstr ""
 
 #: src/features/entries/improve.tsx
 msgid "Replace"
@@ -10634,13 +11224,29 @@ msgstr "Замінити"
 msgid "Replace icon fonts with plain text, then re-export."
 msgstr "Замініть шрифти-іконки на звичайний текст, потім експортуйте знову."
 
+#: src/features/portfolio/editor/blocks.tsx
+msgid "Replace link"
+msgstr ""
+
+#: src/features/portfolio/editor/blocks.tsx
+msgid "Replace PDF"
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "Replace tables with plain paragraphs and lists. Cells extract in storage order, not reading order."
 msgstr "Замініть таблиці звичайними абзацами та списками. Комірки видобуваються у порядку зберігання, а не в порядку читання."
 
+#: src/features/portfolio/editor/blocks.tsx
+msgid "Replacement URL"
+msgstr ""
+
 #: src/features/workspace/messages/describe-change.ts
 msgid "Replaces “{current}” on the application."
 msgstr "Замінює «{current}» у заявці."
+
+#: src/features/portfolio/preview.tsx
+msgid "Replay intro"
+msgstr ""
 
 #: src/features/workspace/working.ts
 msgid "Reply"
@@ -10715,6 +11321,10 @@ msgstr "Перезапустіть, щоб змінити напрямок те�
 msgid "Restore"
 msgstr "Відновити"
 
+#: src/features/portfolio/editor/content.tsx
+msgid "Restore theme order"
+msgstr ""
+
 #: src/features/history/history-panel.tsx
 #: src/features/letters/share.tsx
 msgid "Restore this version"
@@ -10747,6 +11357,7 @@ msgstr "Відновив версію"
 msgid "Restored the version from {0}. Your previous state is saved as “Before restore”."
 msgstr "Відновив версію від {0}. Ваш попередній стан збережено як «Перед відновленням»."
 
+#: src/features/portfolio/editor/work.tsx
 #: src/features/profile/stories-parts.ts
 msgid "Result"
 msgstr "Результат"
@@ -10757,6 +11368,7 @@ msgstr "Результат"
 #: src/features/documents/meta.ts
 #: src/features/documents/unsynced-documents.tsx
 #: src/features/home/recent-documents.tsx
+#: src/features/portfolio/editor/content.tsx
 msgid "Resume"
 msgstr "Резюме"
 
@@ -10778,6 +11390,10 @@ msgstr "Файл резюме"
 #: src/features/check/page-pins.tsx
 msgid "Resume page {0}"
 msgstr "сторінка резюме {0}"
+
+#: src/features/portfolio/editor/content.tsx
+msgid "Resume PDF"
+msgstr ""
 
 #: src/features/billing/credits.ts
 msgid "Resume review"
@@ -10840,6 +11456,7 @@ msgstr ""
 #: src/features/letters/write.tsx
 #: src/features/offers/offers-screen.tsx
 #: src/features/onboarding/source-progress.tsx
+#: src/features/portfolio/editor/work.tsx
 #: src/features/portfolio/inbox.tsx
 #: src/features/portfolio/layout.tsx
 #: src/features/portfolio/statistics.tsx
@@ -10862,6 +11479,10 @@ msgstr "Повторити спробу"
 #: src/features/career/schedule-body.tsx
 msgid "Retry AI connections"
 msgstr "Повторити перевірку з’єднань ШІ"
+
+#: src/features/portfolio/editor/screen.tsx
+msgid "Retry save"
+msgstr "Повторіть спробу збереження"
 
 #: src/shell/builder-chrome/top-bar.tsx
 msgid "Retry saving"
@@ -10909,6 +11530,10 @@ msgstr ""
 msgid "Review the AI draft"
 msgstr ""
 
+#: src/features/portfolio/editor/screen.tsx
+msgid "Review the field that couldn't be saved."
+msgstr ""
+
 #: src/features/workspace/apply/checklist.tsx
 msgid "Review the selected resume and cover letter in their editors."
 msgstr "Перегляньте вибране резюме та супровідний лист у їхніх редакторах."
@@ -10944,6 +11569,10 @@ msgstr "Відкликати цей ключ API"
 #: src/features/check/writing-tab.tsx
 msgid "Rewrite accepted"
 msgstr "Переписати прийнято"
+
+#: src/features/portfolio/editor/ai.tsx
+msgid "Rewrite with AI"
+msgstr ""
 
 #. placeholder {0}: CREDIT_COSTS["coach-turn"]
 #. placeholder {1}: providers.balance
@@ -10991,6 +11620,7 @@ msgstr "правильно"
 #: src/features/applications/save-review.tsx
 #: src/features/career/schedule-fields.tsx
 #: src/features/check/save-posting-sheet.tsx
+#: src/features/portfolio/editor/work.tsx
 msgid "Role"
 msgstr "Посада"
 
@@ -11002,6 +11632,10 @@ msgstr "Роль (необов'язково)"
 #: src/features/entries/entry-fields.tsx
 msgid "Role {0}"
 msgstr "Роль {0}"
+
+#: src/features/portfolio/editor/content.tsx
+msgid "Role and company"
+msgstr ""
 
 #. placeholder {0}: index + 1
 #: src/features/applications/interview/people-field.tsx
@@ -11015,6 +11649,10 @@ msgstr ""
 #: src/features/entries/fields.ts
 msgid "Roles"
 msgstr "Посади"
+
+#: src/features/portfolio/editor/content.tsx
+msgid "Roles you're looking for"
+msgstr ""
 
 #: src/features/settings/locale-names.ts
 msgid "Romanian"
@@ -11058,6 +11696,10 @@ msgstr "Працює на {0}."
 #: src/preview/page-parts.tsx
 msgid "Runs onto page {0}"
 msgstr "Переходить на сторінку {0}"
+
+#: src/features/portfolio/editor/metric.tsx
+msgid "Rupiah"
+msgstr ""
 
 #: src/features/settings/locale-names.ts
 msgid "Russian"
@@ -11114,6 +11756,10 @@ msgstr ""
 msgid "Save a job, then schedule its interviews here. Reminders come on this device."
 msgstr ""
 
+#: src/features/portfolio/editor/assistant.tsx
+msgid "Save a picture from a public URL so the assistant can place it in your portfolio."
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "Save an unprotected copy, with no password and no permissions restrictions."
 msgstr "Збережіть незахищену копію без пароля та обмежень дозволів."
@@ -11140,6 +11786,7 @@ msgid "Save changes"
 msgstr "Зберегти зміни"
 
 #: src/features/applications/detail/contacts.tsx
+#: src/features/portfolio/editor/content.tsx
 msgid "Save contact"
 msgstr ""
 
@@ -11174,6 +11821,10 @@ msgstr ""
 
 #: src/features/auth/reset-password-screen.tsx
 msgid "Save new password"
+msgstr ""
+
+#: src/features/portfolio/editor/screen.tsx
+msgid "Save or resolve your changes first."
 msgstr ""
 
 #: src/features/portfolio/export.ts
@@ -11245,6 +11896,14 @@ msgstr ""
 msgid "Save to the application"
 msgstr "Зберегти в заявці на роботу"
 
+#: src/features/portfolio/editor/work.tsx
+msgid "Save your changes before importing a project."
+msgstr ""
+
+#: src/features/portfolio/editor/ai.tsx
+msgid "Save your changes before using AI."
+msgstr ""
+
 #: src/draft/conflict-sheet.tsx
 msgid "Save your version over theirs."
 msgstr "Замінити іншу версію своєю."
@@ -11258,6 +11917,7 @@ msgid "saved"
 msgstr "збережено"
 
 #: src/features/applications/stages.ts
+#: src/features/portfolio/editor/screen.tsx
 #: src/features/profile/preferences.tsx
 #: src/features/profile/save-note.tsx
 #: src/shell/builder-chrome/top-bar.tsx
@@ -11324,6 +11984,7 @@ msgstr ""
 #: src/features/auth/reset-password-screen.tsx
 #: src/features/career/schedule-sheet.tsx
 #: src/features/onboarding/onboarding-screen.tsx
+#: src/features/portfolio/editor/screen.tsx
 #: src/features/profile/preferences.tsx
 #: src/features/profile/save-note.tsx
 #: src/features/profile/stories.tsx
@@ -11487,6 +12148,10 @@ msgstr ""
 msgid "Search role, company or contact"
 msgstr "Пошук ролі, компанії чи контакту"
 
+#: src/features/portfolio/editor/ai.tsx
+msgid "Search source"
+msgstr ""
+
 #: src/features/assistant/coach.tsx
 msgid "Search terms go to your web search service."
 msgstr "Пошукові запити надсилаються до вашого сервісу вебпошуку."
@@ -11569,6 +12234,10 @@ msgstr "Виберіть запис на сторінці {0}"
 #: src/preview/page.tsx
 msgid "Select entry {0}"
 msgstr "Виберіть запис {0}"
+
+#: src/features/portfolio/editor/design.tsx
+msgid "Selected"
+msgstr ""
 
 #: src/preview/page-parts.tsx
 msgid "Selected entry"
@@ -11722,6 +12391,10 @@ msgstr ""
 msgid "Server address"
 msgstr "Адреса сервера"
 
+#: src/features/portfolio/editor/content.tsx
+msgid "Services"
+msgstr ""
+
 #: src/features/applications/detail/next-step-card.tsx
 msgid "Set a follow-up…"
 msgstr "Встановити наступні дії…"
@@ -11749,7 +12422,12 @@ msgid "Set up AI provider"
 msgstr "Налаштувати постачальника AI"
 
 #: src/features/portfolio/card.tsx
+#: src/features/portfolio/editor/content.tsx
 msgid "Set up on the web"
+msgstr ""
+
+#: src/features/portfolio/editor/work.tsx
+msgid "Set work address"
 msgstr ""
 
 #: src/features/share/custom-domain.tsx
@@ -11848,6 +12526,10 @@ msgstr ""
 msgid "Sharpening the opening"
 msgstr "Відточую вступ"
 
+#: src/features/portfolio/editor/design.tsx
+msgid "Shimmer"
+msgstr ""
+
 #: src/features/letters/write.tsx
 msgid "Short and direct. Fine if the posting asks for brevity."
 msgstr "Коротко і прямо. Добре, якщо оголошення про роботу вимагає стислості."
@@ -11932,9 +12614,17 @@ msgstr "Шоу закрито"
 msgid "Show closed applications to see your past job searches."
 msgstr "Покажіть закриті заявки, щоб переглянути свої минулі пошуки роботи."
 
+#: src/features/portfolio/editor/content.tsx
+msgid "Show contact form"
+msgstr ""
+
 #: src/features/share/custom-domain.tsx
 msgid "Show DNS records"
 msgstr "Показати DNS-записи"
+
+#: src/features/portfolio/editor/content.tsx
+msgid "Show email"
+msgstr ""
 
 #: src/features/write/section-menu.tsx
 msgid "Show heading"
@@ -11973,9 +12663,22 @@ msgstr "Показати більше"
 msgid "Show on page"
 msgstr "Показати на сторінці"
 
+#: src/features/portfolio/editor/content.tsx
+msgid "Show phone number"
+msgstr ""
+
+#: src/features/portfolio/editor/content.tsx
 #: src/features/write/picture-screen.tsx
 msgid "Show photo"
 msgstr "Показати фото"
+
+#: src/features/portfolio/editor/content.tsx
+msgid "Show profile links"
+msgstr ""
+
+#: src/features/portfolio/editor/content.tsx
+msgid "Show Save contact button"
+msgstr ""
 
 #: src/features/design/gallery-filters.tsx
 msgid "Show templates"
@@ -11988,6 +12691,14 @@ msgstr ""
 #: src/features/check/issues-tab.tsx
 msgid "Show them again"
 msgstr "Покажіть їх знову"
+
+#: src/features/portfolio/editor/content.tsx
+msgid "Show website"
+msgstr ""
+
+#: src/features/portfolio/editor/content.tsx
+msgid "Show WhatsApp"
+msgstr ""
 
 #: src/features/portfolio/overview.tsx
 msgid "Show your work on a personal page you can share."
@@ -12168,6 +12879,7 @@ msgstr "Навичка"
 #: src/features/entries/fields.ts
 #: src/features/jobs/listing-detail.tsx
 #: src/features/onboarding/intro-screen.tsx
+#: src/features/portfolio/editor/content.tsx
 msgid "Skills"
 msgstr "Навички"
 
@@ -12209,6 +12921,10 @@ msgstr ""
 #: src/features/letters/design.tsx
 msgid "Smaller text"
 msgstr "Менший текст"
+
+#: src/features/portfolio/editor/design.tsx
+msgid "Soft gradient"
+msgstr ""
 
 #: src/features/check/messages.ts
 msgid "Some application systems ask for one before you can apply."
@@ -12369,6 +13085,10 @@ msgstr ""
 msgid "Start"
 msgstr "старт"
 
+#: src/features/portfolio/editor/work.tsx
+msgid "Start a case study"
+msgstr ""
+
 #: src/features/workspace/prepare/prepare-part.tsx
 msgid "Start a debrief"
 msgstr "Почати розбір"
@@ -12402,6 +13122,10 @@ msgstr "Почати з"
 #: src/features/documents/new-copy.tsx
 msgid "Start from one you have and link the application."
 msgstr "Почніть із того, що у вас є, і зв’яжіть заявку на роботу."
+
+#: src/features/portfolio/editor/work.tsx
+msgid "Start from pictures"
+msgstr ""
 
 #: src/features/onboarding/onboarding-screen.tsx
 msgid "Start from scratch"
@@ -12446,6 +13170,10 @@ msgstr ""
 
 #: src/features/portfolio/create.tsx
 msgid "Start with"
+msgstr ""
+
+#: src/features/portfolio/editor/work.tsx
+msgid "Start with a blank work"
 msgstr ""
 
 #: src/features/write/add-section.tsx
@@ -12620,6 +13348,7 @@ msgstr "Пропонує скорочення, ніколи не видаляє 
 #: app/(tabs)/profile/summary.tsx
 #: src/features/entries/entry-editor.tsx
 #: src/features/entries/fields.ts
+#: src/features/portfolio/editor/work.tsx
 #: src/features/profile/career.tsx
 msgid "Summary"
 msgstr "Загальні відомості"
@@ -12704,6 +13433,7 @@ msgstr ""
 #: src/features/applications/save-review.tsx
 #: src/features/documents/library-menu.tsx
 #: src/features/documents/menu-panels.tsx
+#: src/features/portfolio/editor/work.tsx
 #: src/features/profile/stories-editor.tsx
 msgid "Tags"
 msgstr "Теги"
@@ -12736,6 +13466,10 @@ msgstr "адаптоване проти базового резюме"
 msgid "Take a photo"
 msgstr ""
 
+#: src/features/portfolio/editor/pictures.tsx
+msgid "Take a picture"
+msgstr ""
+
 #: src/features/entries/photo-field.tsx
 #: src/features/settings/profile.tsx
 msgid "Take photo"
@@ -12766,6 +13500,10 @@ msgstr "Тамільська"
 msgid "Tap empty time to schedule. Long press an interview to drag it, or its bottom edge to change its length."
 msgstr ""
 
+#: src/features/portfolio/editor/pictures.tsx
+msgid "Tap the cover to set its focus point."
+msgstr ""
+
 #: src/features/profile/preferences.tsx
 msgid "Target roles"
 msgstr "Цільові посади"
@@ -12785,6 +13523,10 @@ msgstr ""
 #. Template gallery filter: technology jobs
 #: src/features/design/preset-names.ts
 msgid "Tech"
+msgstr ""
+
+#: src/features/portfolio/editor/design.tsx
+msgid "Tech scramble"
 msgstr ""
 
 #: src/features/applications/stages.ts
@@ -12859,6 +13601,10 @@ msgstr "Умови використання"
 msgid "Test"
 msgstr "Тест"
 
+#: src/features/portfolio/editor/content.tsx
+msgid "Testimonials"
+msgstr ""
+
 #: src/features/ai/provider-editor.tsx
 msgid "Testing the connection…"
 msgstr "Перевірка з’єднання…"
@@ -12870,6 +13616,7 @@ msgstr "Тестування…"
 #: src/features/applications/save-posting.tsx
 #: src/features/ats-checker/checker.tsx
 #: src/features/entries/fields.ts
+#: src/features/portfolio/editor/blocks.tsx
 msgid "Text"
 msgstr "текст"
 
@@ -12888,6 +13635,10 @@ msgstr "Текст записаний по одному символу за ра
 #: src/features/workspace/practice/voice-settings-sheet.tsx
 msgid "Text only"
 msgstr "Лише текст"
+
+#: src/features/portfolio/editor/ai.tsx
+msgid "Text rewritten"
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "Text sits in the header or footer area."
@@ -12921,6 +13672,10 @@ msgstr ""
 #: src/features/settings/locale-names.ts
 msgid "Thai"
 msgstr "Тайська"
+
+#: src/features/portfolio/editor/work.tsx
+msgid "That address is already used."
+msgstr ""
 
 #: src/features/auth/errors.ts
 msgid "That code didn't work. Check it and try again."
@@ -13254,6 +14009,7 @@ msgid "The versions you sent are kept in Saved. Edits here don't change what {co
 msgstr "Надіслані вами версії зберігаються в Збережено. Зміни, внесені тут, не змінюють те, що отримав {company}."
 
 #: app/account/preferences.tsx
+#: src/features/portfolio/editor/design.tsx
 #: src/features/search/search-screen.tsx
 msgid "Theme"
 msgstr "Тема"
@@ -13262,6 +14018,10 @@ msgstr "Тема"
 #: app/account/membership.tsx
 #: src/features/billing/plan-card.tsx
 msgid "Then {0}"
+msgstr ""
+
+#: src/features/portfolio/editor/work.tsx
+msgid "There are no remaining projects to import."
 msgstr ""
 
 #: src/features/ats-checker/messages.ts
@@ -13599,6 +14359,10 @@ msgstr "Ця сторінка дуже щільно заповнена."
 msgid "This passage changed. Run the review again."
 msgstr "Цей уривок змінився. Повторіть перевірку."
 
+#: src/features/portfolio/editor/media.ts
+msgid "This PDF has an unsupported number of pages."
+msgstr ""
+
 #: src/features/check/parser-view.tsx
 msgid "This PDF has no text layer, so a parser reads nothing from it."
 msgstr "Цей PDF не має текстового шару, тому аналізатор нічого не читає з нього."
@@ -13611,9 +14375,29 @@ msgstr ""
 msgid "This PDF is password protected. Save an unprotected copy and try again."
 msgstr "Цей PDF захищений паролем. Збережіть незахищену копію і спробуйте ще раз."
 
+#: src/features/portfolio/editor/media.ts
+msgid "This PDF is too large."
+msgstr ""
+
+#: src/features/portfolio/editor/media.ts
+msgid "This picture is too large."
+msgstr ""
+
+#: src/features/portfolio/editor/screen.tsx
+msgid "This portfolio changed on another device."
+msgstr ""
+
 #: src/features/portfolio/publish.tsx
 #: src/features/portfolio/queries.ts
 msgid "This portfolio has been taken down."
+msgstr ""
+
+#: src/features/portfolio/editor/screen.tsx
+msgid "This portfolio is no longer available."
+msgstr ""
+
+#: src/features/portfolio/editor/screen.tsx
+msgid "This portfolio is too large to save."
 msgstr ""
 
 #: src/features/auth/errors.ts
@@ -13680,6 +14464,10 @@ msgstr "Цей сервер повідомляє іншу адресу, ніж �
 msgid "This server uses http. The app needs https."
 msgstr "Цей сервер використовує http. Додатку потрібен https."
 
+#: src/features/portfolio/editor/media.ts
+msgid "This service can't be embedded."
+msgstr ""
+
 #: src/auth/messages.ts
 msgid "This sign-in attempt expired or was already used. Sign in again."
 msgstr "Термін дії цієї спроби входу минув або її вже використано. Увійдіть знову."
@@ -13706,6 +14494,10 @@ msgstr ""
 
 #: src/features/billing/plan-alert.ts
 msgid "This template isn't in your plan"
+msgstr ""
+
+#: src/features/portfolio/editor/ai.tsx
+msgid "This text changed while AI was writing. Try again."
 msgstr ""
 
 #: src/features/career/schedule-sheet.tsx
@@ -13774,6 +14566,7 @@ msgid "Timing the plan"
 msgstr "Розподіляю час у плані"
 
 #: src/features/entries/fields.ts
+#: src/features/portfolio/editor/blocks.tsx
 #: src/features/profile/stories-editor.tsx
 msgid "Title"
 msgstr "Назва"
@@ -13940,6 +14733,10 @@ msgstr "Стенограму скопійовано"
 msgid "Transcription model"
 msgstr "Модель транскрипції"
 
+#: src/features/portfolio/editor/ai.tsx
+msgid "Translate to page language"
+msgstr ""
+
 #: src/features/documents/document-item.tsx
 #: src/features/documents/documents-screen.tsx
 #: src/features/documents/segment-header.tsx
@@ -14103,6 +14900,10 @@ msgstr "Ввести текстом"
 msgid "typed"
 msgstr "письмово"
 
+#: src/features/portfolio/editor/design.tsx
+msgid "Typewriter"
+msgstr ""
+
 #: src/features/design/advanced-group.tsx
 #: src/features/design/typography-screen.tsx
 msgid "Typography"
@@ -14138,6 +14939,9 @@ msgstr "Підкресліть посилання"
 #: src/features/entries/hooks.ts
 #: src/features/history/history-panel.tsx
 #: src/features/home/new-roles.tsx
+#: src/features/portfolio/editor/assistant.tsx
+#: src/features/portfolio/editor/screen.tsx
+#: src/features/portfolio/editor/store.tsx
 #: src/features/workspace/fit/fit-part.tsx
 #: src/features/write/profile-marker-sheet.tsx
 #: src/shell/builder-chrome/draft-chrome.tsx
@@ -14222,10 +15026,22 @@ msgstr "Без назви"
 msgid "Untitled letter"
 msgstr "Лист без назви"
 
+#: src/features/portfolio/editor/work.tsx
+msgid "Untitled metric"
+msgstr ""
+
+#: src/features/portfolio/editor/work.tsx
+msgid "Untitled project"
+msgstr ""
+
 #: src/features/documents/use-start-document.ts
 #: src/features/onboarding/onboarding-screen.tsx
 msgid "Untitled resume"
 msgstr "Резюме без назви"
+
+#: src/features/portfolio/editor/work.tsx
+msgid "Untitled work"
+msgstr ""
 
 #: src/features/workspace/practice/recorder-control.tsx
 msgid "Up to 2 minutes · 2 MB maximum."
@@ -14277,8 +15093,21 @@ msgstr ""
 msgid "Uploading photo…"
 msgstr "Завантаження фото…"
 
+#: src/features/portfolio/editor/pictures.tsx
+msgid "Uploading pictures…"
+msgstr ""
+
 #: src/features/entries/photo-field.tsx
 msgid "Uploading…"
+msgstr ""
+
+#: src/features/portfolio/editor/blocks.tsx
+#: src/features/portfolio/editor/work.tsx
+msgid "URL"
+msgstr "URL-адреса"
+
+#: src/features/portfolio/editor/metric.tsx
+msgid "US dollar"
 msgstr ""
 
 #. placeholder {0}: passwordLimits.max
@@ -14339,6 +15168,10 @@ msgstr "Використовуйте шістнадцяткове значенн
 msgid "Use a lighter shade"
 msgstr ""
 
+#: src/features/portfolio/editor/media.ts
+msgid "Use a link to a web page."
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "Use a plain international form, such as +1 555 010 1234."
 msgstr "Використовуйте простий міжнародний формат, наприклад +1 555 010 1234."
@@ -14350,6 +15183,10 @@ msgstr "Використовуйте розпізнаваний формат, н
 #: src/features/ats-checker/messages.ts
 msgid "Use a single column for anything that has to be read in sequence."
 msgstr "Використовуйте одну колонку для всього, що має читатися послідовно."
+
+#: src/features/portfolio/editor/media.ts
+msgid "Use a YouTube or Vimeo link."
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "Use A4 or US Letter so the layout survives being re-rendered."
@@ -14419,6 +15256,10 @@ msgstr ""
 msgid "Use lowercase letters, numbers and single dashes."
 msgstr "Використовуйте малі літери, цифри та одинарні тире."
 
+#: src/features/portfolio/editor/work.tsx
+msgid "Use lowercase letters, numbers and single hyphens."
+msgstr ""
+
 #: src/features/profile/search-regions-field.tsx
 msgid "Use my timezone"
 msgstr "Використовувати мій часовий пояс"
@@ -14440,6 +15281,7 @@ msgstr ""
 msgid "Use Rezumi AI?"
 msgstr ""
 
+#: src/features/portfolio/editor/screen.tsx
 #: src/features/profile/conflict-sheet.tsx
 msgid "Use saved version"
 msgstr ""
@@ -14452,6 +15294,10 @@ msgstr "Використовувати серверну версію"
 #: src/features/letters/design.tsx
 msgid "Use six hex digits, like #3E6B4F."
 msgstr "Використайте шість цифр Hex, як-от #3E6B4F."
+
+#: src/features/portfolio/editor/content.tsx
+msgid "Use source photo"
+msgstr ""
 
 #: src/features/auth/two-factor-screen.tsx
 msgid "Use the authenticator app"
@@ -14493,6 +15339,10 @@ msgstr "Використовувати часовий пояс цього при
 msgid "Use this provider"
 msgstr "Використовуйте цього провайдера"
 
+#: src/features/portfolio/editor/store.tsx
+msgid "Use Undo at the top of the editor to step back through your changes."
+msgstr ""
+
 #: src/features/share/custom-domain.tsx
 msgid "Use www.{hostname}"
 msgstr ""
@@ -14531,6 +15381,10 @@ msgstr "Використовує факти з вашого резюме"
 msgid "Uses the linked application"
 msgstr "Використовує пов’язану заявку"
 
+#: src/features/portfolio/editor/content.tsx
+msgid "Uses the location from your source."
+msgstr ""
+
 #: src/features/share/web-page.tsx
 msgid "Uses your resume's template and Design, and fits any screen. Change them in Design."
 msgstr "Використовує шаблон і Дизайн вашого резюме та підлаштовується під будь-який екран. Змінити їх можна в Дизайні."
@@ -14547,6 +15401,7 @@ msgstr "Узбецька"
 msgid "Valuation and dilution uncertain"
 msgstr "Оцінка й розмивання невизначені"
 
+#: src/features/portfolio/editor/metric.tsx
 #: src/features/share/custom-domain.tsx
 msgid "Value"
 msgstr "Значення"
@@ -14558,6 +15413,10 @@ msgstr "Вартість невизначена"
 #: src/features/ats-checker/messages.ts
 msgid "Vary the openings so the section does not read as boilerplate."
 msgstr "Урізноманітнюйте початки, щоб розділ не читався як шаблонний текст."
+
+#: src/features/portfolio/editor/design.tsx
+msgid "Vector outline"
+msgstr ""
 
 #: src/features/offers/cells.ts
 msgid "Verbal offer"
@@ -14631,6 +15490,10 @@ msgstr ""
 
 #: src/features/jobs/format.ts
 msgid "via the company's careers site"
+msgstr ""
+
+#: src/features/portfolio/editor/blocks.tsx
+msgid "Video"
 msgstr ""
 
 #: src/features/applications/interview/interview-fields.tsx
@@ -14735,6 +15598,10 @@ msgstr "Налаштування голосу"
 msgid "Volunteer"
 msgstr "Волонтерство"
 
+#: src/features/portfolio/editor/content.tsx
+msgid "Volunteering"
+msgstr ""
+
 #: src/features/share/custom-domain.tsx
 msgid "Waiting"
 msgstr ""
@@ -14742,6 +15609,10 @@ msgstr ""
 #. placeholder {0}: waitingFor.join(", ")
 #: src/features/onboarding/onboarding-screen.tsx
 msgid "Waiting for {0}…"
+msgstr ""
+
+#: src/features/portfolio/editor/screen.tsx
+msgid "Waiting for connection"
 msgstr ""
 
 #: src/features/workspace/messages/proposal-card.tsx
@@ -14966,6 +15837,10 @@ msgstr ""
 msgid "What's working"
 msgstr "Що працює"
 
+#: src/features/portfolio/editor/content.tsx
+msgid "WhatsApp number with country code"
+msgstr ""
+
 #: app/account/membership.tsx
 msgid "When a plan ends, nothing is locked or deleted: every document stays open to edit, share and download as a PDF."
 msgstr ""
@@ -15085,12 +15960,45 @@ msgstr "Підключення ШІ потрібне для імпорту Word,
 msgid "Words run together when the text is extracted."
 msgstr "Слова зливаються під час видобування тексту."
 
+#: src/features/portfolio/editor/content.tsx
+#: src/features/portfolio/editor/screen.tsx
+msgid "Work"
+msgstr ""
+
+#: src/features/portfolio/editor/work.tsx
+msgid "Work actions"
+msgstr ""
+
+#: src/features/portfolio/editor/work.tsx
+msgid "Work added"
+msgstr ""
+
+#: src/features/portfolio/editor/work.tsx
+msgid "Work address"
+msgstr ""
+
 #: src/features/jobs/filters-sheet.tsx
 msgid "Work arrangement"
 msgstr ""
 
+#: src/features/portfolio/editor/work.tsx
+msgid "Work cover"
+msgstr ""
+
+#: src/features/portfolio/editor/work.tsx
+msgid "Work removed"
+msgstr ""
+
 #: src/features/portfolio/statistics.tsx
 msgid "Work statistics"
+msgstr ""
+
+#: src/features/portfolio/editor/work.tsx
+msgid "Work title"
+msgstr ""
+
+#: src/features/portfolio/editor/ai.tsx
+msgid "Working…"
 msgstr ""
 
 #: src/features/workspace/prepare/soon.tsx
@@ -15134,6 +16042,10 @@ msgstr "Напишіть листа"
 #: src/features/workspace/prepare/prepare-part.tsx
 msgid "Write down what they asked while it's fresh. The coach compares your answers with your stories."
 msgstr "Запишіть, що вас запитували, поки пам’ять свіжа. Коуч порівняє ваші відповіді з вашими розповідями."
+
+#: src/features/portfolio/editor/ai.tsx
+msgid "Write draft"
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "Write each role as a clear title and company line, with the dates alongside."
@@ -15241,6 +16153,7 @@ msgstr "Ви скасували вхід до його завершення."
 msgid "You chose not to share it, so it wasn't read. Retry to choose again."
 msgstr ""
 
+#: src/features/portfolio/editor/screen.tsx
 #: src/features/portfolio/publish.tsx
 #: src/features/portfolio/statistics.tsx
 msgid "You don't have a portfolio yet."
@@ -15511,6 +16424,10 @@ msgstr ""
 msgid "Your headings look the same as your body text."
 msgstr "Ваші заголовки виглядають так само, як основний текст."
 
+#: src/features/portfolio/editor/ai.tsx
+msgid "Your intro has room for only four highlights."
+msgstr ""
+
 #: src/features/applications/board/load-states.tsx
 #: src/features/applications/list/list-states.tsx
 msgid "Your job search starts here"
@@ -15620,12 +16537,24 @@ msgstr ""
 msgid "Your portfolio changed on another device. Reload it and try again."
 msgstr ""
 
+#: src/features/portfolio/editor/ai.tsx
+msgid "Your portfolio changed while AI was writing. Try again."
+msgstr ""
+
+#: src/features/portfolio/editor/work.tsx
+msgid "Your portfolio has reached its work limit."
+msgstr ""
+
 #: src/features/portfolio/queries.ts
 msgid "Your portfolio is too large to save these changes."
 msgstr ""
 
 #: src/api/ai-consent.ts
 msgid "Your portfolio, its selected resume or Profile, and your instructions are sent through your server to this AI provider. They can contain personal information."
+msgstr ""
+
+#: src/features/portfolio/editor/assistant.tsx
+msgid "Your portfolio, request and conversation go to this AI connection. Edits are applied to your draft and can be undone."
 msgstr ""
 
 #: src/features/assistant/coach.tsx

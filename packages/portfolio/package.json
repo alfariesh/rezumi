@@ -23,7 +23,10 @@
 		"./statistics-csv": "./src/statistics-csv.ts",
 		"./text": "./src/text.ts",
 		"./vcard": "./src/vcard.ts",
-		"./view": "./src/view.ts"
+		"./view": "./src/view.ts",
+		"./editing": "./src/editing/index.ts",
+		"./save-failure": "./src/editing/save-failure.ts",
+		"./assistant": "./src/editing/assistant.ts"
 	},
 	"scripts": {
 		"typecheck": "tsrs --noEmit",
@@ -37,7 +40,12 @@
 		"@rezumi/utils": "workspace:*",
 		"react": "catalog:",
 		"react-dom": "catalog:",
-		"sanitize-html": "^2.18.1"
+		"sanitize-html": "^2.18.1",
+		"@orpc/client": "catalog:",
+		"@rezumi/ai": "workspace:*",
+		"es-toolkit": "catalog:",
+		"immer": "^11.2.9",
+		"zustand": "^5.0.16"
 	},
 	"devDependencies": {
 		"@rezumi/config": "workspace:*",

@@ -3,6 +3,7 @@ import { buttonVariants, FieldError, InputGroup, Label, TextField } from "@herou
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useId, useState } from "react";
+import { changeWorkSlug, workSlugProblem } from "@rezumi/portfolio/editing";
 import { isListedWork } from "@rezumi/schema/portfolio/data";
 import { PORTFOLIO_LIMITS } from "@rezumi/schema/portfolio/limits";
 import { Icon } from "@rezumi/ui/components/icon";
@@ -17,7 +18,6 @@ import {
 } from "../editor/store";
 import { useDraftText } from "../metrics/use-draft-text";
 import { isPortfolioLive } from "../status";
-import { changeWorkSlug, workSlugProblem } from "./works";
 import { CopyLinkButton } from "@/features/resume/share/copy-link-button";
 
 /** What can be typed into an address: lowercase letters, digits and dashes; spaces become dashes as they're typed. */

@@ -1,4 +1,4 @@
-import type { MetricFormatChoice } from "./metrics";
+import type { MetricFormatChoice } from "@rezumi/portfolio/editing";
 import type { PortfolioMetric } from "@rezumi/schema/portfolio/metric";
 import type { IconName } from "@rezumi/ui/components/icon";
 import type { Draft } from "immer";
@@ -9,14 +9,6 @@ import { i18n } from "@lingui/core";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { Suspense, useState } from "react";
-import { PORTFOLIO_LIMITS } from "@rezumi/schema/portfolio/limits";
-import { METRIC_DIRECTIONS, METRIC_DURATION_UNITS } from "@rezumi/schema/portfolio/metric";
-import { Icon } from "@rezumi/ui/components/icon";
-import { CellSwitchRow } from "@rezumi/ui/components/switch";
-import { useRemovalFocus } from "../blocks/list-focus";
-import { ChunkBoundary, retryableLazy } from "../editor/chunk-boundary";
-import { ChoiceSelect, moveItem, SortableCard, SortableList, TextInput } from "../editor/fields";
-import { FindMetricsButton } from "./find-metrics";
 import {
 	applyMetricFormat,
 	isMetricComplete,
@@ -29,7 +21,15 @@ import {
 	parseMetricSeries,
 	toggleMinus,
 	usesDecimalComma,
-} from "./metrics";
+} from "@rezumi/portfolio/editing";
+import { PORTFOLIO_LIMITS } from "@rezumi/schema/portfolio/limits";
+import { METRIC_DIRECTIONS, METRIC_DURATION_UNITS } from "@rezumi/schema/portfolio/metric";
+import { Icon } from "@rezumi/ui/components/icon";
+import { CellSwitchRow } from "@rezumi/ui/components/switch";
+import { useRemovalFocus } from "../blocks/list-focus";
+import { ChunkBoundary, retryableLazy } from "../editor/chunk-boundary";
+import { ChoiceSelect, moveItem, SortableCard, SortableList, TextInput } from "../editor/fields";
+import { FindMetricsButton } from "./find-metrics";
 import { useDraftText } from "./use-draft-text";
 import { IconPicker } from "@/components/input/icon-picker";
 import { INPUT_WITH_ICON, WithInputIcon } from "@/components/input/input-icon";

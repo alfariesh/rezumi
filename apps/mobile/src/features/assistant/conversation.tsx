@@ -4,7 +4,7 @@ import type { LegendListRef } from "@legendapp/list/react-native";
 import { LegendList } from "@legendapp/list/react-native";
 import { Trans, useLingui } from "@lingui/react/macro";
 import * as Clipboard from "expo-clipboard";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useEffectEvent, useRef, useState } from "react";
 import { AccessibilityInfo, RefreshControl, View } from "react-native";
 import { isProposeEdits } from "@rezumi/ai/assistant-proposals";
 import { textOf, transcriptOf } from "./chat";
@@ -41,6 +41,13 @@ export function Conversation(props: ConversationProps) {
 		retry,
 		decide,
 	} = useConversation(props);
+	const effectMessages = useEffectEvent((updated: typeof messages) =>
+		props.onMessages?.(updated, props.initialMessages, props.threadId),
+	);
+	useEffect(() => {
+		effectMessages(messages);
+	}, [messages]);
+
 	const pull = usePullRefresh(...(props.onRefresh ? [props.onRefresh] : []));
 	const accent = useThemeColor("accent");
 	const list = useRef<LegendListRef>(null);
@@ -108,6 +115,7 @@ export function Conversation(props: ConversationProps) {
 									proposals={handlers}
 									onAnswer={!latest || streaming ? null : answer}
 								/>
+								{props.renderEffects?.(message, props.threadId)}
 								<ToolApprovals
 									message={message}
 									disabled={readOnly || streaming || !latest || continuationBlocked}

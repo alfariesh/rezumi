@@ -1,7 +1,6 @@
 import type { PortfolioWork } from "@rezumi/schema/portfolio/data";
 import { describe, expect, it } from "vite-plus/test";
 import { produce } from "immer";
-import { PORTFOLIO_LIMITS } from "@rezumi/schema/portfolio/limits";
 import {
 	blockPlace,
 	blockRoom,
@@ -13,7 +12,8 @@ import {
 	pictureKeys,
 	removeBlock,
 	restoreBlock,
-} from "./blocks";
+} from "@rezumi/portfolio/editing";
+import { PORTFOLIO_LIMITS } from "@rezumi/schema/portfolio/limits";
 import { itemAfterRemoval } from "./list-focus";
 
 const work = (blocks: PortfolioWork["blocks"] = []): PortfolioWork => ({

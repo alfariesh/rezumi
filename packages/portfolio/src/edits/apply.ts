@@ -41,6 +41,7 @@ type CallState = {
 	original: PortfolioData;
 	images: Map<string, PortfolioImage>;
 	newId: () => string;
+	sanitizeHtml: InputEnv["sanitizeHtml"];
 	/** Refs earlier adds named, with their items' ids. */
 	refs: Map<string, string>;
 	/** Refs of adds that failed, with the edit's index: a later edit naming one is told why it's unknown. */
@@ -465,6 +466,7 @@ function inputEnv(current: PortfolioData, state: CallState, pending: Map<string,
 		original: state.original,
 		images: state.images,
 		newId: state.newId,
+		sanitizeHtml: state.sanitizeHtml,
 		resolve: (id) => {
 			const mapped = pending.get(id) ?? state.refs.get(id);
 			if (mapped !== undefined) return mapped;
@@ -503,10 +505,11 @@ function refsNamed(edit: unknown): string[] {
  * invalid value, list full, plan) is reported in `failed` and the next one still applies. After every edit the data
  * passes the write schema and fits the saved-size limit.
  */
-export function applyPortfolioEdits(
+export function runPortfolioEdits(
 	data: PortfolioData,
 	edits: readonly PortfolioEdit[],
-	context: PortfolioEditContext,
+	context: Omit<PortfolioEditContext, "mode"> &
+		({ mode: "strict"; sanitizeHtml: InputEnv["sanitizeHtml"] } | { mode: "replay" }),
 ): PortfolioEditResult {
 	const strict = context.mode === "strict";
 	const state: CallState = {
@@ -515,6 +518,7 @@ export function applyPortfolioEdits(
 		original: data,
 		images: strict ? knownImages(data, context.images) : new Map(),
 		newId: context.newId ?? generateId,
+		sanitizeHtml: context.mode === "strict" ? context.sanitizeHtml : () => refuse("Replay requires a resolved edit."),
 		refs: new Map(),
 		failedRefs: new Map(),
 	};

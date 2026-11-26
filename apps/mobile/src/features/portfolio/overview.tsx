@@ -6,7 +6,7 @@ import * as Clipboard from "expo-clipboard";
 import { useRouter } from "expo-router";
 import { Share, View } from "react-native";
 import { OfflinePortfolioNotice, PortfolioLoadState } from "./layout";
-import { openPortfolioLink, setPublished, usePortfolio, usePortfolioAction, usePortfolioAddress } from "./queries";
+import { setPublished, usePortfolio, usePortfolioAction, usePortfolioAddress } from "./queries";
 import { orpc } from "@/api/client";
 import { useOnline } from "@/api/online";
 import { routes } from "@/routes";
@@ -55,7 +55,7 @@ function PortfolioOverview({ portfolio, refresh }: OverviewProps) {
 	const { t, i18n } = useLingui();
 	const router = useRouter();
 	const online = useOnline();
-	const { url, server, live } = usePortfolioAddress(portfolio);
+	const { url, live } = usePortfolioAddress(portfolio);
 	const action = usePortfolioAction();
 	const stats = useQuery({ ...orpc.portfolio.statistics.queryOptions(), enabled: online });
 	const messages = useQuery({ ...orpc.portfolio.messages.list.queryOptions({ input: { limit: 1 } }), enabled: online });
@@ -116,9 +116,9 @@ function PortfolioOverview({ portfolio, refresh }: OverviewProps) {
 					>{t`Preview`}</Button>
 					<Button
 						variant="secondary"
-						isDisabled={!online}
-						onPress={() => void openPortfolioLink(`${server}/builder/portfolio`)}
-					>{t`Edit on the web`}</Button>
+						testID="portfolio-edit"
+						onPress={() => router.push(routes.portfolio("edit"))}
+					>{t`Edit portfolio`}</Button>
 				</View>
 			</Card>
 			<ListSection>

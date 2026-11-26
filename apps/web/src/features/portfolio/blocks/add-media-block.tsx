@@ -5,6 +5,7 @@ import type { Draft } from "immer";
 import { Alert, Spinner } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { useRef } from "react";
+import { linkBlockFromUnfurl, readLinkAddress, stillPlays, videoBlockFromUnfurl } from "@rezumi/portfolio/editing";
 import { parseEmbedUrl } from "@rezumi/schema/portfolio/embed";
 import { parseVideoUrl } from "@rezumi/schema/portfolio/video";
 import { Icon } from "@rezumi/ui/components/icon";
@@ -22,13 +23,7 @@ import {
 	isNoRoomError,
 	stillEmbeds,
 } from "../media/embeds";
-import {
-	linkBlockFromUnfurl,
-	readLinkAddress,
-	stillPlays,
-	useLinkSuggestions,
-	videoBlockFromUnfurl,
-} from "../media/link-blocks";
+import { useLinkSuggestions } from "../media/link-blocks";
 import { newPdfBlock, pdfErrorMessage } from "../media/pdf";
 import { importVideoThumbnail, unfurlErrorMessage, unfurlLink, videoBlockFromUrl } from "../media/remote";
 import { openPlanDialogForError } from "@/features/billing/plan-dialog";

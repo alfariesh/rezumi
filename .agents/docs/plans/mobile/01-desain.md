@@ -108,3 +108,7 @@ Akun lama yang masuk di perangkat baru langsung ke Home. Izin notifikasi diminta
 ## Phase 11 — Percakapan
 
 Coach dari tombol kilau memakai lembar dengan tombol **Expand Coach** di ponsel, dan panel kanan di tablet. **Conversations** membuka riwayat. Asisten CV dan surat memakai lembar yang sama pola percakapannya. Komposer, pilihan konteks dan sumber AI selalu berada di bawah daftar pesan. Usulan yang diterapkan mendapat tombol **Undo** selama langkahnya masih bisa diurungkan.
+
+## Phase 13 — Editor portofolio
+
+Ponsel menampilkan Content, Work, Design, dan Publish di bawah judul. Undo, Redo, dan Preview ada di bar judul. Status simpan memberi pilihan saat versi berubah di perangkat lain. Tablet menampilkan editor dan pratinjau tersimpan berdampingan. Daftar karya menyediakan pegangan seret dan menu pindah. Di Design, galeri menampilkan contoh tema dari server dan gambar diam efek pembuka. Tombol Replay intro memutar efek di pratinjau.

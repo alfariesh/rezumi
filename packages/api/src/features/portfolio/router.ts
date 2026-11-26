@@ -820,6 +820,32 @@ export const portfolioRouter = {
 		.output(z.file().describe("The picture as the site sent it."))
 		.handler(({ context, input, signal }) => portfolioService.fetchRemoteImage(context.user.id, input, signal)),
 
+	// React Native's fetch can read a JSON body but cannot decode a multipart response.
+	fetchRemoteImageBytes: protectedProcedure
+		.route({
+			...route,
+			method: "POST",
+			path: "/portfolio/links/image-bytes",
+			summary: "Fetch a link's preview picture for the native editor",
+		})
+		.use(portfolioRemoteImageRateLimit)
+		.input(z.object({ url: remoteUrlSchema }))
+		.errors(
+			portfolioErrorMap(
+				"PORTFOLIO_DISABLED",
+				"NOT_FOUND",
+				"PORTFOLIO_LINK_UNREADABLE",
+				"PORTFOLIO_FILE_TOO_LARGE",
+				"PORTFOLIO_IMAGE_INVALID",
+			),
+		)
+		.output(z.object({ contentType: z.string(), base64: z.string() }))
+		.handler(async ({ context, input, signal }) => {
+			const picture = await portfolioService.fetchRemoteImage(context.user.id, input, signal);
+			const bytes = await picture.arrayBuffer();
+			return { contentType: picture.type, base64: Buffer.from(bytes).toString("base64") };
+		}),
+
 	deleteFile: protectedProcedure
 		.route({
 			...route,

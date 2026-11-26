@@ -41,6 +41,10 @@ export function creditActionOf(operation: string, input: unknown): CreditAction 
 			return "tailor-resume";
 		case "portfolio.ai.draft":
 			return "portfolio-draft";
+		case "portfolio.ai.rewrite":
+			return "portfolio-rewrite";
+		case "portfolio.ai.findMetrics":
+			return "portfolio-metrics";
 		case "coverLetters.draft":
 			return "cover-letter";
 		case "profile.sources.website":

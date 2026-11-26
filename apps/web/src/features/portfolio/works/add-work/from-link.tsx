@@ -6,6 +6,8 @@ import { Button, Checkbox, Chip, Label, Modal, Spinner } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useState } from "react";
+import { linkBlockFromUnfurl, readLinkAddress, videoBlockFromUnfurl, workFromLink } from "@rezumi/portfolio/editing";
+import { workRoom } from "@rezumi/portfolio/editing";
 import { PORTFOLIO_LIMITS } from "@rezumi/schema/portfolio/limits";
 import { Icon } from "@rezumi/ui/components/icon";
 import { toast } from "@rezumi/ui/components/toast";
@@ -16,7 +18,6 @@ import { usePortfolioEditorUi } from "../../editor/ui";
 import { discardUnplacedImages, isAbort } from "../../images/upload";
 import { useRequestSignals } from "../../images/use-request-signals";
 import { embedFromUnfurl, embedProviderName } from "../../media/embeds";
-import { linkBlockFromUnfurl, readLinkAddress, videoBlockFromUnfurl, workFromLink } from "../../media/link-blocks";
 import {
 	importRemotePicture,
 	importVideoThumbnail,
@@ -26,7 +27,6 @@ import {
 	videoThumbnailCandidates,
 } from "../../media/remote";
 import { usePortfolioLimits } from "../limits";
-import { workRoom } from "../works";
 import { BackButton, StepAlert, useReportBusy } from "./parts";
 import { openPlanDialogForError } from "@/features/billing/plan-dialog";
 

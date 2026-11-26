@@ -1,0 +1,77 @@
+# Signed-in, email-verified disposable account with an unpublished portfolio and room for one work.
+# Add a fictional image to the device gallery and set PHOTO_LABEL to its visible picker label.
+appId: app.rezumi
+---
+- launchApp
+- extendedWaitUntil:
+    visible:
+      id: open-drawer
+    timeout: 30000
+- tapOn:
+    id: open-drawer
+- tapOn:
+    id: drawer-portfolio
+- tapOn:
+    id: portfolio-edit
+- tapOn: Work
+- tapOn:
+    id: portfolio-add-work
+- tapOn: Start with a blank work
+- tapOn:
+    id: portfolio-work-title
+- inputText: Bookshop redesign
+- hideKeyboard
+- scrollUntilVisible:
+    element: Choose cover picture
+    direction: DOWN
+- tapOn: Choose cover picture
+- tapOn: Choose from photo library
+- tapOn: ${PHOTO_LABEL}
+- tapOn:
+    text: Add
+    optional: true
+- extendedWaitUntil:
+    visible: Tap the cover to set its focus point.
+    timeout: 20000
+- scrollUntilVisible:
+    element:
+      id: portfolio-add-block
+    direction: DOWN
+- tapOn:
+    id: portfolio-add-block
+- tapOn: Text
+- scrollUntilVisible:
+    element: Block text
+    direction: DOWN
+- tapOn: Block text
+- inputText: Redesigned the catalogue for a fictional bookshop.
+- hideKeyboard
+- scrollUntilVisible:
+    element:
+      id: portfolio-add-block
+    direction: UP
+- tapOn:
+    id: portfolio-add-block
+- tapOn: Metrics
+- scrollUntilVisible:
+    element: Metric label
+    direction: DOWN
+- tapOn: Metric label
+- inputText: Catalogue pages
+- hideKeyboard
+- extendedWaitUntil:
+    visible: Saved
+    timeout: 20000
+- tapOn:
+    id: portfolio-editor-preview
+- extendedWaitUntil:
+    visible:
+      id: portfolio-webview
+    timeout: 20000
+- tapOn: Back
+- tapOn: Publish
+- tapOn:
+    id: portfolio-publish-switch
+- extendedWaitUntil:
+    visible: Visitors can open your page.
+    timeout: 20000

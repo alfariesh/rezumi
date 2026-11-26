@@ -1,0 +1,29 @@
+# English app, disposable portfolio draft, tested AI connection configured for a deterministic rewrite.
+appId: app.rezumi
+---
+- launchApp
+- extendedWaitUntil:
+    visible:
+      id: open-drawer
+    timeout: 30000
+- tapOn:
+    id: open-drawer
+- tapOn:
+    id: drawer-portfolio
+- tapOn:
+    id: portfolio-edit
+- scrollUntilVisible:
+    element: Greeting
+    direction: DOWN
+- tapOn: Greeting
+- eraseText
+- inputText: Hello from my independent bookshop project.
+- hideKeyboard
+- tapOn: Rewrite with AI
+- tapOn: Make shorter
+- tapOn: ${AI_CONSENT_BUTTON}
+- extendedWaitUntil:
+    visible: Text rewritten
+    timeout: 30000
+- tapOn: Undo
+- assertVisible: Hello from my independent bookshop project.

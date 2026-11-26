@@ -3,6 +3,7 @@ import type { PortfolioWork } from "@rezumi/schema/portfolio/data";
 import type { Draft } from "immer";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
+import { pictureKeys } from "@rezumi/portfolio/editing";
 import { IMAGE_BLOCK_LAYOUTS } from "@rezumi/schema/portfolio/blocks";
 import { PORTFOLIO_LIMITS } from "@rezumi/schema/portfolio/limits";
 import { ChoiceSelect, moveItem, SortableCard, SortableList, TextInput } from "../editor/fields";
@@ -15,7 +16,6 @@ import {
 	useImageUploads,
 } from "../images/image-field";
 import { discardUnplacedImages } from "../images/upload";
-import { pictureKeys } from "./blocks";
 import { useRemovalFocus } from "./list-focus";
 
 const layoutLabel = (layout: (typeof IMAGE_BLOCK_LAYOUTS)[number]) =>

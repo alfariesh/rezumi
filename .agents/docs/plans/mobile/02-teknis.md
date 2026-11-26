@@ -470,3 +470,10 @@ Belum: web `style-groups.tsx` masih memakai `darkenForWhite` dengan asumsi kerta
 - `portfolio.preview` membaca portofolio milik akun terautentikasi dan memakai renderer halaman publik. Pratinjau ponsel/desktop dan halaman karya tidak mengirim peristiwa atau formulir publik. Gambar draf memakai URL yang ditandatangani per berkas selama 10 menit dengan respons privat tanpa cache. Kartu PDF draf tetap terlihat. Buka PDF dari halaman publik setelah diterbitkan.
 - WebView memakai origin khusus, tanpa akses file dan dengan CSP yang mengizinkan skrip halaman berdasarkan hash. Tautan ke luar dibuka lewat browser sistem. Galeri, alamat, CSV dan penerapan draf AI berbagi logika melalui subpath `@rezumi/portfolio`.
 - Uji simulator dan screenshot tertunda karena ruang disk sekitar 7 GiB. Android belum dicek, ditunda pemilik. Alur Maestro tersedia untuk penerbitan dan baca pesan.
+
+## Phase 13 — Editor dan AI portofolio (2026-11-26)
+
+- Web dan app memakai engine editor dari `@rezumi/portfolio/editing`. Adaptor memasok RPC berversi dan pemicu sambung ulang. Impor proyek membuat satu langkah Undo. Bila draf berubah saat impor berjalan, editor menawarkan kedua versi.
+- App memakai render server untuk pratinjau karya dan halaman. Di tablet, pratinjau mengikuti versi terakhir yang tersimpan. Gambar draf di editor memakai autentikasi pemilik. Gambar diperkecil dan dikodekan ulang sebelum unggah. Modul PDF yang sudah ada menghitung halaman dan merender halaman pertama.
+- Unggah berkas Expo memakai multipart oRPC yang sama dengan web. Prosedur internal tambahan `portfolio.fetchRemoteImageBytes` memakai pembaca gambar jarak jauh dan batas yang sama. Ini memberi Expo respons JSON karena fetch native belum dapat membaca multipart.
+- Asisten memakai percakapan Phase 11 dan hasil edit teresolusi dari server. Replay dan Undo berbagi kode dengan web. Validasi dan sanitasi input AI mentah tetap di jalur server. Rewrite, Find numbers, Draft dan percakapan memakai persetujuan AI per operasi.

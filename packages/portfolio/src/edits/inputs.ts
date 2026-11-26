@@ -18,7 +18,6 @@ import {
 	PORTFOLIO_VARIANT_KEYS,
 } from "@rezumi/schema/portfolio/themes";
 import { parseVideoUrl, youtubeThumbnailUrl } from "@rezumi/schema/portfolio/video";
-import { sanitizePortfolioHtml } from "../rich-text";
 import { escapeHtmlText } from "../text";
 import { refuse } from "./errors";
 import { itemLabel } from "./lists";
@@ -38,6 +37,7 @@ export type InputEnv = {
 	original: PortfolioData;
 	images: ReadonlyMap<string, PortfolioImage>;
 	newId: () => string;
+	sanitizeHtml: (html: string) => string;
 	/** An id or a ref from an earlier add in this call, as the item's id. */
 	resolve: (id: string) => string;
 	/** Records a ref given to an item created inside an add (a block, a metric). */
@@ -93,14 +93,14 @@ function plainToHtml(text: string): string {
 }
 
 /** Rich text in the portfolio's subset, from HTML or plain text, within `limit` characters of text. */
-function richTextInput(value: unknown, limit: number, what: string): unknown {
+function richTextInput(value: unknown, limit: number, what: string, env: InputEnv): unknown {
 	if (value === null) return null;
 	if (typeof value !== "string") return refuse(`${what}: give HTML or plain text.`);
 	const text = value.trim();
 	// Cleaning takes time in proportion to the input: what is longer than any field's markup may run is refused unread.
 	if (text.length > limit * RICH_TEXT_MARKUP_FACTOR)
 		refuse(`${what}: far too long (${text.length} characters with markup). At most ${limit} characters of text.`);
-	const clean = sanitizePortfolioHtml(RICH_MARKUP.test(text) ? text : plainToHtml(text));
+	const clean = env.sanitizeHtml(RICH_MARKUP.test(text) ? text : plainToHtml(text));
 	if (!fitsRichText(clean, limit)) {
 		const length = richTextLength(clean);
 		refuse(
@@ -258,7 +258,7 @@ function imageList(value: unknown, env: InputEnv, what: string): unknown {
 function blockField(type: string, key: string, raw: unknown, env: InputEnv, what: string): unknown {
 	switch (key) {
 		case "html":
-			return richTextInput(raw ?? "", max.blockText, `${what} › html`);
+			return richTextInput(raw ?? "", max.blockText, `${what} › html`, env);
 		case "images":
 			return imageList(raw, env, what);
 		case "thumbnail":
@@ -509,7 +509,7 @@ function simpleValues(list: keyof typeof SIMPLE_FIELDS, input: Fields, env: Inpu
 				} else out.logo = imageInput(raw, env, where);
 				break;
 			case "content":
-				out.content = richTextInput(raw, max.customContent, where);
+				out.content = richTextInput(raw, max.customContent, where, env);
 				break;
 			case "consent":
 				if (raw !== true) refuse(`${what}: ${CONSENT}`);
@@ -717,7 +717,7 @@ export function setInput(path: string, value: unknown, env: InputEnv): unknown {
 			};
 		}
 		case "about.content":
-			return value === null ? REMOVE : richTextInput(value, max.about, "about.content");
+			return value === null ? REMOVE : richTextInput(value, max.about, "about.content", env);
 		case "sections.order":
 		case "sections.hidden":
 			return value === null ? REMOVE : resolveKeys(value, env);
