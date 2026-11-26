@@ -28,7 +28,7 @@ import { useResumes } from "./queries";
 import { relinkLetter } from "./save";
 import { relinked } from "./write";
 import { useLetterStore } from "@/draft";
-import { isLabelledTemplate, isLockedTemplate, listedTemplates, showPlanAlert, usePlan } from "@/features/billing/plan";
+import { isLabelledTemplate, isLockedTemplate, showPlanAlert, usePlan } from "@/features/billing/plan";
 import { ACCENT_NAMES, MARGIN_NAMES, PAIRING_NAMES } from "@/features/design/preset-names";
 import { routes } from "@/routes";
 import {
@@ -295,8 +295,7 @@ function OwnDesign({ letter, disabled }: OwnDesignProps) {
 				detents={[0.6, 0.95]}
 			>
 				<ListSection>
-					{/* iOS lists only the templates the account can use; Android lists all, the locked ones labelled. */}
-					{listedTemplates(plan, templateLineup, metadata.template).map((template) => (
+					{templateLineup.map((template) => (
 						<ListRow
 							key={template}
 							title={templateName(template)}

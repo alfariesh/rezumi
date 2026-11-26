@@ -268,7 +268,12 @@ describe.skipIf(!databaseUrl)("QRIS passes through Sumopod", () => {
 			const { link } = await open("plus", "month");
 			await paid(link);
 			const abroad = await as("buyer", { "cf-ipcountry": "US" }).summary();
-			expect(abroad).toMatchObject({ paymentMethods: ["qris"], paymentMethod: "qris", currency: "idr" });
+			expect(abroad).toMatchObject({
+				paymentMethods: ["qris"],
+				paymentMethod: "qris",
+				currency: "idr",
+				qrisPass: { active: true, lastEndedAt: null },
+			});
 			await expect(
 				as("buyer", { "cf-ipcountry": "US" }).checkout({
 					planId: "pro-ai",
@@ -281,6 +286,21 @@ describe.skipIf(!databaseUrl)("QRIS passes through Sumopod", () => {
 			await expect(
 				as("buyer", { "cf-ipcountry": "US" }).checkout({ planId: "plus", interval: "month", idempotencyKey: "more" }),
 			).resolves.toMatchObject({ redirectUrl: expect.stringContaining("https://pay.sumopod.com/pay/") });
+		});
+
+		it("reports the last naturally expired QRIS pass without treating it as active access", async () => {
+			const { link } = await open("plus", "month");
+			await paid(link);
+			const ended = new Date(Date.now() - day);
+			await getDb()
+				.update(tables.membershipPeriod)
+				.set({ startsAt: new Date(Date.now() - 31 * day), endsAt: ended })
+				.where(eq(tables.membershipPeriod.userId, "buyer"));
+			expect(await as("buyer").summary()).toMatchObject({
+				planId: "free",
+				source: null,
+				qrisPass: { active: false, lastEndedAt: ended },
+			});
 		});
 
 		it("keeps a card subscriber on the card subscription, even from Indonesia", async () => {

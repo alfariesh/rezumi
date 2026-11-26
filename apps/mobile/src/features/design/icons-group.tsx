@@ -5,7 +5,7 @@ import { View } from "react-native";
 import { iconDesignOf } from "@rezumi/schema/resume/data";
 import { ResumeIcon, useIconGlyphs } from "./resume-icon";
 import { FieldLabel } from "./section";
-import { canShowPlans, hasPlanFeature, showPlanAlert, usePlan } from "@/features/billing/plan";
+import { hasPlanFeature, showPlanAlert, usePlan } from "@/features/billing/plan";
 import { ListRow, ListSection, Segment, Switch, cx } from "@/ui";
 
 type IconGroupKey = "contact" | "sections" | "items" | "logos";
@@ -15,7 +15,7 @@ const SAMPLES = ["mail-01", "call-02", "location-01", "briefcase-01", "mortarboa
 
 /**
  * Icons: one switch for all of them, the style every icon is drawn in, and the groups that show. Tool logos need the
- * plan's `brandLogos` to be switched on: Android shows the switch locked and explains, iOS leaves it out. A resume that
+ * plan's `brandLogos` to be switched on. A resume that
  * already shows them keeps an open switch, to turn them off.
  */
 export function IconsGroup({ data, write, disabled }: DesignProps) {
@@ -93,11 +93,9 @@ export function IconsGroup({ data, write, disabled }: DesignProps) {
 			</View>
 
 			<ListSection title={t`Where icons show`}>
-				{groups.flatMap(({ key, label, description }) => {
+				{groups.map(({ key, label, description }) => {
 					const locked = key === "logos" && logosLocked;
-					// iOS names no plan: a switch the plan doesn't open is left out.
-					if (locked && !canShowPlans()) return [];
-					return [
+					return (
 						<ListRow
 							key={key}
 							title={locked ? `${label} · Plus` : label}
@@ -114,8 +112,8 @@ export function IconsGroup({ data, write, disabled }: DesignProps) {
 									}
 								/>
 							}
-						/>,
-					];
+						/>
+					);
 				})}
 			</ListSection>
 		</>

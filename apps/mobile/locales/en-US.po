@@ -284,7 +284,7 @@ msgstr "{0} are available, and documents that already use another template keep 
 
 #. placeholder {0}: creditCount(TRIAL_CREDITS.amount)
 #. placeholder {1}: TRIAL_CREDITS.validDays
-#: app/account/membership.tsx
+#: src/features/account/plan-screen.tsx
 msgid "{0} come with your first use of Rezumi AI, valid for {1} days."
 msgstr "{0} come with your first use of Rezumi AI, valid for {1} days."
 
@@ -300,7 +300,7 @@ msgstr "{0} employees"
 
 #. placeholder {0}: creditCount(credits.nextExpiry.credits)
 #. placeholder {1}: formatDate(credits.nextExpiry.at)
-#: app/account/membership.tsx
+#: src/features/account/plan-screen.tsx
 msgid "{0} expire on {1}"
 msgstr "{0} expire on {1}"
 
@@ -345,6 +345,11 @@ msgstr "{0} is ready. Choose it under Font family."
 #: src/features/design/uploaded-fonts.tsx
 msgid "{0} italic"
 msgstr "{0} italic"
+
+#. placeholder {0}: i18n.number(bytes.data / 1024, { maximumFractionDigits: 1 })
+#: src/features/account/storage-screen.tsx
+msgid "{0} KB"
+msgstr "{0} KB"
 
 #. placeholder {0}: clock.money(terms.currency, difference)
 #: src/features/offers/cells.ts
@@ -946,11 +951,11 @@ msgstr "{TRASH_DAYS, plural, one {Documents you move here stay for # day.} other
 msgid "{unread, plural, one {# unread message} other {# unread messages}}"
 msgstr "{unread, plural, one {# unread message} other {# unread messages}}"
 
-#: app/account/membership.tsx
+#: src/features/account/plan-screen.tsx
 msgid "{used} in use"
 msgstr "{used} in use"
 
-#: app/account/membership.tsx
+#: src/features/account/plan-screen.tsx
 msgid "{used} of {max}"
 msgstr "{used} of {max}"
 
@@ -1189,6 +1194,10 @@ msgstr "About 90 seconds when spoken"
 msgid "About me"
 msgstr "About me"
 
+#: src/features/account/help-screen.tsx
+msgid "About Rezumi"
+msgstr "About Rezumi"
+
 #: src/features/jobs/listing-detail.tsx
 msgid "About the job"
 msgstr "About the job"
@@ -1232,9 +1241,7 @@ msgstr "Accepted offer"
 msgid "Accomplishment"
 msgstr "Accomplishment"
 
-#: app/account/account.tsx
-#: app/account/index.tsx
-#: src/features/search/search-screen.tsx
+#: src/features/account/account-screen.tsx
 #: src/shell/account-menu.tsx
 #: src/shell/app-drawer.tsx
 msgid "Account"
@@ -1248,24 +1255,19 @@ msgstr "Account menu"
 msgid "Action"
 msgstr "Action"
 
-#: src/features/search/search-screen.tsx
-msgid "Actions"
-msgstr "Actions"
-
 #: src/features/share/custom-domain.tsx
 msgid "Active"
 msgstr "Active"
 
-#: app/account/membership.tsx
+#: src/features/account/plan-screen.tsx
 msgid "Active cover letters"
 msgstr "Active cover letters"
 
-#: app/account/membership.tsx
+#: src/features/account/plan-screen.tsx
 msgid "Active resumes"
 msgstr "Active resumes"
 
-#. placeholder {0}: formatDate(plan.currentPeriodEndsAt)
-#: app/account/membership.tsx
+#. placeholder {0}: formatDate(end)
 #: src/features/billing/plan-card.tsx
 msgid "Active until {0}"
 msgstr "Active until {0}"
@@ -1435,10 +1437,6 @@ msgstr "Add any of these and we'll fill in your Profile. You check everything be
 #: src/features/profile/bring-screen.tsx
 msgid "Add any of these and we'll find what your Profile is missing. You check everything before it's added."
 msgstr "Add any of these and we'll find what your Profile is missing. You check everything before it's added."
-
-#: src/features/search/search-screen.tsx
-msgid "Add application"
-msgstr "Add application"
 
 #: src/features/entries/fields.ts
 msgid "Add award"
@@ -1718,6 +1716,10 @@ msgstr "Additional roles for the effect"
 msgid "Address"
 msgstr "Address"
 
+#: src/features/account/mcp-screen.tsx
+msgid "Address copied"
+msgstr "Address copied"
+
 #: src/features/workspace/messages/describe-change.ts
 msgid "Adds a reminder to Today if you haven't heard back by then."
 msgstr "Adds a reminder to Today if you haven't heard back by then."
@@ -1734,7 +1736,7 @@ msgstr "Adds your own public projects."
 msgid "Advanced"
 msgstr "Advanced"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Afrikaans"
 msgstr "Afrikaans"
 
@@ -1775,9 +1777,8 @@ msgstr "Against your requirements"
 msgid "AI"
 msgstr "AI"
 
-#: app/account/ai.tsx
-#: app/account/index.tsx
-#: src/features/search/search-screen.tsx
+#: src/features/account/ai-screen.tsx
+#: src/features/account/preferences-screen.tsx
 msgid "AI & developer"
 msgstr "AI & developer"
 
@@ -1805,6 +1806,15 @@ msgstr "AI connections haven't loaded. Try again before generating."
 msgid "AI couldn't read everything. Check the details, or fill them in by hand."
 msgstr "AI couldn't read everything. Check the details, or fill them in by hand."
 
+#: src/features/account/ai-privacy-screen.tsx
+#: src/features/account/ai-screen.tsx
+msgid "AI data sharing"
+msgstr "AI data sharing"
+
+#: src/api/ai-consent.ts
+msgid "AI data sharing is off on this device. You can change it in App settings."
+msgstr "AI data sharing is off on this device. You can change it in App settings."
+
 #: src/features/history/format.ts
 msgid "AI edit"
 msgstr "AI edit"
@@ -1817,9 +1827,8 @@ msgstr "AI is unavailable"
 msgid "AI provider"
 msgstr "AI provider"
 
-#: app/account/ai-providers.tsx
-#: app/account/ai.tsx
-#: src/features/search/search-screen.tsx
+#: src/features/account/ai-screen.tsx
+#: src/features/account/providers-screen.tsx
 msgid "AI providers"
 msgstr "AI providers"
 
@@ -1851,7 +1860,7 @@ msgstr "AI review"
 msgid "AI settings"
 msgstr "AI settings"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Albanian"
 msgstr "Albanian"
 
@@ -1887,6 +1896,14 @@ msgstr "All documents"
 #: src/features/design/gallery-filters.tsx
 msgid "All fields"
 msgstr "All fields"
+
+#: src/features/account/plan-screen.tsx
+msgid "All portfolio intro effects"
+msgstr "All portfolio intro effects"
+
+#: src/features/account/plan-screen.tsx
+msgid "All portfolio themes"
+msgstr "All portfolio themes"
 
 #: src/features/applications/list/list-menus.tsx
 msgid "All tags"
@@ -1954,7 +1971,7 @@ msgstr "Also filtered by: {list}"
 msgid "Alternative text"
 msgstr "Alternative text"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Amharic"
 msgstr "Amharic"
 
@@ -2060,15 +2077,12 @@ msgstr "Anywhere"
 msgid "Anywhere in the country"
 msgstr "Anywhere in the country"
 
+#: src/features/account/api-keys.tsx
 #: src/features/billing/plan-alert.ts
 msgid "API and MCP access isn't available"
 msgstr "API and MCP access isn't available"
 
-#: src/features/billing/plan-alert.ts
-msgid "API and MCP access isn't in your plan"
-msgstr "API and MCP access isn't in your plan"
-
-#: app/account/membership.tsx
+#: src/features/account/plan-screen.tsx
 msgid "API and MCP for other apps"
 msgstr "API and MCP for other apps"
 
@@ -2076,24 +2090,24 @@ msgstr "API and MCP for other apps"
 msgid "API key"
 msgstr "API key"
 
-#: src/features/settings/api-keys.tsx
+#: src/features/account/api-keys.tsx
 msgid "API key revoked. Apps using it stop working now."
 msgstr "API key revoked. Apps using it stop working now."
 
-#: src/features/search/search-screen.tsx
-#: src/features/settings/api-keys.tsx
+#: src/features/account/api-keys.tsx
 msgid "API keys"
 msgstr "API keys"
 
-#: src/features/settings/api-keys.tsx
-msgid "API keys need the Plus or Pro AI plan"
-msgstr "API keys need the Plus or Pro AI plan"
-
+#: src/features/account/preferences-screen.tsx
 #: src/shell/account-menu.tsx
 msgid "App settings"
 msgstr "App settings"
 
-#: app/account/preferences.tsx
+#: src/features/account/help-screen.tsx
+msgid "App version"
+msgstr "App version"
+
+#: src/features/account/preferences-screen.tsx
 msgid "Appearance"
 msgstr "Appearance"
 
@@ -2228,10 +2242,6 @@ msgstr "Applied. The application is updated."
 msgid "Applies the template you are trying."
 msgstr "Applies the template you are trying."
 
-#: app/account/preferences.tsx
-msgid "Applies to this device only."
-msgstr "Applies to this device only."
-
 #: src/features/design/template-gallery.tsx
 #: src/features/workspace/working.ts
 msgid "Apply"
@@ -2245,12 +2255,16 @@ msgstr "Apply edits"
 msgid "Approach"
 msgstr "Approach"
 
+#: src/features/account/ai-privacy-screen.tsx
+msgid "Approval withdrawn"
+msgstr "Approval withdrawn"
+
 #. placeholder {0}: selected?.name ?? ""
-#: src/features/settings/api-keys.tsx
+#: src/features/account/api-keys.tsx
 msgid "Apps using “{0}” will stop working. This can't be undone."
 msgstr "Apps using “{0}” will stop working. This can't be undone."
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Arabic"
 msgstr "Arabic"
 
@@ -2267,7 +2281,6 @@ msgid "Ascending"
 msgstr "Ascending"
 
 #: src/features/entries/improve.tsx
-#: src/features/search/search-screen.tsx
 msgid "Ask"
 msgstr "Ask"
 
@@ -2300,6 +2313,10 @@ msgstr "Ask both"
 msgid "Ask coach"
 msgstr "Ask coach"
 
+#: src/features/search/search-screen.tsx
+msgid "Ask Coach “{term}”"
+msgstr "Ask Coach “{term}”"
+
 #: src/features/profile/preferences.tsx
 msgid "Ask first"
 msgstr "Ask first"
@@ -2311,10 +2328,6 @@ msgstr "Ask for a portfolio change…"
 #: src/features/entries/improve.tsx
 msgid "Ask for something else…"
 msgstr "Ask for something else…"
-
-#: src/features/search/search-screen.tsx
-msgid "Ask the assistant “{question}”"
-msgstr "Ask the assistant “{question}”"
 
 #: src/features/check/term-sheet.tsx
 msgid "Ask the assistant to work it in"
@@ -2337,10 +2350,6 @@ msgstr "Aspect ratio"
 #: src/features/assistant/assistant-screen.tsx
 msgid "Assistant"
 msgstr "Assistant"
-
-#: src/features/search/search-screen.tsx
-msgid "Assistant conversations"
-msgstr "Assistant conversations"
 
 #: src/features/applications/detail/follow-up-sheet.tsx
 msgid "At 09:00 that day ({timeZone})."
@@ -2430,7 +2439,7 @@ msgstr "Awarder"
 msgid "Awards"
 msgstr "Awards"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Azerbaijani"
 msgstr "Azerbaijani"
 
@@ -2443,7 +2452,6 @@ msgstr "Azerbaijani"
 #: src/features/onboarding/onboarding-screen.tsx
 #: src/features/portfolio/layout.tsx
 #: src/features/profile/bring-screen.tsx
-#: src/features/search/search-screen.tsx
 #: src/features/workspace/bar.tsx
 #: src/shell/builder-chrome/top-bar.tsx
 msgid "Back"
@@ -2563,13 +2571,17 @@ msgstr "Behavioral"
 msgid "Behavioral interview"
 msgstr "Behavioral interview"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Bengali"
 msgstr "Bengali"
 
 #: src/features/onboarding/intro-screen.tsx
 msgid "BI analyst"
 msgstr "BI analyst"
+
+#: src/features/account/ai-privacy-screen.tsx
+msgid "Block AI sharing on this device"
+msgstr "Block AI sharing on this device"
 
 #: src/features/portfolio/editor/blocks.tsx
 msgid "Block text"
@@ -2682,11 +2694,15 @@ msgstr "Bring your LinkedIn or an old resume, pick a template, and download a cl
 msgid "Browse templates"
 msgstr "Browse templates"
 
+#: src/features/account/help-screen.tsx
+msgid "Build number"
+msgstr "Build number"
+
 #: src/features/design/preset-names.ts
 msgid "Buildings"
 msgstr "Buildings"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Bulgarian"
 msgstr "Bulgarian"
 
@@ -2699,6 +2715,10 @@ msgstr "bullet {n}"
 #: src/features/write/section-sheet-pages.tsx
 msgid "Bulleted list"
 msgstr "Bulleted list"
+
+#: src/features/account/help-screen.tsx
+msgid "Bundled with app"
+msgstr "Bundled with app"
 
 #: src/features/design/preset-names.ts
 msgid "Burgundy"
@@ -2721,9 +2741,21 @@ msgstr "Button label"
 msgid "Button URL"
 msgstr "Button URL"
 
-#: app/account/index.tsx
-msgid "by <0>Salman Alfariesh</0>"
-msgstr "by <0>Salman Alfariesh</0>"
+#: src/features/account/storage-screen.tsx
+msgid "Cache cleared"
+msgstr "Cache cleared"
+
+#: src/features/account/storage-screen.tsx
+msgid "Cached files"
+msgstr "Cached files"
+
+#: src/features/account/storage-screen.tsx
+msgid "Cached previews and temporary exports can be created again. Your offline drafts are kept."
+msgstr "Cached previews and temporary exports can be created again. Your offline drafts are kept."
+
+#: src/features/account/storage-screen.tsx
+msgid "Calculating…"
+msgstr "Calculating…"
 
 #: src/features/applications/views-row.tsx
 msgid "Calendar"
@@ -2770,7 +2802,6 @@ msgstr "Can't tell: {0}"
 #: src/features/profile/facts-detail.tsx
 #: src/features/profile/facts.tsx
 #: src/features/profile/stories.tsx
-#: src/features/search/search-screen.tsx
 #: src/features/workspace/fit/requirement-card.tsx
 #: src/linking/open.ts
 #: src/ui-legacy/overlays.tsx
@@ -2785,6 +2816,10 @@ msgstr "Cancel recording"
 msgid "Caption"
 msgstr "Caption"
 
+#: src/features/billing/plan-card.tsx
+msgid "Card subscription"
+msgstr "Card subscription"
+
 #: src/features/profile/profile-screen.tsx
 msgid "Career"
 msgstr "Career"
@@ -2793,7 +2828,7 @@ msgstr "Career"
 msgid "Carousel"
 msgstr "Carousel"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Catalan"
 msgstr "Catalan"
 
@@ -2826,10 +2861,6 @@ msgstr "Change icon"
 msgid "Change it in Design"
 msgstr "Change it in Design"
 
-#: src/features/search/search-screen.tsx
-msgid "Change language to…"
-msgstr "Change language to…"
-
 #. placeholder {0}: companyOf(offer)
 #: src/features/offers/offer-header.tsx
 msgid "Change offer: {0}"
@@ -2839,7 +2870,7 @@ msgstr "Change offer: {0}"
 msgid "Change password"
 msgstr "Change password"
 
-#: src/features/settings/profile.tsx
+#: src/features/account/profile.tsx
 msgid "Change photo"
 msgstr "Change photo"
 
@@ -2854,10 +2885,6 @@ msgstr "Change the resume's design"
 #: src/features/applications/interview/when-fields.tsx
 msgid "Change the time zone"
 msgstr "Change the time zone"
-
-#: src/features/search/search-screen.tsx
-msgid "Change theme to…"
-msgstr "Change theme to…"
 
 #: src/features/profile/preferences.tsx
 msgid "Change timezone"
@@ -2895,10 +2922,6 @@ msgstr "Charts and dashboards"
 msgctxt "Editor mode"
 msgid "Check"
 msgstr "Check"
-
-#: src/features/search/search-screen.tsx
-msgid "Check a PDF"
-msgstr "Check a PDF"
 
 #: src/features/documents/new-choices.tsx
 msgid "Check a PDF with the ATS checker"
@@ -3053,11 +3076,11 @@ msgstr "Checks by category"
 msgid "Checks every bullet for action and result"
 msgstr "Checks every bullet for action and result"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Chinese (Simplified)"
 msgstr "Chinese (Simplified)"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Chinese (Traditional)"
 msgstr "Chinese (Traditional)"
 
@@ -3118,8 +3141,8 @@ msgstr "Choose a PDF that opens without a password."
 msgid "Choose a PDF, Word, JSON or LinkedIn export file"
 msgstr "Choose a PDF, Word, JSON or LinkedIn export file"
 
+#: src/features/account/profile.tsx
 #: src/features/entries/photo-field.tsx
-#: src/features/settings/profile.tsx
 msgid "Choose a photo smaller than 10 MB."
 msgstr "Choose a photo smaller than 10 MB."
 
@@ -3184,6 +3207,10 @@ msgid "Choose another file"
 msgstr "Choose another file"
 
 #: src/features/billing/plan-alert.ts
+msgid "Choose another option to continue."
+msgstr "Choose another option to continue."
+
+#: src/features/billing/plan-alert.ts
 msgid "Choose any of the fonts in Design instead."
 msgstr "Choose any of the fonts in Design instead."
 
@@ -3199,8 +3226,8 @@ msgstr "Choose client logo"
 msgid "Choose cover picture"
 msgstr "Choose cover picture"
 
+#: src/features/account/profile.tsx
 #: src/features/entries/photo-field.tsx
-#: src/features/settings/profile.tsx
 msgid "Choose from library"
 msgstr "Choose from library"
 
@@ -3288,6 +3315,14 @@ msgstr "Clean"
 msgid "Clear"
 msgstr "Clear"
 
+#: src/features/account/storage-screen.tsx
+msgid "Clear cache"
+msgstr "Clear cache"
+
+#: src/features/account/storage-screen.tsx
+msgid "Clear cached files?"
+msgstr "Clear cached files?"
+
 #: src/features/applications/list/list-states.tsx
 #: src/features/jobs/filters-sheet.tsx
 #: src/features/jobs/jobs-states.tsx
@@ -3337,6 +3372,9 @@ msgstr "Client name"
 msgid "Clients"
 msgstr "Clients"
 
+#: src/features/account/preferences-screen.tsx
+#: src/features/account/profile.tsx
+#: src/features/ai/provider-editor.tsx
 #: src/features/ai/report-content.tsx
 #: src/features/applications/detail/activity.tsx
 #: src/features/applications/detail/contacts.tsx
@@ -3427,6 +3465,7 @@ msgid "Close menu"
 msgstr "Close menu"
 
 #: src/components/collection-header.tsx
+#: src/features/search/search-screen.tsx
 msgid "Close search"
 msgstr "Close search"
 
@@ -3457,6 +3496,7 @@ msgstr "Closed: {closed}"
 
 #: src/features/assistant/coach.tsx
 #: src/features/billing/credits.ts
+#: src/features/search/search-screen.tsx
 #: src/features/workspace/coach-sheet.tsx
 #: src/shell/tab-chrome.tsx
 msgid "Coach"
@@ -3600,10 +3640,6 @@ msgstr "Connect an AI provider in Settings to refresh it automatically."
 msgid "Connect an AI provider to read pasted text. Filling in by hand works without AI."
 msgstr "Connect an AI provider to read pasted text. Filling in by hand works without AI."
 
-#: app/account/ai.tsx
-msgid "Connect the tools you use for writing, job search and working with your resumes."
-msgstr "Connect the tools you use for writing, job search and working with your resumes."
-
 #: src/features/portfolio/layout.tsx
 msgid "Connect to load your portfolio."
 msgstr "Connect to load your portfolio."
@@ -3637,7 +3673,7 @@ msgstr "Connection progress"
 msgid "Contact"
 msgstr "Contact"
 
-#: app/account/index.tsx
+#: src/features/account/help-screen.tsx
 msgid "Contact & complaints"
 msgstr "Contact & complaints"
 
@@ -3727,6 +3763,7 @@ msgstr "Conversation name"
 
 #: src/features/assistant/panel-bar.tsx
 #: src/features/portfolio/editor/assistant.tsx
+#: src/features/search/search-screen.tsx
 #: src/features/workspace/coach-sheet.tsx
 msgid "Conversations"
 msgstr "Conversations"
@@ -3758,6 +3795,10 @@ msgstr "Copy"
 #: src/features/documents/new-document-screen.tsx
 msgid "Copy a resume for a job"
 msgstr "Copy a resume for a job"
+
+#: src/features/account/mcp-screen.tsx
+msgid "Copy address"
+msgstr "Copy address"
 
 #: src/features/workspace/apply/share-answers.tsx
 msgid "Copy answers"
@@ -3836,7 +3877,7 @@ msgstr "Couldn't add the picture. Use a public JPEG, PNG or WebP link."
 msgid "Couldn't attach the file. Try again."
 msgstr "Couldn't attach the file. Try again."
 
-#: app/account/preferences.tsx
+#: src/features/account/preferences-screen.tsx
 msgid "Couldn't change the language. Try again."
 msgstr "Couldn't change the language. Try again."
 
@@ -3860,6 +3901,10 @@ msgstr "Couldn't check or save this address. Try again."
 msgid "Couldn't check your AI providers."
 msgstr "Couldn't check your AI providers."
 
+#: src/features/account/storage-screen.tsx
+msgid "Couldn't clear the cache. Try again."
+msgstr "Couldn't clear the cache. Try again."
+
 #: src/features/portfolio/queries.ts
 msgid "Couldn't complete the action. Try again."
 msgstr "Couldn't complete the action. Try again."
@@ -3880,6 +3925,10 @@ msgstr "Couldn't complete this action. Try again."
 #: src/features/applications/interview/use-interview-actions.ts
 msgid "Couldn't confirm the save. Check the application before retrying to avoid a duplicate."
 msgstr "Couldn't confirm the save. Check the application before retrying to avoid a duplicate."
+
+#: src/features/account/mcp-screen.tsx
+msgid "Couldn't copy the address."
+msgstr "Couldn't copy the address."
 
 #: src/features/portfolio/overview.tsx
 msgid "Couldn't copy the link."
@@ -3933,7 +3982,7 @@ msgstr "Couldn't delete this schedule. Try again."
 msgid "Couldn't draw the first page of this PDF."
 msgstr "Couldn't draw the first page of this PDF."
 
-#: src/features/settings/export.tsx
+#: src/features/account/export.tsx
 #: src/features/share/download.tsx
 msgid "Couldn't export. Try again."
 msgstr "Couldn't export. Try again."
@@ -3979,7 +4028,7 @@ msgstr "Couldn't link the application. Try again."
 msgid "Couldn't load AI providers."
 msgstr "Couldn't load AI providers."
 
-#: src/features/settings/api-keys.tsx
+#: src/features/account/api-keys.tsx
 msgid "Couldn't load API keys."
 msgstr "Couldn't load API keys."
 
@@ -3989,6 +4038,10 @@ msgstr "Couldn't load API keys."
 msgid "Couldn't load applications."
 msgstr "Couldn't load applications."
 
+#: src/features/account/plan-screen.tsx
+msgid "Couldn't load credit activity."
+msgstr "Couldn't load credit activity."
+
 #: src/features/documents/library-states.tsx
 msgid "Couldn't load documents"
 msgstr "Couldn't load documents"
@@ -3996,6 +4049,10 @@ msgstr "Couldn't load documents"
 #: src/features/documents/new-copy.tsx
 msgid "Couldn't load resumes."
 msgstr "Couldn't load resumes."
+
+#: src/features/account/ai-privacy-screen.tsx
+msgid "Couldn't load scheduled AI approvals."
+msgstr "Couldn't load scheduled AI approvals."
 
 #: src/features/share/link.tsx
 msgid "Couldn't load statistics."
@@ -4082,6 +4139,10 @@ msgstr "Couldn't load your facts"
 msgid "Couldn't load your offers"
 msgstr "Couldn't load your offers"
 
+#: src/features/account/plan-screen.tsx
+msgid "Couldn't load your plan."
+msgstr "Couldn't load your plan."
+
 #: src/features/portfolio/layout.tsx
 msgid "Couldn't load your portfolio"
 msgstr "Couldn't load your portfolio"
@@ -4094,7 +4155,7 @@ msgstr "Couldn't load your preferences"
 msgid "Couldn't load your Profile"
 msgstr "Couldn't load your Profile"
 
-#: app/account/account.tsx
+#: src/features/account/account-screen.tsx
 msgid "Couldn't load your profile."
 msgstr "Couldn't load your profile."
 
@@ -4112,7 +4173,7 @@ msgstr "Couldn't load your resumes."
 msgid "Couldn't load your stories"
 msgstr "Couldn't load your stories"
 
-#: app/account/preferences.tsx
+#: src/features/account/preferences-screen.tsx
 msgid "Couldn't load your timezone."
 msgstr "Couldn't load your timezone."
 
@@ -4124,14 +4185,20 @@ msgstr "Couldn't mark it as applied. Try again."
 msgid "Couldn't mark this as read. Try again."
 msgstr "Couldn't mark this as read. Try again."
 
+#: src/features/account/storage-screen.tsx
+msgid "Couldn't measure the cache."
+msgstr "Couldn't measure the cache."
+
 #: src/features/applications/interview/use-reschedule.ts
 msgid "Couldn't move the interview. Try again."
 msgstr "Couldn't move the interview. Try again."
 
-#: app/account/account.tsx
-#: app/account/index.tsx
+#: src/features/account/notification-settings.tsx
+msgid "Couldn't open system settings."
+msgstr "Couldn't open system settings."
+
+#: src/features/account/browser.ts
 #: src/features/auth/welcome-screen.tsx
-#: src/features/settings/api-keys.tsx
 msgid "Couldn't open the browser. Try again."
 msgstr "Couldn't open the browser. Try again."
 
@@ -4264,7 +4331,7 @@ msgstr "Couldn't render this resume."
 msgid "Couldn't replace this block."
 msgstr "Couldn't replace this block."
 
-#: src/features/settings/api-keys.tsx
+#: src/features/account/api-keys.tsx
 msgid "Couldn't revoke the key. Try again."
 msgstr "Couldn't revoke the key. Try again."
 
@@ -4319,11 +4386,11 @@ msgstr "Couldn't save the notes. Your text is still here."
 msgid "Couldn't save the posting. Try again."
 msgstr "Couldn't save the posting. Try again."
 
-#: app/account/preferences.tsx
+#: src/features/account/preferences-screen.tsx
 msgid "Couldn't save the theme. Try again."
 msgstr "Couldn't save the theme. Try again."
 
-#: app/account/preferences.tsx
+#: src/features/account/preferences-screen.tsx
 msgid "Couldn't save the timezone. Try again."
 msgstr "Couldn't save the timezone. Try again."
 
@@ -4369,11 +4436,15 @@ msgstr "Couldn't save your Profile, so this would open again. Try again."
 msgid "Couldn't save your Profile. Try again."
 msgstr "Couldn't save your Profile. Try again."
 
+#: src/features/account/ai-privacy-screen.tsx
+msgid "Couldn't save your sharing preference. Try again."
+msgstr "Couldn't save your sharing preference. Try again."
+
 #: src/features/portfolio/editor/screen.tsx
 msgid "Couldn't save. Retrying…"
 msgstr "Couldn't save. Retrying…"
 
-#: src/features/settings/profile.tsx
+#: src/features/account/profile.tsx
 msgid "Couldn't save. Try again."
 msgstr "Couldn't save. Try again."
 
@@ -4418,7 +4489,11 @@ msgstr "Couldn't share the statistics file."
 msgid "Couldn't sign in with this account. If you don't have a Rezumi account yet, sign-ups may be turned off."
 msgstr "Couldn't sign in with this account. If you don't have a Rezumi account yet, sign-ups may be turned off."
 
-#: src/features/settings/sign-out.tsx
+#: src/features/account/sign-out.tsx
+msgid "Couldn't sign out of all devices. Try again."
+msgstr "Couldn't sign out of all devices. Try again."
+
+#: src/features/account/sign-out.tsx
 msgid "Couldn't sign out. Try again."
 msgstr "Couldn't sign out. Try again."
 
@@ -4456,6 +4531,10 @@ msgstr "Couldn't undo that. Try again."
 msgid "Couldn't unlock this resume. Try again."
 msgstr "Couldn't unlock this resume. Try again."
 
+#: src/features/account/notification-settings.tsx
+msgid "Couldn't update reminders. Try again."
+msgstr "Couldn't update reminders. Try again."
+
 #: src/features/share/custom-domain.tsx
 msgid "Couldn't update sharing. Try again."
 msgstr "Couldn't update sharing. Try again."
@@ -4472,7 +4551,7 @@ msgstr "Couldn't update the application. Nothing was changed; try again."
 msgid "Couldn't update the interview. Try again."
 msgstr "Couldn't update the interview. Try again."
 
-#: src/features/settings/profile.tsx
+#: src/features/account/profile.tsx
 msgid "Couldn't update the photo. Check camera permissions, choose a photo smaller than 10 MB, and try again."
 msgstr "Couldn't update the photo. Check camera permissions, choose a photo smaller than 10 MB, and try again."
 
@@ -4484,14 +4563,18 @@ msgstr "Couldn't upload the file. Try again."
 msgid "Couldn't upload the font. Try again."
 msgstr "Couldn't upload the font. Try again."
 
+#: src/features/account/profile.tsx
 #: src/features/entries/photo-field.tsx
-#: src/features/settings/profile.tsx
 msgid "Couldn't upload the photo."
 msgstr "Couldn't upload the photo."
 
 #: src/features/portfolio/editor/pictures.tsx
 msgid "Couldn't upload this picture."
 msgstr "Couldn't upload this picture."
+
+#: src/features/account/ai-privacy-screen.tsx
+msgid "Couldn't withdraw approval. Try again."
+msgstr "Couldn't withdraw approval. Try again."
 
 #: src/features/applications/insights/insights-cards.tsx
 msgid "Count by source"
@@ -4557,25 +4640,9 @@ msgstr "Cover letters"
 msgid "Covered term: {highlightTerm}"
 msgstr "Covered term: {highlightTerm}"
 
-#: src/features/search/search-screen.tsx
-msgid "Create"
-msgstr "Create"
-
-#: src/features/search/search-screen.tsx
-msgid "Create a new resume"
-msgstr "Create a new resume"
-
-#: src/features/search/search-screen.tsx
-msgid "Create a resume first, then ask about it."
-msgstr "Create a resume first, then ask about it."
-
 #: src/features/auth/create-account-screen.tsx
 msgid "Create account"
 msgstr "Create account"
-
-#: app/account/ai-mcp.tsx
-msgid "Create an API key from Account settings in your browser. Keys act as you and can read and edit your documents."
-msgstr "Create an API key from Account settings in your browser. Keys act as you and can read and edit your documents."
 
 #: src/features/documents/new-copy.tsx
 msgid "Create copy"
@@ -4616,7 +4683,7 @@ msgstr "Created"
 #. placeholder {0}: date(key.createdAt)
 #. placeholder {1}: date(key.lastRequest)
 #. placeholder {2}: date(key.expiresAt)
-#: src/features/settings/api-keys.tsx
+#: src/features/account/api-keys.tsx
 msgid "Created {0} · Last used {1} · Expires {2}"
 msgstr "Created {0} · Last used {1} · Expires {2}"
 
@@ -4633,9 +4700,13 @@ msgstr "Creating…"
 msgid "Creative"
 msgstr "Creative"
 
-#: app/account/membership.tsx
-msgid "Credits are used soonest-expiring first. They can't be moved to another account or exchanged for money. Your own AI connection never uses credits."
-msgstr "Credits are used soonest-expiring first. They can't be moved to another account or exchanged for money. Your own AI connection never uses credits."
+#: src/features/account/plan-screen.tsx
+msgid "Credit history"
+msgstr "Credit history"
+
+#: src/features/account/plan-screen.tsx
+msgid "Credits with the nearest expiry are used first. Your own AI connection never uses credits."
+msgstr "Credits with the nearest expiry are used first. Your own AI connection never uses credits."
 
 #: src/features/jobs/filters-sheet.tsx
 #: src/features/profile/preferences.tsx
@@ -4655,6 +4726,7 @@ msgstr "Custom"
 msgid "Custom color (hex)"
 msgstr "Custom color (hex)"
 
+#: src/features/account/plan-screen.tsx
 #: src/features/portfolio/publish.tsx
 msgid "Custom domain"
 msgstr "Custom domain"
@@ -4667,7 +4739,7 @@ msgstr "Custom domains aren't available here."
 msgid "Custom section"
 msgstr "Custom section"
 
-#: app/account/membership.tsx
+#: src/features/account/plan-screen.tsx
 msgid "Custom styles"
 msgstr "Custom styles"
 
@@ -4679,11 +4751,7 @@ msgstr "Custom styles aren't available"
 msgid "Custom styles aren't available, so the imported document leaves the file's styles out."
 msgstr "Custom styles aren't available, so the imported document leaves the file's styles out."
 
-#: src/features/billing/plan-alert.ts
-msgid "Custom styles aren't in your plan"
-msgstr "Custom styles aren't in your plan"
-
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Czech"
 msgstr "Czech"
 
@@ -4717,19 +4785,14 @@ msgstr "Daily work opens"
 msgid "Dangerous or illegal advice"
 msgstr "Dangerous or illegal advice"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Danish"
 msgstr "Danish"
 
-#: app/account/index.tsx
-#: app/account/preferences.tsx
+#: src/features/account/preferences-screen.tsx
 #: src/features/portfolio/editor/design.tsx
 msgid "Dark"
 msgstr "Dark"
-
-#: src/features/search/search-screen.tsx
-msgid "Dark theme"
-msgstr "Dark theme"
 
 #: src/features/onboarding/intro-screen.tsx
 msgid "Data analyst"
@@ -4873,7 +4936,7 @@ msgstr "Delete “{title}”?"
 msgid "Delete {0}"
 msgstr "Delete {0}"
 
-#: app/account/account.tsx
+#: src/features/account/account-screen.tsx
 #: src/features/search/search-screen.tsx
 msgid "Delete account"
 msgstr "Delete account"
@@ -4981,10 +5044,6 @@ msgstr "Delete your portfolio?"
 msgid "Delete…"
 msgstr "Delete…"
 
-#: src/features/search/search-screen.tsx
-msgid "Deleted"
-msgstr "Deleted"
-
 #. placeholder {0}: document.name
 #. placeholder {0}: getVersionTitle(version)
 #: src/features/documents/document-actions.ts
@@ -5008,7 +5067,7 @@ msgstr "Deletes the section and its entries. You can undo."
 msgid "Density"
 msgstr "Density"
 
-#: app/account/licences.tsx
+#: src/features/account/licences-screen.tsx
 msgid "Dependency type"
 msgstr "Dependency type"
 
@@ -5058,12 +5117,20 @@ msgstr "Detail {0}"
 msgid "Detail removed"
 msgstr "Detail removed"
 
+#: src/features/account/plan-screen.tsx
+msgid "Detailed portfolio statistics"
+msgstr "Detailed portfolio statistics"
+
 #: src/features/applications/detail/facts.tsx
 #: src/features/documents/document-menu.tsx
 #: src/features/onboarding/messages.ts
 #: src/features/profile/profile-screen.tsx
 msgid "Details"
 msgstr "Details"
+
+#: src/features/account/preferences-screen.tsx
+msgid "Device and services"
+msgstr "Device and services"
 
 #: src/features/portfolio/statistics.tsx
 msgid "Devices"
@@ -5149,6 +5216,10 @@ msgstr "DNS is right. HTTPS is being set up, which usually takes a few minutes."
 msgid "DNS points to Rezumi"
 msgstr "DNS points to Rezumi"
 
+#: src/features/account/help-screen.tsx
+msgid "Docs"
+msgstr "Docs"
+
 #: src/shell/builder-chrome/top-bar.tsx
 msgid "Document menu"
 msgstr "Document menu"
@@ -5162,7 +5233,7 @@ msgid "Document options"
 msgstr "Document options"
 
 #: app/(tabs)/_layout.tsx
-#: app/account/membership.tsx
+#: src/features/account/plan-screen.tsx
 #: src/features/documents/documents-screen.tsx
 #: src/features/search/search-screen.tsx
 #: src/shell/app-tabs.tsx
@@ -5173,7 +5244,7 @@ msgstr "Documents"
 msgid "Documents for this job"
 msgstr "Documents for this job"
 
-#: app/account/membership.tsx
+#: src/features/account/plan-screen.tsx
 msgid "Documents in Trash don't count."
 msgstr "Documents in Trash don't count."
 
@@ -5199,7 +5270,7 @@ msgstr "Don't send {0} posting"
 msgid "Don't share"
 msgstr "Don't share"
 
-#: app/account/preferences.tsx
+#: src/features/account/preferences-screen.tsx
 #: src/features/applications/interview/when-fields.tsx
 #: src/features/entries/dates-field.tsx
 #: src/features/entries/rich-text-toolbar.tsx
@@ -5405,7 +5476,7 @@ msgstr "Duplicated “{0}”"
 msgid "Duration"
 msgstr "Duration"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Dutch"
 msgstr "Dutch"
 
@@ -5560,7 +5631,7 @@ msgstr "Edits the interview. Actions move it."
 msgid "Education"
 msgstr "Education"
 
-#: app/account/account.tsx
+#: src/features/account/account-screen.tsx
 #: src/features/auth/create-account-screen.tsx
 #: src/features/auth/email-sign-in-screen.tsx
 #: src/features/auth/forgot-password-screen.tsx
@@ -5595,11 +5666,16 @@ msgstr "Embed all fonts when exporting, so characters map the way you intended."
 msgid "End"
 msgstr "End"
 
-#: src/features/settings/locale-names.ts
+#. placeholder {0}: formatDate(expiredAt)
+#: src/features/billing/plan-card.tsx
+msgid "Ended on {0}"
+msgstr "Ended on {0}"
+
+#: src/features/account/locale-names.ts
 msgid "English"
 msgstr "English"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "English (United Kingdom)"
 msgstr "English (United Kingdom)"
 
@@ -5627,7 +5703,7 @@ msgstr "Enter a full amount, such as 95000. Your previous amount is unchanged."
 msgid "Enter a GitHub username, like octocat."
 msgstr "Enter a GitHub username, like octocat."
 
-#: src/features/settings/profile.tsx
+#: src/features/account/profile.tsx
 msgid "Enter a name, up to 64 characters."
 msgstr "Enter a name, up to 64 characters."
 
@@ -5742,7 +5818,7 @@ msgstr "Every role says what you did. Opinions on wording live in the Writing ta
 msgid "Every section is in use."
 msgstr "Every section is in use."
 
-#: app/account/membership.tsx
+#: src/features/account/plan-screen.tsx
 msgid "Every template"
 msgstr "Every template"
 
@@ -5795,7 +5871,7 @@ msgstr "Export a smaller PDF and check it again, or start a blank resume and fix
 msgid "Export data"
 msgstr "Export data"
 
-#: src/features/settings/export.tsx
+#: src/features/account/export.tsx
 msgid "Export everything"
 msgstr "Export everything"
 
@@ -5845,10 +5921,6 @@ msgstr "Feature this work"
 #: src/features/portfolio/editor/work.tsx
 msgid "Featured metric"
 msgstr "Featured metric"
-
-#: app/account/preferences.tsx
-msgid "Feedback"
-msgstr "Feedback"
 
 #: src/features/workspace/practice/answer-panel.tsx
 msgid "Feedback needs an AI connection. Nothing is sent until you ask."
@@ -6001,7 +6073,7 @@ msgstr "Finish"
 msgid "Finish in the browser…"
 msgstr "Finish in the browser…"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Finnish"
 msgstr "Finnish"
 
@@ -6093,6 +6165,10 @@ msgstr "Follow-up"
 #: src/features/career/schedule-sheet.tsx
 msgid "Follow-up reminder"
 msgstr "Follow-up reminder"
+
+#: src/features/account/notification-settings.tsx
+msgid "Follow-up reminders"
+msgstr "Follow-up reminders"
 
 #: src/features/design/type-group.tsx
 msgid "Font"
@@ -6237,7 +6313,7 @@ msgstr "Free-form"
 msgid "Freelance"
 msgstr "Freelance"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "French"
 msgstr "French"
 
@@ -6252,7 +6328,6 @@ msgstr "From"
 
 #. placeholder {0}: formatDate(next.startsAt)
 #. placeholder {1}: formatDate(next.endsAt)
-#: app/account/membership.tsx
 #: src/features/billing/plan-card.tsx
 msgid "From {0} until {1}"
 msgstr "From {0} until {1}"
@@ -6341,7 +6416,7 @@ msgstr "Generate draft"
 msgid "Gentle fade-in"
 msgstr "Gentle fade-in"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "German"
 msgstr "German"
 
@@ -6411,11 +6486,15 @@ msgstr "Government & state-owned"
 msgid "Grade"
 msgstr "Grade"
 
+#: src/features/billing/plan-card.tsx
+msgid "Granted access"
+msgstr "Granted access"
+
 #: src/features/design/preset-names.ts
 msgid "Graphite"
 msgstr "Graphite"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Greek"
 msgstr "Greek"
 
@@ -6429,7 +6508,7 @@ msgstr "Greeting"
 msgid "Grid"
 msgstr "Grid"
 
-#: app/account/preferences.tsx
+#: src/features/account/preferences-screen.tsx
 msgid "Haptic feedback"
 msgstr "Haptic feedback"
 
@@ -6491,14 +6570,11 @@ msgstr "Hear it"
 msgid "Heard back"
 msgstr "Heard back"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Hebrew"
 msgstr "Hebrew"
 
-#: app/account/index.tsx
-msgid "Help & docs"
-msgstr "Help & docs"
-
+#: src/features/account/help-screen.tsx
 #: src/shell/account-menu.tsx
 msgid "Help & legal"
 msgstr "Help & legal"
@@ -6567,13 +6643,17 @@ msgstr "Hide from page"
 msgid "Hide key"
 msgstr "Hide key"
 
-#: app/account/licences.tsx
+#: src/features/account/licences-screen.tsx
 msgid "Hide license"
 msgstr "Hide license"
 
 #: src/features/home/needs-you.tsx
 msgid "Hide read"
 msgstr "Hide read"
+
+#: src/features/account/plan-screen.tsx
+msgid "Hide Rezumi credit"
+msgstr "Hide Rezumi credit"
 
 #: src/features/check/messages.ts
 msgid "Hide the photo"
@@ -6599,7 +6679,7 @@ msgstr "Highlight added"
 msgid "Highlights"
 msgstr "Highlights"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Hindi"
 msgstr "Hindi"
 
@@ -6625,6 +6705,7 @@ msgstr "Hold ⋮⋮ to move"
 
 #: app/(tabs)/_layout.tsx
 #: src/features/home/home-screen.tsx
+#: src/features/search/search-screen.tsx
 #: src/shell/app-tabs.tsx
 msgid "Home"
 msgstr "Home"
@@ -6685,7 +6766,7 @@ msgstr "How well do I fit this role?"
 msgid "HTTPS certificate"
 msgstr "HTTPS certificate"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Hungarian"
 msgstr "Hungarian"
 
@@ -6770,10 +6851,6 @@ msgstr "Image"
 msgid "Images cover most of the page."
 msgstr "Images cover most of the page."
 
-#: src/features/search/search-screen.tsx
-msgid "Import"
-msgstr "Import"
-
 #: src/features/documents/new-choices.tsx
 msgid "Import a resume"
 msgstr "Import a resume"
@@ -6854,7 +6931,7 @@ msgstr "Inbox"
 msgid "Include jobs that don't list pay"
 msgstr "Include jobs that don't list pay"
 
-#: app/account/membership.tsx
+#: src/features/account/plan-screen.tsx
 msgid "Included"
 msgstr "Included"
 
@@ -6894,7 +6971,7 @@ msgstr "Increase vertical margin"
 msgid "Increase vertical spacing"
 msgstr "Increase vertical spacing"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Indonesian"
 msgstr "Indonesian"
 
@@ -6928,10 +7005,6 @@ msgstr "Instructions (optional)"
 #: src/features/portfolio/editor/content.tsx
 msgid "Interests"
 msgstr "Interests"
-
-#: app/account/preferences.tsx
-msgid "Interface only. Each resume sets its own language in Design."
-msgstr "Interface only. Each resume sets its own language in Design."
 
 #: src/features/portfolio/editor/content.tsx
 msgid "Internship"
@@ -6970,10 +7043,15 @@ msgstr "Interview now ends at {endTime}"
 msgid "Interview practice"
 msgstr "Interview practice"
 
+#: src/features/account/ai-privacy-screen.tsx
 #: src/features/career/schedule-sheet.tsx
 #: src/features/home/needs-you.tsx
 msgid "Interview preparation"
 msgstr "Interview preparation"
+
+#: src/features/account/notification-settings.tsx
+msgid "Interview reminders"
+msgstr "Interview reminders"
 
 #: src/features/applications/interview/use-interview-actions.ts
 msgid "Interview saved"
@@ -6994,10 +7072,6 @@ msgstr "Interview saved. The reminder time has already passed."
 #: src/features/applications/interview-sheet.tsx
 msgid "Interview time zone"
 msgstr "Interview time zone"
-
-#: app/account/preferences.tsx
-msgid "Interview times, reminders and schedules in Career use it."
-msgstr "Interview times, reminders and schedules in Career use it."
 
 #: src/features/applications/detail/contacts.tsx
 msgid "Interviewer"
@@ -7103,7 +7177,7 @@ msgstr "It will be permanently removed from your inbox."
 msgid "It's removed from the activity for good."
 msgstr "It's removed from the activity for good."
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Italian"
 msgstr "Italian"
 
@@ -7140,17 +7214,13 @@ msgstr "Its source, what uses it and its corrections show here."
 msgid "Its stage, next step, notes and files show here."
 msgstr "Its stage, next step, notes and files show here."
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Japanese"
 msgstr "Japanese"
 
-#: app/account/licences.tsx
+#: src/features/account/licences-screen.tsx
 msgid "JavaScript"
 msgstr "JavaScript"
-
-#: src/features/search/search-screen.tsx
-msgid "Job"
-msgstr "Job"
 
 #: src/features/career/schedule-sheet.tsx
 #: src/features/home/needs-you.tsx
@@ -7248,7 +7318,7 @@ msgctxt "Job seniority"
 msgid "Junior"
 msgstr "Junior"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Kannada"
 msgstr "Kannada"
 
@@ -7266,9 +7336,17 @@ msgstr "Keep a single address, so software does not have to guess which one to u
 msgid "Keep application"
 msgstr "Keep application"
 
+#: src/features/account/ai-privacy-screen.tsx
+msgid "Keep approval"
+msgstr "Keep approval"
+
 #: src/draft/conflict-sheet.tsx
 msgid "Keep both"
 msgstr "Keep both"
+
+#: src/features/account/storage-screen.tsx
+msgid "Keep cache"
+msgstr "Keep cache"
 
 #: src/features/assistant/threads.tsx
 msgid "Keep conversation"
@@ -7315,6 +7393,10 @@ msgstr "Keep it honest"
 msgid "Keep it under 2.5 MB, usually by removing or shrinking images."
 msgstr "Keep it under 2.5 MB, usually by removing or shrinking images."
 
+#: src/features/account/api-keys.tsx
+msgid "Keep key"
+msgstr "Keep key"
+
 #: src/features/portfolio/inbox.tsx
 msgid "Keep message"
 msgstr "Keep message"
@@ -7344,6 +7426,10 @@ msgstr "Keep photo"
 #: src/features/documents/document-menu-panels.tsx
 msgid "Keep private notes about this resume here. Nobody else can see them."
 msgstr "Keep private notes about this resume here. Nobody else can see them."
+
+#: src/features/ai/provider-editor.tsx
+msgid "Keep provider"
+msgstr "Keep provider"
 
 #: src/features/ats-checker/messages.ts
 msgid "Keep resume content as real text rather than as pictures of text."
@@ -7399,7 +7485,7 @@ msgstr "Kept as it is"
 msgid "Kept, but not used."
 msgstr "Kept, but not used."
 
-#: src/features/settings/api-keys.tsx
+#: src/features/account/api-keys.tsx
 msgid "Keys act as you and can access your documents. New keys are created in your browser account settings."
 msgstr "Keys act as you and can access your documents. New keys are created in your browser account settings."
 
@@ -7412,7 +7498,7 @@ msgstr "Keyword layout"
 msgid "Keywords"
 msgstr "Keywords"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Khmer"
 msgstr "Khmer"
 
@@ -7420,7 +7506,7 @@ msgstr "Khmer"
 msgid "Kind regards,"
 msgstr "Kind regards,"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Korean"
 msgstr "Korean"
 
@@ -7445,13 +7531,17 @@ msgstr "Label, e.g. Languages"
 msgid "Landscape"
 msgstr "Landscape"
 
-#: app/account/preferences.tsx
+#: src/features/account/preferences-screen.tsx
 #: src/features/design/page-group.tsx
 #: src/features/documents/document-menu-panels.tsx
 #: src/features/entries/fields.ts
 #: src/features/search/search-screen.tsx
 msgid "Language"
 msgstr "Language"
+
+#: src/features/account/preferences-screen.tsx
+msgid "Language and region"
+msgstr "Language and region"
 
 #: src/features/entries/fields.ts
 #: src/features/portfolio/editor/content.tsx
@@ -7495,7 +7585,7 @@ msgctxt "Job search filter: posted within"
 msgid "Last week"
 msgstr "Last week"
 
-#: app/account/preferences.tsx
+#: src/features/account/preferences-screen.tsx
 msgid "Later"
 msgstr "Later"
 
@@ -7503,7 +7593,7 @@ msgstr "Later"
 msgid "Latest"
 msgstr "Latest"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Latvian"
 msgstr "Latvian"
 
@@ -7571,10 +7661,6 @@ msgstr "Leave it empty to use the original title."
 msgid "Left"
 msgstr "Left"
 
-#: app/account/index.tsx
-msgid "Legal"
-msgstr "Legal"
-
 #: src/features/applications/interview/when-fields.tsx
 #: src/features/letters/write.tsx
 msgid "Length"
@@ -7584,7 +7670,7 @@ msgstr "Length"
 msgid "Length is not a defect, and there is no universal one-page rule. Keep the pages that earn their place."
 msgstr "Length is not a defect, and there is no universal one-page rule. Keep the pages that earn their place."
 
-#: app/account/ai-mcp.tsx
+#: src/features/account/mcp-screen.tsx
 msgid "Let AI clients like Claude or Cursor read and edit your resumes, using an API key."
 msgstr "Let AI clients like Claude or Cursor read and edit your resumes, using an API key."
 
@@ -7629,7 +7715,6 @@ msgid "Letter sent"
 msgstr "Letter sent"
 
 #: src/features/documents/segment-header.tsx
-#: src/features/search/search-screen.tsx
 msgid "Letters"
 msgstr "Letters"
 
@@ -7647,7 +7732,7 @@ msgstr "Level type"
 msgid "Levels"
 msgstr "Levels"
 
-#: app/account/licences.tsx
+#: src/features/account/licences-screen.tsx
 msgid "Licenses"
 msgstr "Licenses"
 
@@ -7655,15 +7740,10 @@ msgstr "Licenses"
 msgid "Ligatures can drop letters out of words such as \"workflow\"."
 msgstr "Ligatures can drop letters out of words such as \"workflow\"."
 
-#: app/account/index.tsx
-#: app/account/preferences.tsx
+#: src/features/account/preferences-screen.tsx
 #: src/features/portfolio/editor/design.tsx
 msgid "Light"
 msgstr "Light"
-
-#: src/features/search/search-screen.tsx
-msgid "Light theme"
-msgstr "Light theme"
 
 #: src/features/assistant/assistant-screen.tsx
 msgid "Likely questions, from the posting and your resume"
@@ -7741,7 +7821,7 @@ msgstr "Link updated"
 msgid "Linked · not sent yet"
 msgstr "Linked · not sent yet"
 
-#: app/account/account.tsx
+#: src/features/account/account-screen.tsx
 msgid "Linked accounts"
 msgstr "Linked accounts"
 
@@ -7788,7 +7868,7 @@ msgstr "List the tools and technologies you use. Recruiters search skills more t
 msgid "Listings come from job data providers and may change. The original posting is the one to apply through."
 msgstr "Listings come from job data providers and may change. The original posting is the one to apply through."
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Lithuanian"
 msgstr "Lithuanian"
 
@@ -7840,16 +7920,7 @@ msgstr "Loading"
 msgid "Loading AI connections…"
 msgstr "Loading AI connections…"
 
-#: src/features/settings/api-keys.tsx
-msgid "Loading API keys…"
-msgstr "Loading API keys…"
-
-#: src/features/search/search-screen.tsx
-msgid "Loading applications…"
-msgstr "Loading applications…"
-
 #: src/features/assistant/assistant-screen.tsx
-#: src/features/search/search-screen.tsx
 msgid "Loading conversations…"
 msgstr "Loading conversations…"
 
@@ -7891,7 +7962,6 @@ msgid "Loading resume…"
 msgstr "Loading resume…"
 
 #: src/features/portfolio/create.tsx
-#: src/features/search/search-screen.tsx
 msgid "Loading resumes…"
 msgstr "Loading resumes…"
 
@@ -7916,10 +7986,14 @@ msgstr "Loading your Profile before you send…"
 msgid "Loading your public address…"
 msgstr "Loading your public address…"
 
-#: app/account/preferences.tsx
+#: src/features/account/plan-screen.tsx
 #: src/features/applications/detail/document-choice.tsx
 msgid "Loading…"
 msgstr "Loading…"
+
+#: src/features/account/notification-settings.tsx
+msgid "Local reminders"
+msgstr "Local reminders"
 
 #: src/features/applications/detail/facts.tsx
 #: src/features/applications/interview/interview-fields.tsx
@@ -8025,13 +8099,17 @@ msgstr "Make them visibly larger, bolder or capitalized."
 msgid "Make this your primary resume?"
 msgstr "Make this your primary resume?"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Malay"
 msgstr "Malay"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Malayalam"
 msgstr "Malayalam"
+
+#: src/features/account/ai-screen.tsx
+msgid "Manage connections and choose a default source."
+msgstr "Manage connections and choose a default source."
 
 #: src/features/portfolio/publish.tsx
 msgid "Manage domain on the web"
@@ -8058,7 +8136,7 @@ msgstr "Maps and places"
 msgid "Mar 2022"
 msgstr "Mar 2022"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Marathi"
 msgstr "Marathi"
 
@@ -8136,10 +8214,6 @@ msgstr "Match “{resumeName}”"
 msgid "Match against a job"
 msgstr "Match against a job"
 
-#: src/features/search/search-screen.tsx
-msgid "Match system theme"
-msgstr "Match system theme"
-
 #: src/features/letters/design.tsx
 msgid "Match the resume"
 msgstr "Match the resume"
@@ -8164,12 +8238,8 @@ msgstr "Matching the resume"
 msgid "Matching your facts"
 msgstr "Matching your facts"
 
-#: src/features/search/search-screen.tsx
-msgid "MCP"
-msgstr "MCP"
-
-#: app/account/ai-mcp.tsx
-#: app/account/ai.tsx
+#: src/features/account/ai-screen.tsx
+#: src/features/account/mcp-screen.tsx
 msgid "MCP server"
 msgstr "MCP server"
 
@@ -8237,7 +8307,7 @@ msgstr "Misses: {0}"
 msgid "Missing"
 msgstr "Missing"
 
-#: app/account/index.tsx
+#: src/features/account/help-screen.tsx
 msgid "MIT License"
 msgstr "MIT License"
 
@@ -8462,6 +8532,7 @@ msgstr "Multiplier"
 msgid "Music and video"
 msgstr "Music and video"
 
+#: src/features/account/profile.tsx
 #: src/features/ai/provider-editor.tsx
 #: src/features/applications/detail/contacts.tsx
 #: src/features/applications/interview/people-field.tsx
@@ -8477,7 +8548,6 @@ msgstr "Music and video"
 #: src/features/portfolio/create.tsx
 #: src/features/portfolio/editor/content.tsx
 #: src/features/portfolio/editor/design.tsx
-#: src/features/settings/profile.tsx
 msgid "Name"
 msgstr "Name"
 
@@ -8536,7 +8606,7 @@ msgstr "Narrow"
 msgid "Narrower sidebar"
 msgstr "Narrower sidebar"
 
-#: app/account/licences.tsx
+#: src/features/account/licences-screen.tsx
 msgid "Native & fonts"
 msgstr "Native & fonts"
 
@@ -8548,7 +8618,7 @@ msgstr "Needs attention"
 msgid "Needs you"
 msgstr "Needs you"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Nepali"
 msgstr "Nepali"
 
@@ -8556,8 +8626,8 @@ msgstr "Nepali"
 msgid "Network"
 msgstr "Network"
 
+#: src/features/account/api-keys.tsx
 #: src/features/profile/preferences.tsx
-#: src/features/settings/api-keys.tsx
 msgid "Never"
 msgstr "Never"
 
@@ -8582,13 +8652,9 @@ msgstr "New account sign-ups are turned off on this server. Sign in with an acco
 msgid "New account sign-ups are turned off. Sign in with an account you already have."
 msgstr "New account sign-ups are turned off. Sign in with an account you already have."
 
-#: src/features/settings/api-keys.tsx
+#: src/features/account/api-keys.tsx
 msgid "New API key"
 msgstr "New API key"
-
-#: src/features/search/search-screen.tsx
-msgid "New application"
-msgstr "New application"
 
 #: src/features/assistant/assistant-screen.tsx
 #: src/features/assistant/coach.tsx
@@ -8771,10 +8837,6 @@ msgstr "No bullet lists were found."
 msgid "No change needed. It's already at {stage}."
 msgstr "No change needed. It's already at {stage}."
 
-#: src/features/search/search-screen.tsx
-msgid "No commands match that search."
-msgstr "No commands match that search."
-
 #: src/features/applications/detail/contacts.tsx
 msgid "No contacts yet"
 msgstr "No contacts yet"
@@ -8796,13 +8858,9 @@ msgstr "No corrections"
 msgid "No country matches."
 msgstr "No country matches."
 
-#: app/account/membership.tsx
+#: src/features/account/plan-screen.tsx
 msgid "No credit activity yet."
 msgstr "No credit activity yet."
-
-#: app/account/membership.tsx
-msgid "No credits to spend right now"
-msgstr "No credits to spend right now"
 
 #: src/features/share/custom-domain.tsx
 msgid "No custom domain connected."
@@ -8840,7 +8898,6 @@ msgstr "No email address"
 msgid "No email address was found."
 msgstr "No email address was found."
 
-#: app/account/membership.tsx
 #: src/features/billing/plan-card.tsx
 msgid "No end date"
 msgstr "No end date"
@@ -8888,7 +8945,7 @@ msgstr "No job yet"
 msgid "No jobs match yet."
 msgstr "No jobs match yet."
 
-#: src/features/settings/api-keys.tsx
+#: src/features/account/api-keys.tsx
 msgid "No keys yet."
 msgstr "No keys yet."
 
@@ -8896,7 +8953,7 @@ msgstr "No keys yet."
 msgid "No language matches “{query}”."
 msgstr "No language matches “{query}”."
 
-#: app/account/preferences.tsx
+#: src/features/account/preferences-screen.tsx
 msgid "No language matches."
 msgstr "No language matches."
 
@@ -8964,6 +9021,10 @@ msgstr "No photo"
 msgid "No photo. Most ATS ignore photos; some regions expect one."
 msgstr "No photo. Most ATS ignore photos; some regions expect one."
 
+#: src/features/ai/provider-editor.tsx
+msgid "No provider matches."
+msgstr "No provider matches."
+
 #: src/features/onboarding/messages.ts
 msgid "No public repositories of your own, so no projects came in."
 msgstr "No public repositories of your own, so no projects came in."
@@ -8975,6 +9036,10 @@ msgstr "No replies yet"
 #: src/features/applications/stages.ts
 msgid "No response"
 msgstr "No response"
+
+#: src/features/search/search-screen.tsx
+msgid "No results match your search."
+msgstr "No results match your search."
 
 #: src/features/portfolio/create.tsx
 msgid "No resumes found."
@@ -8999,6 +9064,10 @@ msgstr "No room for another job alert"
 #: src/features/billing/plan-alert.ts
 msgid "No room for another resume"
 msgstr "No room for another resume"
+
+#: src/features/account/ai-privacy-screen.tsx
+msgid "No scheduled AI approvals."
+msgstr "No scheduled AI approvals."
 
 #. placeholder {0}: quota.max
 #: src/features/jobs/jobs-header.tsx
@@ -9050,6 +9119,10 @@ msgstr "No terms stood out in this posting."
 msgid "No text could be read from this file."
 msgstr "No text could be read from this file."
 
+#: src/features/account/preferences-screen.tsx
+msgid "No theme matches."
+msgstr "No theme matches."
+
 #: src/features/offers/cells.ts
 msgid "No time given"
 msgstr "No time given"
@@ -9059,7 +9132,7 @@ msgstr "No time given"
 msgid "No time zone matches “{0}”."
 msgstr "No time zone matches “{0}”."
 
-#: app/account/preferences.tsx
+#: src/features/account/preferences-screen.tsx
 msgid "No timezone matches."
 msgstr "No timezone matches."
 
@@ -9104,7 +9177,7 @@ msgstr "None of your AI connections can transcribe speech (OpenAI, Google Gemini
 msgid "Normal"
 msgstr "Normal"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Norwegian"
 msgstr "Norwegian"
 
@@ -9163,7 +9236,7 @@ msgstr "Not in your Profile yet"
 msgid "Not in your resume · add only if true"
 msgstr "Not in your resume · add only if true"
 
-#: app/account/membership.tsx
+#: src/features/account/plan-screen.tsx
 msgid "Not included"
 msgstr "Not included"
 
@@ -9305,6 +9378,12 @@ msgstr "Nothing was found at that address. Check it and try again."
 msgid "Notice period (weeks)"
 msgstr "Notice period (weeks)"
 
+#: src/features/account/notification-settings.tsx
+#: src/features/account/preferences-screen.tsx
+#: src/features/search/search-screen.tsx
+msgid "Notifications"
+msgstr "Notifications"
+
 #: src/features/applications/detail/reminder-sheet.tsx
 msgid "Notifications are off"
 msgstr "Notifications are off"
@@ -9334,10 +9413,11 @@ msgstr "Observation"
 msgid "Ochre"
 msgstr "Ochre"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Odia"
 msgstr "Odia"
 
+#: src/features/account/help-screen.tsx
 #: src/features/ai/provider-list.tsx
 msgid "Off"
 msgstr "Off"
@@ -9384,6 +9464,11 @@ msgstr "Offline"
 #: src/shell/builder-chrome/top-bar.tsx
 msgid "Offline · saved on this device"
 msgstr "Offline · saved on this device"
+
+#: src/features/account/preferences-screen.tsx
+#: src/features/account/storage-screen.tsx
+msgid "Offline storage"
+msgstr "Offline storage"
 
 #: src/features/portfolio/editor/screen.tsx
 msgid "Offline. Changes are waiting to save."
@@ -9617,7 +9702,7 @@ msgstr "Open web page"
 msgid "Open workspace"
 msgstr "Open workspace"
 
-#: app/account/index.tsx
+#: src/features/account/preferences-screen.tsx
 msgid "Open-source licenses"
 msgstr "Open-source licenses"
 
@@ -9663,6 +9748,10 @@ msgstr "Opens the application. Actions move it to another stage."
 #: src/features/applications/list/list-row.tsx
 msgid "Opens the application. Long press to select."
 msgstr "Opens the application. Long press to select."
+
+#: src/features/account/account-screen.tsx
+msgid "Opens the browser to confirm permanent deletion."
+msgstr "Opens the browser to confirm permanent deletion."
 
 #: src/features/documents/document-item.tsx
 msgid "Opens the document. Long press for options."
@@ -9735,9 +9824,9 @@ msgstr "Original table formatting is kept. This text is read-only because it can
 msgid "Other"
 msgstr "Other"
 
-#: src/features/settings/api-keys.tsx
-msgid "Other apps can't connect with API keys on this account. This app always works."
-msgstr "Other apps can't connect with API keys on this account. This app always works."
+#: src/features/billing/plan-alert.ts
+msgid "Other apps cannot connect to this account with an API key."
+msgstr "Other apps cannot connect to this account with an API key."
 
 #: src/features/offers/cells.ts
 msgid "Other benefits"
@@ -9767,6 +9856,10 @@ msgstr "Out of date: the text has changed since."
 #: src/features/design/preset-names.ts
 msgid "Outer space"
 msgstr "Outer space"
+
+#: src/features/account/help-screen.tsx
+msgid "Over-the-air update"
+msgstr "Over-the-air update"
 
 #: src/features/share/custom-domain.tsx
 msgid "Ownership proven"
@@ -9894,12 +9987,12 @@ msgstr "Passed"
 msgid "Passkey"
 msgstr "Passkey"
 
-#: app/account/account.tsx
+#: src/features/account/account-screen.tsx
 #: src/features/search/search-screen.tsx
 msgid "Passkeys"
 msgstr "Passkeys"
 
-#: app/account/account.tsx
+#: src/features/account/account-screen.tsx
 #: src/features/auth/create-account-screen.tsx
 #: src/features/auth/email-sign-in-screen.tsx
 #: src/features/search/search-screen.tsx
@@ -10044,11 +10137,7 @@ msgstr "Per year"
 msgid "Percent"
 msgstr "Percent"
 
-#: app/account/account.tsx
-msgid "Permanently removes everything. Opens your browser account settings."
-msgstr "Permanently removes everything. Opens your browser account settings."
-
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Persian"
 msgstr "Persian"
 
@@ -10165,8 +10254,7 @@ msgstr "Plain text (.txt)"
 msgid "Plain text with headings. Paste into application forms and notes."
 msgstr "Plain text with headings. Paste into application forms and notes."
 
-#: app/account/index.tsx
-#: app/account/membership.tsx
+#: src/features/account/plan-screen.tsx
 #: src/shell/account-menu.tsx
 msgid "Plan"
 msgstr "Plan"
@@ -10187,12 +10275,7 @@ msgstr "Plan what to ask"
 msgid "Planning your week"
 msgstr "Planning your week"
 
-#: app/account/membership.tsx
-#: src/features/billing/plan-alert.ts
-msgid "Plans can be bought on the rezumi.app website."
-msgstr "Plans can be bought on the rezumi.app website."
-
-#: app/account/membership.tsx
+#: src/features/account/plan-screen.tsx
 msgid "Plans don't apply to your account yet, so everything is open."
 msgstr "Plans don't apply to your account yet, so everything is open."
 
@@ -10208,7 +10291,7 @@ msgstr "Plum"
 msgid "Plus"
 msgstr "Plus"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Polish"
 msgstr "Polish"
 
@@ -10218,12 +10301,14 @@ msgstr "Polishing"
 
 #: app/(tabs)/_layout.tsx
 #: src/features/portfolio/overview.tsx
+#: src/features/search/search-screen.tsx
 #: src/shell/app-tabs.tsx
 msgid "Portfolio"
 msgstr "Portfolio"
 
 #: src/features/portfolio/editor/assistant.tsx
 #: src/features/portfolio/editor/screen.tsx
+#: src/features/search/search-screen.tsx
 msgid "Portfolio assistant"
 msgstr "Portfolio assistant"
 
@@ -10256,11 +10341,11 @@ msgstr "Portfolios aren't available for this account."
 msgid "Portrait"
 msgstr "Portrait"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Portuguese (Brazil)"
 msgstr "Portuguese (Brazil)"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Portuguese (Portugal)"
 msgstr "Portuguese (Portugal)"
 
@@ -10387,10 +10472,7 @@ msgstr "Prefer a single column, or keep the side column to short, self-contained
 msgid "Preference"
 msgstr "Preference"
 
-#: app/account/index.tsx
-#: app/account/preferences.tsx
 #: src/features/profile/profile-screen.tsx
-#: src/features/search/search-screen.tsx
 msgid "Preferences"
 msgstr "Preferences"
 
@@ -10415,7 +10497,7 @@ msgstr "Prepare me for the interview"
 msgid "Preparing edits…"
 msgstr "Preparing edits…"
 
-#: src/features/settings/export.tsx
+#: src/features/account/export.tsx
 msgid "Preparing export…"
 msgstr "Preparing export…"
 
@@ -10454,6 +10536,14 @@ msgstr "Preview web page"
 msgid "Previewing {0} · tap to apply"
 msgstr "Previewing {0} · tap to apply"
 
+#: src/features/account/storage-screen.tsx
+msgid "Previews and temporary exports will be removed from this device. Your documents and unsynced edits are kept."
+msgstr "Previews and temporary exports will be removed from this device. Your documents and unsynced edits are kept."
+
+#: src/features/billing/plan-card.tsx
+msgid "Previous card subscription"
+msgstr "Previous card subscription"
+
 #: src/features/applications/calendar/calendar-toolbar.tsx
 msgid "Previous day"
 msgstr "Previous day"
@@ -10481,6 +10571,10 @@ msgstr "Previous page"
 #: src/features/check/parser-view.tsx
 msgid "Previous PDF result. It may not match your current draft."
 msgstr "Previous PDF result. It may not match your current draft."
+
+#: src/features/billing/plan-card.tsx
+msgid "Previous QRIS pass"
+msgstr "Previous QRIS pass"
 
 #: src/features/applications/board/stage-pager.tsx
 msgid "Previous stage"
@@ -10512,7 +10606,7 @@ msgstr "Print or export the form to a flat PDF before sending it."
 msgid "Privacy"
 msgstr "Privacy"
 
-#: app/account/index.tsx
+#: src/features/account/help-screen.tsx
 #: src/features/auth/welcome-screen.tsx
 msgid "Privacy policy"
 msgstr "Privacy policy"
@@ -10539,7 +10633,7 @@ msgstr "Proficiency"
 
 #: app/(tabs)/_layout.tsx
 #: app/(tabs)/profile/_layout.tsx
-#: app/account/account.tsx
+#: src/features/account/account-screen.tsx
 #: src/features/assistant/coach.tsx
 #: src/features/portfolio/editor/content.tsx
 #: src/features/profile/profile-screen.tsx
@@ -10565,7 +10659,7 @@ msgstr "Profile links are optional and only used when Web research is on."
 msgid "Profile links must be public HTTPS addresses."
 msgstr "Profile links must be public HTTPS addresses."
 
-#: src/features/settings/profile.tsx
+#: src/features/account/profile.tsx
 msgid "Profile photo"
 msgstr "Profile photo"
 
@@ -10682,6 +10776,10 @@ msgstr "QR code for {0}"
 msgid "QR code for {url}"
 msgstr "QR code for {url}"
 
+#: src/features/billing/plan-card.tsx
+msgid "QRIS pass"
+msgstr "QRIS pass"
+
 #: src/features/workspace/practice/question-card.tsx
 msgid "Question {position} of {total}"
 msgstr "Question {position} of {total}"
@@ -10755,7 +10853,7 @@ msgstr "Read briefing"
 msgid "Read it for me"
 msgstr "Read it for me"
 
-#: app/account/licences.tsx
+#: src/features/account/licences-screen.tsx
 msgid "Read license"
 msgstr "Read license"
 
@@ -10881,10 +10979,6 @@ msgstr "Reason"
 msgid "Recalled"
 msgstr "Recalled"
 
-#: app/account/membership.tsx
-msgid "Recent activity"
-msgstr "Recent activity"
-
 #: src/features/home/recent-documents.tsx
 msgid "Recent documents"
 msgstr "Recent documents"
@@ -10976,7 +11070,7 @@ msgstr "Refresh the briefing 24 hours before"
 msgid "Refresh the briefing on the morning of"
 msgstr "Refresh the briefing on the morning of"
 
-#: app/account/index.tsx
+#: src/features/account/help-screen.tsx
 msgid "Refund policy"
 msgstr "Refund policy"
 
@@ -10994,7 +11088,7 @@ msgstr "Reject"
 msgid "Rejected"
 msgstr "Rejected"
 
-#: app/account/preferences.tsx
+#: src/features/account/preferences-screen.tsx
 msgid "Reload now"
 msgstr "Reload now"
 
@@ -11131,8 +11225,8 @@ msgstr "Remove password"
 msgid "Remove person {0}"
 msgstr "Remove person {0}"
 
+#: src/features/account/profile.tsx
 #: src/features/entries/photo-field.tsx
-#: src/features/settings/profile.tsx
 msgid "Remove photo"
 msgstr "Remove photo"
 
@@ -11196,6 +11290,11 @@ msgstr "Renames the document"
 #: src/preview/page.tsx
 msgid "Rendering preview…"
 msgstr "Rendering preview…"
+
+#. placeholder {0}: formatDate(end)
+#: src/features/billing/plan-card.tsx
+msgid "Renews on {0}"
+msgstr "Renews on {0}"
 
 #: src/features/applications/detail/detail-header.tsx
 #: src/features/applications/list/list-row.tsx
@@ -11264,11 +11363,15 @@ msgstr "Reply copied"
 msgid "Report"
 msgstr "Report"
 
-#: app/account/ai-report.tsx
-#: app/account/ai.tsx
+#: src/features/account/ai-report-screen.tsx
+#: src/features/account/ai-screen.tsx
 #: src/features/ai/report-content.tsx
 msgid "Report AI content"
 msgstr "Report AI content"
+
+#: src/features/account/help-screen.tsx
+msgid "Report an issue"
+msgstr "Report an issue"
 
 #: src/features/ai/report-content.tsx
 msgid "Report received by your server operator. Thank you."
@@ -11312,7 +11415,7 @@ msgstr "Reset your password"
 msgid "Respond by"
 msgstr "Respond by"
 
-#: app/account/preferences.tsx
+#: src/features/account/preferences-screen.tsx
 msgid "Restart to change text direction"
 msgstr "Restart to change text direction"
 
@@ -11415,10 +11518,6 @@ msgstr "Resume unavailable"
 #: src/features/search/search-screen.tsx
 msgid "Resumes"
 msgstr "Resumes"
-
-#: app/account/preferences.tsx
-msgid "Resumes always render on white paper, whatever the theme."
-msgstr "Resumes always render on white paper, whatever the theme."
 
 #: src/features/profile/save-note.tsx
 msgid "Resumes that followed"
@@ -11550,19 +11649,19 @@ msgstr "Review writing"
 msgid "Reviewing needs an AI connection. What you write here stays on this device until then."
 msgstr "Reviewing needs an AI connection. What you write here stays on this device until then."
 
-#: src/features/settings/api-keys.tsx
+#: src/features/account/api-keys.tsx
 msgid "Revoke"
 msgstr "Revoke"
 
-#: src/features/settings/api-keys.tsx
+#: src/features/account/api-keys.tsx
 msgid "Revoke API key?"
 msgstr "Revoke API key?"
 
-#: src/features/settings/api-keys.tsx
+#: src/features/account/api-keys.tsx
 msgid "Revoke key"
 msgstr "Revoke key"
 
-#: src/features/settings/api-keys.tsx
+#: src/features/account/api-keys.tsx
 msgid "Revoke this API key"
 msgstr "Revoke this API key"
 
@@ -11580,7 +11679,7 @@ msgstr "Rewrite with AI"
 msgid "Rezumi AI · {0} credit per reply · {1} left"
 msgstr "Rezumi AI · {0} credit per reply · {1} left"
 
-#: app/account/membership.tsx
+#: src/features/account/plan-screen.tsx
 msgid "Rezumi AI credits"
 msgstr "Rezumi AI credits"
 
@@ -11593,6 +11692,10 @@ msgstr "Rezumi AI isn't available right now. Use your own AI connection, or add 
 #: src/features/billing/ai-source.ts
 msgid "Rezumi AI: {0}, {1} left. If it fails, the credits come back."
 msgstr "Rezumi AI: {0}, {1} left. If it fails, the credits come back."
+
+#: src/features/account/ai-privacy-screen.tsx
+msgid "Rezumi asks before each AI operation. Individual approvals expire after that operation."
+msgstr "Rezumi asks before each AI operation. Individual approvals expire after that operation."
 
 #: src/shell/permissions.tsx
 msgid "Rezumi can't ask again. Turn it on for Rezumi in your device's Settings, then try again."
@@ -11654,7 +11757,7 @@ msgstr "Roles"
 msgid "Roles you're looking for"
 msgstr "Roles you're looking for"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Romanian"
 msgstr "Romanian"
 
@@ -11697,11 +11800,15 @@ msgstr "Runs at {0}."
 msgid "Runs onto page {0}"
 msgstr "Runs onto page {0}"
 
+#: src/features/account/help-screen.tsx
+msgid "Runtime version"
+msgstr "Runtime version"
+
 #: src/features/portfolio/editor/metric.tsx
 msgid "Rupiah"
 msgstr "Rupiah"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Russian"
 msgstr "Russian"
 
@@ -11979,6 +12086,7 @@ msgstr "Saved to your Profile."
 msgid "Saves as you type. Resumes that still use a part follow your changes."
 msgstr "Saves as you type. Resumes that still use a part follow your changes."
 
+#: src/features/account/profile.tsx
 #: src/features/applications/interview-sheet.tsx
 #: src/features/applications/save-sheet.tsx
 #: src/features/auth/reset-password-screen.tsx
@@ -11988,7 +12096,6 @@ msgstr "Saves as you type. Resumes that still use a part follow your changes."
 #: src/features/profile/preferences.tsx
 #: src/features/profile/save-note.tsx
 #: src/features/profile/stories.tsx
-#: src/features/settings/profile.tsx
 #: src/features/write/profile-marker-sheet.tsx
 #: src/shell/builder-chrome/top-bar.tsx
 msgid "Saving…"
@@ -12021,6 +12128,10 @@ msgstr "Schedule one when they invite you."
 msgid "Schedule saved"
 msgstr "Schedule saved"
 
+#: src/features/account/ai-privacy-screen.tsx
+msgid "Scheduled AI approvals"
+msgstr "Scheduled AI approvals"
+
 #: src/features/career/schedule-body.tsx
 msgid "Scheduled work is not available on this server. Ask your server administrator to configure it."
 msgstr "Scheduled work is not available on this server. Ask your server administrator to configure it."
@@ -12052,6 +12163,7 @@ msgstr "Screening interview"
 #: app/_layout.tsx
 #: app/(tabs)/_layout.tsx
 #: src/features/documents/library-toolbar.tsx
+#: src/features/search/search-screen.tsx
 #: src/shell/tab-chrome.tsx
 #: src/ui-legacy/fields.tsx
 msgid "Search"
@@ -12073,10 +12185,6 @@ msgstr "Search again"
 msgid "Search applications"
 msgstr "Search applications"
 
-#: src/features/search/search-screen.tsx
-msgid "Search commands"
-msgstr "Search commands"
-
 #: src/features/career/schedule-body.tsx
 msgid "Search connections"
 msgstr "Search connections"
@@ -12086,10 +12194,6 @@ msgstr "Search connections"
 #: src/features/profile/search-regions-field.tsx
 msgid "Search countries"
 msgstr "Search countries"
-
-#: src/features/search/search-screen.tsx
-msgid "Search covers documents, applications, assistant conversations and actions."
-msgstr "Search covers documents, applications, assistant conversations and actions."
 
 #: src/features/documents/library-states.tsx
 msgid "Search covers titles, tags and linked applications."
@@ -12102,6 +12206,10 @@ msgstr "Search current openings from company careers sites and job boards, then 
 #: src/features/documents/library-toolbar.tsx
 msgid "Search documents"
 msgstr "Search documents"
+
+#: src/features/search/search-screen.tsx
+msgid "Search documents, applications, and more"
+msgstr "Search documents, applications, and more"
 
 #: src/features/share/web-page.tsx
 msgid "Search engines such as Google may list your web page. It can take weeks to appear, or to disappear after you turn this off."
@@ -12119,10 +12227,6 @@ msgstr "Search fonts"
 msgid "Search for an icon"
 msgstr "Search for an icon"
 
-#: src/features/search/search-screen.tsx
-msgid "Search for…"
-msgstr "Search for…"
-
 #: src/features/entries/icon-picker.tsx
 msgid "Search icons"
 msgstr "Search icons"
@@ -12131,7 +12235,7 @@ msgstr "Search icons"
 msgid "Search interviews"
 msgstr "Search interviews"
 
-#: app/account/preferences.tsx
+#: src/features/account/preferences-screen.tsx
 #: src/features/design/page-group.tsx
 msgid "Search languages"
 msgstr "Search languages"
@@ -12139,6 +12243,10 @@ msgstr "Search languages"
 #: src/features/applications/detail/document-choice.tsx
 msgid "Search letters"
 msgstr "Search letters"
+
+#: src/features/ai/provider-editor.tsx
+msgid "Search providers"
+msgstr "Search providers"
 
 #: src/features/applications/detail/document-choice.tsx
 msgid "Search resumes"
@@ -12160,6 +12268,10 @@ msgstr "Search terms go to your web search service."
 msgid "Search the web"
 msgstr "Search the web"
 
+#: src/features/account/preferences-screen.tsx
+msgid "Search themes"
+msgstr "Search themes"
+
 #: src/features/applications/interview/zone-list.tsx
 msgid "Search time zones"
 msgstr "Search time zones"
@@ -12168,11 +12280,10 @@ msgstr "Search time zones"
 msgid "Search times"
 msgstr "Search times"
 
-#: app/account/preferences.tsx
+#: src/features/account/preferences-screen.tsx
 msgid "Search timezones"
 msgstr "Search timezones"
 
-#: src/features/search/search-screen.tsx
 #: src/ui-legacy/fields.tsx
 msgid "Search…"
 msgstr "Search…"
@@ -12184,6 +12295,10 @@ msgstr "Searched the web"
 #: src/features/assistant/messages.tsx
 msgid "Searching the web…"
 msgstr "Searching the web…"
+
+#: src/features/search/search-screen.tsx
+msgid "Searching…"
+msgstr "Searching…"
 
 #: src/features/check/messages.ts
 msgid "Section headings"
@@ -12212,6 +12327,10 @@ msgstr "Sections use headings systems recognize, and work experience shows."
 #: src/features/design/preset-names.ts
 msgid "Security"
 msgstr "Security"
+
+#: src/features/account/account-screen.tsx
+msgid "Security settings open in the browser. You may need to sign in there."
+msgstr "Security settings open in the browser. You may need to sign in there."
 
 #: src/features/onboarding/intro-screen.tsx
 msgid "See where each one stands, get new roles that fit you, and never miss an interview."
@@ -12374,12 +12493,12 @@ msgstr "Sent to {0}"
 msgid "Sent to Lumen"
 msgstr "Sent to Lumen"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Serbian"
 msgstr "Serbian"
 
 #: src/api/ai-consent.ts
-#: src/features/settings/sign-out.tsx
+#: src/features/account/sign-out.tsx
 msgid "Server"
 msgstr "Server"
 
@@ -12434,13 +12553,11 @@ msgstr "Set work address"
 msgid "Setting up HTTPS. This usually takes a few minutes, and this screen updates by itself."
 msgstr "Setting up HTTPS. This usually takes a few minutes, and this screen updates by itself."
 
-#: app/account/index.tsx
 #: src/features/applications/detail/reminder-sheet.tsx
-#: src/features/search/search-screen.tsx
 msgid "Settings"
 msgstr "Settings"
 
-#: app/account/ai-mcp.tsx
+#: src/features/account/mcp-screen.tsx
 msgid "Setup guide"
 msgstr "Setup guide"
 
@@ -12593,10 +12710,6 @@ msgstr "Show actions"
 msgid "Show again"
 msgstr "Show again"
 
-#: src/features/search/search-screen.tsx
-msgid "Show all"
-msgstr "Show all"
-
 #: src/features/profile/facts.tsx
 msgid "Show all facts"
 msgstr "Show all facts"
@@ -12651,7 +12764,7 @@ msgstr "Show less"
 msgid "Show link in title"
 msgstr "Show link in title"
 
-#: app/account/preferences.tsx
+#: src/features/account/plan-screen.tsx
 #: src/features/applications/interview/zone-list.tsx
 msgid "Show more"
 msgstr "Show more"
@@ -12802,18 +12915,26 @@ msgid "Sign in to view this resume."
 msgstr "Sign in to view this resume."
 
 #: src/auth/session-gate.tsx
-#: src/features/settings/sign-out.tsx
+#: src/features/account/sign-out.tsx
 #: src/shell/account-menu.tsx
 #: src/shell/app-drawer.tsx
 msgid "Sign out"
 msgstr "Sign out"
 
-#: src/features/settings/sign-out.tsx
+#: src/features/account/sign-out.tsx
+msgid "Sign out of all devices"
+msgstr "Sign out of all devices"
+
+#: src/features/account/sign-out.tsx
+msgid "Sign out of all devices?"
+msgstr "Sign out of all devices?"
+
+#: src/features/account/sign-out.tsx
 #: src/shell/account-menu.tsx
 msgid "Sign out?"
 msgstr "Sign out?"
 
-#: app/account/account.tsx
+#: src/features/account/account-screen.tsx
 msgid "Sign-in & security"
 msgstr "Sign-in & security"
 
@@ -12831,7 +12952,7 @@ msgid "Signed in with Apple, Google or another provider? You have no password he
 msgstr "Signed in with Apple, Google or another provider? You have no password here: sign in with that provider instead."
 
 #: src/auth/session-gate.tsx
-#: src/features/settings/sign-out.tsx
+#: src/features/account/sign-out.tsx
 msgid "Signed out, but some data on this device couldn't be removed."
 msgstr "Signed out, but some data on this device couldn't be removed."
 
@@ -12898,11 +13019,11 @@ msgstr "Skip"
 msgid "Skipped"
 msgstr "Skipped"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Slovak"
 msgstr "Slovak"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Slovenian"
 msgstr "Slovenian"
 
@@ -12951,6 +13072,10 @@ msgstr "Some glyphs have no meaning outside this file."
 #: src/features/ats-checker/messages.ts
 msgid "Some lines are stored out of reading order."
 msgstr "Some lines are stored out of reading order."
+
+#: src/features/search/search-screen.tsx
+msgid "Some results couldn't load."
+msgstr "Some results couldn't load."
 
 #: src/features/check/messages.ts
 msgid "Some systems mishandle images, and photos are discouraged in some countries."
@@ -13022,7 +13147,7 @@ msgstr "Source"
 msgid "Sources"
 msgstr "Sources"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Spanish"
 msgstr "Spanish"
 
@@ -13217,6 +13342,7 @@ msgstr "Statistics need a connection."
 msgid "Stay here"
 msgstr "Stay here"
 
+#: src/features/account/sign-out.tsx
 #: src/shell/account-menu.tsx
 msgid "Stay signed in"
 msgstr "Stay signed in"
@@ -13353,10 +13479,6 @@ msgstr "Suggests cuts, never deletes on its own"
 msgid "Summary"
 msgstr "Summary"
 
-#: app/account/index.tsx
-msgid "Support"
-msgstr "Support"
-
 #: src/features/jobs/listing-fit.tsx
 #: src/features/workspace/debrief/review-card.tsx
 #: src/features/workspace/fit/requirement-card.tsx
@@ -13379,7 +13501,7 @@ msgstr "Swap rows: lead with position"
 msgid "Swap the start and end dates."
 msgstr "Swap the start and end dates."
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Swedish"
 msgstr "Swedish"
 
@@ -13391,7 +13513,7 @@ msgstr "Switch model"
 msgid "Switch server"
 msgstr "Switch server"
 
-#: src/features/settings/sign-out.tsx
+#: src/features/account/sign-out.tsx
 #: src/linking/open.ts
 msgid "Switch server?"
 msgstr "Switch server?"
@@ -13404,10 +13526,17 @@ msgstr "Switch to one column"
 msgid "Switched to one column"
 msgstr "Switched to one column"
 
-#: app/account/index.tsx
-#: app/account/preferences.tsx
+#: src/features/account/preferences-screen.tsx
 msgid "System"
 msgstr "System"
+
+#: src/features/account/notification-settings.tsx
+msgid "System notification settings"
+msgstr "System notification settings"
+
+#: src/features/account/notification-settings.tsx
+msgid "System permission is off."
+msgstr "System permission is off."
 
 #: src/features/check/messages.ts
 msgid "Systems file you under the name at the top of the page."
@@ -13470,8 +13599,8 @@ msgstr "Take a photo"
 msgid "Take a picture"
 msgstr "Take a picture"
 
+#: src/features/account/profile.tsx
 #: src/features/entries/photo-field.tsx
-#: src/features/settings/profile.tsx
 msgid "Take photo"
 msgstr "Take photo"
 
@@ -13492,7 +13621,7 @@ msgstr "Taken down"
 msgid "Takes its sender details and design from your latest resume."
 msgstr "Takes its sender details and design from your latest resume."
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Tamil"
 msgstr "Tamil"
 
@@ -13553,7 +13682,7 @@ msgstr "Tell me about a piece of work you're proud of. What was your part in it,
 msgid "Tell me about a time you disagreed with a colleague. How did you resolve it?"
 msgstr "Tell me about a time you disagreed with a colleague. How did you resolve it?"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Telugu"
 msgstr "Telugu"
 
@@ -13593,7 +13722,7 @@ msgstr "Terms"
 msgid "Terms from the posting"
 msgstr "Terms from the posting"
 
-#: app/account/index.tsx
+#: src/features/account/help-screen.tsx
 msgid "Terms of service"
 msgstr "Terms of service"
 
@@ -13669,7 +13798,7 @@ msgstr "Text, background, and how skill levels draw"
 msgid "Text, e.g. Indonesian"
 msgstr "Text, e.g. Indonesian"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Thai"
 msgstr "Thai"
 
@@ -14008,14 +14137,13 @@ msgstr "The top of the first page does not look like a name."
 msgid "The versions you sent are kept in Saved. Edits here don't change what {company} received."
 msgstr "The versions you sent are kept in Saved. Edits here don't change what {company} received."
 
-#: app/account/preferences.tsx
+#: src/features/account/preferences-screen.tsx
 #: src/features/portfolio/editor/design.tsx
 #: src/features/search/search-screen.tsx
 msgid "Theme"
 msgstr "Theme"
 
 #. placeholder {0}: getPlanName(next.planId)
-#: app/account/membership.tsx
 #: src/features/billing/plan-card.tsx
 msgid "Then {0}"
 msgstr "Then {0}"
@@ -14052,10 +14180,6 @@ msgstr "These are the answers saved when you applied."
 msgid "These open Rezumi's sign-in page in a secure browser sheet. You come back here when you're done."
 msgstr "These open Rezumi's sign-in page in a secure browser sheet. You come back here when you're done."
 
-#: app/account/account.tsx
-msgid "These open your server's account settings in a browser tab inside the app. You may need to sign in there."
-msgstr "These open your server's account settings in a browser tab inside the app. You may need to sign in there."
-
 #: src/features/profile/save-note.tsx
 msgid "These resumes still used the parts you changed, so they changed too. Parts a resume changed itself stay as they are."
 msgstr "These resumes still used the parts you changed, so they changed too. Parts a resume changed itself stay as they are."
@@ -14076,17 +14200,9 @@ msgstr "Thinking"
 msgid "Thinking…"
 msgstr "Thinking…"
 
-#: app/account/licences.tsx
-msgid "Third-party software notices. Tap a dependency to read its license."
-msgstr "Third-party software notices. Tap a dependency to read its license."
-
 #: src/features/portfolio/queries.ts
 msgid "This account already has a portfolio."
 msgstr "This account already has a portfolio."
-
-#: src/features/billing/plan-alert.ts
-msgid "This app always works. Other apps and assistants that connect with an API key need more."
-msgstr "This app always works. Other apps and assistants that connect with an API key need more."
 
 #: src/features/workspace/screen.tsx
 msgid "This application couldn't be opened"
@@ -14111,6 +14227,7 @@ msgstr "This conversation can't continue in this app. Start a new conversation."
 #: src/features/assistant/assistant-screen.tsx
 #: src/features/assistant/chat-view.tsx
 #: src/features/assistant/coach.tsx
+#: src/features/portfolio/editor/assistant.tsx
 msgid "This conversation couldn't be opened."
 msgstr "This conversation couldn't be opened."
 
@@ -14125,6 +14242,10 @@ msgstr "This date hasn't been saved. Use a month and year, like Mar 2022, or jus
 #: src/features/applications/detail/posting.tsx
 msgid "This description is clipped or incomplete. Check it before preparing documents."
 msgstr "This description is clipped or incomplete. Check it before preparing documents."
+
+#: src/features/account/preferences-screen.tsx
+msgid "This device"
+msgstr "This device"
 
 #: src/features/assistant/threads.tsx
 msgid "This document"
@@ -14165,6 +14286,10 @@ msgstr "This domain no longer points to Rezumi. Put its CNAME record back, then 
 #: src/api/ai-consent.ts
 msgid "This enables recurring processing while the schedule is on, using your server's selected providers. Turn the schedule off to stop future runs."
 msgstr "This enables recurring processing while the schedule is on, using your server's selected providers. Turn the schedule off to stop future runs."
+
+#: src/features/account/sign-out.tsx
+msgid "This ends your Rezumi sessions on every device. Edits that haven't synced from this device will be lost."
+msgstr "This ends your Rezumi sessions on every device. Edits that haven't synced from this device will be lost."
 
 #: src/features/check/messages.ts
 msgid "This entry"
@@ -14339,6 +14464,10 @@ msgstr "This measures how faithfully software can extract this file's text. It d
 msgid "This needs {required} and you have {balance}. Switch to your own AI connection to continue."
 msgstr "This needs {required} and you have {balance}. Switch to your own AI connection to continue."
 
+#: src/features/billing/plan-alert.ts
+msgid "This option isn't available"
+msgstr "This option isn't available"
+
 #: src/features/portfolio/queries.ts
 msgid "This option isn't included in your current plan."
 msgstr "This option isn't included in your current plan."
@@ -14358,6 +14487,10 @@ msgstr "This page is very densely packed."
 #: src/features/check/proposal-card.tsx
 msgid "This passage changed. Run the review again."
 msgstr "This passage changed. Run the review again."
+
+#: src/features/account/ai-privacy-screen.tsx
+msgid "This pauses the interview preparation schedule. You can enable it again from Home."
+msgstr "This pauses the interview preparation schedule. You can enable it again from Home."
 
 #: src/features/portfolio/editor/media.ts
 msgid "This PDF has an unsupported number of pages."
@@ -14492,10 +14625,6 @@ msgstr "This story is unavailable or uses facts that are switched off."
 msgid "This template isn't available"
 msgstr "This template isn't available"
 
-#: src/features/billing/plan-alert.ts
-msgid "This template isn't in your plan"
-msgstr "This template isn't in your plan"
-
 #: src/features/portfolio/editor/ai.tsx
 msgid "This text changed while AI was writing. Try again."
 msgstr "This text changed while AI was writing. Try again."
@@ -14508,7 +14637,7 @@ msgstr "This time does not exist in your timezone. Choose another time."
 msgid "This time doesn't exist in that time zone. Choose another time."
 msgstr "This time doesn't exist in that time zone. Choose another time."
 
-#: src/features/settings/profile.tsx
+#: src/features/account/profile.tsx
 msgid "This username is already taken."
 msgstr "This username is already taken."
 
@@ -14557,7 +14686,8 @@ msgstr "Time, link, who, what you sent"
 msgid "Times are shown in {timeZone}."
 msgstr "Times are shown in {timeZone}."
 
-#: app/account/preferences.tsx
+#: src/features/account/preferences-screen.tsx
+#: src/features/search/search-screen.tsx
 msgid "Timezone"
 msgstr "Timezone"
 
@@ -14662,11 +14792,7 @@ msgstr "Tool logos aren't available"
 msgid "Tool logos aren't available, so the imported document shows skills without them."
 msgstr "Tool logos aren't available, so the imported document shows skills without them."
 
-#: src/features/billing/plan-alert.ts
-msgid "Tool logos aren't in your plan"
-msgstr "Tool logos aren't in your plan"
-
-#: app/account/membership.tsx
+#: src/features/account/plan-screen.tsx
 #: src/features/design/icons-group.tsx
 msgid "Tool logos in skills"
 msgstr "Tool logos in skills"
@@ -14748,7 +14874,11 @@ msgstr "Trash"
 msgid "Trash is empty"
 msgstr "Trash is empty"
 
-#: app/account/membership.tsx
+#: src/features/account/mcp-screen.tsx
+msgid "Treat API keys like passwords. Revoke a key in Account to stop the app using it."
+msgstr "Treat API keys like passwords. Revoke a key in Account to stop the app using it."
+
+#: src/features/account/plan-screen.tsx
 #: src/features/billing/credits.ts
 msgid "Trial credits"
 msgstr "Trial credits"
@@ -14771,8 +14901,12 @@ msgstr "Try a longer posting window, fewer filters or other words. For local job
 
 #: app/_layout.tsx
 #: app/(auth)/server.tsx
-#: app/account/account.tsx
-#: app/account/preferences.tsx
+#: src/features/account/account-screen.tsx
+#: src/features/account/ai-privacy-screen.tsx
+#: src/features/account/api-keys.tsx
+#: src/features/account/plan-screen.tsx
+#: src/features/account/preferences-screen.tsx
+#: src/features/account/storage-screen.tsx
 #: src/features/ai/provider-editor.tsx
 #: src/features/ai/provider-list.tsx
 #: src/features/applications/board/load-states.tsx
@@ -14787,7 +14921,7 @@ msgstr "Try a longer posting window, fewer filters or other words. For local job
 #: src/features/letters/write.tsx
 #: src/features/onboarding/onboarding-screen.tsx
 #: src/features/profile/states.tsx
-#: src/features/settings/api-keys.tsx
+#: src/features/search/search-screen.tsx
 #: src/features/workspace/ai-notice.tsx
 #: src/features/workspace/part-body.tsx
 #: src/features/workspace/practice/practice-part.tsx
@@ -14835,7 +14969,7 @@ msgstr "Try with a sample resume"
 msgid "Trying {0} on the page"
 msgstr "Trying {0} on the page"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Turkish"
 msgstr "Turkish"
 
@@ -14859,6 +14993,10 @@ msgstr "Turn this schedule on"
 msgid "Turned off in Settings"
 msgstr "Turned off in Settings"
 
+#: src/features/account/notification-settings.tsx
+msgid "Turning a type off removes its scheduled reminders from this device. Turn it back on to set new reminders in Applications."
+msgstr "Turning a type off removes its scheduled reminders from this device. Turn it back on to set new reminders in Applications."
+
 #: src/features/design/gallery-filters.tsx
 #: src/features/design/template-card.tsx
 #: src/features/onboarding/template-choice.tsx
@@ -14873,7 +15011,7 @@ msgstr "Two quick questions"
 msgid "Two stories"
 msgstr "Two stories"
 
-#: app/account/account.tsx
+#: src/features/account/account-screen.tsx
 #: src/features/auth/two-factor-screen.tsx
 msgid "Two-step verification"
 msgstr "Two-step verification"
@@ -14885,10 +15023,6 @@ msgstr "Two-step verification"
 #: src/features/workspace/practice/answer-panel.tsx
 msgid "Type"
 msgstr "Type"
-
-#: src/features/search/search-screen.tsx
-msgid "Type a command or search…"
-msgstr "Type a command or search…"
 
 #: src/features/workspace/practice/answer-panel.tsx
 #: src/features/workspace/practice/recorder-control.tsx
@@ -14909,11 +15043,11 @@ msgstr "Typewriter"
 msgid "Typography"
 msgstr "Typography"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Ukrainian"
 msgstr "Ukrainian"
 
-#: app/account/preferences.tsx
+#: src/features/account/help-screen.tsx
 msgid "Unavailable"
 msgstr "Unavailable"
 
@@ -14990,7 +15124,7 @@ msgstr "Unlock it first, then try again."
 msgid "Unlocking…"
 msgstr "Unlocking…"
 
-#: src/features/settings/api-keys.tsx
+#: src/features/account/api-keys.tsx
 msgid "Unnamed key"
 msgstr "Unnamed key"
 
@@ -15089,7 +15223,7 @@ msgstr "Upload font"
 msgid "Upload TTF or OTF files you have the right to use, one file per weight or style. Anyone who opens a shared link to this document can download them."
 msgstr "Upload TTF or OTF files you have the right to use, one file per weight or style. Anyone who opens a shared link to this document can download them."
 
-#: src/features/settings/profile.tsx
+#: src/features/account/profile.tsx
 msgid "Uploading photo…"
 msgstr "Uploading photo…"
 
@@ -15135,7 +15269,7 @@ msgstr "Use {name} style"
 msgid "Use {url}"
 msgstr "Use {url}"
 
-#: src/features/settings/profile.tsx
+#: src/features/account/profile.tsx
 msgid "Use 3 to 64 lowercase letters, numbers, dots, hyphens and underscores."
 msgstr "Use 3 to 64 lowercase letters, numbers, dots, hyphens and underscores."
 
@@ -15331,10 +15465,6 @@ msgstr "Use theirs"
 msgid "Use these answers"
 msgstr "Use these answers"
 
-#: app/account/preferences.tsx
-msgid "Use this device's timezone ({deviceTimezone})"
-msgstr "Use this device's timezone ({deviceTimezone})"
-
 #: src/features/ai/provider-editor.tsx
 msgid "Use this provider"
 msgstr "Use this provider"
@@ -15363,8 +15493,8 @@ msgstr "Used on {at}"
 msgid "Used to check roles and offers. Each is a number, so the coach can compare without guessing."
 msgstr "Used to check roles and offers. Each is a number, so the coach can compare without guessing."
 
+#: src/features/account/profile.tsx
 #: src/features/entries/fields.ts
-#: src/features/settings/profile.tsx
 msgid "Username"
 msgstr "Username"
 
@@ -15393,7 +15523,7 @@ msgstr "Uses your resume's template and Design, and fits any screen. Change them
 msgid "Using your Profile's version."
 msgstr "Using your Profile's version."
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Uzbek"
 msgstr "Uzbek"
 
@@ -15500,7 +15630,7 @@ msgstr "Video"
 msgid "Video link, office address or phone number"
 msgstr "Video link, office address or phone number"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Vietnamese"
 msgstr "Vietnamese"
 
@@ -15829,7 +15959,7 @@ msgstr "What you want next. Job searches, fit checks, offers and the coach use i
 msgid "What you're looking for"
 msgstr "What you're looking for"
 
-#: app/account/membership.tsx
+#: src/features/account/plan-screen.tsx
 msgid "What's included"
 msgstr "What's included"
 
@@ -15841,7 +15971,7 @@ msgstr "What's working"
 msgid "WhatsApp number with country code"
 msgstr "WhatsApp number with country code"
 
-#: app/account/membership.tsx
+#: src/features/billing/plan-card.tsx
 msgid "When a plan ends, nothing is locked or deleted: every document stays open to edit, share and download as a PDF."
 msgstr "When a plan ends, nothing is locked or deleted: every document stays open to edit, share and download as a PDF."
 
@@ -15923,9 +16053,21 @@ msgstr "Wider sidebar"
 msgid "Width"
 msgstr "Width"
 
-#: src/features/settings/api-keys.tsx
-msgid "Without it, apps you connect with a key won't work yet. This app always works. Plans can be bought on the rezumi.app website."
-msgstr "Without it, apps you connect with a key won't work yet. This app always works. Plans can be bought on the rezumi.app website."
+#: src/features/account/ai-privacy-screen.tsx
+msgid "Withdraw"
+msgstr "Withdraw"
+
+#: src/features/account/ai-privacy-screen.tsx
+msgid "Withdraw AI approval?"
+msgstr "Withdraw AI approval?"
+
+#: src/features/account/ai-privacy-screen.tsx
+msgid "Withdraw approval"
+msgstr "Withdraw approval"
+
+#: src/features/account/ai-privacy-screen.tsx
+msgid "Withdrawing approval pauses the schedule on all devices."
+msgstr "Withdrawing approval pauses the schedule on all devices."
 
 #: src/features/letters/write.tsx
 msgid "Without one, you fill in the recipient yourself and drafting uses only your resume."
@@ -15940,13 +16082,9 @@ msgstr "Word"
 msgid "Word and ODT aren't available"
 msgstr "Word and ODT aren't available"
 
-#: app/account/membership.tsx
+#: src/features/account/plan-screen.tsx
 msgid "Word and ODT downloads"
 msgstr "Word and ODT downloads"
-
-#: src/features/billing/plan-alert.ts
-msgid "Word and ODT downloads aren't in your plan"
-msgstr "Word and ODT downloads aren't in your plan"
 
 #: src/features/documents/new-choices.tsx
 msgid "Word files need an AI provider. PDFs are read from their text layer."
@@ -16089,7 +16227,7 @@ msgstr "Write your answer, or draft one from your Profile."
 msgid "Writing"
 msgstr "Writing"
 
-#: app/account/ai-providers.tsx
+#: src/features/account/providers-screen.tsx
 msgid "Writing help, tailored suggestions and the assistant. The default provider is used wherever you don't pick one. Your keys stay encrypted."
 msgstr "Writing help, tailored suggestions and the assistant. The default provider is used wherever you don't pick one. Your keys stay encrypted."
 
@@ -16120,6 +16258,10 @@ msgstr "You already use this for “{takenBy}”."
 #: src/features/assistant/messages.tsx
 msgid "You answered: {answer}"
 msgstr "You answered: {answer}"
+
+#: src/features/billing/plan-alert.ts
+msgid "You can keep editing and sharing your portfolio."
+msgstr "You can keep editing and sharing your portfolio."
 
 #: src/shell/builder-chrome/top-bar.tsx
 msgid "You can keep editing. Changes sync when you're back online. PDF sharing works with cached fonts and images."
@@ -16199,7 +16341,7 @@ msgstr "You send it from your own email."
 msgid "You submit on the employer's site yourself. Marking it applied keeps the exact versions you sent."
 msgstr "You submit on the employer's site yourself. Marking it applied keeps the exact versions you sent."
 
-#: src/features/settings/sign-out.tsx
+#: src/features/account/sign-out.tsx
 #: src/shell/account-menu.tsx
 msgid "You will be signed out of {server}. Any edits not yet synced from this device will be lost."
 msgstr "You will be signed out of {server}. Any edits not yet synced from this device will be lost."
@@ -16354,7 +16496,7 @@ msgstr "Your changes on this device will be replaced by the saved version."
 msgid "Your contact details are not on the first page."
 msgstr "Your contact details are not on the first page."
 
-#: app/account/account.tsx
+#: src/features/account/account-screen.tsx
 msgid "Your data"
 msgstr "Your data"
 
@@ -16433,7 +16575,7 @@ msgstr "Your intro has room for only four highlights."
 msgid "Your job search starts here"
 msgstr "Your job search starts here"
 
-#: app/account/preferences.tsx
+#: src/features/account/preferences-screen.tsx
 msgid "Your language is saved. Restart Rezumi to apply the new left-to-right or right-to-left layout."
 msgstr "Your language is saved. Restart Rezumi to apply the new left-to-right or right-to-left layout."
 
@@ -16491,11 +16633,7 @@ msgstr "Your opening, the stories to bring and questions to ask. It becomes your
 msgid "Your own domain isn't available"
 msgstr "Your own domain isn't available"
 
-#: src/features/billing/plan-alert.ts
-msgid "Your own domain isn't in your plan"
-msgstr "Your own domain isn't in your plan"
-
-#: app/account/membership.tsx
+#: src/features/account/plan-screen.tsx
 msgid "Your own fonts"
 msgstr "Your own fonts"
 
@@ -16507,13 +16645,9 @@ msgstr "Your own fonts aren't available"
 msgid "Your own fonts aren't available, so the imported document uses a standard font."
 msgstr "Your own fonts aren't available, so the imported document uses a standard font."
 
-#: src/features/billing/plan-alert.ts
-msgid "Your own fonts aren't in your plan"
-msgstr "Your own fonts aren't in your plan"
-
 #: src/features/design/uploaded-fonts.tsx
-msgid "Your own fonts aren't in your plan. Fonts already added keep working on the page."
-msgstr "Your own fonts aren't in your plan. Fonts already added keep working on the page."
+msgid "Your own fonts aren't available. Fonts already added keep working on the page."
+msgstr "Your own fonts aren't available. Fonts already added keep working on the page."
 
 #: src/features/billing/plan-alert.ts
 #: src/features/share/custom-domain.tsx
@@ -16528,7 +16662,6 @@ msgstr "Your page, uploads and messages will be permanently deleted."
 msgid "Your phone number is written in an unusual shape."
 msgstr "Your phone number is written in an unusual shape."
 
-#: app/account/membership.tsx
 #: src/features/billing/plan-card.tsx
 msgid "Your plan"
 msgstr "Your plan"
@@ -16619,7 +16752,7 @@ msgstr "Your Profile was changed somewhere else. Check what's new, then save aga
 msgid "Your Profile was saved on another device or on the web while you were editing here. Your changes are still on this device. Choose which version to keep."
 msgstr "Your Profile was saved on another device or on the web while you were editing here. Your changes are still on this device. Choose which version to keep."
 
-#: src/features/settings/export.tsx
+#: src/features/account/export.tsx
 msgid "Your profile, documents, applications and Career data as JSON. Images and attachments remain references."
 msgstr "Your profile, documents, applications and Career data as JSON. Images and attachments remain references."
 
@@ -16631,7 +16764,7 @@ msgstr "Your Profile's photo"
 msgid "your provider"
 msgstr "your provider"
 
-#: src/features/settings/profile.tsx
+#: src/features/account/profile.tsx
 msgid "Your public links begin with {server}/"
 msgstr "Your public links begin with {server}/"
 
@@ -16756,6 +16889,6 @@ msgstr "Zoom: {0}%"
 msgid "Zoom: fit to width"
 msgstr "Zoom: fit to width"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Zulu"
 msgstr "Zulu"

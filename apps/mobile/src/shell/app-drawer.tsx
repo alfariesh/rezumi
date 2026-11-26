@@ -13,8 +13,8 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { create } from "zustand";
 import { AccountAvatar, useAccountLinks, useSignOutConfirm } from "./account-menu";
 import { readTabs, sidebarOrder, tabIcons, useTabLabels } from "./app-tabs";
+import { useProfile } from "@/features/account/queries";
 import { useSidebarCounts, useUnreadCount } from "@/features/home/queries";
-import { useProfile } from "@/features/settings/queries";
 import { routes } from "@/routes";
 import { Button, Icon, IconButton, Separator, Text, cx, setThemePreference, useColorSchemeValue } from "@/ui";
 

@@ -284,7 +284,7 @@ msgstr ""
 
 #. placeholder {0}: creditCount(TRIAL_CREDITS.amount)
 #. placeholder {1}: TRIAL_CREDITS.validDays
-#: app/account/membership.tsx
+#: src/features/account/plan-screen.tsx
 msgid "{0} come with your first use of Rezumi AI, valid for {1} days."
 msgstr ""
 
@@ -300,7 +300,7 @@ msgstr ""
 
 #. placeholder {0}: creditCount(credits.nextExpiry.credits)
 #. placeholder {1}: formatDate(credits.nextExpiry.at)
-#: app/account/membership.tsx
+#: src/features/account/plan-screen.tsx
 msgid "{0} expire on {1}"
 msgstr ""
 
@@ -344,6 +344,11 @@ msgstr ""
 #. placeholder {0}: face.weight
 #: src/features/design/uploaded-fonts.tsx
 msgid "{0} italic"
+msgstr ""
+
+#. placeholder {0}: i18n.number(bytes.data / 1024, { maximumFractionDigits: 1 })
+#: src/features/account/storage-screen.tsx
+msgid "{0} KB"
 msgstr ""
 
 #. placeholder {0}: clock.money(terms.currency, difference)
@@ -946,11 +951,11 @@ msgstr ""
 msgid "{unread, plural, one {# unread message} other {# unread messages}}"
 msgstr ""
 
-#: app/account/membership.tsx
+#: src/features/account/plan-screen.tsx
 msgid "{used} in use"
 msgstr ""
 
-#: app/account/membership.tsx
+#: src/features/account/plan-screen.tsx
 msgid "{used} of {max}"
 msgstr ""
 
@@ -1189,6 +1194,10 @@ msgstr "Apie 90 sekundžių sakant garsiai"
 msgid "About me"
 msgstr ""
 
+#: src/features/account/help-screen.tsx
+msgid "About Rezumi"
+msgstr ""
+
 #: src/features/jobs/listing-detail.tsx
 msgid "About the job"
 msgstr ""
@@ -1232,9 +1241,7 @@ msgstr "Priimtas pasiūlymas"
 msgid "Accomplishment"
 msgstr "Pasiekimas"
 
-#: app/account/account.tsx
-#: app/account/index.tsx
-#: src/features/search/search-screen.tsx
+#: src/features/account/account-screen.tsx
 #: src/shell/account-menu.tsx
 #: src/shell/app-drawer.tsx
 msgid "Account"
@@ -1248,24 +1255,19 @@ msgstr ""
 msgid "Action"
 msgstr "Veiksmas"
 
-#: src/features/search/search-screen.tsx
-msgid "Actions"
-msgstr "Veiksmai"
-
 #: src/features/share/custom-domain.tsx
 msgid "Active"
 msgstr "Aktyvus"
 
-#: app/account/membership.tsx
+#: src/features/account/plan-screen.tsx
 msgid "Active cover letters"
 msgstr ""
 
-#: app/account/membership.tsx
+#: src/features/account/plan-screen.tsx
 msgid "Active resumes"
 msgstr ""
 
-#. placeholder {0}: formatDate(plan.currentPeriodEndsAt)
-#: app/account/membership.tsx
+#. placeholder {0}: formatDate(end)
 #: src/features/billing/plan-card.tsx
 msgid "Active until {0}"
 msgstr ""
@@ -1435,10 +1437,6 @@ msgstr ""
 #: src/features/profile/bring-screen.tsx
 msgid "Add any of these and we'll find what your Profile is missing. You check everything before it's added."
 msgstr ""
-
-#: src/features/search/search-screen.tsx
-msgid "Add application"
-msgstr "Pridėti paraišką"
 
 #: src/features/entries/fields.ts
 msgid "Add award"
@@ -1718,6 +1716,10 @@ msgstr ""
 msgid "Address"
 msgstr "Adresas"
 
+#: src/features/account/mcp-screen.tsx
+msgid "Address copied"
+msgstr ""
+
 #: src/features/workspace/messages/describe-change.ts
 msgid "Adds a reminder to Today if you haven't heard back by then."
 msgstr "Jei iki tol negausite atsakymo, skiltyje „Šiandien“ bus pridėtas priminimas."
@@ -1734,7 +1736,7 @@ msgstr ""
 msgid "Advanced"
 msgstr "Išplėstinis"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Afrikaans"
 msgstr "Afrikanso"
 
@@ -1775,9 +1777,8 @@ msgstr "Pagal jūsų reikalavimus"
 msgid "AI"
 msgstr ""
 
-#: app/account/ai.tsx
-#: app/account/index.tsx
-#: src/features/search/search-screen.tsx
+#: src/features/account/ai-screen.tsx
+#: src/features/account/preferences-screen.tsx
 msgid "AI & developer"
 msgstr "AI ir kūrėjas"
 
@@ -1805,6 +1806,15 @@ msgstr "AI ryšiai neįkelti. Prieš generuodami bandykite dar kartą."
 msgid "AI couldn't read everything. Check the details, or fill them in by hand."
 msgstr ""
 
+#: src/features/account/ai-privacy-screen.tsx
+#: src/features/account/ai-screen.tsx
+msgid "AI data sharing"
+msgstr ""
+
+#: src/api/ai-consent.ts
+msgid "AI data sharing is off on this device. You can change it in App settings."
+msgstr ""
+
 #: src/features/history/format.ts
 msgid "AI edit"
 msgstr "AI redagavimas"
@@ -1817,9 +1827,8 @@ msgstr ""
 msgid "AI provider"
 msgstr "AI teikėjas"
 
-#: app/account/ai-providers.tsx
-#: app/account/ai.tsx
-#: src/features/search/search-screen.tsx
+#: src/features/account/ai-screen.tsx
+#: src/features/account/providers-screen.tsx
 msgid "AI providers"
 msgstr "AI teikėjai"
 
@@ -1851,7 +1860,7 @@ msgstr ""
 msgid "AI settings"
 msgstr ""
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Albanian"
 msgstr "Albanų"
 
@@ -1886,6 +1895,14 @@ msgstr ""
 
 #: src/features/design/gallery-filters.tsx
 msgid "All fields"
+msgstr ""
+
+#: src/features/account/plan-screen.tsx
+msgid "All portfolio intro effects"
+msgstr ""
+
+#: src/features/account/plan-screen.tsx
+msgid "All portfolio themes"
 msgstr ""
 
 #: src/features/applications/list/list-menus.tsx
@@ -1954,7 +1971,7 @@ msgstr ""
 msgid "Alternative text"
 msgstr ""
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Amharic"
 msgstr "Amharų"
 
@@ -2060,15 +2077,12 @@ msgstr "Bet kur"
 msgid "Anywhere in the country"
 msgstr ""
 
+#: src/features/account/api-keys.tsx
 #: src/features/billing/plan-alert.ts
 msgid "API and MCP access isn't available"
 msgstr ""
 
-#: src/features/billing/plan-alert.ts
-msgid "API and MCP access isn't in your plan"
-msgstr ""
-
-#: app/account/membership.tsx
+#: src/features/account/plan-screen.tsx
 msgid "API and MCP for other apps"
 msgstr ""
 
@@ -2076,24 +2090,24 @@ msgstr ""
 msgid "API key"
 msgstr "API raktas"
 
-#: src/features/settings/api-keys.tsx
+#: src/features/account/api-keys.tsx
 msgid "API key revoked. Apps using it stop working now."
 msgstr "API raktas atšauktas. Ją naudojančios programos dabar nustoja veikti."
 
-#: src/features/search/search-screen.tsx
-#: src/features/settings/api-keys.tsx
+#: src/features/account/api-keys.tsx
 msgid "API keys"
 msgstr "API raktai"
 
-#: src/features/settings/api-keys.tsx
-msgid "API keys need the Plus or Pro AI plan"
-msgstr ""
-
+#: src/features/account/preferences-screen.tsx
 #: src/shell/account-menu.tsx
 msgid "App settings"
 msgstr ""
 
-#: app/account/preferences.tsx
+#: src/features/account/help-screen.tsx
+msgid "App version"
+msgstr ""
+
+#: src/features/account/preferences-screen.tsx
 msgid "Appearance"
 msgstr "Išvaizda"
 
@@ -2228,10 +2242,6 @@ msgstr "Pritaikyta. Paraiška atnaujinta."
 msgid "Applies the template you are trying."
 msgstr ""
 
-#: app/account/preferences.tsx
-msgid "Applies to this device only."
-msgstr "Taikoma tik šiam įrenginiui."
-
 #: src/features/design/template-gallery.tsx
 #: src/features/workspace/working.ts
 msgid "Apply"
@@ -2245,12 +2255,16 @@ msgstr ""
 msgid "Approach"
 msgstr ""
 
+#: src/features/account/ai-privacy-screen.tsx
+msgid "Approval withdrawn"
+msgstr ""
+
 #. placeholder {0}: selected?.name ?? ""
-#: src/features/settings/api-keys.tsx
+#: src/features/account/api-keys.tsx
 msgid "Apps using “{0}” will stop working. This can't be undone."
 msgstr "Programos, naudojančios „{0}“, nustos veikti. To negalima anuliuoti."
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Arabic"
 msgstr "Arabų"
 
@@ -2267,7 +2281,6 @@ msgid "Ascending"
 msgstr "Kylantis"
 
 #: src/features/entries/improve.tsx
-#: src/features/search/search-screen.tsx
 msgid "Ask"
 msgstr "Paklausk"
 
@@ -2300,6 +2313,10 @@ msgstr "Paklausti abiejų"
 msgid "Ask coach"
 msgstr ""
 
+#: src/features/search/search-screen.tsx
+msgid "Ask Coach “{term}”"
+msgstr ""
+
 #: src/features/profile/preferences.tsx
 msgid "Ask first"
 msgstr "Pirma paklausti"
@@ -2311,10 +2328,6 @@ msgstr ""
 #: src/features/entries/improve.tsx
 msgid "Ask for something else…"
 msgstr "Paprašykite dar kažko…"
-
-#: src/features/search/search-screen.tsx
-msgid "Ask the assistant “{question}”"
-msgstr "Paklauskite asistento „{question}“"
 
 #: src/features/check/term-sheet.tsx
 msgid "Ask the assistant to work it in"
@@ -2337,10 +2350,6 @@ msgstr "Kraštinių santykis"
 #: src/features/assistant/assistant-screen.tsx
 msgid "Assistant"
 msgstr "Padėjėjas"
-
-#: src/features/search/search-screen.tsx
-msgid "Assistant conversations"
-msgstr "Asistento pokalbiai"
 
 #: src/features/applications/detail/follow-up-sheet.tsx
 msgid "At 09:00 that day ({timeZone})."
@@ -2430,7 +2439,7 @@ msgstr "Apdovanotojas"
 msgid "Awards"
 msgstr "Apdovanojimai"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Azerbaijani"
 msgstr "Azerbaidžaniečių"
 
@@ -2443,7 +2452,6 @@ msgstr "Azerbaidžaniečių"
 #: src/features/onboarding/onboarding-screen.tsx
 #: src/features/portfolio/layout.tsx
 #: src/features/profile/bring-screen.tsx
-#: src/features/search/search-screen.tsx
 #: src/features/workspace/bar.tsx
 #: src/shell/builder-chrome/top-bar.tsx
 msgid "Back"
@@ -2563,12 +2571,16 @@ msgstr "Elgsenos"
 msgid "Behavioral interview"
 msgstr "Elgsenos darbo pokalbis"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Bengali"
 msgstr "Bengalų"
 
 #: src/features/onboarding/intro-screen.tsx
 msgid "BI analyst"
+msgstr ""
+
+#: src/features/account/ai-privacy-screen.tsx
+msgid "Block AI sharing on this device"
 msgstr ""
 
 #: src/features/portfolio/editor/blocks.tsx
@@ -2682,11 +2694,15 @@ msgstr ""
 msgid "Browse templates"
 msgstr ""
 
+#: src/features/account/help-screen.tsx
+msgid "Build number"
+msgstr ""
+
 #: src/features/design/preset-names.ts
 msgid "Buildings"
 msgstr ""
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Bulgarian"
 msgstr "Bulgarų"
 
@@ -2699,6 +2715,10 @@ msgstr "sąrašo įrašas {n}"
 #: src/features/write/section-sheet-pages.tsx
 msgid "Bulleted list"
 msgstr "Sąrašas su ženkleliais"
+
+#: src/features/account/help-screen.tsx
+msgid "Bundled with app"
+msgstr ""
 
 #: src/features/design/preset-names.ts
 msgid "Burgundy"
@@ -2721,9 +2741,21 @@ msgstr ""
 msgid "Button URL"
 msgstr ""
 
-#: app/account/index.tsx
-msgid "by <0>Salman Alfariesh</0>"
-msgstr "sukūrė <0>Salman Alfariesh</0>"
+#: src/features/account/storage-screen.tsx
+msgid "Cache cleared"
+msgstr ""
+
+#: src/features/account/storage-screen.tsx
+msgid "Cached files"
+msgstr ""
+
+#: src/features/account/storage-screen.tsx
+msgid "Cached previews and temporary exports can be created again. Your offline drafts are kept."
+msgstr ""
+
+#: src/features/account/storage-screen.tsx
+msgid "Calculating…"
+msgstr ""
 
 #: src/features/applications/views-row.tsx
 msgid "Calendar"
@@ -2770,7 +2802,6 @@ msgstr ""
 #: src/features/profile/facts-detail.tsx
 #: src/features/profile/facts.tsx
 #: src/features/profile/stories.tsx
-#: src/features/search/search-screen.tsx
 #: src/features/workspace/fit/requirement-card.tsx
 #: src/linking/open.ts
 #: src/ui-legacy/overlays.tsx
@@ -2785,6 +2816,10 @@ msgstr "Atšaukti įrašymą"
 msgid "Caption"
 msgstr ""
 
+#: src/features/billing/plan-card.tsx
+msgid "Card subscription"
+msgstr ""
+
 #: src/features/profile/profile-screen.tsx
 msgid "Career"
 msgstr ""
@@ -2793,7 +2828,7 @@ msgstr ""
 msgid "Carousel"
 msgstr ""
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Catalan"
 msgstr "Katalonų"
 
@@ -2826,10 +2861,6 @@ msgstr ""
 msgid "Change it in Design"
 msgstr ""
 
-#: src/features/search/search-screen.tsx
-msgid "Change language to…"
-msgstr "Pakeisti kalbą į…"
-
 #. placeholder {0}: companyOf(offer)
 #: src/features/offers/offer-header.tsx
 msgid "Change offer: {0}"
@@ -2839,7 +2870,7 @@ msgstr ""
 msgid "Change password"
 msgstr "Keisti slaptažodį"
 
-#: src/features/settings/profile.tsx
+#: src/features/account/profile.tsx
 msgid "Change photo"
 msgstr "Keisti nuotrauką"
 
@@ -2854,10 +2885,6 @@ msgstr "Pakeiskite gyvenimo aprašymo dizainą"
 #: src/features/applications/interview/when-fields.tsx
 msgid "Change the time zone"
 msgstr ""
-
-#: src/features/search/search-screen.tsx
-msgid "Change theme to…"
-msgstr "Pakeisti temą į…"
 
 #: src/features/profile/preferences.tsx
 msgid "Change timezone"
@@ -2895,10 +2922,6 @@ msgstr ""
 msgctxt "Editor mode"
 msgid "Check"
 msgstr ""
-
-#: src/features/search/search-screen.tsx
-msgid "Check a PDF"
-msgstr "Patikrinkite PDF"
 
 #: src/features/documents/new-choices.tsx
 msgid "Check a PDF with the ATS checker"
@@ -3053,11 +3076,11 @@ msgstr "Patikrinimai pagal kategorijas"
 msgid "Checks every bullet for action and result"
 msgstr "Tikrina kiekvieną sąrašo įrašą dėl veiksmų ir rezultatų"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Chinese (Simplified)"
 msgstr "Kinų (supaprastinta)"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Chinese (Traditional)"
 msgstr "Kinų (tradicinė)"
 
@@ -3118,8 +3141,8 @@ msgstr ""
 msgid "Choose a PDF, Word, JSON or LinkedIn export file"
 msgstr ""
 
+#: src/features/account/profile.tsx
 #: src/features/entries/photo-field.tsx
-#: src/features/settings/profile.tsx
 msgid "Choose a photo smaller than 10 MB."
 msgstr "Pasirinkite mažesnę nei 10 MB nuotrauką."
 
@@ -3184,6 +3207,10 @@ msgid "Choose another file"
 msgstr "Pasirinkite kitą failą"
 
 #: src/features/billing/plan-alert.ts
+msgid "Choose another option to continue."
+msgstr ""
+
+#: src/features/billing/plan-alert.ts
 msgid "Choose any of the fonts in Design instead."
 msgstr ""
 
@@ -3199,8 +3226,8 @@ msgstr ""
 msgid "Choose cover picture"
 msgstr ""
 
+#: src/features/account/profile.tsx
 #: src/features/entries/photo-field.tsx
-#: src/features/settings/profile.tsx
 msgid "Choose from library"
 msgstr "Pasirinkite iš bibliotekos"
 
@@ -3288,6 +3315,14 @@ msgstr "Švarus stilius"
 msgid "Clear"
 msgstr "Išvalyti"
 
+#: src/features/account/storage-screen.tsx
+msgid "Clear cache"
+msgstr ""
+
+#: src/features/account/storage-screen.tsx
+msgid "Clear cached files?"
+msgstr ""
+
 #: src/features/applications/list/list-states.tsx
 #: src/features/jobs/filters-sheet.tsx
 #: src/features/jobs/jobs-states.tsx
@@ -3337,6 +3372,9 @@ msgstr ""
 msgid "Clients"
 msgstr ""
 
+#: src/features/account/preferences-screen.tsx
+#: src/features/account/profile.tsx
+#: src/features/ai/provider-editor.tsx
 #: src/features/ai/report-content.tsx
 #: src/features/applications/detail/activity.tsx
 #: src/features/applications/detail/contacts.tsx
@@ -3427,6 +3465,7 @@ msgid "Close menu"
 msgstr ""
 
 #: src/components/collection-header.tsx
+#: src/features/search/search-screen.tsx
 msgid "Close search"
 msgstr "Uždaryti paiešką"
 
@@ -3457,6 +3496,7 @@ msgstr "Uždaryta: {closed}"
 
 #: src/features/assistant/coach.tsx
 #: src/features/billing/credits.ts
+#: src/features/search/search-screen.tsx
 #: src/features/workspace/coach-sheet.tsx
 #: src/shell/tab-chrome.tsx
 msgid "Coach"
@@ -3600,10 +3640,6 @@ msgstr "Prijunkite AI teikėją nustatymuose, kad ji būtų atnaujinama automati
 msgid "Connect an AI provider to read pasted text. Filling in by hand works without AI."
 msgstr ""
 
-#: app/account/ai.tsx
-msgid "Connect the tools you use for writing, job search and working with your resumes."
-msgstr "Susiekite rašymo, darbo paieškos ir darbo įrankius su savo gyvenimo aprašymais."
-
 #: src/features/portfolio/layout.tsx
 msgid "Connect to load your portfolio."
 msgstr ""
@@ -3637,7 +3673,7 @@ msgstr ""
 msgid "Contact"
 msgstr "Susisiekite"
 
-#: app/account/index.tsx
+#: src/features/account/help-screen.tsx
 msgid "Contact & complaints"
 msgstr ""
 
@@ -3727,6 +3763,7 @@ msgstr "Pokalbio pavadinimas"
 
 #: src/features/assistant/panel-bar.tsx
 #: src/features/portfolio/editor/assistant.tsx
+#: src/features/search/search-screen.tsx
 #: src/features/workspace/coach-sheet.tsx
 msgid "Conversations"
 msgstr "Pokalbiai"
@@ -3758,6 +3795,10 @@ msgstr "Kopijuoti"
 #: src/features/documents/new-document-screen.tsx
 msgid "Copy a resume for a job"
 msgstr "Nukopijuokite darbo aprašymą"
+
+#: src/features/account/mcp-screen.tsx
+msgid "Copy address"
+msgstr ""
 
 #: src/features/workspace/apply/share-answers.tsx
 msgid "Copy answers"
@@ -3836,7 +3877,7 @@ msgstr ""
 msgid "Couldn't attach the file. Try again."
 msgstr "Nepavyko pridėti failo. Bandykite dar kartą."
 
-#: app/account/preferences.tsx
+#: src/features/account/preferences-screen.tsx
 msgid "Couldn't change the language. Try again."
 msgstr "Nepavyko pakeisti kalbos. Bandykite dar kartą."
 
@@ -3860,6 +3901,10 @@ msgstr "Nepavyko patikrinti arba išsaugoti šio adreso. Bandykite dar kartą."
 msgid "Couldn't check your AI providers."
 msgstr "Nepavyko patikrinti jūsų AI teikėjų."
 
+#: src/features/account/storage-screen.tsx
+msgid "Couldn't clear the cache. Try again."
+msgstr ""
+
 #: src/features/portfolio/queries.ts
 msgid "Couldn't complete the action. Try again."
 msgstr ""
@@ -3880,6 +3925,10 @@ msgstr "Nepavyko atlikti šio veiksmo. Bandykite dar kartą."
 #: src/features/applications/interview/use-interview-actions.ts
 msgid "Couldn't confirm the save. Check the application before retrying to avoid a duplicate."
 msgstr "Nepavyko patvirtinti išsaugojimo. Prieš bandydami dar kartą patikrinkite paraišką, kad išvengtumėte dublikato."
+
+#: src/features/account/mcp-screen.tsx
+msgid "Couldn't copy the address."
+msgstr ""
 
 #: src/features/portfolio/overview.tsx
 msgid "Couldn't copy the link."
@@ -3933,7 +3982,7 @@ msgstr "Nepavyko ištrinti šio tvarkaraščio. Bandykite dar kartą."
 msgid "Couldn't draw the first page of this PDF."
 msgstr ""
 
-#: src/features/settings/export.tsx
+#: src/features/account/export.tsx
 #: src/features/share/download.tsx
 msgid "Couldn't export. Try again."
 msgstr "Nepavyko eksportuoti. Bandykite dar kartą."
@@ -3979,7 +4028,7 @@ msgstr "Nepavyko susieti paraiškos. Bandykite dar kartą."
 msgid "Couldn't load AI providers."
 msgstr "Nepavyko įkelti AI teikėjų."
 
-#: src/features/settings/api-keys.tsx
+#: src/features/account/api-keys.tsx
 msgid "Couldn't load API keys."
 msgstr "Nepavyko įkelti API raktų."
 
@@ -3989,6 +4038,10 @@ msgstr "Nepavyko įkelti API raktų."
 msgid "Couldn't load applications."
 msgstr "Nepavyko įkelti darbo paraiškų."
 
+#: src/features/account/plan-screen.tsx
+msgid "Couldn't load credit activity."
+msgstr ""
+
 #: src/features/documents/library-states.tsx
 msgid "Couldn't load documents"
 msgstr "Nepavyko įkelti dokumentų"
@@ -3996,6 +4049,10 @@ msgstr "Nepavyko įkelti dokumentų"
 #: src/features/documents/new-copy.tsx
 msgid "Couldn't load resumes."
 msgstr "Nepavyko įkelti gyvenimo aprašymų."
+
+#: src/features/account/ai-privacy-screen.tsx
+msgid "Couldn't load scheduled AI approvals."
+msgstr ""
 
 #: src/features/share/link.tsx
 msgid "Couldn't load statistics."
@@ -4082,6 +4139,10 @@ msgstr ""
 msgid "Couldn't load your offers"
 msgstr ""
 
+#: src/features/account/plan-screen.tsx
+msgid "Couldn't load your plan."
+msgstr ""
+
 #: src/features/portfolio/layout.tsx
 msgid "Couldn't load your portfolio"
 msgstr ""
@@ -4094,7 +4155,7 @@ msgstr ""
 msgid "Couldn't load your Profile"
 msgstr ""
 
-#: app/account/account.tsx
+#: src/features/account/account-screen.tsx
 msgid "Couldn't load your profile."
 msgstr "Nepavyko įkelti jūsų profilio."
 
@@ -4112,7 +4173,7 @@ msgstr "Nepavyko įkelti jūsų gyvenimo aprašymų."
 msgid "Couldn't load your stories"
 msgstr ""
 
-#: app/account/preferences.tsx
+#: src/features/account/preferences-screen.tsx
 msgid "Couldn't load your timezone."
 msgstr "Nepavyko įkelti laiko juostos."
 
@@ -4124,14 +4185,20 @@ msgstr "Nepavyko pažymėti kaip pateiktos. Bandykite dar kartą."
 msgid "Couldn't mark this as read. Try again."
 msgstr "Nepavyko pažymėti kaip perskaityto. Bandykite dar kartą."
 
+#: src/features/account/storage-screen.tsx
+msgid "Couldn't measure the cache."
+msgstr ""
+
 #: src/features/applications/interview/use-reschedule.ts
 msgid "Couldn't move the interview. Try again."
 msgstr ""
 
-#: app/account/account.tsx
-#: app/account/index.tsx
+#: src/features/account/notification-settings.tsx
+msgid "Couldn't open system settings."
+msgstr ""
+
+#: src/features/account/browser.ts
 #: src/features/auth/welcome-screen.tsx
-#: src/features/settings/api-keys.tsx
 msgid "Couldn't open the browser. Try again."
 msgstr "Nepavyko atidaryti naršyklės. Bandykite dar kartą."
 
@@ -4264,7 +4331,7 @@ msgstr "Nepavyko atvaizduoti šio gyvenimo aprašymo."
 msgid "Couldn't replace this block."
 msgstr ""
 
-#: src/features/settings/api-keys.tsx
+#: src/features/account/api-keys.tsx
 msgid "Couldn't revoke the key. Try again."
 msgstr "Nepavyko atšaukti rakto. Bandykite dar kartą."
 
@@ -4319,11 +4386,11 @@ msgstr "Nepavyko išsaugoti užrašų. Jūsų tekstas vis dar yra čia."
 msgid "Couldn't save the posting. Try again."
 msgstr "Nepavyko išsaugoti darbo skelbimo. Bandykite dar kartą."
 
-#: app/account/preferences.tsx
+#: src/features/account/preferences-screen.tsx
 msgid "Couldn't save the theme. Try again."
 msgstr "Nepavyko išsaugoti temos. Bandykite dar kartą."
 
-#: app/account/preferences.tsx
+#: src/features/account/preferences-screen.tsx
 msgid "Couldn't save the timezone. Try again."
 msgstr "Nepavyko išsaugoti laiko juostos. Bandykite dar kartą."
 
@@ -4369,11 +4436,15 @@ msgstr ""
 msgid "Couldn't save your Profile. Try again."
 msgstr ""
 
+#: src/features/account/ai-privacy-screen.tsx
+msgid "Couldn't save your sharing preference. Try again."
+msgstr ""
+
 #: src/features/portfolio/editor/screen.tsx
 msgid "Couldn't save. Retrying…"
 msgstr ""
 
-#: src/features/settings/profile.tsx
+#: src/features/account/profile.tsx
 msgid "Couldn't save. Try again."
 msgstr "Nepavyko išsaugoti. Bandykite dar kartą."
 
@@ -4418,7 +4489,11 @@ msgstr ""
 msgid "Couldn't sign in with this account. If you don't have a Rezumi account yet, sign-ups may be turned off."
 msgstr ""
 
-#: src/features/settings/sign-out.tsx
+#: src/features/account/sign-out.tsx
+msgid "Couldn't sign out of all devices. Try again."
+msgstr ""
+
+#: src/features/account/sign-out.tsx
 msgid "Couldn't sign out. Try again."
 msgstr "Nepavyko atsijungti. Bandykite dar kartą."
 
@@ -4456,6 +4531,10 @@ msgstr "Nepavyko to anuliuoti. Bandykite dar kartą."
 msgid "Couldn't unlock this resume. Try again."
 msgstr "Nepavyko atrakinti šio gyvenimo aprašymo. Bandykite dar kartą."
 
+#: src/features/account/notification-settings.tsx
+msgid "Couldn't update reminders. Try again."
+msgstr ""
+
 #: src/features/share/custom-domain.tsx
 msgid "Couldn't update sharing. Try again."
 msgstr "Nepavyko atnaujinti bendrinimo. Bandykite dar kartą."
@@ -4472,7 +4551,7 @@ msgstr "Nepavyko atnaujinti paraiškos. Niekas nepakeista; bandykite dar kartą.
 msgid "Couldn't update the interview. Try again."
 msgstr "Nepavyko atnaujinti pokalbio. Bandykite dar kartą."
 
-#: src/features/settings/profile.tsx
+#: src/features/account/profile.tsx
 msgid "Couldn't update the photo. Check camera permissions, choose a photo smaller than 10 MB, and try again."
 msgstr "Nepavyko atnaujinti nuotraukos. Patikrinkite fotoaparato leidimus, pasirinkite mažesnę nei 10 MB nuotrauką ir bandykite dar kartą."
 
@@ -4484,13 +4563,17 @@ msgstr "Nepavyko įkelti failo. Bandykite dar kartą."
 msgid "Couldn't upload the font. Try again."
 msgstr ""
 
+#: src/features/account/profile.tsx
 #: src/features/entries/photo-field.tsx
-#: src/features/settings/profile.tsx
 msgid "Couldn't upload the photo."
 msgstr "Nepavyko įkelti nuotraukos."
 
 #: src/features/portfolio/editor/pictures.tsx
 msgid "Couldn't upload this picture."
+msgstr ""
+
+#: src/features/account/ai-privacy-screen.tsx
+msgid "Couldn't withdraw approval. Try again."
 msgstr ""
 
 #: src/features/applications/insights/insights-cards.tsx
@@ -4557,25 +4640,9 @@ msgstr "Motyvaciniai laiškai"
 msgid "Covered term: {highlightTerm}"
 msgstr "Apimamas terminas: {highlightTerm}"
 
-#: src/features/search/search-screen.tsx
-msgid "Create"
-msgstr "Sukurti"
-
-#: src/features/search/search-screen.tsx
-msgid "Create a new resume"
-msgstr "Sukurti naują gyvenimo aprašymą"
-
-#: src/features/search/search-screen.tsx
-msgid "Create a resume first, then ask about it."
-msgstr "Pirmiausia sukurkite gyvenimo aprašymą, tada paklauskite apie tai."
-
 #: src/features/auth/create-account-screen.tsx
 msgid "Create account"
 msgstr "Sukurti paskyrą"
-
-#: app/account/ai-mcp.tsx
-msgid "Create an API key from Account settings in your browser. Keys act as you and can read and edit your documents."
-msgstr "Naršyklėje atverkite paskyros nustatymus ir sukurkite API raktą. Raktai veikia jūsų vardu ir gali skaityti bei redaguoti jūsų dokumentus."
 
 #: src/features/documents/new-copy.tsx
 msgid "Create copy"
@@ -4616,7 +4683,7 @@ msgstr "Sukurta"
 #. placeholder {0}: date(key.createdAt)
 #. placeholder {1}: date(key.lastRequest)
 #. placeholder {2}: date(key.expiresAt)
-#: src/features/settings/api-keys.tsx
+#: src/features/account/api-keys.tsx
 msgid "Created {0} · Last used {1} · Expires {2}"
 msgstr "Sukurta {0} · Paskutinį kartą naudota {1} · Baigiasi {2}"
 
@@ -4633,8 +4700,12 @@ msgstr ""
 msgid "Creative"
 msgstr ""
 
-#: app/account/membership.tsx
-msgid "Credits are used soonest-expiring first. They can't be moved to another account or exchanged for money. Your own AI connection never uses credits."
+#: src/features/account/plan-screen.tsx
+msgid "Credit history"
+msgstr ""
+
+#: src/features/account/plan-screen.tsx
+msgid "Credits with the nearest expiry are used first. Your own AI connection never uses credits."
 msgstr ""
 
 #: src/features/jobs/filters-sheet.tsx
@@ -4655,6 +4726,7 @@ msgstr "Pasirinktinis"
 msgid "Custom color (hex)"
 msgstr "Pasirinktinė spalva (hex)"
 
+#: src/features/account/plan-screen.tsx
 #: src/features/portfolio/publish.tsx
 msgid "Custom domain"
 msgstr ""
@@ -4667,7 +4739,7 @@ msgstr ""
 msgid "Custom section"
 msgstr "Pasirinktinis skyrius"
 
-#: app/account/membership.tsx
+#: src/features/account/plan-screen.tsx
 msgid "Custom styles"
 msgstr "Pasirinktiniai stiliai"
 
@@ -4679,11 +4751,7 @@ msgstr ""
 msgid "Custom styles aren't available, so the imported document leaves the file's styles out."
 msgstr ""
 
-#: src/features/billing/plan-alert.ts
-msgid "Custom styles aren't in your plan"
-msgstr ""
-
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Czech"
 msgstr "Čekų"
 
@@ -4717,19 +4785,14 @@ msgstr ""
 msgid "Dangerous or illegal advice"
 msgstr "Pavojingi arba neteisėti patarimai"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Danish"
 msgstr "Danų"
 
-#: app/account/index.tsx
-#: app/account/preferences.tsx
+#: src/features/account/preferences-screen.tsx
 #: src/features/portfolio/editor/design.tsx
 msgid "Dark"
 msgstr "Tamsus"
-
-#: src/features/search/search-screen.tsx
-msgid "Dark theme"
-msgstr "Tamsi tema"
 
 #: src/features/onboarding/intro-screen.tsx
 msgid "Data analyst"
@@ -4873,7 +4936,7 @@ msgstr "Ištrinti „{title}“?"
 msgid "Delete {0}"
 msgstr "Ištrinti {0}"
 
-#: app/account/account.tsx
+#: src/features/account/account-screen.tsx
 #: src/features/search/search-screen.tsx
 msgid "Delete account"
 msgstr "Ištrinti paskyrą"
@@ -4981,10 +5044,6 @@ msgstr ""
 msgid "Delete…"
 msgstr "Ištrinti…"
 
-#: src/features/search/search-screen.tsx
-msgid "Deleted"
-msgstr "Ištrinta"
-
 #. placeholder {0}: document.name
 #. placeholder {0}: getVersionTitle(version)
 #: src/features/documents/document-actions.ts
@@ -5008,7 +5067,7 @@ msgstr "Ištrina sekciją ir jos įrašus. Galite anuliuoti."
 msgid "Density"
 msgstr "Tankis"
 
-#: app/account/licences.tsx
+#: src/features/account/licences-screen.tsx
 msgid "Dependency type"
 msgstr "Priklausomybės tipas"
 
@@ -5058,12 +5117,20 @@ msgstr ""
 msgid "Detail removed"
 msgstr ""
 
+#: src/features/account/plan-screen.tsx
+msgid "Detailed portfolio statistics"
+msgstr ""
+
 #: src/features/applications/detail/facts.tsx
 #: src/features/documents/document-menu.tsx
 #: src/features/onboarding/messages.ts
 #: src/features/profile/profile-screen.tsx
 msgid "Details"
 msgstr "Detalės"
+
+#: src/features/account/preferences-screen.tsx
+msgid "Device and services"
+msgstr ""
 
 #: src/features/portfolio/statistics.tsx
 msgid "Devices"
@@ -5149,6 +5216,10 @@ msgstr ""
 msgid "DNS points to Rezumi"
 msgstr ""
 
+#: src/features/account/help-screen.tsx
+msgid "Docs"
+msgstr "Dokumentacija"
+
 #: src/shell/builder-chrome/top-bar.tsx
 msgid "Document menu"
 msgstr "Dokumentų meniu"
@@ -5162,7 +5233,7 @@ msgid "Document options"
 msgstr "Dokumento parinktys"
 
 #: app/(tabs)/_layout.tsx
-#: app/account/membership.tsx
+#: src/features/account/plan-screen.tsx
 #: src/features/documents/documents-screen.tsx
 #: src/features/search/search-screen.tsx
 #: src/shell/app-tabs.tsx
@@ -5173,7 +5244,7 @@ msgstr "Dokumentai"
 msgid "Documents for this job"
 msgstr "Šio darbo dokumentai"
 
-#: app/account/membership.tsx
+#: src/features/account/plan-screen.tsx
 msgid "Documents in Trash don't count."
 msgstr ""
 
@@ -5199,7 +5270,7 @@ msgstr "Nesiųskite {0} darbo skelbimo"
 msgid "Don't share"
 msgstr "Nesidalinkite"
 
-#: app/account/preferences.tsx
+#: src/features/account/preferences-screen.tsx
 #: src/features/applications/interview/when-fields.tsx
 #: src/features/entries/dates-field.tsx
 #: src/features/entries/rich-text-toolbar.tsx
@@ -5405,7 +5476,7 @@ msgstr "„{0}“ dubliuotas"
 msgid "Duration"
 msgstr ""
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Dutch"
 msgstr "Olandų"
 
@@ -5560,7 +5631,7 @@ msgstr ""
 msgid "Education"
 msgstr "Išsilavinimas"
 
-#: app/account/account.tsx
+#: src/features/account/account-screen.tsx
 #: src/features/auth/create-account-screen.tsx
 #: src/features/auth/email-sign-in-screen.tsx
 #: src/features/auth/forgot-password-screen.tsx
@@ -5595,11 +5666,16 @@ msgstr "Eksportuodami įterpkite visus šriftus, kad simboliai atvaizduotųsi ta
 msgid "End"
 msgstr "Pabaiga"
 
-#: src/features/settings/locale-names.ts
+#. placeholder {0}: formatDate(expiredAt)
+#: src/features/billing/plan-card.tsx
+msgid "Ended on {0}"
+msgstr ""
+
+#: src/features/account/locale-names.ts
 msgid "English"
 msgstr "Anglų"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "English (United Kingdom)"
 msgstr "Anglų (Jungtinė Karalystė)"
 
@@ -5627,7 +5703,7 @@ msgstr "Įveskite visą sumą, pvz., 95000. Ankstesnė suma nepakeista."
 msgid "Enter a GitHub username, like octocat."
 msgstr ""
 
-#: src/features/settings/profile.tsx
+#: src/features/account/profile.tsx
 msgid "Enter a name, up to 64 characters."
 msgstr "Įveskite pavadinimą, iki 64 simbolių."
 
@@ -5742,7 +5818,7 @@ msgstr "Kiekvienas vaidmuo sako, ką tu padarei. Nuomonės apie formuluotę gyve
 msgid "Every section is in use."
 msgstr ""
 
-#: app/account/membership.tsx
+#: src/features/account/plan-screen.tsx
 msgid "Every template"
 msgstr ""
 
@@ -5795,7 +5871,7 @@ msgstr "Eksportuokite mažesnį PDF ir patikrinkite dar kartą arba sukurkite tu
 msgid "Export data"
 msgstr "Eksportuoti duomenis"
 
-#: src/features/settings/export.tsx
+#: src/features/account/export.tsx
 msgid "Export everything"
 msgstr "Eksportuoti viską"
 
@@ -5845,10 +5921,6 @@ msgstr ""
 #: src/features/portfolio/editor/work.tsx
 msgid "Featured metric"
 msgstr ""
-
-#: app/account/preferences.tsx
-msgid "Feedback"
-msgstr "Atsiliepimas"
 
 #: src/features/workspace/practice/answer-panel.tsx
 msgid "Feedback needs an AI connection. Nothing is sent until you ask."
@@ -6001,7 +6073,7 @@ msgstr ""
 msgid "Finish in the browser…"
 msgstr ""
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Finnish"
 msgstr "Suomių"
 
@@ -6093,6 +6165,10 @@ msgstr "Priminimas"
 #: src/features/career/schedule-sheet.tsx
 msgid "Follow-up reminder"
 msgstr "Priminimas susisiekti"
+
+#: src/features/account/notification-settings.tsx
+msgid "Follow-up reminders"
+msgstr ""
 
 #: src/features/design/type-group.tsx
 msgid "Font"
@@ -6237,7 +6313,7 @@ msgstr "Laisva forma"
 msgid "Freelance"
 msgstr ""
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "French"
 msgstr "Prancūzų"
 
@@ -6252,7 +6328,6 @@ msgstr "Iš"
 
 #. placeholder {0}: formatDate(next.startsAt)
 #. placeholder {1}: formatDate(next.endsAt)
-#: app/account/membership.tsx
 #: src/features/billing/plan-card.tsx
 msgid "From {0} until {1}"
 msgstr ""
@@ -6341,7 +6416,7 @@ msgstr ""
 msgid "Gentle fade-in"
 msgstr ""
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "German"
 msgstr "Vokiečių"
 
@@ -6411,11 +6486,15 @@ msgstr ""
 msgid "Grade"
 msgstr "Pažymys"
 
+#: src/features/billing/plan-card.tsx
+msgid "Granted access"
+msgstr ""
+
 #: src/features/design/preset-names.ts
 msgid "Graphite"
 msgstr "Grafitas"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Greek"
 msgstr "Graikų"
 
@@ -6429,7 +6508,7 @@ msgstr "Kreipinys"
 msgid "Grid"
 msgstr "Tinklelis"
 
-#: app/account/preferences.tsx
+#: src/features/account/preferences-screen.tsx
 msgid "Haptic feedback"
 msgstr "Haptinis atsakas"
 
@@ -6491,14 +6570,11 @@ msgstr "Klausyti"
 msgid "Heard back"
 msgstr ""
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Hebrew"
 msgstr "Hebrajų"
 
-#: app/account/index.tsx
-msgid "Help & docs"
-msgstr "Pagalba ir dokumentai"
-
+#: src/features/account/help-screen.tsx
 #: src/shell/account-menu.tsx
 msgid "Help & legal"
 msgstr ""
@@ -6567,13 +6643,17 @@ msgstr "Slėpti nuo puslapio"
 msgid "Hide key"
 msgstr "Slėpti raktą"
 
-#: app/account/licences.tsx
+#: src/features/account/licences-screen.tsx
 msgid "Hide license"
 msgstr "Slėpti licenciją"
 
 #: src/features/home/needs-you.tsx
 msgid "Hide read"
 msgstr "Slėpti skaitytus elementus"
+
+#: src/features/account/plan-screen.tsx
+msgid "Hide Rezumi credit"
+msgstr ""
 
 #: src/features/check/messages.ts
 msgid "Hide the photo"
@@ -6599,7 +6679,7 @@ msgstr ""
 msgid "Highlights"
 msgstr ""
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Hindi"
 msgstr "Hindi"
 
@@ -6625,6 +6705,7 @@ msgstr ""
 
 #: app/(tabs)/_layout.tsx
 #: src/features/home/home-screen.tsx
+#: src/features/search/search-screen.tsx
 #: src/shell/app-tabs.tsx
 msgid "Home"
 msgstr "Pradžia"
@@ -6685,7 +6766,7 @@ msgstr "Kaip man tinka šis vaidmuo?"
 msgid "HTTPS certificate"
 msgstr ""
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Hungarian"
 msgstr "Vengrų"
 
@@ -6770,10 +6851,6 @@ msgstr ""
 msgid "Images cover most of the page."
 msgstr "Vaizdai užima didžiąją puslapio dalį."
 
-#: src/features/search/search-screen.tsx
-msgid "Import"
-msgstr "Importas"
-
 #: src/features/documents/new-choices.tsx
 msgid "Import a resume"
 msgstr "Importuoti gyvenimo aprašymą"
@@ -6854,7 +6931,7 @@ msgstr ""
 msgid "Include jobs that don't list pay"
 msgstr ""
 
-#: app/account/membership.tsx
+#: src/features/account/plan-screen.tsx
 msgid "Included"
 msgstr ""
 
@@ -6894,7 +6971,7 @@ msgstr ""
 msgid "Increase vertical spacing"
 msgstr ""
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Indonesian"
 msgstr "Indoneziečių"
 
@@ -6928,10 +7005,6 @@ msgstr ""
 #: src/features/portfolio/editor/content.tsx
 msgid "Interests"
 msgstr "Pomėgiai"
-
-#: app/account/preferences.tsx
-msgid "Interface only. Each resume sets its own language in Design."
-msgstr "Tik sąsaja. Kiekvienas gyvenimo aprašymas nustato savo dizaino kalbą."
 
 #: src/features/portfolio/editor/content.tsx
 msgid "Internship"
@@ -6970,10 +7043,15 @@ msgstr ""
 msgid "Interview practice"
 msgstr ""
 
+#: src/features/account/ai-privacy-screen.tsx
 #: src/features/career/schedule-sheet.tsx
 #: src/features/home/needs-you.tsx
 msgid "Interview preparation"
 msgstr "Pasiruošimas pokalbiui"
+
+#: src/features/account/notification-settings.tsx
+msgid "Interview reminders"
+msgstr ""
 
 #: src/features/applications/interview/use-interview-actions.ts
 msgid "Interview saved"
@@ -6994,10 +7072,6 @@ msgstr "Interviu išsaugotas. Priminimo laikas jau praėjo."
 #: src/features/applications/interview-sheet.tsx
 msgid "Interview time zone"
 msgstr ""
-
-#: app/account/preferences.tsx
-msgid "Interview times, reminders and schedules in Career use it."
-msgstr "Ją naudoja pokalbių laikai, priminimai ir tvarkaraščiai Karjeroje."
 
 #: src/features/applications/detail/contacts.tsx
 msgid "Interviewer"
@@ -7103,7 +7177,7 @@ msgstr ""
 msgid "It's removed from the activity for good."
 msgstr ""
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Italian"
 msgstr "Italų"
 
@@ -7140,17 +7214,13 @@ msgstr ""
 msgid "Its stage, next step, notes and files show here."
 msgstr ""
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Japanese"
 msgstr "Japonų"
 
-#: app/account/licences.tsx
+#: src/features/account/licences-screen.tsx
 msgid "JavaScript"
 msgstr "JavaScript"
-
-#: src/features/search/search-screen.tsx
-msgid "Job"
-msgstr "Darbas"
 
 #: src/features/career/schedule-sheet.tsx
 #: src/features/home/needs-you.tsx
@@ -7248,7 +7318,7 @@ msgctxt "Job seniority"
 msgid "Junior"
 msgstr ""
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Kannada"
 msgstr "Kanadų"
 
@@ -7266,9 +7336,17 @@ msgstr "Naudokite vieną adresą, kad programinei įrangai nereikėtų spėlioti
 msgid "Keep application"
 msgstr ""
 
+#: src/features/account/ai-privacy-screen.tsx
+msgid "Keep approval"
+msgstr ""
+
 #: src/draft/conflict-sheet.tsx
 msgid "Keep both"
 msgstr "Laikykite abu"
+
+#: src/features/account/storage-screen.tsx
+msgid "Keep cache"
+msgstr ""
 
 #: src/features/assistant/threads.tsx
 msgid "Keep conversation"
@@ -7315,6 +7393,10 @@ msgstr "Būkite sąžiningi"
 msgid "Keep it under 2.5 MB, usually by removing or shrinking images."
 msgstr "Neviršykite 2,5 MB – dažniausiai tai pasiekiama pašalinus ar sumažinus vaizdus."
 
+#: src/features/account/api-keys.tsx
+msgid "Keep key"
+msgstr ""
+
 #: src/features/portfolio/inbox.tsx
 msgid "Keep message"
 msgstr ""
@@ -7344,6 +7426,10 @@ msgstr ""
 #: src/features/documents/document-menu-panels.tsx
 msgid "Keep private notes about this resume here. Nobody else can see them."
 msgstr "Čia laikykite privačias pastabas apie šį gyvenimo aprašymą. Niekas kitas jų nemato."
+
+#: src/features/ai/provider-editor.tsx
+msgid "Keep provider"
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "Keep resume content as real text rather than as pictures of text."
@@ -7399,7 +7485,7 @@ msgstr "Laikytas toks, koks yra"
 msgid "Kept, but not used."
 msgstr ""
 
-#: src/features/settings/api-keys.tsx
+#: src/features/account/api-keys.tsx
 msgid "Keys act as you and can access your documents. New keys are created in your browser account settings."
 msgstr "Raktai veikia kaip jūs ir galite pasiekti savo dokumentus. Naršyklės paskyros nustatymuose sukuriami nauji raktai."
 
@@ -7412,7 +7498,7 @@ msgstr "Raktinių žodžių išdėstymas"
 msgid "Keywords"
 msgstr "Raktiniai žodžiai"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Khmer"
 msgstr "Khmerų"
 
@@ -7420,7 +7506,7 @@ msgstr "Khmerų"
 msgid "Kind regards,"
 msgstr "Pagarbiai"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Korean"
 msgstr "Korėjiečių"
 
@@ -7445,13 +7531,17 @@ msgstr ""
 msgid "Landscape"
 msgstr "Gulsčias"
 
-#: app/account/preferences.tsx
+#: src/features/account/preferences-screen.tsx
 #: src/features/design/page-group.tsx
 #: src/features/documents/document-menu-panels.tsx
 #: src/features/entries/fields.ts
 #: src/features/search/search-screen.tsx
 msgid "Language"
 msgstr "Kalba"
+
+#: src/features/account/preferences-screen.tsx
+msgid "Language and region"
+msgstr ""
 
 #: src/features/entries/fields.ts
 #: src/features/portfolio/editor/content.tsx
@@ -7495,7 +7585,7 @@ msgctxt "Job search filter: posted within"
 msgid "Last week"
 msgstr ""
 
-#: app/account/preferences.tsx
+#: src/features/account/preferences-screen.tsx
 msgid "Later"
 msgstr "Vėliau"
 
@@ -7503,7 +7593,7 @@ msgstr "Vėliau"
 msgid "Latest"
 msgstr "Naujausia"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Latvian"
 msgstr "Latvių"
 
@@ -7571,10 +7661,6 @@ msgstr "Palikite tuščią, kad būtų naudojamas pradinis pavadinimas."
 msgid "Left"
 msgstr "Kairė"
 
-#: app/account/index.tsx
-msgid "Legal"
-msgstr "Teisinė informacija"
-
 #: src/features/applications/interview/when-fields.tsx
 #: src/features/letters/write.tsx
 msgid "Length"
@@ -7584,7 +7670,7 @@ msgstr "Ilgis"
 msgid "Length is not a defect, and there is no universal one-page rule. Keep the pages that earn their place."
 msgstr "Ilgis nėra trūkumas, ir universalios vieno puslapio taisyklės nėra. Palikite tuos puslapius, kurie to verti."
 
-#: app/account/ai-mcp.tsx
+#: src/features/account/mcp-screen.tsx
 msgid "Let AI clients like Claude or Cursor read and edit your resumes, using an API key."
 msgstr "Leiskite AI klientams, pvz., Claude ar Cursor, skaityti ir redaguoti jūsų gyvenimo aprašymus naudojant API raktą."
 
@@ -7629,7 +7715,6 @@ msgid "Letter sent"
 msgstr ""
 
 #: src/features/documents/segment-header.tsx
-#: src/features/search/search-screen.tsx
 msgid "Letters"
 msgstr "Laiškai"
 
@@ -7647,7 +7732,7 @@ msgstr ""
 msgid "Levels"
 msgstr ""
 
-#: app/account/licences.tsx
+#: src/features/account/licences-screen.tsx
 msgid "Licenses"
 msgstr "Licencijos"
 
@@ -7655,15 +7740,10 @@ msgstr "Licencijos"
 msgid "Ligatures can drop letters out of words such as \"workflow\"."
 msgstr "Ligatūros gali „prarasti“ raides iš tokių žodžių kaip „workflow“."
 
-#: app/account/index.tsx
-#: app/account/preferences.tsx
+#: src/features/account/preferences-screen.tsx
 #: src/features/portfolio/editor/design.tsx
 msgid "Light"
 msgstr "Šviesi"
-
-#: src/features/search/search-screen.tsx
-msgid "Light theme"
-msgstr "Šviesi tema"
 
 #: src/features/assistant/assistant-screen.tsx
 msgid "Likely questions, from the posting and your resume"
@@ -7741,7 +7821,7 @@ msgstr "Nuoroda atnaujinta"
 msgid "Linked · not sent yet"
 msgstr "Susieta · dar neišsiųsta"
 
-#: app/account/account.tsx
+#: src/features/account/account-screen.tsx
 msgid "Linked accounts"
 msgstr "Susietos paskyros"
 
@@ -7788,7 +7868,7 @@ msgstr "Išvardykite naudojamus įrankius ir technologijas. Darbdaviai pagal įg
 msgid "Listings come from job data providers and may change. The original posting is the one to apply through."
 msgstr ""
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Lithuanian"
 msgstr "Lietuvių"
 
@@ -7840,16 +7920,7 @@ msgstr "Įkeliama"
 msgid "Loading AI connections…"
 msgstr "Įkeliami AI ryšiai…"
 
-#: src/features/settings/api-keys.tsx
-msgid "Loading API keys…"
-msgstr "Įkeliami API raktai…"
-
-#: src/features/search/search-screen.tsx
-msgid "Loading applications…"
-msgstr "Įkeliamos paraiškos…"
-
 #: src/features/assistant/assistant-screen.tsx
-#: src/features/search/search-screen.tsx
 msgid "Loading conversations…"
 msgstr "Įkeliami pokalbiai…"
 
@@ -7891,7 +7962,6 @@ msgid "Loading resume…"
 msgstr "Įkeliamas gyvenimo aprašymas…"
 
 #: src/features/portfolio/create.tsx
-#: src/features/search/search-screen.tsx
 msgid "Loading resumes…"
 msgstr "Kraunami gyvenimo aprašymai…"
 
@@ -7916,10 +7986,14 @@ msgstr ""
 msgid "Loading your public address…"
 msgstr "Įkeliamas jūsų viešasis adresas…"
 
-#: app/account/preferences.tsx
+#: src/features/account/plan-screen.tsx
 #: src/features/applications/detail/document-choice.tsx
 msgid "Loading…"
 msgstr "Įkeliama…"
+
+#: src/features/account/notification-settings.tsx
+msgid "Local reminders"
+msgstr ""
 
 #: src/features/applications/detail/facts.tsx
 #: src/features/applications/interview/interview-fields.tsx
@@ -8025,13 +8099,17 @@ msgstr "Padarykite juos akivaizdžiai didesnius, paryškintus arba didžiosiomis
 msgid "Make this your primary resume?"
 msgstr "Padaryti šį gyvenimo aprašymą pagrindiniu?"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Malay"
 msgstr "Malajų"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Malayalam"
 msgstr "Malajalių"
+
+#: src/features/account/ai-screen.tsx
+msgid "Manage connections and choose a default source."
+msgstr ""
 
 #: src/features/portfolio/publish.tsx
 msgid "Manage domain on the web"
@@ -8058,7 +8136,7 @@ msgstr ""
 msgid "Mar 2022"
 msgstr "2022 m. kovo mėn"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Marathi"
 msgstr "Maratų"
 
@@ -8136,10 +8214,6 @@ msgstr "Derinti su „{resumeName}“"
 msgid "Match against a job"
 msgstr "Suderinti su darbu"
 
-#: src/features/search/search-screen.tsx
-msgid "Match system theme"
-msgstr "Suderinkite sistemos temą"
-
 #: src/features/letters/design.tsx
 msgid "Match the resume"
 msgstr "Pritaikyti gyvenimo aprašymą"
@@ -8164,12 +8238,8 @@ msgstr "Atitinka gyvenimo aprašymą"
 msgid "Matching your facts"
 msgstr "Derinama su jūsų faktais"
 
-#: src/features/search/search-screen.tsx
-msgid "MCP"
-msgstr "MCP"
-
-#: app/account/ai-mcp.tsx
-#: app/account/ai.tsx
+#: src/features/account/ai-screen.tsx
+#: src/features/account/mcp-screen.tsx
 msgid "MCP server"
 msgstr "MCP serveris"
 
@@ -8237,7 +8307,7 @@ msgstr ""
 msgid "Missing"
 msgstr ""
 
-#: app/account/index.tsx
+#: src/features/account/help-screen.tsx
 msgid "MIT License"
 msgstr "MIT licencija"
 
@@ -8462,6 +8532,7 @@ msgstr ""
 msgid "Music and video"
 msgstr ""
 
+#: src/features/account/profile.tsx
 #: src/features/ai/provider-editor.tsx
 #: src/features/applications/detail/contacts.tsx
 #: src/features/applications/interview/people-field.tsx
@@ -8477,7 +8548,6 @@ msgstr ""
 #: src/features/portfolio/create.tsx
 #: src/features/portfolio/editor/content.tsx
 #: src/features/portfolio/editor/design.tsx
-#: src/features/settings/profile.tsx
 msgid "Name"
 msgstr "Pavadinimas"
 
@@ -8536,7 +8606,7 @@ msgstr "Siauras"
 msgid "Narrower sidebar"
 msgstr ""
 
-#: app/account/licences.tsx
+#: src/features/account/licences-screen.tsx
 msgid "Native & fonts"
 msgstr "Savasis kodas ir šriftai"
 
@@ -8548,7 +8618,7 @@ msgstr "Reikia dėmesio"
 msgid "Needs you"
 msgstr "Reikia jūsų dėmesio"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Nepali"
 msgstr "Nepalų"
 
@@ -8556,8 +8626,8 @@ msgstr "Nepalų"
 msgid "Network"
 msgstr "Tinklas"
 
+#: src/features/account/api-keys.tsx
 #: src/features/profile/preferences.tsx
-#: src/features/settings/api-keys.tsx
 msgid "Never"
 msgstr "Niekada"
 
@@ -8582,13 +8652,9 @@ msgstr ""
 msgid "New account sign-ups are turned off. Sign in with an account you already have."
 msgstr ""
 
-#: src/features/settings/api-keys.tsx
+#: src/features/account/api-keys.tsx
 msgid "New API key"
 msgstr "Naujas API raktas"
-
-#: src/features/search/search-screen.tsx
-msgid "New application"
-msgstr "Nauja paraiška"
 
 #: src/features/assistant/assistant-screen.tsx
 #: src/features/assistant/coach.tsx
@@ -8771,10 +8837,6 @@ msgstr "Sąrašų su punktais nerasta."
 msgid "No change needed. It's already at {stage}."
 msgstr "Keisti nereikia. Jau yra etape „{stage}“."
 
-#: src/features/search/search-screen.tsx
-msgid "No commands match that search."
-msgstr "Pagal šią paiešką komandų nerasta."
-
 #: src/features/applications/detail/contacts.tsx
 msgid "No contacts yet"
 msgstr ""
@@ -8796,12 +8858,8 @@ msgstr "Pataisymų nėra"
 msgid "No country matches."
 msgstr "Šalių nerasta."
 
-#: app/account/membership.tsx
+#: src/features/account/plan-screen.tsx
 msgid "No credit activity yet."
-msgstr ""
-
-#: app/account/membership.tsx
-msgid "No credits to spend right now"
 msgstr ""
 
 #: src/features/share/custom-domain.tsx
@@ -8840,7 +8898,6 @@ msgstr "Nėra el. pašto adreso"
 msgid "No email address was found."
 msgstr "El. pašto adreso nerasta."
 
-#: app/account/membership.tsx
 #: src/features/billing/plan-card.tsx
 msgid "No end date"
 msgstr ""
@@ -8888,7 +8945,7 @@ msgstr "Darbo dar nėra"
 msgid "No jobs match yet."
 msgstr ""
 
-#: src/features/settings/api-keys.tsx
+#: src/features/account/api-keys.tsx
 msgid "No keys yet."
 msgstr "Raktų dar nėra."
 
@@ -8896,7 +8953,7 @@ msgstr "Raktų dar nėra."
 msgid "No language matches “{query}”."
 msgstr ""
 
-#: app/account/preferences.tsx
+#: src/features/account/preferences-screen.tsx
 msgid "No language matches."
 msgstr "Neatitinka nė viena kalba."
 
@@ -8964,6 +9021,10 @@ msgstr ""
 msgid "No photo. Most ATS ignore photos; some regions expect one."
 msgstr "Nėra nuotraukos. Dauguma ATS ignoruoja nuotraukas; kai kurie regionai to tikisi."
 
+#: src/features/ai/provider-editor.tsx
+msgid "No provider matches."
+msgstr ""
+
 #: src/features/onboarding/messages.ts
 msgid "No public repositories of your own, so no projects came in."
 msgstr ""
@@ -8975,6 +9036,10 @@ msgstr ""
 #: src/features/applications/stages.ts
 msgid "No response"
 msgstr "Jokio atsakymo"
+
+#: src/features/search/search-screen.tsx
+msgid "No results match your search."
+msgstr ""
 
 #: src/features/portfolio/create.tsx
 msgid "No resumes found."
@@ -8998,6 +9063,10 @@ msgstr ""
 
 #: src/features/billing/plan-alert.ts
 msgid "No room for another resume"
+msgstr ""
+
+#: src/features/account/ai-privacy-screen.tsx
+msgid "No scheduled AI approvals."
 msgstr ""
 
 #. placeholder {0}: quota.max
@@ -9050,6 +9119,10 @@ msgstr "Šiame darbo skelbime neišsiskyrė jokie terminai."
 msgid "No text could be read from this file."
 msgstr "Iš šio failo nepavyko nuskaityti teksto."
 
+#: src/features/account/preferences-screen.tsx
+msgid "No theme matches."
+msgstr ""
+
 #: src/features/offers/cells.ts
 msgid "No time given"
 msgstr ""
@@ -9059,7 +9132,7 @@ msgstr ""
 msgid "No time zone matches “{0}”."
 msgstr ""
 
-#: app/account/preferences.tsx
+#: src/features/account/preferences-screen.tsx
 msgid "No timezone matches."
 msgstr "Atitinkančių laiko juostų nėra."
 
@@ -9104,7 +9177,7 @@ msgstr "Nė viena iš AI jungčių negali transkribuoti kalbos (OpenAI, Google G
 msgid "Normal"
 msgstr "Normalus"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Norwegian"
 msgstr "Norvegų"
 
@@ -9163,7 +9236,7 @@ msgstr ""
 msgid "Not in your resume · add only if true"
 msgstr "Nėra jūsų gyvenimo aprašyme · pridėkite tik jei tiesa"
 
-#: app/account/membership.tsx
+#: src/features/account/plan-screen.tsx
 msgid "Not included"
 msgstr ""
 
@@ -9305,6 +9378,12 @@ msgstr ""
 msgid "Notice period (weeks)"
 msgstr "Įspėjimo laikotarpis (savaitės)"
 
+#: src/features/account/notification-settings.tsx
+#: src/features/account/preferences-screen.tsx
+#: src/features/search/search-screen.tsx
+msgid "Notifications"
+msgstr ""
+
 #: src/features/applications/detail/reminder-sheet.tsx
 msgid "Notifications are off"
 msgstr "Pranešimai išjungti"
@@ -9334,10 +9413,11 @@ msgstr "Pastebėjimas"
 msgid "Ochre"
 msgstr "Ochra"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Odia"
 msgstr "Odijų"
 
+#: src/features/account/help-screen.tsx
 #: src/features/ai/provider-list.tsx
 msgid "Off"
 msgstr "Išjungta"
@@ -9384,6 +9464,11 @@ msgstr ""
 #: src/shell/builder-chrome/top-bar.tsx
 msgid "Offline · saved on this device"
 msgstr "Neprisijungus · išsaugota šiame įrenginyje"
+
+#: src/features/account/preferences-screen.tsx
+#: src/features/account/storage-screen.tsx
+msgid "Offline storage"
+msgstr ""
 
 #: src/features/portfolio/editor/screen.tsx
 msgid "Offline. Changes are waiting to save."
@@ -9617,7 +9702,7 @@ msgstr "Atidaryti tinklalapį"
 msgid "Open workspace"
 msgstr "Atidaryti darbo erdvę"
 
-#: app/account/index.tsx
+#: src/features/account/preferences-screen.tsx
 msgid "Open-source licenses"
 msgstr "Atvirojo kodo licencijos"
 
@@ -9662,6 +9747,10 @@ msgstr ""
 
 #: src/features/applications/list/list-row.tsx
 msgid "Opens the application. Long press to select."
+msgstr ""
+
+#: src/features/account/account-screen.tsx
+msgid "Opens the browser to confirm permanent deletion."
 msgstr ""
 
 #: src/features/documents/document-item.tsx
@@ -9735,8 +9824,8 @@ msgstr ""
 msgid "Other"
 msgstr "Kita"
 
-#: src/features/settings/api-keys.tsx
-msgid "Other apps can't connect with API keys on this account. This app always works."
+#: src/features/billing/plan-alert.ts
+msgid "Other apps cannot connect to this account with an API key."
 msgstr ""
 
 #: src/features/offers/cells.ts
@@ -9766,6 +9855,10 @@ msgstr "Pasenęs: nuo tada tekstas pasikeitė."
 
 #: src/features/design/preset-names.ts
 msgid "Outer space"
+msgstr ""
+
+#: src/features/account/help-screen.tsx
+msgid "Over-the-air update"
 msgstr ""
 
 #: src/features/share/custom-domain.tsx
@@ -9894,12 +9987,12 @@ msgstr ""
 msgid "Passkey"
 msgstr "Passkey"
 
-#: app/account/account.tsx
+#: src/features/account/account-screen.tsx
 #: src/features/search/search-screen.tsx
 msgid "Passkeys"
 msgstr "Passkeys"
 
-#: app/account/account.tsx
+#: src/features/account/account-screen.tsx
 #: src/features/auth/create-account-screen.tsx
 #: src/features/auth/email-sign-in-screen.tsx
 #: src/features/search/search-screen.tsx
@@ -10044,11 +10137,7 @@ msgstr "Per metus"
 msgid "Percent"
 msgstr ""
 
-#: app/account/account.tsx
-msgid "Permanently removes everything. Opens your browser account settings."
-msgstr "Visam laikui pašalina viską. Atidaro naršyklės paskyros nustatymus."
-
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Persian"
 msgstr "Persų"
 
@@ -10165,8 +10254,7 @@ msgstr "Paprastas tekstas (.txt)"
 msgid "Plain text with headings. Paste into application forms and notes."
 msgstr "Paprastas tekstas su antraštėmis. Įklijuokite į darbo prašymo formas ir pastabas."
 
-#: app/account/index.tsx
-#: app/account/membership.tsx
+#: src/features/account/plan-screen.tsx
 #: src/shell/account-menu.tsx
 msgid "Plan"
 msgstr ""
@@ -10187,12 +10275,7 @@ msgstr "Suplanuoti, ko paklausti"
 msgid "Planning your week"
 msgstr "Planuojama jūsų savaitė"
 
-#: app/account/membership.tsx
-#: src/features/billing/plan-alert.ts
-msgid "Plans can be bought on the rezumi.app website."
-msgstr ""
-
-#: app/account/membership.tsx
+#: src/features/account/plan-screen.tsx
 msgid "Plans don't apply to your account yet, so everything is open."
 msgstr ""
 
@@ -10208,7 +10291,7 @@ msgstr "Slyvų violetinė"
 msgid "Plus"
 msgstr ""
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Polish"
 msgstr "Lenkų"
 
@@ -10218,12 +10301,14 @@ msgstr "Šlifuojama"
 
 #: app/(tabs)/_layout.tsx
 #: src/features/portfolio/overview.tsx
+#: src/features/search/search-screen.tsx
 #: src/shell/app-tabs.tsx
 msgid "Portfolio"
 msgstr ""
 
 #: src/features/portfolio/editor/assistant.tsx
 #: src/features/portfolio/editor/screen.tsx
+#: src/features/search/search-screen.tsx
 msgid "Portfolio assistant"
 msgstr ""
 
@@ -10256,11 +10341,11 @@ msgstr ""
 msgid "Portrait"
 msgstr "Portretas"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Portuguese (Brazil)"
 msgstr "Portugalų (Brazilija)"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Portuguese (Portugal)"
 msgstr "Portugalų (Portugalija)"
 
@@ -10387,10 +10472,7 @@ msgstr "Rinkitės vieną stulpelį arba šalutiniame stulpelyje palikite tik tru
 msgid "Preference"
 msgstr "Pageidavimas"
 
-#: app/account/index.tsx
-#: app/account/preferences.tsx
 #: src/features/profile/profile-screen.tsx
-#: src/features/search/search-screen.tsx
 msgid "Preferences"
 msgstr "Nuostatos"
 
@@ -10415,7 +10497,7 @@ msgstr "Paruoškite mane pokalbiui"
 msgid "Preparing edits…"
 msgstr "Ruošiami pakeitimai…"
 
-#: src/features/settings/export.tsx
+#: src/features/account/export.tsx
 msgid "Preparing export…"
 msgstr "Ruošiama eksportuoti…"
 
@@ -10454,6 +10536,14 @@ msgstr "Peržiūrėti tinklalapį"
 msgid "Previewing {0} · tap to apply"
 msgstr "Peržiūra {0} · Palieskite, kad pritaikytumėte"
 
+#: src/features/account/storage-screen.tsx
+msgid "Previews and temporary exports will be removed from this device. Your documents and unsynced edits are kept."
+msgstr ""
+
+#: src/features/billing/plan-card.tsx
+msgid "Previous card subscription"
+msgstr ""
+
 #: src/features/applications/calendar/calendar-toolbar.tsx
 msgid "Previous day"
 msgstr ""
@@ -10481,6 +10571,10 @@ msgstr "Ankstesnis puslapis"
 #: src/features/check/parser-view.tsx
 msgid "Previous PDF result. It may not match your current draft."
 msgstr "Ankstesnis PDF rezultatas. Jis gali neatitikti dabartinio juodraščio."
+
+#: src/features/billing/plan-card.tsx
+msgid "Previous QRIS pass"
+msgstr ""
 
 #: src/features/applications/board/stage-pager.tsx
 msgid "Previous stage"
@@ -10512,7 +10606,7 @@ msgstr "Prieš siųsdami formą, atspausdinkite arba eksportuokite ją kaip supl
 msgid "Privacy"
 msgstr "Privatumas"
 
-#: app/account/index.tsx
+#: src/features/account/help-screen.tsx
 #: src/features/auth/welcome-screen.tsx
 msgid "Privacy policy"
 msgstr "Privatumo politika"
@@ -10539,7 +10633,7 @@ msgstr "Įgūdžių lygis"
 
 #: app/(tabs)/_layout.tsx
 #: app/(tabs)/profile/_layout.tsx
-#: app/account/account.tsx
+#: src/features/account/account-screen.tsx
 #: src/features/assistant/coach.tsx
 #: src/features/portfolio/editor/content.tsx
 #: src/features/profile/profile-screen.tsx
@@ -10565,7 +10659,7 @@ msgstr ""
 msgid "Profile links must be public HTTPS addresses."
 msgstr "Profilio nuorodos turi būti vieši HTTPS adresai."
 
-#: src/features/settings/profile.tsx
+#: src/features/account/profile.tsx
 msgid "Profile photo"
 msgstr "Profilio nuotrauka"
 
@@ -10682,6 +10776,10 @@ msgstr ""
 msgid "QR code for {url}"
 msgstr "QR kodas, skirtas {url}"
 
+#: src/features/billing/plan-card.tsx
+msgid "QRIS pass"
+msgstr ""
+
 #: src/features/workspace/practice/question-card.tsx
 msgid "Question {position} of {total}"
 msgstr "{position} klausimas iš {total}"
@@ -10755,7 +10853,7 @@ msgstr "Skaityti atmintinę"
 msgid "Read it for me"
 msgstr "Perskaityti už mane"
 
-#: app/account/licences.tsx
+#: src/features/account/licences-screen.tsx
 msgid "Read license"
 msgstr "Skaityti licenciją"
 
@@ -10881,10 +10979,6 @@ msgstr "Priežastis"
 msgid "Recalled"
 msgstr "Prisimintas"
 
-#: app/account/membership.tsx
-msgid "Recent activity"
-msgstr ""
-
 #: src/features/home/recent-documents.tsx
 msgid "Recent documents"
 msgstr ""
@@ -10976,7 +11070,7 @@ msgstr "Atnaujinti atmintinę likus 24 valandoms"
 msgid "Refresh the briefing on the morning of"
 msgstr "Atnaujinti atmintinę tos dienos rytą"
 
-#: app/account/index.tsx
+#: src/features/account/help-screen.tsx
 msgid "Refund policy"
 msgstr ""
 
@@ -10994,7 +11088,7 @@ msgstr "Atmesti"
 msgid "Rejected"
 msgstr "Atmesta"
 
-#: app/account/preferences.tsx
+#: src/features/account/preferences-screen.tsx
 msgid "Reload now"
 msgstr "Įkelti iš naujo dabar"
 
@@ -11131,8 +11225,8 @@ msgstr "Pašalinti slaptažodį"
 msgid "Remove person {0}"
 msgstr "Pašalinti asmenį {0}"
 
+#: src/features/account/profile.tsx
 #: src/features/entries/photo-field.tsx
-#: src/features/settings/profile.tsx
 msgid "Remove photo"
 msgstr "Pašalinti nuotrauką"
 
@@ -11196,6 +11290,11 @@ msgstr ""
 #: src/preview/page.tsx
 msgid "Rendering preview…"
 msgstr "Pateikiama peržiūra…"
+
+#. placeholder {0}: formatDate(end)
+#: src/features/billing/plan-card.tsx
+msgid "Renews on {0}"
+msgstr ""
 
 #: src/features/applications/detail/detail-header.tsx
 #: src/features/applications/list/list-row.tsx
@@ -11264,11 +11363,15 @@ msgstr "Atsakymas nukopijuotas"
 msgid "Report"
 msgstr "Ataskaita"
 
-#: app/account/ai-report.tsx
-#: app/account/ai.tsx
+#: src/features/account/ai-report-screen.tsx
+#: src/features/account/ai-screen.tsx
 #: src/features/ai/report-content.tsx
 msgid "Report AI content"
 msgstr "Pranešti apie AI turinį"
+
+#: src/features/account/help-screen.tsx
+msgid "Report an issue"
+msgstr ""
 
 #: src/features/ai/report-content.tsx
 msgid "Report received by your server operator. Thank you."
@@ -11312,7 +11415,7 @@ msgstr "Atkurkite slaptažodį"
 msgid "Respond by"
 msgstr "Atsakyti iki"
 
-#: app/account/preferences.tsx
+#: src/features/account/preferences-screen.tsx
 msgid "Restart to change text direction"
 msgstr "Paleiskite iš naujo, kad pakeistumėte teksto kryptį"
 
@@ -11415,10 +11518,6 @@ msgstr ""
 #: src/features/search/search-screen.tsx
 msgid "Resumes"
 msgstr "Gyvenimo aprašymai"
-
-#: app/account/preferences.tsx
-msgid "Resumes always render on white paper, whatever the theme."
-msgstr "gyvenimo aprašymai visada pateikiami ant balto popieriaus, nesvarbu, kokia tema."
 
 #: src/features/profile/save-note.tsx
 msgid "Resumes that followed"
@@ -11550,19 +11649,19 @@ msgstr "Apžvalgos rašymas"
 msgid "Reviewing needs an AI connection. What you write here stays on this device until then."
 msgstr "Norint peržiūrėti, reikalingas AI ryšys. Tai, ką čia rašote, lieka šiame įrenginyje iki tol."
 
-#: src/features/settings/api-keys.tsx
+#: src/features/account/api-keys.tsx
 msgid "Revoke"
 msgstr "Atšaukti"
 
-#: src/features/settings/api-keys.tsx
+#: src/features/account/api-keys.tsx
 msgid "Revoke API key?"
 msgstr "Atšaukti API raktą?"
 
-#: src/features/settings/api-keys.tsx
+#: src/features/account/api-keys.tsx
 msgid "Revoke key"
 msgstr "Atšaukti raktą"
 
-#: src/features/settings/api-keys.tsx
+#: src/features/account/api-keys.tsx
 msgid "Revoke this API key"
 msgstr "Atšaukti šį API raktą"
 
@@ -11580,7 +11679,7 @@ msgstr ""
 msgid "Rezumi AI · {0} credit per reply · {1} left"
 msgstr ""
 
-#: app/account/membership.tsx
+#: src/features/account/plan-screen.tsx
 msgid "Rezumi AI credits"
 msgstr ""
 
@@ -11592,6 +11691,10 @@ msgstr ""
 #. placeholder {1}: creditCount(balance)
 #: src/features/billing/ai-source.ts
 msgid "Rezumi AI: {0}, {1} left. If it fails, the credits come back."
+msgstr ""
+
+#: src/features/account/ai-privacy-screen.tsx
+msgid "Rezumi asks before each AI operation. Individual approvals expire after that operation."
 msgstr ""
 
 #: src/shell/permissions.tsx
@@ -11654,7 +11757,7 @@ msgstr "Pozicijos"
 msgid "Roles you're looking for"
 msgstr ""
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Romanian"
 msgstr "Rumunų"
 
@@ -11697,11 +11800,15 @@ msgstr "Veikia {0}."
 msgid "Runs onto page {0}"
 msgstr "Tęsiasi {0} puslapyje"
 
+#: src/features/account/help-screen.tsx
+msgid "Runtime version"
+msgstr ""
+
 #: src/features/portfolio/editor/metric.tsx
 msgid "Rupiah"
 msgstr ""
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Russian"
 msgstr "Rusų"
 
@@ -11979,6 +12086,7 @@ msgstr ""
 msgid "Saves as you type. Resumes that still use a part follow your changes."
 msgstr ""
 
+#: src/features/account/profile.tsx
 #: src/features/applications/interview-sheet.tsx
 #: src/features/applications/save-sheet.tsx
 #: src/features/auth/reset-password-screen.tsx
@@ -11988,7 +12096,6 @@ msgstr ""
 #: src/features/profile/preferences.tsx
 #: src/features/profile/save-note.tsx
 #: src/features/profile/stories.tsx
-#: src/features/settings/profile.tsx
 #: src/features/write/profile-marker-sheet.tsx
 #: src/shell/builder-chrome/top-bar.tsx
 msgid "Saving…"
@@ -12021,6 +12128,10 @@ msgstr ""
 msgid "Schedule saved"
 msgstr "Tvarkaraštis išsaugotas"
 
+#: src/features/account/ai-privacy-screen.tsx
+msgid "Scheduled AI approvals"
+msgstr ""
+
 #: src/features/career/schedule-body.tsx
 msgid "Scheduled work is not available on this server. Ask your server administrator to configure it."
 msgstr "Suplanuotas darbas šiame serveryje nepasiekiamas. Paprašykite serverio administratoriaus jį sukonfigūruoti."
@@ -12052,6 +12163,7 @@ msgstr "Pirminis darbo pokalbis"
 #: app/_layout.tsx
 #: app/(tabs)/_layout.tsx
 #: src/features/documents/library-toolbar.tsx
+#: src/features/search/search-screen.tsx
 #: src/shell/tab-chrome.tsx
 #: src/ui-legacy/fields.tsx
 msgid "Search"
@@ -12073,10 +12185,6 @@ msgstr ""
 msgid "Search applications"
 msgstr "Ieškokite darbo paraiškų"
 
-#: src/features/search/search-screen.tsx
-msgid "Search commands"
-msgstr "Paieškos komandos"
-
 #: src/features/career/schedule-body.tsx
 msgid "Search connections"
 msgstr ""
@@ -12086,10 +12194,6 @@ msgstr ""
 #: src/features/profile/search-regions-field.tsx
 msgid "Search countries"
 msgstr ""
-
-#: src/features/search/search-screen.tsx
-msgid "Search covers documents, applications, assistant conversations and actions."
-msgstr "Paieška apima dokumentus, darbo paraiškas, asistento pokalbius ir veiksmus."
 
 #: src/features/documents/library-states.tsx
 msgid "Search covers titles, tags and linked applications."
@@ -12102,6 +12206,10 @@ msgstr ""
 #: src/features/documents/library-toolbar.tsx
 msgid "Search documents"
 msgstr "Ieškokite dokumentų"
+
+#: src/features/search/search-screen.tsx
+msgid "Search documents, applications, and more"
+msgstr ""
 
 #: src/features/share/web-page.tsx
 msgid "Search engines such as Google may list your web page. It can take weeks to appear, or to disappear after you turn this off."
@@ -12119,10 +12227,6 @@ msgstr ""
 msgid "Search for an icon"
 msgstr "Ieškoti ikonos"
 
-#: src/features/search/search-screen.tsx
-msgid "Search for…"
-msgstr "Ieškoti…"
-
 #: src/features/entries/icon-picker.tsx
 msgid "Search icons"
 msgstr "Paieškos piktogramos"
@@ -12131,13 +12235,17 @@ msgstr "Paieškos piktogramos"
 msgid "Search interviews"
 msgstr ""
 
-#: app/account/preferences.tsx
+#: src/features/account/preferences-screen.tsx
 #: src/features/design/page-group.tsx
 msgid "Search languages"
 msgstr "Ieškoti kalbų"
 
 #: src/features/applications/detail/document-choice.tsx
 msgid "Search letters"
+msgstr ""
+
+#: src/features/ai/provider-editor.tsx
+msgid "Search providers"
 msgstr ""
 
 #: src/features/applications/detail/document-choice.tsx
@@ -12160,6 +12268,10 @@ msgstr "Paieškos žodžiai siunčiami jūsų žiniatinklio paieškos paslaugai.
 msgid "Search the web"
 msgstr ""
 
+#: src/features/account/preferences-screen.tsx
+msgid "Search themes"
+msgstr ""
+
 #: src/features/applications/interview/zone-list.tsx
 msgid "Search time zones"
 msgstr ""
@@ -12168,11 +12280,10 @@ msgstr ""
 msgid "Search times"
 msgstr ""
 
-#: app/account/preferences.tsx
+#: src/features/account/preferences-screen.tsx
 msgid "Search timezones"
 msgstr "Ieškoti laiko juostų"
 
-#: src/features/search/search-screen.tsx
 #: src/ui-legacy/fields.tsx
 msgid "Search…"
 msgstr "Paieška…"
@@ -12184,6 +12295,10 @@ msgstr "Ieškojo internete"
 #: src/features/assistant/messages.tsx
 msgid "Searching the web…"
 msgstr "Ieškoma žiniatinklyje…"
+
+#: src/features/search/search-screen.tsx
+msgid "Searching…"
+msgstr ""
 
 #: src/features/check/messages.ts
 msgid "Section headings"
@@ -12211,6 +12326,10 @@ msgstr "Skyriuose naudojamos sistemų atpažįstamos antraštės, o darbo patirt
 
 #: src/features/design/preset-names.ts
 msgid "Security"
+msgstr ""
+
+#: src/features/account/account-screen.tsx
+msgid "Security settings open in the browser. You may need to sign in there."
 msgstr ""
 
 #: src/features/onboarding/intro-screen.tsx
@@ -12374,12 +12493,12 @@ msgstr "Išsiųstas į {0}"
 msgid "Sent to Lumen"
 msgstr "Išsiųsta Lumen"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Serbian"
 msgstr "Serbų"
 
 #: src/api/ai-consent.ts
-#: src/features/settings/sign-out.tsx
+#: src/features/account/sign-out.tsx
 msgid "Server"
 msgstr "Serveris"
 
@@ -12434,13 +12553,11 @@ msgstr ""
 msgid "Setting up HTTPS. This usually takes a few minutes, and this screen updates by itself."
 msgstr ""
 
-#: app/account/index.tsx
 #: src/features/applications/detail/reminder-sheet.tsx
-#: src/features/search/search-screen.tsx
 msgid "Settings"
 msgstr "Nustatymai"
 
-#: app/account/ai-mcp.tsx
+#: src/features/account/mcp-screen.tsx
 msgid "Setup guide"
 msgstr "Sąrankos vadovas"
 
@@ -12593,10 +12710,6 @@ msgstr ""
 msgid "Show again"
 msgstr "Rodyti dar kartą"
 
-#: src/features/search/search-screen.tsx
-msgid "Show all"
-msgstr "Rodyti viską"
-
 #: src/features/profile/facts.tsx
 msgid "Show all facts"
 msgstr ""
@@ -12651,7 +12764,7 @@ msgstr ""
 msgid "Show link in title"
 msgstr "Rodyti nuorodą pavadinime"
 
-#: app/account/preferences.tsx
+#: src/features/account/plan-screen.tsx
 #: src/features/applications/interview/zone-list.tsx
 msgid "Show more"
 msgstr "Rodyti daugiau"
@@ -12802,18 +12915,26 @@ msgid "Sign in to view this resume."
 msgstr "Prisijunkite, kad galėtumėte peržiūrėti šį gyvenimo aprašymą."
 
 #: src/auth/session-gate.tsx
-#: src/features/settings/sign-out.tsx
+#: src/features/account/sign-out.tsx
 #: src/shell/account-menu.tsx
 #: src/shell/app-drawer.tsx
 msgid "Sign out"
 msgstr "Atsijungti"
 
-#: src/features/settings/sign-out.tsx
+#: src/features/account/sign-out.tsx
+msgid "Sign out of all devices"
+msgstr ""
+
+#: src/features/account/sign-out.tsx
+msgid "Sign out of all devices?"
+msgstr ""
+
+#: src/features/account/sign-out.tsx
 #: src/shell/account-menu.tsx
 msgid "Sign out?"
 msgstr "Atsijungti?"
 
-#: app/account/account.tsx
+#: src/features/account/account-screen.tsx
 msgid "Sign-in & security"
 msgstr "Prisijungimas ir sauga"
 
@@ -12831,7 +12952,7 @@ msgid "Signed in with Apple, Google or another provider? You have no password he
 msgstr ""
 
 #: src/auth/session-gate.tsx
-#: src/features/settings/sign-out.tsx
+#: src/features/account/sign-out.tsx
 msgid "Signed out, but some data on this device couldn't be removed."
 msgstr "Atsijungta, bet nepavyko pašalinti kai kurių šio įrenginio duomenų."
 
@@ -12898,11 +13019,11 @@ msgstr "Praleisti"
 msgid "Skipped"
 msgstr ""
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Slovak"
 msgstr "Slovakų"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Slovenian"
 msgstr "Slovėnų"
 
@@ -12951,6 +13072,10 @@ msgstr "Kai kurie glifai už šio failo ribų neturi jokios reikšmės."
 #: src/features/ats-checker/messages.ts
 msgid "Some lines are stored out of reading order."
 msgstr "Kai kurios eilutės saugomos ne skaitymo tvarka."
+
+#: src/features/search/search-screen.tsx
+msgid "Some results couldn't load."
+msgstr ""
 
 #: src/features/check/messages.ts
 msgid "Some systems mishandle images, and photos are discouraged in some countries."
@@ -13022,7 +13147,7 @@ msgstr "Šaltinis"
 msgid "Sources"
 msgstr "Šaltiniai"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Spanish"
 msgstr "Ispanų"
 
@@ -13217,6 +13342,7 @@ msgstr ""
 msgid "Stay here"
 msgstr "Likite čia"
 
+#: src/features/account/sign-out.tsx
 #: src/shell/account-menu.tsx
 msgid "Stay signed in"
 msgstr ""
@@ -13353,10 +13479,6 @@ msgstr "Siūlo iškirpti, niekada neištrina pats"
 msgid "Summary"
 msgstr "Santrauka"
 
-#: app/account/index.tsx
-msgid "Support"
-msgstr "Palaikymas"
-
 #: src/features/jobs/listing-fit.tsx
 #: src/features/workspace/debrief/review-card.tsx
 #: src/features/workspace/fit/requirement-card.tsx
@@ -13379,7 +13501,7 @@ msgstr ""
 msgid "Swap the start and end dates."
 msgstr "Sukeiskite pradžios ir pabaigos datas."
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Swedish"
 msgstr "Švedų"
 
@@ -13391,7 +13513,7 @@ msgstr "Perjungti modelį"
 msgid "Switch server"
 msgstr "Perjungti serverį"
 
-#: src/features/settings/sign-out.tsx
+#: src/features/account/sign-out.tsx
 #: src/linking/open.ts
 msgid "Switch server?"
 msgstr "Perjungti serverį?"
@@ -13404,10 +13526,17 @@ msgstr "Perjungti į vieną stulpelį"
 msgid "Switched to one column"
 msgstr "Perjungta į vieną stulpelį"
 
-#: app/account/index.tsx
-#: app/account/preferences.tsx
+#: src/features/account/preferences-screen.tsx
 msgid "System"
 msgstr "Operacinė sistema"
+
+#: src/features/account/notification-settings.tsx
+msgid "System notification settings"
+msgstr ""
+
+#: src/features/account/notification-settings.tsx
+msgid "System permission is off."
+msgstr ""
 
 #: src/features/check/messages.ts
 msgid "Systems file you under the name at the top of the page."
@@ -13470,8 +13599,8 @@ msgstr ""
 msgid "Take a picture"
 msgstr ""
 
+#: src/features/account/profile.tsx
 #: src/features/entries/photo-field.tsx
-#: src/features/settings/profile.tsx
 msgid "Take photo"
 msgstr "Fotografuoti"
 
@@ -13492,7 +13621,7 @@ msgstr ""
 msgid "Takes its sender details and design from your latest resume."
 msgstr ""
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Tamil"
 msgstr "Tamilų"
 
@@ -13553,7 +13682,7 @@ msgstr "Papasakokite apie darbą, kuriuo didžiuojatės. Koks buvo jūsų vaidmu
 msgid "Tell me about a time you disagreed with a colleague. How did you resolve it?"
 msgstr "Papasakokite apie atvejį, kai nesutarėte su kolega. Kaip tai išsprendėte?"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Telugu"
 msgstr "Telugų"
 
@@ -13593,7 +13722,7 @@ msgstr ""
 msgid "Terms from the posting"
 msgstr "Sąlygos iš darbo skelbimo"
 
-#: app/account/index.tsx
+#: src/features/account/help-screen.tsx
 msgid "Terms of service"
 msgstr "Paslaugų teikimo sąlygos"
 
@@ -13669,7 +13798,7 @@ msgstr ""
 msgid "Text, e.g. Indonesian"
 msgstr ""
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Thai"
 msgstr "Tajų"
 
@@ -14008,14 +14137,13 @@ msgstr "Pirmo puslapio viršus nepanašus į vardą."
 msgid "The versions you sent are kept in Saved. Edits here don't change what {company} received."
 msgstr "Jūsų išsiųstos versijos saugomos Išsaugota. Čia atlikti pakeitimai nepakeičia to, ką gavo {company}."
 
-#: app/account/preferences.tsx
+#: src/features/account/preferences-screen.tsx
 #: src/features/portfolio/editor/design.tsx
 #: src/features/search/search-screen.tsx
 msgid "Theme"
 msgstr "Tema"
 
 #. placeholder {0}: getPlanName(next.planId)
-#: app/account/membership.tsx
 #: src/features/billing/plan-card.tsx
 msgid "Then {0}"
 msgstr ""
@@ -14052,10 +14180,6 @@ msgstr "Tai atsakymai, išsaugoti pateikiant paraišką."
 msgid "These open Rezumi's sign-in page in a secure browser sheet. You come back here when you're done."
 msgstr ""
 
-#: app/account/account.tsx
-msgid "These open your server's account settings in a browser tab inside the app. You may need to sign in there."
-msgstr "Tai atveria jūsų serverio paskyros nustatymus programos naršyklės skirtuke. Gali tekti ten prisijungti."
-
 #: src/features/profile/save-note.tsx
 msgid "These resumes still used the parts you changed, so they changed too. Parts a resume changed itself stay as they are."
 msgstr ""
@@ -14076,16 +14200,8 @@ msgstr "Galvojama"
 msgid "Thinking…"
 msgstr "Galvoju…"
 
-#: app/account/licences.tsx
-msgid "Third-party software notices. Tap a dependency to read its license."
-msgstr "Pranešimai apie trečiųjų šalių programinę įrangą. Bakstelėkite priklausomybę, kad perskaitytumėte jos licenciją."
-
 #: src/features/portfolio/queries.ts
 msgid "This account already has a portfolio."
-msgstr ""
-
-#: src/features/billing/plan-alert.ts
-msgid "This app always works. Other apps and assistants that connect with an API key need more."
 msgstr ""
 
 #: src/features/workspace/screen.tsx
@@ -14111,6 +14227,7 @@ msgstr ""
 #: src/features/assistant/assistant-screen.tsx
 #: src/features/assistant/chat-view.tsx
 #: src/features/assistant/coach.tsx
+#: src/features/portfolio/editor/assistant.tsx
 msgid "This conversation couldn't be opened."
 msgstr "Šio pokalbio nepavyko atidaryti."
 
@@ -14124,6 +14241,10 @@ msgstr ""
 
 #: src/features/applications/detail/posting.tsx
 msgid "This description is clipped or incomplete. Check it before preparing documents."
+msgstr ""
+
+#: src/features/account/preferences-screen.tsx
+msgid "This device"
 msgstr ""
 
 #: src/features/assistant/threads.tsx
@@ -14165,6 +14286,10 @@ msgstr ""
 #: src/api/ai-consent.ts
 msgid "This enables recurring processing while the schedule is on, using your server's selected providers. Turn the schedule off to stop future runs."
 msgstr "Tai įgalina pasikartojantį apdorojimą, kai įjungtas tvarkaraštis, naudojant jūsų serverio pasirinktus teikėjus. Išjunkite tvarkaraštį, kad sustabdytumėte būsimus bėgimus."
+
+#: src/features/account/sign-out.tsx
+msgid "This ends your Rezumi sessions on every device. Edits that haven't synced from this device will be lost."
+msgstr ""
 
 #: src/features/check/messages.ts
 msgid "This entry"
@@ -14339,6 +14464,10 @@ msgstr "Tai parodo, kaip tiksliai programinė įranga gali išgauti šio failo t
 msgid "This needs {required} and you have {balance}. Switch to your own AI connection to continue."
 msgstr ""
 
+#: src/features/billing/plan-alert.ts
+msgid "This option isn't available"
+msgstr ""
+
 #: src/features/portfolio/queries.ts
 msgid "This option isn't included in your current plan."
 msgstr ""
@@ -14358,6 +14487,10 @@ msgstr "Šis puslapis labai tankiai užpildytas."
 #: src/features/check/proposal-card.tsx
 msgid "This passage changed. Run the review again."
 msgstr "Ši ištrauka pasikeitė. Dar kartą paleiskite peržiūrą."
+
+#: src/features/account/ai-privacy-screen.tsx
+msgid "This pauses the interview preparation schedule. You can enable it again from Home."
+msgstr ""
 
 #: src/features/portfolio/editor/media.ts
 msgid "This PDF has an unsupported number of pages."
@@ -14492,10 +14625,6 @@ msgstr "Ši istorija nepasiekiama arba naudoja išjungtus faktus."
 msgid "This template isn't available"
 msgstr ""
 
-#: src/features/billing/plan-alert.ts
-msgid "This template isn't in your plan"
-msgstr ""
-
 #: src/features/portfolio/editor/ai.tsx
 msgid "This text changed while AI was writing. Try again."
 msgstr ""
@@ -14508,7 +14637,7 @@ msgstr "Jūsų laiko juostoje šio laiko nėra. Pasirinkite kitą laiką."
 msgid "This time doesn't exist in that time zone. Choose another time."
 msgstr ""
 
-#: src/features/settings/profile.tsx
+#: src/features/account/profile.tsx
 msgid "This username is already taken."
 msgstr "Šis vartotojo vardas jau užimtas."
 
@@ -14557,7 +14686,8 @@ msgstr "Laikas, nuoroda, su kuo, ką išsiuntėte"
 msgid "Times are shown in {timeZone}."
 msgstr "Laikas rodomas laiko juostoje {timeZone}."
 
-#: app/account/preferences.tsx
+#: src/features/account/preferences-screen.tsx
+#: src/features/search/search-screen.tsx
 msgid "Timezone"
 msgstr "Laiko juosta"
 
@@ -14662,11 +14792,7 @@ msgstr ""
 msgid "Tool logos aren't available, so the imported document shows skills without them."
 msgstr ""
 
-#: src/features/billing/plan-alert.ts
-msgid "Tool logos aren't in your plan"
-msgstr ""
-
-#: app/account/membership.tsx
+#: src/features/account/plan-screen.tsx
 #: src/features/design/icons-group.tsx
 msgid "Tool logos in skills"
 msgstr ""
@@ -14748,7 +14874,11 @@ msgstr "Šiukšliadėžė"
 msgid "Trash is empty"
 msgstr "Šiukšliadėžė tuščia"
 
-#: app/account/membership.tsx
+#: src/features/account/mcp-screen.tsx
+msgid "Treat API keys like passwords. Revoke a key in Account to stop the app using it."
+msgstr ""
+
+#: src/features/account/plan-screen.tsx
 #: src/features/billing/credits.ts
 msgid "Trial credits"
 msgstr ""
@@ -14771,8 +14901,12 @@ msgstr ""
 
 #: app/_layout.tsx
 #: app/(auth)/server.tsx
-#: app/account/account.tsx
-#: app/account/preferences.tsx
+#: src/features/account/account-screen.tsx
+#: src/features/account/ai-privacy-screen.tsx
+#: src/features/account/api-keys.tsx
+#: src/features/account/plan-screen.tsx
+#: src/features/account/preferences-screen.tsx
+#: src/features/account/storage-screen.tsx
 #: src/features/ai/provider-editor.tsx
 #: src/features/ai/provider-list.tsx
 #: src/features/applications/board/load-states.tsx
@@ -14787,7 +14921,7 @@ msgstr ""
 #: src/features/letters/write.tsx
 #: src/features/onboarding/onboarding-screen.tsx
 #: src/features/profile/states.tsx
-#: src/features/settings/api-keys.tsx
+#: src/features/search/search-screen.tsx
 #: src/features/workspace/ai-notice.tsx
 #: src/features/workspace/part-body.tsx
 #: src/features/workspace/practice/practice-part.tsx
@@ -14835,7 +14969,7 @@ msgstr "Pabandykite su gyvenimo aprašymo pavyzdžiu"
 msgid "Trying {0} on the page"
 msgstr ""
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Turkish"
 msgstr "Turkų"
 
@@ -14859,6 +14993,10 @@ msgstr "Įjungti šį tvarkaraštį"
 msgid "Turned off in Settings"
 msgstr ""
 
+#: src/features/account/notification-settings.tsx
+msgid "Turning a type off removes its scheduled reminders from this device. Turn it back on to set new reminders in Applications."
+msgstr ""
+
 #: src/features/design/gallery-filters.tsx
 #: src/features/design/template-card.tsx
 #: src/features/onboarding/template-choice.tsx
@@ -14873,7 +15011,7 @@ msgstr ""
 msgid "Two stories"
 msgstr "Dvi istorijos"
 
-#: app/account/account.tsx
+#: src/features/account/account-screen.tsx
 #: src/features/auth/two-factor-screen.tsx
 msgid "Two-step verification"
 msgstr "Patvirtinimas dviem veiksmais"
@@ -14885,10 +15023,6 @@ msgstr "Patvirtinimas dviem veiksmais"
 #: src/features/workspace/practice/answer-panel.tsx
 msgid "Type"
 msgstr "Tipas"
-
-#: src/features/search/search-screen.tsx
-msgid "Type a command or search…"
-msgstr "Įveskite komandą arba paieškos laukelį…"
 
 #: src/features/workspace/practice/answer-panel.tsx
 #: src/features/workspace/practice/recorder-control.tsx
@@ -14909,11 +15043,11 @@ msgstr ""
 msgid "Typography"
 msgstr "Tipografija"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Ukrainian"
 msgstr "Ukrainiečių"
 
-#: app/account/preferences.tsx
+#: src/features/account/help-screen.tsx
 msgid "Unavailable"
 msgstr "Nepasiekiamas"
 
@@ -14990,7 +15124,7 @@ msgstr "Pirmiausia atrakinkite, tada bandykite dar kartą."
 msgid "Unlocking…"
 msgstr "Atrakinama…"
 
-#: src/features/settings/api-keys.tsx
+#: src/features/account/api-keys.tsx
 msgid "Unnamed key"
 msgstr "Neįvardytas raktas"
 
@@ -15089,7 +15223,7 @@ msgstr ""
 msgid "Upload TTF or OTF files you have the right to use, one file per weight or style. Anyone who opens a shared link to this document can download them."
 msgstr ""
 
-#: src/features/settings/profile.tsx
+#: src/features/account/profile.tsx
 msgid "Uploading photo…"
 msgstr "Įkeliama nuotrauka…"
 
@@ -15135,7 +15269,7 @@ msgstr ""
 msgid "Use {url}"
 msgstr "Naudokite {url}"
 
-#: src/features/settings/profile.tsx
+#: src/features/account/profile.tsx
 msgid "Use 3 to 64 lowercase letters, numbers, dots, hyphens and underscores."
 msgstr "Naudokite 3–64 mažąsias raides, skaičius, taškus, brūkšnelius ir apatinius brūkšnius."
 
@@ -15331,10 +15465,6 @@ msgstr "Naudokite jų"
 msgid "Use these answers"
 msgstr "Naudoti šiuos atsakymus"
 
-#: app/account/preferences.tsx
-msgid "Use this device's timezone ({deviceTimezone})"
-msgstr "Naudoti šio įrenginio laiko juostą ({deviceTimezone})"
-
 #: src/features/ai/provider-editor.tsx
 msgid "Use this provider"
 msgstr "Naudokite šį teikėją"
@@ -15363,8 +15493,8 @@ msgstr ""
 msgid "Used to check roles and offers. Each is a number, so the coach can compare without guessing."
 msgstr "Naudojama pozicijoms ir pasiūlymams tikrinti. Kiekvienas yra skaičius, todėl konsultantas gali lyginti nespėliodamas."
 
+#: src/features/account/profile.tsx
 #: src/features/entries/fields.ts
-#: src/features/settings/profile.tsx
 msgid "Username"
 msgstr "Vartotojo vardas"
 
@@ -15393,7 +15523,7 @@ msgstr "Naudoja jūsų gyvenimo aprašymo šabloną ir dizainą, prisitaiko prie
 msgid "Using your Profile's version."
 msgstr ""
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Uzbek"
 msgstr "Uzbekų"
 
@@ -15500,7 +15630,7 @@ msgstr ""
 msgid "Video link, office address or phone number"
 msgstr ""
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Vietnamese"
 msgstr "Vietnamiečių"
 
@@ -15829,7 +15959,7 @@ msgstr ""
 msgid "What you're looking for"
 msgstr "Ko ieškote"
 
-#: app/account/membership.tsx
+#: src/features/account/plan-screen.tsx
 msgid "What's included"
 msgstr ""
 
@@ -15841,7 +15971,7 @@ msgstr "Kas veikia"
 msgid "WhatsApp number with country code"
 msgstr ""
 
-#: app/account/membership.tsx
+#: src/features/billing/plan-card.tsx
 msgid "When a plan ends, nothing is locked or deleted: every document stays open to edit, share and download as a PDF."
 msgstr ""
 
@@ -15923,8 +16053,20 @@ msgstr ""
 msgid "Width"
 msgstr "Plotis"
 
-#: src/features/settings/api-keys.tsx
-msgid "Without it, apps you connect with a key won't work yet. This app always works. Plans can be bought on the rezumi.app website."
+#: src/features/account/ai-privacy-screen.tsx
+msgid "Withdraw"
+msgstr ""
+
+#: src/features/account/ai-privacy-screen.tsx
+msgid "Withdraw AI approval?"
+msgstr ""
+
+#: src/features/account/ai-privacy-screen.tsx
+msgid "Withdraw approval"
+msgstr ""
+
+#: src/features/account/ai-privacy-screen.tsx
+msgid "Withdrawing approval pauses the schedule on all devices."
 msgstr ""
 
 #: src/features/letters/write.tsx
@@ -15940,12 +16082,8 @@ msgstr "Word"
 msgid "Word and ODT aren't available"
 msgstr ""
 
-#: app/account/membership.tsx
+#: src/features/account/plan-screen.tsx
 msgid "Word and ODT downloads"
-msgstr ""
-
-#: src/features/billing/plan-alert.ts
-msgid "Word and ODT downloads aren't in your plan"
 msgstr ""
 
 #: src/features/documents/new-choices.tsx
@@ -16089,7 +16227,7 @@ msgstr ""
 msgid "Writing"
 msgstr "Tekstas"
 
-#: app/account/ai-providers.tsx
+#: src/features/account/providers-screen.tsx
 msgid "Writing help, tailored suggestions and the assistant. The default provider is used wherever you don't pick one. Your keys stay encrypted."
 msgstr "Pagalba rašant, pritaikyti pasiūlymai ir padėjėjas. Kur nepasirenkate teikėjo, naudojamas numatytasis. Jūsų raktai lieka užšifruoti."
 
@@ -16120,6 +16258,10 @@ msgstr "Jau naudojate tai „{takenBy}“."
 #: src/features/assistant/messages.tsx
 msgid "You answered: {answer}"
 msgstr "Jūs atsakėte: {answer}"
+
+#: src/features/billing/plan-alert.ts
+msgid "You can keep editing and sharing your portfolio."
+msgstr ""
 
 #: src/shell/builder-chrome/top-bar.tsx
 msgid "You can keep editing. Changes sync when you're back online. PDF sharing works with cached fonts and images."
@@ -16199,7 +16341,7 @@ msgstr "Siunčiate patys iš savo el. pašto."
 msgid "You submit on the employer's site yourself. Marking it applied keeps the exact versions you sent."
 msgstr "Paraišką pateikiate patys darbdavio svetainėje. Pažymėjus ją kaip pateiktą, išsaugomos tikslios išsiųstos versijos."
 
-#: src/features/settings/sign-out.tsx
+#: src/features/account/sign-out.tsx
 #: src/shell/account-menu.tsx
 msgid "You will be signed out of {server}. Any edits not yet synced from this device will be lost."
 msgstr "Būsite atjungti nuo {server}. Visi šiame įrenginyje dar nesinchronizuoti pakeitimai bus prarasti."
@@ -16354,7 +16496,7 @@ msgstr "Jūsų pakeitimai šiame įrenginyje bus pakeisti išsaugota versija."
 msgid "Your contact details are not on the first page."
 msgstr "Jūsų kontaktiniai duomenys nėra pirmame puslapyje."
 
-#: app/account/account.tsx
+#: src/features/account/account-screen.tsx
 msgid "Your data"
 msgstr "Jūsų duomenys"
 
@@ -16433,7 +16575,7 @@ msgstr ""
 msgid "Your job search starts here"
 msgstr "Jūsų darbo paieška prasideda čia"
 
-#: app/account/preferences.tsx
+#: src/features/account/preferences-screen.tsx
 msgid "Your language is saved. Restart Rezumi to apply the new left-to-right or right-to-left layout."
 msgstr "Jūsų kalba išsaugota. Iš naujo paleiskite Rezumi, kad pritaikytumėte naują išdėstymą iš kairės į dešinę arba iš dešinės į kairę."
 
@@ -16491,11 +16633,7 @@ msgstr "Jūsų įžanga, istorijos, kurias verta paminėti, ir klausimai. Likus 
 msgid "Your own domain isn't available"
 msgstr ""
 
-#: src/features/billing/plan-alert.ts
-msgid "Your own domain isn't in your plan"
-msgstr ""
-
-#: app/account/membership.tsx
+#: src/features/account/plan-screen.tsx
 msgid "Your own fonts"
 msgstr ""
 
@@ -16507,12 +16645,8 @@ msgstr ""
 msgid "Your own fonts aren't available, so the imported document uses a standard font."
 msgstr ""
 
-#: src/features/billing/plan-alert.ts
-msgid "Your own fonts aren't in your plan"
-msgstr ""
-
 #: src/features/design/uploaded-fonts.tsx
-msgid "Your own fonts aren't in your plan. Fonts already added keep working on the page."
+msgid "Your own fonts aren't available. Fonts already added keep working on the page."
 msgstr ""
 
 #: src/features/billing/plan-alert.ts
@@ -16528,7 +16662,6 @@ msgstr ""
 msgid "Your phone number is written in an unusual shape."
 msgstr "Jūsų telefono numeris užrašytas neįprasta forma."
 
-#: app/account/membership.tsx
 #: src/features/billing/plan-card.tsx
 msgid "Your plan"
 msgstr ""
@@ -16619,7 +16752,7 @@ msgstr ""
 msgid "Your Profile was saved on another device or on the web while you were editing here. Your changes are still on this device. Choose which version to keep."
 msgstr ""
 
-#: src/features/settings/export.tsx
+#: src/features/account/export.tsx
 msgid "Your profile, documents, applications and Career data as JSON. Images and attachments remain references."
 msgstr "Jūsų profilis, dokumentai, darbo paraiškos ir Karjera duomenys kaip JSON. Vaizdai ir priedai lieka nuorodomis."
 
@@ -16631,7 +16764,7 @@ msgstr ""
 msgid "your provider"
 msgstr "jūsų teikėjas"
 
-#: src/features/settings/profile.tsx
+#: src/features/account/profile.tsx
 msgid "Your public links begin with {server}/"
 msgstr "Jūsų viešos nuorodos prasideda {server}/"
 
@@ -16756,6 +16889,6 @@ msgstr ""
 msgid "Zoom: fit to width"
 msgstr ""
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Zulu"
 msgstr "Zulų"

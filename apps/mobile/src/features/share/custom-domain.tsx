@@ -15,7 +15,7 @@ import { DOMAIN_SETTLING_REFRESH_MS, domainSteps, isDomainSettling, isRootDomain
 import { portfolioHoldsShortLink } from "@rezumi/resume/sharing";
 import { formatTimeSince } from "./time-since";
 import { orpc } from "@/api/client";
-import { canShowPlans, hasPlanFeature, showPlanAlert, usePlan } from "@/features/billing/plan";
+import { hasPlanFeature, showPlanAlert, usePlan } from "@/features/billing/plan";
 import { showPlanAlertForError } from "@/features/billing/plan-alert";
 import {
 	Alert,
@@ -179,7 +179,7 @@ export function CustomDomain({ offline, readOnly = false }: CustomDomainProps) {
 				<TextField isDisabled={offline || set.isPending}>
 					<View className="flex-row items-center gap-2">
 						<Label>{t`Your domain`}</Label>
-						{locked && canShowPlans() ? (
+						{locked ? (
 							<Chip size="sm" variant="soft" color="accent">
 								<Icon name="lock" size={12} tone="accent" />
 								<Chip.Label>Plus</Chip.Label>

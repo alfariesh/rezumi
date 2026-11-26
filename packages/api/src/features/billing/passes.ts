@@ -3,7 +3,7 @@ import type { PlannedStretch } from "./timeline";
 import type { DbOrTx } from "@rezumi/db/client";
 import type { BillingReason } from "@rezumi/db/schema";
 import type { BillingInterval, PaidPlanId } from "@rezumi/schema/billing";
-import { and, asc, eq, gt, inArray, isNull, lte, notExists } from "drizzle-orm";
+import { and, asc, desc, eq, gt, inArray, isNull, lte, notExists } from "drizzle-orm";
 import { db } from "@rezumi/db/client";
 import * as schema from "@rezumi/db/schema";
 import { PASS_DAYS, PLANS } from "@rezumi/schema/billing";
@@ -240,4 +240,28 @@ export async function hasQrisPass(userId: string, now = new Date(), database: Db
 		)
 		.limit(1);
 	return Boolean(found);
+}
+
+/** The QRIS pass in use now or the most recent one that ended normally. Queued passes are not current access. */
+export async function qrisPassEnd(userId: string, now: Date, state: "active" | "ended") {
+	const period = schema.membershipPeriod;
+	const payment = schema.billingPayment;
+	const [found] = await db
+		.select({ endsAt: period.endsAt })
+		.from(period)
+		.innerJoin(payment, eq(period.paymentId, payment.id))
+		.where(
+			and(
+				eq(period.userId, userId),
+				eq(period.source, "payment"),
+				isNull(period.revokedAt),
+				lte(period.startsAt, now),
+				state === "active" ? gt(period.endsAt, now) : lte(period.endsAt, now),
+				eq(payment.provider, "sumopod"),
+				inArray(payment.status, ["paid", "partially_refunded"]),
+			),
+		)
+		.orderBy(desc(period.endsAt))
+		.limit(1);
+	return found?.endsAt ?? null;
 }

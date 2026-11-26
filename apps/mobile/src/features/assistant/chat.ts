@@ -50,14 +50,14 @@ export function transcriptOf(messages: readonly UIMessage[], labels: TranscriptL
 }
 
 /** Conversations for the signed-in server, newest first. */
-export function useThreads() {
+export function useThreads(enabled = true) {
 	const session = useSession();
 	const scope = getAccountScope();
 	const options = orpc.agent.threads.list.queryOptions({ input: {}, context: { scope: scope ?? "" } });
 	return useQuery({
 		...options,
 		queryKey: [...options.queryKey, scope],
-		enabled: session.status === "signed-in",
+		enabled: enabled && session.status === "signed-in",
 	});
 }
 

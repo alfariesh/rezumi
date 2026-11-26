@@ -10,35 +10,35 @@ import { ProviderEditorSheet } from "./provider-editor";
 import { AIProviderSetupSheet, useHasAIProvider } from "./providers";
 import { client, orpc } from "@/api/client";
 import { creditCount } from "@/features/billing/credits";
-import { Banner, Button, Card, EmptyState, Skeleton, Text, useTheme } from "@/ui-legacy";
+import { Button, Card, EmptyState, Skeleton, Text, Icon } from "@/ui";
 
 export function ProviderList() {
 	const { t } = useLingui();
 	const state = useHasAIProvider();
-	const { space } = useTheme();
 	const [adding, setAdding] = useState(false);
 	const [editingId, setEditingId] = useState<string | null>(null);
 	const editing = state.providers.find((provider) => provider.id === editingId);
 	if (state.error)
 		return (
 			<>
-				<Banner
-					tone="warn"
-					message={
+				<EmptyState
+					kind="inline"
+					icon="warning-circle"
+					title={
 						state.error instanceof ORPCError && state.error.code === "PRECONDITION_FAILED"
 							? t`AI providers aren't available on this server until ENCRYPTION_SECRET is set.`
 							: t`AI providers couldn't be loaded. Reload to try again.`
 					}
 				/>
-				<Button label={t`Try again`} onPress={state.retry} />
+				<Button onPress={state.retry}>{t`Try again`}</Button>
 			</>
 		);
 	if (state.isUnavailable)
 		return (
 			<>
 				<Text>{t`Loading providers…`}</Text>
-				<Skeleton height={space.s12} />
-				<Skeleton height={space.s12} />
+				<Skeleton variant="none" className="h-12 rounded-xl" />
+				<Skeleton variant="none" className="h-12 rounded-xl" />
 			</>
 		);
 	// The server's AI as the only one, as before plans existed; while the account chooses it's Rezumi AI in the list.
@@ -47,9 +47,10 @@ export function ProviderList() {
 		<>
 			{state.providers.length === 0 && (
 				<EmptyState
+					kind="page"
 					icon="sparkle"
 					title={t`No AI provider yet`}
-					message={t`Word import, Improve, the assistant, letter drafts, Career coaching and generation, and voice practice need one. Editing, Design, the readability checks and downloads work without one.`}
+					description={t`Word import, Improve, the assistant, letter drafts, Career coaching and generation, and voice practice need one. Editing, Design, the readability checks and downloads work without one.`}
 				/>
 			)}
 			{state.providers.map((provider) => (
@@ -62,7 +63,10 @@ export function ProviderList() {
 				/>
 			))}
 			{!managed && (
-				<Button label={t`Add AI provider`} icon="plus" variant="secondary" onPress={() => setAdding(true)} />
+				<Button variant="secondary" onPress={() => setAdding(true)}>
+					<Icon name="plus" />
+					{t`Add AI provider`}
+				</Button>
 			)}
 			<AIProviderSetupSheet open={adding} onClose={() => setAdding(false)} />
 			{editing && !editing.managed && (
@@ -82,7 +86,6 @@ type ProviderRowProps = {
 
 function ProviderRow({ provider, balance, isDefault, onEdit }: ProviderRowProps) {
 	const { t } = useLingui();
-	const { space } = useTheme();
 	const queryClient = useQueryClient();
 	const busy = useRef(false);
 	const [pending, setPending] = useState(false);
@@ -113,62 +116,63 @@ function ProviderRow({ provider, balance, isDefault, onEdit }: ProviderRowProps)
 		}
 	};
 	return (
-		<Card style={{ gap: space.s2 }}>
-			<Text variant="title">{provider.label}</Text>
-			<Text color="ink3">{providerLabel(provider.provider)}</Text>
-			<Text variant="callout" selectable>
+		<Card className="gap-2">
+			<Text weight="semibold">{provider.label}</Text>
+			<Text tone="muted">{providerLabel(provider.provider)}</Text>
+			<Text size="sm" selectable>
 				{provider.model}
 			</Text>
 			{provider.apiKeyPreview && (
-				<Text variant="mono" color="ink3">
+				<Text mono tone="muted">
 					{keyEnding(provider.apiKeyPreview)}
 				</Text>
 			)}
-			<Text color={provider.enabled && provider.testStatus === "success" ? "accentText" : "ink3"}>
+			<Text tone={provider.enabled && provider.testStatus === "success" ? "accent" : "muted"}>
 				{provider.testStatus === "failure"
 					? t`Needs attention`
 					: provider.enabled && provider.testStatus === "success"
 						? t`Ready`
 						: t`Off`}
 			</Text>
-			{isDefault && <Text variant="caption" color="accentText">{t`Default`}</Text>}
+			{isDefault && <Text size="xs" tone="accent">{t`Default`}</Text>}
 			{balance !== null ? (
 				<>
-					<Text color="ink2">
+					<Text tone="muted">
 						{t`No API key needed. Each action asks before using credits · ${creditCount(balance)} left`}
 					</Text>
 					{!isDefault && (
-						<Button label={t`Make default`} variant="ghost" disabled={pending} onPress={() => void run("default")} />
+						<Button variant="ghost" isDisabled={pending} onPress={() => void run("default")}>{t`Make default`}</Button>
 					)}
 					{failure && (
-						<Text accessibilityRole="alert" color="dangerText">
+						<Text accessibilityRole="alert" tone="danger">
 							{t`Failed`} · {failure}
 						</Text>
 					)}
 				</>
 			) : provider.managed ? (
-				<Text color="ink2">{t`Managed by your server`}</Text>
+				<Text tone="muted">{t`Managed by your server`}</Text>
 			) : (
 				<>
-					<View style={{ flexDirection: "row", flexWrap: "wrap", gap: space.s2 }}>
-						<Button
-							label={pending ? t`Testing…` : t`Test`}
-							variant="secondary"
-							loading={pending}
-							onPress={() => void run("test")}
-						/>
-						<Button label={t`Edit`} variant="ghost" disabled={pending} onPress={onEdit} />
+					<View className="flex-row flex-wrap gap-2">
+						<Button variant="secondary" isDisabled={pending} onPress={() => void run("test")}>
+							{pending ? t`Testing…` : t`Test`}
+						</Button>
+						<Button variant="ghost" isDisabled={pending} onPress={onEdit}>{t`Edit`}</Button>
 						{!isDefault && provider.enabled && provider.testStatus === "success" && (
-							<Button label={t`Make default`} variant="ghost" disabled={pending} onPress={() => void run("default")} />
+							<Button
+								variant="ghost"
+								isDisabled={pending}
+								onPress={() => void run("default")}
+							>{t`Make default`}</Button>
 						)}
 					</View>
 					{result && (
-						<Text accessibilityLiveRegion="polite" color="accentText">
+						<Text accessibilityLiveRegion="polite" tone="accent">
 							{result}
 						</Text>
 					)}
 					{testError && (
-						<Text accessibilityRole="alert" color="dangerText">
+						<Text accessibilityRole="alert" tone="danger">
 							{t`Failed`} · {testError}
 						</Text>
 					)}

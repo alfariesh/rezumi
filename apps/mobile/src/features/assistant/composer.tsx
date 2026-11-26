@@ -18,7 +18,10 @@ const MAX_TOTAL_BYTES = 100 * 1024 * 1024;
 
 type Upload = ChatAttachment & { size: number; busy?: boolean };
 
-type ComposerProps = Pick<ScopedChatViewProps, "chips" | "privacy" | "placeholder" | "scope" | "sourceNote"> & {
+type ComposerProps = Pick<
+	ScopedChatViewProps,
+	"chips" | "privacy" | "placeholder" | "scope" | "sourceNote" | "initialDraft"
+> & {
 	streaming: boolean;
 	disabled: boolean;
 	ensureThread: () => Promise<string>;
@@ -30,7 +33,7 @@ type ComposerProps = Pick<ScopedChatViewProps, "chips" | "privacy" | "placeholde
 /** Context chips and attachments, a box that grows to six lines, attach, and Send (Stop while a reply streams). */
 export function Composer(props: ComposerProps) {
 	const { t } = useLingui();
-	const [text, setText] = useState("");
+	const [text, setText] = useState(props.initialDraft ?? "");
 	const [attachments, setAttachments] = useState<Upload[]>([]);
 	const [picking, setPicking] = useState(false);
 	const uploading = picking || attachments.some((attachment) => attachment.busy);

@@ -9,7 +9,7 @@ import { applyMargins, matchMargins } from "@rezumi/resume/design-presets";
 import { localeSchema } from "@rezumi/utils/locale";
 import { MARGIN_NAMES } from "./preset-names";
 import { FieldLabel } from "./section";
-import { localeMap } from "@/features/settings/locale-names";
+import { localeMap } from "@/features/account/locale-names";
 import { ListRow, ListSection, PickerSheet, Segment, Switch } from "@/ui";
 
 type Page = ResumeData["metadata"]["page"];

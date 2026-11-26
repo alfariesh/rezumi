@@ -9,6 +9,15 @@ const MAX_IMAGE_BYTES = 12_000_000;
 const MAX_FONT_CACHE_BYTES = 200_000_000;
 let configured = false;
 const inFontCache = createSerialQueue();
+export const PREVIEW_FONT_CACHE = "pdf-fonts-v1";
+const previewFontCache = () => new Directory(Paths.cache, PREVIEW_FONT_CACHE);
+
+export function clearPreviewFontCache() {
+	return inFontCache(() => {
+		const directory = previewFontCache();
+		if (directory.exists) directory.delete();
+	});
+}
 
 function isFont(bytes: Uint8Array): boolean {
 	if (bytes.length < 4) return false;
@@ -32,7 +41,7 @@ function trimFonts(directory: Directory, incoming: number) {
 
 /** Disk failures never prevent a network font download. Store raw bytes; pdf owns WOFF conversion. */
 export async function readCachedFont(source: string): Promise<Uint8Array> {
-	const directory = new Directory(Paths.cache, "pdf-fonts-v1");
+	const directory = previewFontCache();
 	let file: File | undefined;
 	try {
 		file = new File(directory, await digestStringAsync(CryptoDigestAlgorithm.SHA256, source));
@@ -73,7 +82,7 @@ export function configurePreviewResources() {
 	if (configured) return;
 	configured = true;
 	try {
-		const legacy = new Directory(Paths.document, "pdf-fonts-v1");
+		const legacy = new Directory(Paths.document, PREVIEW_FONT_CACHE);
 		if (legacy.exists) legacy.delete();
 	} catch {
 		/* Removing the former backed-up cache is best effort. New files only use Paths.cache. */

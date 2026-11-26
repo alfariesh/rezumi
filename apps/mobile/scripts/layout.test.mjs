@@ -157,18 +157,12 @@ ui.useReducedMotion = () => false;
 mocks["@/shell/use-is-tablet"] = { useIsTablet: isTablet };
 mocks["expo-router"].Stack = { Screen: "Stack.Screen" };
 const { useTabStackOptions: stackOptions } = load("shell/app-banner.tsx");
-const { SettingsPage } = load("features/settings/layout.tsx");
 for (const [width, largeTitle] of [
 	[951, false],
 	[466, true],
 ]) {
 	window = { ...window, width };
 	assert.equal(stackOptions().headerLargeTitle, largeTitle);
-	const settings = SettingsPage({ title: "Settings", root: true, children: null });
-	assert.equal(nodes(settings).find((node) => node.type === "Stack.Screen").props.options.headerShown, false);
-	assert.ok(nodes(settings).some((node) => node.type === "CollectionHeader" && node.props.title === "Settings"));
-	const pushed = SettingsPage({ title: "Account", children: null });
-	assert.equal(nodes(pushed).find((node) => node.type === "Stack.Screen").props.options.headerShown, true);
 }
 const hooks = [];
 let cursor = 0;

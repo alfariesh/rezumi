@@ -1,0 +1,56 @@
+# Start signed in on a phone, with English enabled and a resume matching DOCUMENT_NAME.
+appId: app.rezumi
+---
+- launchApp
+- extendedWaitUntil:
+    visible:
+      id: open-drawer
+    timeout: 30000
+- tapOn:
+    id: open-drawer
+- scrollUntilVisible:
+    element:
+      id: drawer-link-settings
+    direction: DOWN
+- tapOn:
+    id: drawer-link-settings
+- assertVisible: "App settings"
+- tapOn:
+    id: settings-theme
+- tapOn: "Dark"
+- assertVisible: "Dark"
+- tapOn:
+    id: settings-language
+- tapOn: "Search languages"
+- inputText: "id-ID"
+- tapOn: "Indonesian, id-ID"
+- extendedWaitUntil:
+    visible: "Pengaturan aplikasi"
+    timeout: 10000
+- runFlow:
+    when:
+      platform: iOS
+    commands:
+      - swipe:
+          start: 1%, 40%
+          end: 78%, 40%
+- runFlow:
+    when:
+      platform: Android
+    commands:
+      - back
+- extendedWaitUntil:
+    visible:
+      id: open-search
+    timeout: 10000
+- tapOn:
+    id: open-search
+- tapOn:
+    id: global-search-input
+- inputText: "${DOCUMENT_NAME}"
+- extendedWaitUntil:
+    visible: "${DOCUMENT_NAME}"
+    timeout: 10000
+- tapOn: "${DOCUMENT_NAME}"
+- assertNotVisible:
+    id: global-search-input

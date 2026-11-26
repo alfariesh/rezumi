@@ -14,6 +14,9 @@ export type AccountPane =
 	| "ai-providers"
 	| "ai-mcp"
 	| "ai-report"
+	| "ai-privacy"
+	| "notifications"
+	| "storage"
 	| "membership"
 	| "licences";
 /** The sections of `app/(tabs)` (the phone drawer and the tablet sidebar). */
@@ -81,6 +84,7 @@ export const routes = {
 	/** Coach full screen. `offers`: saved offer ids picked in Offers → Plan what to ask. */
 	coach: (offers?: readonly string[]) =>
 		offers?.length ? (`/coach?offers=${offers.map(segment).join(",")}` as const) : ("/coach" as const),
+	coachQuestion: (question: string) => `/coach?question=${segment(question)}` as const,
 	coachThread: (id: string) => `/coach?thread=${segment(id)}` as const,
 	atsChecker: () => "/ats-checker" as const,
 	/** An application's workspace; without a part it opens the one its stage needs (`default`). */

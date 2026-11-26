@@ -7,8 +7,8 @@ import { useLingui } from "@lingui/react/macro";
 import { dateOnlyDeadline } from "@rezumi/career/offers";
 import { daysBetweenDates, deviceTimeZone, isTimeZone, zonedParts } from "@rezumi/career/time";
 import { isDateOnly } from "@rezumi/schema/career";
+import { useProfile } from "@/features/account/queries";
 import { useNow } from "@/features/career/hooks";
-import { useProfile } from "@/features/settings/queries";
 
 export type Deadline = { value: string; distance: string; soon: boolean; noTime: boolean };
 

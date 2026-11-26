@@ -18,7 +18,7 @@ import { TypographyScreen } from "./typography-screen";
 import { renderScreen } from "@/test/render-screen";
 
 const mockRouter = { push: jest.fn(), back: jest.fn() };
-const mockPlan = { os: "ios", plan: undefined as { enabled: boolean; features: Record<string, boolean> } | undefined };
+const mockPlan = { plan: undefined as { enabled: boolean; features: Record<string, boolean> } | undefined };
 const mockAlerts: unknown[] = [];
 type Toast = { title: string; undo?: { label: string; onUndo: () => void } };
 const mockToasts: Toast[] = [];
@@ -46,14 +46,10 @@ jest.mock("@/features/billing/plan", () => {
 	const locked = (plan: typeof mockPlan.plan, id: string) => !free.has(id) && Boolean(plan?.enabled);
 	return {
 		usePlan: () => mockPlan.plan,
-		canShowPlans: () => mockPlan.os === "android",
 		hasPlanFeature: (plan: typeof mockPlan.plan, feature: string) => !plan?.enabled || plan.features[feature] === true,
 		showPlanAlert: (problem: unknown) => mockAlerts.push(problem),
 		isLockedTemplate: locked,
-		isLabelledTemplate: (plan: typeof mockPlan.plan, id: string) =>
-			mockPlan.os === "android" && Boolean(plan?.enabled) && !free.has(id),
-		listedTemplates: (plan: typeof mockPlan.plan, templates: string[], current: string) =>
-			mockPlan.os === "android" ? templates : templates.filter((id) => id === current || !locked(plan, id)),
+		isLabelledTemplate: (plan: typeof mockPlan.plan, id: string) => Boolean(plan?.enabled) && !free.has(id),
 	};
 });
 jest.mock("@/draft", () => {
@@ -104,7 +100,6 @@ function open(change: (draft: ResumeData) => void = () => undefined, locked = fa
 }
 
 beforeEach(() => {
-	mockPlan.os = "ios";
 	mockPlan.plan = undefined;
 	mockAlerts.length = 0;
 	mockToasts.length = 0;
@@ -173,13 +168,9 @@ describe("Design pane", () => {
 		expect(data().metadata.design.icons?.sections).toBe(false);
 	});
 
-	it("leaves the locked tool-logo switch out on iOS and explains it on Android", async () => {
+	it("explains a locked tool-logo switch before changing the draft", async () => {
 		mockPlan.plan = { enabled: true, features: { brandLogos: false } };
 		open();
-		const { unmount } = await renderScreen(<DesignPane id="resume-1" />);
-		expect(screen.queryByLabelText("Tool logos in skills")).toBeNull();
-		await unmount();
-		mockPlan.os = "android";
 		await renderScreen(<DesignPane id="resume-1" />);
 		expect(screen.getByText("Tool logos in skills · Plus")).toBeTruthy();
 		await fireEvent(screen.getByLabelText("Tool logos in skills"), "selectedChange", true);
@@ -227,7 +218,6 @@ describe("Template gallery", () => {
 	});
 
 	it("applies from the page caption too, explaining a template the plan doesn't open", async () => {
-		mockPlan.os = "android";
 		mockPlan.plan = { enabled: true, features: {} };
 		open();
 		// Jest's window is tablet-wide: the caption sits on the page beside the gallery, as the builder's page draws it.
@@ -268,7 +258,6 @@ describe("Template gallery", () => {
 	});
 
 	it("explains a template the plan doesn't open instead of applying it", async () => {
-		mockPlan.os = "android";
 		mockPlan.plan = { enabled: true, features: {} };
 		open();
 		await renderGallery();

@@ -11,6 +11,7 @@ const requireServer = createRequire(new URL("../../server/package.json", import.
 const requireSchema = createRequire(new URL("../../../packages/schema/package.json", import.meta.url));
 const { transformSync } = createRequire(requireServer.resolve("tsx"))("esbuild");
 let platform = "android";
+let blocked = false;
 let dialog;
 let sent = [];
 let credits = { balance: 12 };
@@ -37,12 +38,16 @@ const modules = {
 	},
 	"@/features/billing/plan-alert": {
 		showPlanAlertForError: () => false,
-		canShowPlans: () => platform === "android",
 	},
-	"./plan-alert": { canShowPlans: () => platform === "android" },
+	"./ai-privacy": { isAiSharingBlocked: () => blocked },
 	"@rezumi/utils/string": { generateId: () => `key-${sent.length}` },
 	"@lingui/core/macro": { t: (parts, ...values) => String.raw({ raw: parts }, ...values), plural },
 	"react-native": {
+		Platform: {
+			get OS() {
+				return platform;
+			},
+		},
 		Alert: {
 			alert: (title, message, buttons) => {
 				dialog = { title, message, buttons };
@@ -79,6 +84,7 @@ function load(path) {
 // The real catalog, so costs here are the ones the apps show.
 modules.zod = requireSchema("zod");
 modules["@rezumi/schema/billing"] = load("../../packages/schema/src/billing/catalog.ts");
+modules["@/shell/managed-ai"] = load("src/shell/managed-ai.ts");
 modules["@/features/billing/ai-source"] = load("src/features/billing/ai-source.ts");
 modules["@/ui/operation-consent"] = load("src/ui/operation-consent.ts");
 modules["./ai-consent"] = load("src/api/ai-consent.ts");
@@ -187,3 +193,11 @@ providers = providers.filter((provider) => provider.managed);
 	assert.doesNotMatch(shown.message, /credits/);
 	assert.equal(sent[0].input.aiSource, undefined);
 }
+
+// Revoking sharing on this device stops a new AI request before its consent prompt or transport.
+dialog = null;
+sent = [];
+blocked = true;
+await assert.rejects(client.ai.improve({ line: "x", action: "verb" }), /sharing is off on this device/);
+assert.equal(dialog, null);
+assert.deepEqual(sent, []);

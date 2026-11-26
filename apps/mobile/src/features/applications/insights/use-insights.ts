@@ -8,10 +8,10 @@ import { weekStartsOn } from "@rezumi/career/calendar";
 import { computeOutcomes, computePipeline, computeTimeline, countSources } from "@rezumi/career/insights";
 import { deviceTimeZone, isTimeZone } from "@rezumi/career/time";
 import { useOnline } from "@/api/online";
+import { useProfile } from "@/features/account/queries";
 import { useApplications } from "@/features/applications/queries";
 import { useNow } from "@/features/career/hooks";
 import { useDocuments } from "@/features/documents/queries";
-import { useProfile } from "@/features/settings/queries";
 
 type Clock = { now: Date; timeZone: string; weekStartsOn: number };
 

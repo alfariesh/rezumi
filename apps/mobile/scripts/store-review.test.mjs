@@ -29,6 +29,7 @@ const sessions = {
 	rejectCredentials: async () => {},
 };
 const modules = {
+	"./ai-privacy": { isAiSharingBlocked: () => false },
 	"@/auth/session": sessions,
 	// The API client shows plan alerts; none of these calls is refused by a plan.
 	"@/features/billing/plan-alert": { showPlanAlertForError: () => false },

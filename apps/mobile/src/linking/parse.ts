@@ -42,7 +42,7 @@ const profileTabs = new Set<string>(PROFILE_TABS);
 /** `/dashboard/profile/stories/st_1` → Stories: the web's Profile pages map to the app's sections. */
 const profileTab = (name: string | undefined): ProfileTab | undefined =>
 	name && profileTabs.has(name) ? (name as ProfileTab) : undefined;
-// Web settings pages and the app screen holding the same settings. Billing has no app page (K6): the settings index.
+// Web settings pages and the app screen holding the same settings. Billing opens the read-only Plan screen.
 // Universal and App Links open the app for these pages too (APP_LINK_PREFIXES in apps/server/src/http/app-links.ts and
 // `intentFilters` in app.config.ts; linking/app-links.test.ts keeps the three in step).
 const settingsPanes: Record<string, AccountPane | undefined> = {
@@ -111,8 +111,8 @@ function dashboardHref(rest: readonly string[], path: string): AppHref | null {
 				return routes.application(second, third as (typeof WORKSPACE_TABS)[number]);
 			return null;
 		case "settings": {
-			if (!second) return routes.account();
-			if (second === "billing") return routes.account();
+			if (!second) return routes.account("preferences");
+			if (second === "billing") return routes.account("membership");
 			// The web's old Job search settings page now redirects to Jobs.
 			if (second === "job-search") return routes.applications();
 			const pane = settingsPanes[second];

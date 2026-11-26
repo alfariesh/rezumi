@@ -1,6 +1,5 @@
 // A short gallery for the first resume: the templates the plan opens, each drawn with the person's own details by the
-// native renderer (as Design → Template does), and the rest a press away. iOS lists only what the account can use;
-// Android lists the rest labelled, and a locked one explains the plan without selling it (K6).
+// native renderer (as Design → Template does), and the rest a press away. Locked templates explain their availability.
 import type { ProfileData } from "@rezumi/schema/profile/data";
 import type { ResumeData } from "@rezumi/schema/resume/data";
 import type { Template } from "@rezumi/schema/templates";
@@ -18,7 +17,6 @@ import { templateLayouts, templateLineup } from "@rezumi/schema/templates";
 import { isLocale } from "@rezumi/utils/locale";
 import { useSession } from "@/auth/session";
 import { isLabelledTemplate, isLockedTemplate, showPlanAlert, usePlan } from "@/features/billing/plan";
-import { canShowPlans } from "@/features/billing/plan-alert";
 import {
 	readStoredTemplateThumbnail,
 	storeTemplateThumbnail,
@@ -55,10 +53,7 @@ export function TemplateChoice({ profile, value, onChange, width }: TemplateChoi
 	}, [profile, i18n.locale]);
 	const content = useMemo(() => templateThumbnailKey(data), [data]);
 	const locked = (template: Template) => isLockedTemplate(plan, template);
-	const offered = offeredTemplates(locked, all, value);
-	// iOS never shows what the account can't use.
-	const shown = canShowPlans() ? offered : offered.filter((template) => template === value || !locked(template));
-	const listed = canShowPlans() ? templateLineup : templateLineup.filter((template) => !locked(template));
+	const shown = offeredTemplates(locked, all, value);
 	const gap = 16;
 	const cardWidth = Math.max(0, (width - gap) / 2);
 
@@ -84,7 +79,7 @@ export function TemplateChoice({ profile, value, onChange, width }: TemplateChoi
 					/>
 				))}
 			</View>
-			{!all && shown.length < listed.length ? (
+			{!all && shown.length < templateLineup.length ? (
 				<Button variant="ghost" className="self-center" onPress={() => setAll(true)}>
 					<Button.Label>{t`More templates`}</Button.Label>
 				</Button>

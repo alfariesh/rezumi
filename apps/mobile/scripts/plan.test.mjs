@@ -50,24 +50,18 @@ const refusals = [
 	),
 ];
 
-test("Android explains plan refusals and says where plans are sold, without a link, button or price", () => {
+test("iOS and Android explain plan refusals with the same neutral copy", () => {
 	const android = load("android");
-	assert.equal(android.canShowPlans(), true);
-	for (const error of refusals) assert.equal(android.showPlanAlertForError(error), true);
-	for (const { title, message } of android.alerts) {
-		assert.ok(message.endsWith("Plans can be bought on the rezumi.app website."));
-		assert.doesNotMatch(`${title} ${message}`, /Rp|\d+\.\d{3}|https?:|\bbuy now\b|upgrade/i);
-	}
-	assert.match(android.alerts[0].message, /up to 3 resumes outside Trash/);
-});
-
-test("iOS explains plan refusals neutrally: no plans, prices or website", () => {
 	const ios = load("ios");
-	assert.equal(ios.canShowPlans(), false);
-	for (const error of refusals) ios.showPlanAlertForError(error);
-	assert.equal(ios.alerts.length, refusals.length);
-	for (const { title, message } of ios.alerts)
-		assert.doesNotMatch(`${title} ${message}`, /plan|Plus|Pro AI|rezumi\.app|Rp|bought|upgrade|https?:/i);
+	for (const error of refusals) {
+		assert.equal(android.showPlanAlertForError(error), true);
+		assert.equal(ios.showPlanAlertForError(error), true);
+	}
+	assert.deepEqual(android.alerts, ios.alerts);
+	assert.equal(android.alerts.length, refusals.length);
+	for (const { title, message } of android.alerts)
+		assert.doesNotMatch(`${title} ${message}`, /Plus|Pro AI|rezumi\.app|\bbuy\b|bought|upgrade|https?:/i);
+	assert.match(android.alerts[0].message, /up to 3 resumes outside Trash/);
 });
 
 test("ignores errors that aren't plan refusals", () => {

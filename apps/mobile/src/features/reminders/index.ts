@@ -8,8 +8,10 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { File, Paths } from "expo-file-system";
 import * as Notifications from "expo-notifications";
 import * as Sharing from "expo-sharing";
+import Storage from "expo-sqlite/kv-store";
 import { Platform } from "react-native";
 import { buildIcs } from "@rezumi/career/ics";
+import { createSerialQueue } from "@rezumi/utils/queue";
 import { reminderId, reminderTime } from "./schedule";
 import { askPermission } from "@/shell/permissions";
 
@@ -30,8 +32,24 @@ type ReminderData = { applicationId: string; lead: number; start: string; title:
 export type ScheduleResult = "scheduled" | "denied" | "passed";
 
 const CHANNEL = "reminders";
+const serial = createSerialQueue();
+const preferenceKey = (kind: ReminderKind) => `reminders:${kind}`;
+export const reminderEnabled = (kind: ReminderKind) => Storage.getItemSync(preferenceKey(kind)) !== "off";
+
+export function setReminderEnabled(kind: ReminderKind, enabled: boolean) {
+	return serial(async () => {
+		if (!enabled) {
+			const scheduled = await Notifications.getAllScheduledNotificationsAsync();
+			const matches = scheduled.filter(({ identifier }) => identifier.startsWith(`${kind}:`));
+			await Promise.all(matches.map(({ identifier }) => Notifications.cancelScheduledNotificationAsync(identifier)));
+		}
+		Storage.setItemSync(preferenceKey(kind), enabled ? "on" : "off");
+	});
+}
+
 const queryKey = (applicationId: string) => ["reminders", applicationId] as const;
-const idOf = (target: ReminderTarget) => reminderId(target.kind, target.applicationId, target.entryId);
+const idOf = (target: Pick<ReminderTarget, "kind" | "applicationId" | "entryId">) =>
+	reminderId(target.kind, target.applicationId, target.entryId);
 
 /** Asks for permission (after the explaining sheet) only if it hasn't been answered; false when notifications are off. */
 const requestPermission = () =>
@@ -47,10 +65,12 @@ const requestPermission = () =>
  * reminders can fire.
  */
 export const allowReminders = () =>
-	askPermission("notifications", {
-		get: () => Notifications.getPermissionsAsync(),
-		request: () => Notifications.requestPermissionsAsync(),
-	});
+	reminderEnabled("interview")
+		? askPermission("notifications", {
+				get: () => Notifications.getPermissionsAsync(),
+				request: () => Notifications.requestPermissionsAsync(),
+			})
+		: Promise.resolve(false);
 
 async function schedule(target: ReminderTarget, lead: number): Promise<ScheduleResult> {
 	const id = idOf(target);
@@ -106,15 +126,15 @@ export function useReminders(applicationId: string) {
 		leadFor: (target: Pick<ReminderTarget, "kind" | "applicationId" | "entryId">) =>
 			query.data?.get(reminderId(target.kind, target.applicationId, target.entryId)) ?? null,
 		turnOn: async (target: ReminderTarget, lead: number): Promise<ScheduleResult> => {
-			if (!(await requestPermission())) return "denied";
-			const result = await schedule(target, lead);
+			if (!reminderEnabled(target.kind) || !(await requestPermission())) return "denied";
+			const result = await serial(() =>
+				reminderEnabled(target.kind) ? schedule(target, lead) : Promise.resolve("denied" as const),
+			);
 			await refresh();
 			return result;
 		},
 		turnOff: async (target: Pick<ReminderTarget, "kind" | "applicationId" | "entryId">) => {
-			await Notifications.cancelScheduledNotificationAsync(
-				reminderId(target.kind, target.applicationId, target.entryId),
-			);
+			await serial(() => Notifications.cancelScheduledNotificationAsync(idOf(target)));
 			await refresh();
 		},
 	};
@@ -130,14 +150,16 @@ export const releaseReminder = (entryId: string) => held.delete(reminderId("inte
  * a deleted interview, cleared follow-up or closed application cancels it. Never asks for permission.
  */
 export async function syncReminders(applicationId: string, targets: ReminderTarget[]) {
-	const byId = new Map(targets.map((target) => [idOf(target), target]));
-	for (const { id, data } of await scheduledFor(applicationId)) {
-		if (held.has(id)) continue;
-		const target = byId.get(id);
-		if (!target) await Notifications.cancelScheduledNotificationAsync(id);
-		else if (data.start !== target.start.toISOString() || data.title !== target.title || data.body !== target.body)
-			await schedule(target, data.lead);
-	}
+	await serial(async () => {
+		const byId = new Map(targets.map((target) => [idOf(target), target]));
+		for (const { id, data } of await scheduledFor(applicationId)) {
+			if (held.has(id)) continue;
+			const target = byId.get(id);
+			if (!target || !reminderEnabled(target.kind)) await Notifications.cancelScheduledNotificationAsync(id);
+			else if (data.start !== target.start.toISOString() || data.title !== target.title || data.body !== target.body)
+				await schedule(target, data.lead);
+		}
+	});
 }
 
 /** Shares one event as an .ics file through the system share sheet; no calendar permission is needed. */

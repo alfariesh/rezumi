@@ -15,7 +15,13 @@ export function useReviewPrompt() {
 	const session = useSession();
 	const scope = session.status === "signed-in" ? getAccountScope() : null;
 	const path = useSegments().join("/");
-	const canPrompt = ["(tabs)/documents", "(tabs)/applications", "(tabs)/career", "(tabs)/settings"].includes(path);
+	const canPrompt = [
+		"(tabs)/home",
+		"(tabs)/documents",
+		"(tabs)/applications",
+		"(tabs)/portfolio",
+		"(tabs)/profile",
+	].includes(path);
 	const progress = useRef({ scope: null as string | null, remaining: delay });
 
 	useEffect(() => {

@@ -16,7 +16,7 @@ jest.mock("@/features/home/queries", () => ({
 	useUnreadCount: () => mockUnread,
 	useSidebarCounts: () => ({ documents: 4, applications: 2 }),
 }));
-jest.mock("@/features/settings/queries", () => ({
+jest.mock("@/features/account/queries", () => ({
 	useProfile: () => ({ data: { name: "Ana Putri", email: "ana@example.com", image: null } }),
 }));
 jest.mock("./account-menu", () => ({

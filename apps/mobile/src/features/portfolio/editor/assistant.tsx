@@ -18,18 +18,23 @@ import { refreshThreads, useThreads } from "@/features/assistant/chat";
 import { ChatView } from "@/features/assistant/chat-view";
 import { ModelSheet, ProviderGate, useConversationProvider } from "@/features/assistant/provider";
 import { PastConversations } from "@/features/assistant/threads";
-import { Button, Card, Sheet, Text, showToast } from "@/ui";
+import { EmptyState, Spinner, Button, Card, Sheet, Text, showToast } from "@/ui";
 
-type PortfolioAssistantProps = { portfolio: Portfolio; workId: string | null; onBack: () => void };
+type PortfolioAssistantProps = {
+	initialThread?: string | undefined;
+	portfolio: Portfolio;
+	workId: string | null;
+	onBack: () => void;
+};
 
-export function PortfolioAssistant({ portfolio, workId, onBack }: PortfolioAssistantProps) {
+export function PortfolioAssistant({ portfolio, workId, onBack, initialThread }: PortfolioAssistantProps) {
 	const { t } = useLingui();
 	const { store, scope, assistant } = useEditor();
 	const online = useOnline();
 	const queryClient = useQueryClient();
 	const providers = useHasAIProvider();
 	const threads = useThreads();
-	const [threadId, setThreadId] = useState<string | null>(null);
+	const [threadId, setThreadId] = useState<string | null>(initialThread ?? null);
 	const [history, setHistory] = useState(false);
 	const [model, setModel] = useState(false);
 	const [pictures, setPictures] = useState(false);
@@ -108,49 +113,61 @@ export function PortfolioAssistant({ portfolio, workId, onBack }: PortfolioAssis
 				notSetUp={t`Add a tested AI connection to use the portfolio assistant.`}
 				readOnly={threadId !== null}
 			>
-				<ChatView
-					threadId={threadId}
-					createThread={async (requestedScope) =>
-						(
-							await client.agent.threads.start(
-								{
-									portfolioId: portfolio.id,
-									...(provider ? { aiProviderId: provider.id } : {}),
-								},
-								{ context: { scope: requestedScope } },
-							)
-						).id
-					}
-					onThreadCreated={(id) => {
-						setThreadId(id);
-						refreshThreads(queryClient);
-					}}
-					context={{
-						document: true,
-						posting: false,
-						web: false,
-						work: Boolean(work),
-						...(work ? { workId: work.id } : {}),
-					}}
-					document={null}
-					flushDocument={() => store.getState().flush()}
-					renderEffects={(message, id) =>
-						message.parts.map((part) => {
-							const result = assistant.editCallOf(id, message.id, part);
-							return result ? <EditCard key={callKey(result.call)} {...result} /> : null;
-						})
-					}
-					onMessages={applyIncoming}
-					privacy={t`Your portfolio, request and conversation go to this AI connection. Edits are applied to your draft and can be undone.`}
-					placeholder={t`Ask for a portfolio change…`}
-					assistantName={t`Portfolio assistant`}
-					sourceNote={sourceNote}
-					disabled={!online || !provider || switching}
-					onSwitchModel={() => setModel(true)}
-					onFinish={() => {
-						void queryClient.invalidateQueries({ queryKey: orpc.billing.summary.key() });
-					}}
-				/>
+				{initialThread && threadId === initialThread && !summary ? (
+					threads.isPending ? (
+						<Spinner />
+					) : (
+						<EmptyState
+							kind="inline"
+							title={t`This conversation couldn't be opened.`}
+							action={{ label: t`New conversation`, onPress: () => setThreadId(null) }}
+						/>
+					)
+				) : (
+					<ChatView
+						threadId={threadId}
+						createThread={async (requestedScope) =>
+							(
+								await client.agent.threads.start(
+									{
+										portfolioId: portfolio.id,
+										...(provider ? { aiProviderId: provider.id } : {}),
+									},
+									{ context: { scope: requestedScope } },
+								)
+							).id
+						}
+						onThreadCreated={(id) => {
+							setThreadId(id);
+							refreshThreads(queryClient);
+						}}
+						context={{
+							document: true,
+							posting: false,
+							web: false,
+							work: Boolean(work),
+							...(work ? { workId: work.id } : {}),
+						}}
+						document={null}
+						flushDocument={() => store.getState().flush()}
+						renderEffects={(message, id) =>
+							message.parts.map((part) => {
+								const result = assistant.editCallOf(id, message.id, part);
+								return result ? <EditCard key={callKey(result.call)} {...result} /> : null;
+							})
+						}
+						onMessages={applyIncoming}
+						privacy={t`Your portfolio, request and conversation go to this AI connection. Edits are applied to your draft and can be undone.`}
+						placeholder={t`Ask for a portfolio change…`}
+						assistantName={t`Portfolio assistant`}
+						sourceNote={sourceNote}
+						disabled={!online || !provider || switching}
+						onSwitchModel={() => setModel(true)}
+						onFinish={() => {
+							void queryClient.invalidateQueries({ queryKey: orpc.billing.summary.key() });
+						}}
+					/>
+				)}
 			</ProviderGate>
 			<Sheet isOpen={history} onOpenChange={setHistory} title={t`Portfolio conversations`} closeLabel={t`Close`}>
 				<Button

@@ -3,7 +3,7 @@
 import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react/macro";
 import { deviceTimeZone, isTimeZone } from "@rezumi/career/time";
-import { useProfile } from "@/features/settings/queries";
+import { useProfile } from "@/features/account/queries";
 
 export { useNow } from "@/features/career/hooks";
 

@@ -50,3 +50,5 @@ Use English UI and an unpublished portfolio on an isolated, disposable account. 
 - `portfolio-rewrite.yaml` rewrites the greeting and undoes the edit.
 
 The flows require device verification. Check phone and tablet layouts, Indonesian and English, and dark and light mode in the device pass.
+
+`settings.yaml` (Phase 14): start signed in on a phone, with English UI and a fictional resume. Supply its exact visible name as `DOCUMENT_NAME`. The flow switches to dark, activates Indonesian and opens the document from Search. The flow leaves the app in Indonesian and dark mode.

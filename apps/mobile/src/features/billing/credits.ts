@@ -1,25 +1,30 @@
 import type { RouterOutput } from "@/api/client";
-import type { IconName } from "@/ui-legacy";
+import type { IconName } from "@/ui";
 import { plural, t } from "@lingui/core/macro";
-import { useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery } from "@tanstack/react-query";
 import { orpc } from "@/api/client";
-import { useSession } from "@/auth/session";
+import { getAccountScope, useSession } from "@/auth/session";
 
 export type CreditHistoryEntry = RouterOutput["billing"]["creditHistory"]["items"][number];
 
-const recent = { limit: 5 } as const;
+const pageSize = 20;
 
-/** The account's latest credit activity, for the plan screen. Off while credits don't apply to the account. */
-export function useRecentCredits(enabled: boolean) {
+/** Entries are already ordered newest first by the server. */
+export function useCreditHistory(enabled: boolean) {
 	const session = useSession();
-	return useQuery(
-		orpc.billing.creditHistory.queryOptions({
-			input: recent,
-			queryKey: [...orpc.billing.creditHistory.key({ input: recent }), session.server],
-			enabled: enabled && session.status === "signed-in",
-			retry: false,
-		}),
-	).data;
+	const scope = getAccountScope();
+	const options = orpc.billing.creditHistory.infiniteOptions({
+		input: (offset: number) => ({ limit: pageSize, offset }),
+		initialPageParam: 0,
+		getNextPageParam: (last, _pages, offset) => (last.hasMore && offset < 5000 ? offset + pageSize : undefined),
+		context: { scope: scope ?? "" },
+	});
+	return useInfiniteQuery({
+		...options,
+		queryKey: [...options.queryKey, scope],
+		enabled: enabled && session.status === "signed-in" && !!scope,
+		retry: false,
+	});
 }
 
 /** How many Rezumi AI credits, in words. */

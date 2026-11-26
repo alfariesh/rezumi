@@ -40,7 +40,7 @@ import {
 import { getCreditBalance, listCreditHistory } from "./credits";
 import { getEntitlements, isBillingAppliedTo } from "./entitlements";
 import { countActiveDocuments } from "./limits";
-import { previewPass } from "./passes";
+import { previewPass, qrisPassEnd } from "./passes";
 import { billingDailySeries, billingMetrics, exportPaymentsCsv, listRecentPayments, previousRange } from "./reports";
 import { getCurrentSubscription } from "./subscriptions";
 
@@ -237,6 +237,14 @@ export const billingRouter = {
 				paymentMethod: paymentMethodSchema
 					.nullable()
 					.describe("How the current paid access is paid: a card subscription or a QRIS pass; null otherwise."),
+				qrisPass: z
+					.object({
+						active: z.boolean(),
+						lastEndedAt: z.date().nullable(),
+					})
+					.nullable()
+					.optional()
+					.describe("Read-only QRIS pass status and the most recent normal expiration."),
 				upcoming: z.array(z.object({ planId: paidPlanIdSchema, startsAt: z.date(), endsAt: z.date() })),
 				limits: z.object({ activeResumes: usage, activeCoverLetters: usage }),
 				features: z.object({
@@ -274,6 +282,9 @@ export const billingRouter = {
 				countActiveDocuments(context.user.id),
 				getCurrentSubscription(context.user.id),
 			]);
+			const hasPeriod = entitlements.source === "period";
+			const shouldReadPass = entitlements.enabled && (hasPeriod || entitlements.planId === "free");
+			const passEnd = shouldReadPass ? await qrisPassEnd(context.user.id, now, hasPeriod ? "active" : "ended") : null;
 			const options = await paymentOptions(context.user.id, originOf(context), now, current);
 			const blocker = await purchaseBlocker(authentication, options.methods);
 			return {
@@ -286,6 +297,9 @@ export const billingRouter = {
 				currency: currencyOf(options),
 				paymentMethods: entitlements.enabled ? options.methods : [],
 				paymentMethod: entitlements.enabled ? options.current : null,
+				...(entitlements.enabled
+					? { qrisPass: passEnd ? { active: hasPeriod, lastEndedAt: hasPeriod ? null : passEnd } : null }
+					: {}),
 				upcoming: entitlements.upcoming,
 				limits: {
 					activeResumes: { used: used.activeResumes, max: entitlements.limits.activeResumes },

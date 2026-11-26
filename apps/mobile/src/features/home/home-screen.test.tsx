@@ -49,7 +49,7 @@ jest.mock("./queries", () => ({
 }));
 jest.mock("@/features/applications/queries", () => ({ useApplications: () => mockReads.applications }));
 jest.mock("@/features/documents/queries", () => ({ useDocuments: () => mockReads.documents }));
-jest.mock("@/features/settings/queries", () => ({ useProfile: () => ({ data: { timezone: "UTC" } }) }));
+jest.mock("@/features/account/queries", () => ({ useProfile: () => ({ data: { timezone: "UTC" } }) }));
 jest.mock("@/features/career/hooks", () => ({ useNow: () => mockNow }));
 jest.mock("@/features/career/schedule-sheet", () => ({
 	ScheduleSheet: ({ schedule, kind }: { schedule: { id: string } | null; kind: string }) => {

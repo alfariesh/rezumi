@@ -256,7 +256,7 @@ Untuk tiap layar baru atau yang diubah:
 
 Dasar ukur Phase 01 (2026-11-21, iPhone 17 simulator iOS 27.2, build pengembangan): `Rezumi.app` 228 MB (101 MB `Rezumi.debug.dylib` + 102 MB `Frameworks`); build iOS dari cache 94 detik. Build rilis lokal, ukuran unduhan rilis, dan waktu buka dingin **belum diukur** (build rilis terlalu berat untuk Mac pemilik di sesi itu; ukur sendirian di Phase 02 atau lewat `mobile-release.yml`). Android belum diukur (ditunda pemilik).
 
-Katalog bahasa sekarang 22 MB untuk 55 bahasa: muat per bahasa saat dibutuhkan, bukan semuanya di bundel awal **[cek]** cara `src/i18n` memuatnya.
+Sejak Phase 14, Metro mengemas 55 katalog sebagai aset Lingui dan `src/i18n/catalog.ts` membuka katalog yang dipilih. Ekspor Metro iOS memverifikasi katalog terpisah dari JavaScript awal. Waktu buka dingin dan ukuran unduhan rilis masih diukur pada Phase 15.
 
 ## 12. Aturan toko dan rilis
 
@@ -477,3 +477,11 @@ Belum: web `style-groups.tsx` masih memakai `darkenForWhite` dengan asumsi kerta
 - App memakai render server untuk pratinjau karya dan halaman. Di tablet, pratinjau mengikuti versi terakhir yang tersimpan. Gambar draf di editor memakai autentikasi pemilik. Gambar diperkecil dan dikodekan ulang sebelum unggah. Modul PDF yang sudah ada menghitung halaman dan merender halaman pertama.
 - Unggah berkas Expo memakai multipart oRPC yang sama dengan web. Prosedur internal tambahan `portfolio.fetchRemoteImageBytes` memakai pembaca gambar jarak jauh dan batas yang sama. Ini memberi Expo respons JSON karena fetch native belum dapat membaca multipart.
 - Asisten memakai percakapan Phase 11 dan hasil edit teresolusi dari server. Replay dan Undo berbagi kode dengan web. Validasi dan sanitasi input AI mentah tetap di jalur server. Rewrite, Find numbers, Draft dan percakapan memakai persetujuan AI per operasi.
+
+## Phase 14 — Pengaturan, paket, bantuan, pencarian dan bahasa (2026-11-26)
+
+- Rute `app/account` meneruskan ke `features/account` dan memakai design system baru. Akun mendukung ekspor JSON, konfirmasi hapus akun lewat browser, dan keluar di semua perangkat. RPC internal mencabut sesi web serta token dan grant OAuth aplikasi Rezumi milik akun itu dalam satu transaksi. Sumber asli masuk dan akun yang tertaut tetap dikelola lewat browser.
+- Plan baca-saja di iOS dan Android. `billing.summary` menambah informasi pass QRIS aktif atau terakhir kedaluwarsa. Riwayat kredit dibaca per halaman. Pesan batas paket sama pada kedua platform. Pemakaian kredit Rezumi AI tetap mengikuti aturan platform yang sudah berlaku.
+- App settings mengatur tema, bahasa, zona waktu, notifikasi lokal per jenis, penyedia AI, MCP, cache dan lisensi. Menonaktifkan satu jenis pengingat membatalkan pengingat jenis itu pada perangkat. AI data sharing dapat memblokir operasi baru pada perangkat dan mencabut persetujuan briefing terjadwal dari server. Membersihkan cache menyisakan draf offline.
+- Search memakai daftar virtual dan menelusuri dokumen, lamaran, percakapan dan halaman. `Ask Coach` menyiapkan draf tanpa pengiriman otomatis. Ulasan toko kini muncul dari halaman utama tab baru. Bahasa Indonesia lengkap dan katalog dipakai bersama dengan ekspor surat; pengecekan arah Arab mencakup unit test pengaturan React Native.
+- `settings.yaml` lolos pemeriksaan sintaks Maestro. Screenshot, alur Maestro di perangkat dan pemeriksaan visual RTL masih tertunda. Android ditunda pemilik. Build iOS memerlukan sedikitnya 15 GiB ruang kosong sesuai `apps/mobile/AGENTS.md`.

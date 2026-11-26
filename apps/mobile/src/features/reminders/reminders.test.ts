@@ -1,7 +1,14 @@
 // Device reminders follow the application: a moved interview's reminder moves (same lead), a deleted one is cancelled,
 // one held behind an undo toast is left alone, and turning a reminder on asks for notifications first.
 import * as Notifications from "expo-notifications";
-import { allowReminders, holdReminder, releaseReminder, syncReminders } from "./index";
+import {
+	allowReminders,
+	holdReminder,
+	releaseReminder,
+	reminderEnabled,
+	setReminderEnabled,
+	syncReminders,
+} from "./index";
 
 jest.mock("expo-notifications", () => ({
 	getPermissionsAsync: jest.fn(() => Promise.resolve({ granted: true, canAskAgain: true, status: "granted" })),
@@ -65,4 +72,34 @@ describe("allowReminders", () => {
 		await expect(allowReminders()).resolves.toBe(true);
 		expect(Notifications.requestPermissionsAsync).not.toHaveBeenCalled();
 	});
+});
+
+it("turns off one reminder type and cancels only its scheduled notifications", async () => {
+	jest
+		.mocked(Notifications.getAllScheduledNotificationsAsync)
+		.mockResolvedValue([
+			scheduled("interview:i1", "2030-01-15T18:00:00.000Z"),
+			scheduled("follow-up:a", "2030-01-16T18:00:00.000Z", 0),
+		] as never);
+	try {
+		await setReminderEnabled("interview", false);
+		expect(reminderEnabled("interview")).toBe(false);
+		expect(reminderEnabled("follow-up")).toBe(true);
+		expect(Notifications.cancelScheduledNotificationAsync).toHaveBeenCalledTimes(1);
+		expect(Notifications.cancelScheduledNotificationAsync).toHaveBeenCalledWith("interview:i1");
+		await expect(allowReminders()).resolves.toBe(false);
+		await syncReminders("a", [
+			{
+				kind: "interview",
+				applicationId: "a",
+				entryId: "i1",
+				start: new Date("2030-01-17T18:00:00.000Z"),
+				title: "Rescheduled",
+				body: "Designer",
+			},
+		]);
+		expect(Notifications.scheduleNotificationAsync).not.toHaveBeenCalled();
+	} finally {
+		await setReminderEnabled("interview", true);
+	}
 });

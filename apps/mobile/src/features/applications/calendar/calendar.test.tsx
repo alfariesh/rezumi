@@ -15,7 +15,7 @@ const mockOpen = jest.fn();
 const mockReschedule = jest.fn();
 
 jest.mock("@/features/applications/queries", () => ({ useApplications: jest.fn() }));
-jest.mock("@/features/settings/queries", () => ({ useProfile: () => ({ data: { timezone: "America/Los_Angeles" } }) }));
+jest.mock("@/features/account/queries", () => ({ useProfile: () => ({ data: { timezone: "America/Los_Angeles" } }) }));
 jest.mock("@/features/applications/frame", () => ({ useOpenApplication: () => mockOpen }));
 jest.mock("@/shell/use-is-tablet", () => ({ useIsTablet: () => false }));
 jest.mock("@/features/applications/interview/use-reschedule", () => ({ useRescheduleInterview: () => mockReschedule }));

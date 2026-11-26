@@ -16,7 +16,7 @@ jest.mock("@/features/applications/queries", () => ({ useApplications: () => moc
 jest.mock("@/features/documents/queries", () => ({
 	useDocuments: () => ({ data: mockDocuments, refetch: mockRefetch }),
 }));
-jest.mock("@/features/settings/queries", () => ({ useProfile: () => ({ data: { timezone: "UTC" } }) }));
+jest.mock("@/features/account/queries", () => ({ useProfile: () => ({ data: { timezone: "UTC" } }) }));
 jest.mock("@/features/career/hooks", () => ({ useNow: () => new Date("2026-11-22T09:00:00Z") }));
 jest.mock("@/api/online", () => ({ useOnline: () => mockOnline }));
 jest.mock("@/shell/use-is-tablet", () => ({ useIsTablet: () => false }));

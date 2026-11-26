@@ -1,6 +1,6 @@
 import type { IconName } from "@/ui";
 // The account's links and Sign out, shared by the tablet sidebar's account menu and the phone drawer (01-desain 2):
-// Account, Plan (Android only, without prices: K6), App settings, Help & legal, then Sign out after a confirmation.
+// Account, Plan, App settings, Help & legal, then Sign out after a confirmation.
 import type { Href } from "expo-router";
 import { useLingui } from "@lingui/react/macro";
 import { useRouter } from "expo-router";
@@ -8,9 +8,8 @@ import { useState } from "react";
 import { Pressable } from "react-native";
 import { getInitials } from "@rezumi/utils/string";
 import { useSession } from "@/auth/session";
-import { canShowPlans, usePlan } from "@/features/billing/plan";
-import { useProfile } from "@/features/settings/queries";
-import { useSignOut } from "@/features/settings/sign-out";
+import { useProfile } from "@/features/account/queries";
+import { useSignOut } from "@/features/account/sign-out";
 import { routes } from "@/routes";
 import { Avatar, ConfirmDialog, Menu, Text } from "@/ui";
 
@@ -19,17 +18,12 @@ export type AccountLink = { id: string; label: string; icon: IconName; href: Hre
 /** The account pages, in the web's order. */
 export function useAccountLinks(): AccountLink[] {
 	const { t } = useLingui();
-	const plan = usePlan();
-	const links: AccountLink[] = [
+	return [
 		{ id: "account", label: t`Account`, icon: "user-circle", href: routes.account("account") },
-	];
-	if (canShowPlans() && plan?.enabled)
-		links.push({ id: "plan", label: t`Plan`, icon: "seal-check", href: routes.account("membership") });
-	links.push(
+		{ id: "plan", label: t`Plan`, icon: "seal-check", href: routes.account("membership") },
 		{ id: "settings", label: t`App settings`, icon: "gear-six", href: routes.account("preferences") },
 		{ id: "help", label: t`Help & legal`, icon: "question", href: routes.account() },
-	);
-	return links;
+	];
 }
 
 /** Sign out, asked first: edits not yet synced from this device are lost. Render `dialog` once. */

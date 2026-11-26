@@ -50,6 +50,13 @@ const READ_NOTIFICATION_TTL_MS = 90 * 24 * 60 * 60 * 1000;
 // Due jobs inspected per claim; owners that are busy or locked are skipped, not waited on.
 const CLAIM_CANDIDATES = 20;
 
+function cancelScheduleJobs(tx: Pick<typeof db, "update">, scheduleId: string) {
+	return tx
+		.update(tables.careerJob)
+		.set({ status: "canceled", lease: null, leaseUntil: null })
+		.where(and(eq(tables.careerJob.scheduleId, scheduleId), inArray(tables.careerJob.status, ["queued", "running"])));
+}
+
 export const careerJobs = {
 	list: (userId: string) =>
 		db
@@ -128,10 +135,7 @@ export const careerJobs = {
 					throw new ORPCError("BAD_REQUEST", {
 						message: "Choose a new run time when rescheduling completed or canceled work.",
 					});
-				await tx
-					.update(tables.careerJob)
-					.set({ status: "canceled", lease: null, leaseUntil: null })
-					.where(and(eq(tables.careerJob.scheduleId, id), sql`${tables.careerJob.status} in ('queued', 'running')`));
+				await cancelScheduleJobs(tx, id);
 			}
 			const search = input.kind === "discovery" ? alertSearch(requested, previous, input.query) : null;
 			if (input.kind === "discovery" && !search)
@@ -171,6 +175,24 @@ export const careerJobs = {
 			return row;
 		});
 	},
+	revokeScheduleAi: async (userId: string, id: string) => {
+		await db.transaction(async (tx) => {
+			const [updated] = await tx
+				.update(tables.careerSchedule)
+				.set({ enabled: false })
+				.where(
+					and(
+						eq(tables.careerSchedule.id, id),
+						eq(tables.careerSchedule.userId, userId),
+						eq(tables.careerSchedule.kind, "prepare"),
+					),
+				)
+				.returning({ id: tables.careerSchedule.id });
+			if (!updated) throw new ORPCError("NOT_FOUND");
+			await cancelScheduleJobs(tx, updated.id);
+		});
+	},
+
 	delete: async (userId: string, id: string) => {
 		await db
 			.delete(tables.careerSchedule)

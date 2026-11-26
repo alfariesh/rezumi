@@ -45,7 +45,7 @@ describe("parseDeepLink: web pages to app screens", () => {
 		["/dashboard/coach/conv_1", "/coach?thread=conv_1"],
 		["/dashboard/career/coach", "/coach"],
 		["/dashboard/career/coach/conv_1", "/coach?thread=conv_1"],
-		["/dashboard/settings", "/account"],
+		["/dashboard/settings", "/account/preferences"],
 		["/dashboard/settings/account", "/account/account"],
 		["/dashboard/settings/profile", "/account/account"],
 		["/dashboard/settings/preferences", "/account/preferences"],
@@ -55,7 +55,7 @@ describe("parseDeepLink: web pages to app screens", () => {
 		["/dashboard/settings/integrations", "/account/ai"],
 		["/dashboard/settings/authentication", "/account/account"],
 		["/dashboard/settings/job-search", "/applications"],
-		["/dashboard/settings/billing", "/account"],
+		["/dashboard/settings/billing", "/account/membership"],
 	])("%s opens %s", (path, expected) => {
 		expect(href(path)).toBe(expected);
 	});
