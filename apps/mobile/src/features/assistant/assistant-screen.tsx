@@ -5,8 +5,8 @@ import { t as translate } from "@lingui/core/macro";
 import { Trans, useLingui } from "@lingui/react/macro";
 import { useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "expo-router";
-import { useState } from "react";
-import { View } from "react-native";
+import { Fragment, useState } from "react";
+import { Platform, View } from "react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { useThreads } from "./chat";
 import { ChatView } from "./chat-view";
@@ -274,8 +274,11 @@ function DocumentAssistantScreen(props: DocumentAssistantScreenProps) {
 		</ProviderGate>
 	);
 
+	// iOS presents the assistant as a form sheet with its own viewport. On Android it is a screen inside the editor's
+	// keyboard frame, which already makes room for the keyboard.
+	const Boundary = Platform.OS === "ios" ? NativeKeyboardBoundary : Fragment;
 	return (
-		<NativeKeyboardBoundary>
+		<Boundary>
 			<SafeAreaProvider>
 				<SafeAreaView edges={["top", "bottom", "left", "right"]} style={fill}>
 					<View className="flex-1 bg-surface">
@@ -308,7 +311,7 @@ function DocumentAssistantScreen(props: DocumentAssistantScreenProps) {
 					</View>
 				</SafeAreaView>
 			</SafeAreaProvider>
-		</NativeKeyboardBoundary>
+		</Boundary>
 	);
 }
 

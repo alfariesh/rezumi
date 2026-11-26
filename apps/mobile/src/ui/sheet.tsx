@@ -1,4 +1,9 @@
-import type { DetentChangeEvent, DidPresentEvent, SheetDetent } from "@lodev09/react-native-true-sheet";
+import type {
+	DetentChangeEvent,
+	DidPresentEvent,
+	PositionChangeEvent,
+	SheetDetent,
+} from "@lodev09/react-native-true-sheet";
 // Sheets: the platform's own bottom sheet (UISheetPresentationController on iOS, the Material bottom sheet on Android)
 // through TrueSheet, for a task beside the current screen: a short form, options, a detail. Dialogs and toasts render
 // above an open sheet. Phones get a grabber and detents; tablets a centred form sheet.
@@ -11,8 +16,9 @@ import type { ComponentRef, ReactNode } from "react";
 import { TrueSheet } from "@lodev09/react-native-true-sheet";
 import { useThemeColor } from "heroui-native";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { ScrollView, StyleSheet, useWindowDimensions, View } from "react-native";
+import { Platform, ScrollView, StyleSheet, useWindowDimensions, View } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { useSharedValue } from "react-native-reanimated";
 import { IconButton } from "./button";
 import { NativeKeyboardBoundary } from "./keyboard";
 import { haptics, useIsWide, useReducedMotion } from "./motion";
@@ -110,6 +116,10 @@ export function Sheet({
 	const insets = useWindowSafeAreaInsets();
 	const { height } = useWindowDimensions();
 	const ref = useRef<TrueSheet>(null);
+	// Where the sheet's top edge is on screen, as it moves: a chat inside measures the keyboard against it (Android).
+	const liveTop = useSharedValue(0);
+	const lifts = Platform.OS === "android" && !scroll;
+	const trackTop = ({ nativeEvent: { position } }: PositionChangeEvent) => liveTop.set(position);
 	const scrollRef = useRef<ComponentRef<typeof ScrollView>>(null);
 	const [footerHeight, setFooterHeight] = useState(0);
 	const [headerHeight, setHeaderHeight] = useState(0);
@@ -227,6 +237,7 @@ export function Sheet({
 			dismissible={canDismiss}
 			draggable
 			onDidPresent={measureDetent}
+			{...(lifts ? { onPositionChange: trackTop } : {})}
 			onDidDismiss={onDidDismiss}
 			onDismissAttempt={() => onDismissAttempt?.()}
 			onDetentChange={onDetentChange}
@@ -253,7 +264,8 @@ export function Sheet({
 					}
 				: {})}
 		>
-			<NativeKeyboardBoundary>
+			{/* TrueSheet lifts itself above the keyboard on Android; on iOS the content makes room. */}
+			<NativeKeyboardBoundary liftedTop={lifts ? liveTop : undefined}>
 				<GestureHandlerRootView style={styles.root}>
 					{scroll ? (
 						<ScrollView

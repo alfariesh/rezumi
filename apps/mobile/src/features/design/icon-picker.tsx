@@ -44,6 +44,8 @@ export function IconPickerSheet({ isOpen, onOpenChange, value, iconStyle, onChan
 	const [query, setQuery] = useState("");
 	const [group, setGroup] = useState(ALL);
 	const [columns, setColumns] = useState(1);
+	// The grid is a virtualized list: a tracked detent gives the sheet a bounded viewport (zero height on Android otherwise).
+	const [detent, setDetent] = useState(0);
 	const labelOf = (id: string) => {
 		const name = ICON_GROUP_NAMES[id];
 		// A category synced after these names were written still gets a readable one.
@@ -64,6 +66,8 @@ export function IconPickerSheet({ isOpen, onOpenChange, value, iconStyle, onChan
 			title={t`Icon`}
 			closeLabel={t`Close`}
 			detents={[0.7, 1]}
+			detent={detent}
+			onDetentChange={setDetent}
 			scroll={false}
 		>
 			<SearchField value={query} onChange={setQuery}>

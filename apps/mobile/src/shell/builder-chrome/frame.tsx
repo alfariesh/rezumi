@@ -183,7 +183,9 @@ function Frame<T extends string>({
 											key={name}
 											name={name}
 											options={
-												name === "assistant"
+												// Android's form sheet loses its detent and its list's scrolling once the keyboard has
+												// shown, so there the assistant fills the screen like the other modals.
+												name === "assistant" && Platform.OS === "ios"
 													? {
 															presentation: "formSheet",
 															headerShown: false,

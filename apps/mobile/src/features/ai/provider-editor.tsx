@@ -373,7 +373,7 @@ function ProviderForm({ saved, onClose, onReady }: ProviderFormProps) {
 						isSelected={current.enabled}
 						onSelectedChange={(enabled) => void setEnabled(enabled)}
 						isDisabled={pending || current.testStatus !== "success"}
-					/>{" "}
+					/>
 					<Button variant="danger-soft" isDisabled={pending} onPress={() => setConfirmDelete(true)}>
 						{t`Delete provider`}
 					</Button>

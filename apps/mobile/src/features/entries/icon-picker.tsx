@@ -54,6 +54,8 @@ export function IconPickerSheet({ isOpen, value, onOpenChange, onChange }: IconP
 	const [foreground, selected, pressedColor] = useThemeColor(["foreground", "accent-soft", "default"]);
 	const [query, setQuery] = useState("");
 	const [columns, setColumns] = useState(1);
+	// The grid is a virtualized list: a tracked detent gives the sheet a bounded viewport (zero height on Android otherwise).
+	const [detent, setDetent] = useState(0);
 	const search = query.trim().toLowerCase();
 	const names = resumeIcons.filter((name) => !name || (Object.hasOwn(paths, name) && name.includes(search)));
 
@@ -65,6 +67,8 @@ export function IconPickerSheet({ isOpen, value, onOpenChange, onChange }: IconP
 			closeLabel={t`Close`}
 			detents={[0.6, 1]}
 			scroll={false}
+			detent={detent}
+			onDetentChange={setDetent}
 		>
 			<SearchField value={query} onChange={setQuery}>
 				<SearchField.Group>
