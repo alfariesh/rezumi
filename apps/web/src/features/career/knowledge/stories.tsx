@@ -168,6 +168,14 @@ export function StoriesPage({ storyId, edit }: StoriesPageProps) {
 						/>
 					))}
 				</AnimatePresence>
+				{/* An empty list says so, as the other widgets do, instead of an empty white strip. */}
+				{list.length === 0 && (
+					<EmptyBlock
+						kind="inline"
+						title={<Trans>No stories yet</Trans>}
+						description={<Trans>Use Add a story to write your first.</Trans>}
+					/>
+				)}
 			</CareerWidget>
 
 			{storyId && !selected ? (

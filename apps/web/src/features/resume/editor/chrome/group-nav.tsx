@@ -27,6 +27,8 @@ type GroupPanelProps<I extends string> = {
 };
 
 export function GroupPanel<I extends string>({ label, items, active, onJump, navRef, children }: GroupPanelProps<I>) {
+	const edges = useScrollEdges(navRef);
+
 	return (
 		<div>
 			<nav
@@ -34,39 +36,93 @@ export function GroupPanel<I extends string>({ label, items, active, onJump, nav
 				aria-label={label}
 				className="sticky top-0 z-10 scrollbar-none overflow-x-auto border-b border-separator bg-surface/90 px-3 py-2 backdrop-blur"
 			>
-				<ToggleButtonGroup
-					aria-label={label}
-					selectionMode="single"
-					disallowEmptySelection
-					selectedKeys={[active]}
-					className="flex w-max gap-1"
-				>
-					{items.map((item) => (
-						<ToggleButton
-							key={item.id}
-							id={item.id}
-							// On press, not on selection change: pressing the group in view still jumps back to its top.
-							onPress={() => onJump(item.id)}
-							className={({ isSelected }) =>
-								cn(
-									"relative flex h-8 cursor-(--cursor-interactive) items-center gap-1.5 rounded-full px-3 text-sm font-medium whitespace-nowrap transition-[color,scale] duration-quick ease-enter outline-none focus-visible:ring-2 focus-visible:ring-focus active:scale-95",
-									isSelected ? "text-foreground" : "text-muted hover:text-foreground",
-								)
-							}
-						>
-							{({ isSelected }) => (
-								<>
-									<SelectionIndicator className="absolute inset-0 rounded-full bg-default transition-[translate,width] duration-standard ease-in-out-strong motion-reduce:transition-none" />
-									<Icon name={item.icon} size={16} variant={isSelected ? "duotone" : "stroke"} className="relative" />
-									<span className="relative">{item.label}</span>
-								</>
-							)}
-						</ToggleButton>
-					))}
-				</ToggleButtonGroup>
+				{/* The row fades out at an edge with more chips past it, so a narrow sheet shows there are more groups. */}
+				<div className="flex w-max">
+					<EdgeFade side="start" shown={edges.start} />
+					<ToggleButtonGroup
+						aria-label={label}
+						selectionMode="single"
+						disallowEmptySelection
+						selectedKeys={[active]}
+						className="flex w-max gap-1"
+					>
+						{items.map((item) => (
+							<ToggleButton
+								key={item.id}
+								id={item.id}
+								// On press, not on selection change: pressing the group in view still jumps back to its top.
+								onPress={() => onJump(item.id)}
+								className={({ isSelected }) =>
+									cn(
+										"relative flex h-8 cursor-(--cursor-interactive) items-center gap-1.5 rounded-full px-3 text-sm font-medium whitespace-nowrap transition-[color,scale] duration-quick ease-enter outline-none focus-visible:ring-2 focus-visible:ring-focus active:scale-95",
+										isSelected ? "text-foreground" : "text-muted hover:text-foreground",
+									)
+								}
+							>
+								{({ isSelected }) => (
+									<>
+										<SelectionIndicator className="absolute inset-0 rounded-full bg-default transition-[translate,width] duration-standard ease-in-out-strong motion-reduce:transition-none" />
+										<Icon name={item.icon} size={16} variant={isSelected ? "duotone" : "stroke"} className="relative" />
+										<span className="relative">{item.label}</span>
+									</>
+								)}
+							</ToggleButton>
+						))}
+					</ToggleButtonGroup>
+					<EdgeFade side="end" shown={edges.end} />
+				</div>
 			</nav>
 			<InGroupPanel value>{children}</InGroupPanel>
 		</div>
+	);
+}
+
+type ScrollEdges = { start: boolean; end: boolean };
+
+/** Whether a horizontal row has more past its start and its end edge, kept as it scrolls and resizes. */
+function useScrollEdges(ref: RefObject<HTMLElement | null>) {
+	const [edges, setEdges] = useState<ScrollEdges>({ start: false, end: false });
+
+	useEffect(() => {
+		const row = ref.current;
+		if (!row) return;
+		const measure = () => {
+			// RTL rows scroll to negative offsets; the magnitude is the distance from the start either way.
+			const offset = Math.abs(row.scrollLeft);
+			const start = offset > 1;
+			const end = offset + row.clientWidth < row.scrollWidth - 1;
+			setEdges((previous) => (previous.start === start && previous.end === end ? previous : { start, end }));
+		};
+		measure();
+		row.addEventListener("scroll", measure, { passive: true });
+		const observer = new ResizeObserver(measure);
+		observer.observe(row);
+		if (row.firstElementChild) observer.observe(row.firstElementChild);
+		return () => {
+			row.removeEventListener("scroll", measure);
+			observer.disconnect();
+		};
+	}, [ref]);
+
+	return edges;
+}
+
+type EdgeFadeProps = { side: "start" | "end"; shown: boolean };
+
+/** A strip stuck to one edge of the scrolling row, fading the chips under it; it takes no room in the row. */
+function EdgeFade({ side, shown }: EdgeFadeProps) {
+	return (
+		<span
+			aria-hidden="true"
+			className={cn(
+				"pointer-events-none sticky z-10 w-8 shrink-0 from-surface to-transparent transition-opacity duration-quick",
+				// Stuck past the row's 12px padding, so the fade reaches the card's edge.
+				side === "start"
+					? "-start-3 -me-8 bg-linear-to-r rtl:bg-linear-to-l"
+					: "-end-3 -ms-8 bg-linear-to-l rtl:bg-linear-to-r",
+				shown ? "opacity-100" : "opacity-0",
+			)}
+		/>
 	);
 }
 

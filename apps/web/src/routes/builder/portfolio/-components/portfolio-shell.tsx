@@ -7,8 +7,9 @@ import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useHotkey } from "@tanstack/react-hotkeys";
 import { useQueryClient } from "@tanstack/react-query";
-import { getRouteApi, Link, useNavigate } from "@tanstack/react-router";
+import { getRouteApi, useNavigate } from "@tanstack/react-router";
 import { lazy, Suspense, useEffect, useLayoutEffect, useRef, useState } from "react";
+import { Link as AriaLink } from "react-aria-components";
 import { Icon } from "@rezumi/ui/components/icon";
 import { toast } from "@rezumi/ui/components/toast";
 import { cn } from "@rezumi/utils/style";
@@ -281,16 +282,15 @@ function MobileBody({ onModeChange, assistant }: MobileBodyProps) {
 /** Leaving the portfolio editor goes back to the Portfolio page. */
 function PortfolioBackLink() {
 	return (
+		// React Aria's link is the tooltip's trigger itself; a Tooltip.Trigger around a router link is a second Tab stop.
 		<Tooltip>
-			<Tooltip.Trigger>
-				<Link
-					to="/dashboard/portfolio"
-					aria-label={t`Back to Portfolio`}
-					className={buttonVariants({ variant: "ghost", size: "md", isIconOnly: true })}
-				>
-					<Icon name="arrow-left" />
-				</Link>
-			</Tooltip.Trigger>
+			<AriaLink
+				href="/dashboard/portfolio"
+				aria-label={t`Back to Portfolio`}
+				className={buttonVariants({ variant: "ghost", size: "md", isIconOnly: true })}
+			>
+				<Icon name="arrow-left" />
+			</AriaLink>
 			<Tooltip.Content placement="right">
 				<Trans>Back to Portfolio</Trans>
 			</Tooltip.Content>

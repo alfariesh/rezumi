@@ -387,6 +387,29 @@ function resumeWebUrl(value: unknown): string | null {
 	return isAllowedPortfolioUrl(absolute, PORTFOLIO_WEB_PROTOCOLS) ? absolute : null;
 }
 
+/** A host without its `www.`, lowercased; null when `value` doesn't parse as an address. */
+function bareHost(value: string) {
+	try {
+		const url = new URL(/^[a-z][a-z\d+.-]*:\/\//i.test(value) ? value : `https://${value}`);
+		return url.hostname.toLowerCase().replace(/^www\./, "");
+	} catch {
+		return null;
+	}
+}
+
+/**
+ * The website's text on the page: its label, unless that label is itself an address on another host (a domain left
+ * over from before the link changed), which would show one site and open another. Then, or with no label, the address.
+ */
+function websiteLabel(label: string, href: string) {
+	const text = label.trim();
+	if (!text) return href;
+	const looksLikeAddress = !/\s/.test(text) && /\.[a-z]{2,}(?:[/:?#]|$)/i.test(text);
+	if (!looksLikeAddress) return text;
+	const shown = bareHost(text);
+	return shown && shown !== bareHost(href) ? href : text;
+}
+
 /** A resume item with its website made safe (`resumeWebUrl`, empty when it isn't); items without one stay as they are. */
 function withSafeWebsite<T extends object>(item: T): T {
 	if (!("website" in item)) return item;
@@ -508,7 +531,9 @@ export function buildPortfolioView(input: PortfolioViewInput): PortfolioView {
 	const hasContact = contactSection !== null && !data.sections.hidden.includes("contact");
 
 	const link = (button: PortfolioButton, fallbackLabel = messages.buttons[button.kind]): PortfolioViewLink | null => {
-		const label = button.label?.trim() || fallbackLabel;
+		// An unnamed Contact button promises a message only when Contact holds the form; else it's named for Contact.
+		const fallback = button.kind === "contact" && !contactSection?.form ? messages.sections.contact : fallbackLabel;
+		const label = button.label?.trim() || fallback;
 		const { kind } = button;
 		switch (kind) {
 			case "resume":
@@ -784,7 +809,7 @@ export function buildPortfolioView(input: PortfolioViewInput): PortfolioView {
 			phone: contact.phone && phone ? phone : null,
 			website:
 				contact.website && website
-					? { label: resume?.basics.website.label.trim() || website, href: website, external: true }
+					? { label: websiteLabel(resume?.basics.website.label ?? "", website), href: website, external: true }
 					: null,
 			whatsapp: contact.whatsapp.show && whatsappNumber ? { number: whatsappNumber, href: whatsappHref() } : null,
 			profiles,

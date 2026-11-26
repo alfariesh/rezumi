@@ -174,6 +174,20 @@
 		--search-field-group-bg-focus: var(--field-fill, var(--background));
 	}
 
+	/* Cells (HeroUI Pro CellSelect, CellSwitch) on a white surface match the secondary inputs beside them. */
+	.cell-select .cell-select__trigger--secondary,
+	.cell-select .cell-select__trigger--secondary[data-focus-visible="true"],
+	.cell-switch .cell-switch__trigger--secondary,
+	.cell-switch .cell-switch__trigger--secondary[data-focus-visible="true"] {
+		background-color: var(--field-fill, var(--background));
+	}
+
+	.cell-select .cell-select__trigger--secondary:hover,
+	.cell-select .cell-select__trigger--secondary[data-hovered="true"],
+	.cell-switch .cell-switch__trigger--secondary[data-hovered="true"] {
+		background-color: var(--field-fill-hover, color-mix(in oklab, var(--background) 94%, var(--foreground)));
+	}
+
 	.autocomplete--secondary .autocomplete__trigger {
 		--autocomplete-trigger-bg: var(--field-fill, var(--background));
 		--autocomplete-trigger-bg-hover: var(
@@ -480,6 +494,16 @@
 	.checkbox:not(.checkbox--secondary):not([data-indeterminate="true"]) .checkbox__control {
 		background-color: var(--field-fill, var(--background));
 		box-shadow: none;
+	}
+}
+
+/*
+ * Phone editors: while their floating dock shows (`data-editor-dock` on the root), a bottom toast sits above it, so the
+ * dock stays visible and tappable and the toast's Undo and Close stay in reach.
+ */
+@layer components {
+	:root[data-editor-dock] .toast-region--bottom {
+		bottom: calc(env(safe-area-inset-bottom) + 5rem);
 	}
 }
 

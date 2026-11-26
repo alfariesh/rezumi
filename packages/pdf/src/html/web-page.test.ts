@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vite-plus/test";
 import { sampleResumeData } from "@rezumi/schema/resume/sample";
 import { HOST } from "../forme/primitives";
+import { renderWebPageDocument, webPageMessages } from "./document";
 import { toHtml } from "./to-html";
 import { renderResumeWebPage } from "./web-page";
 
@@ -108,5 +109,16 @@ describe("renderResumeWebPage", () => {
 		expect(html.match(/<h1[ >]/g)).toHaveLength(1);
 		expect(html).toMatch(new RegExp(`<h1[^>]*>${data.basics.name}</h1>`));
 		expect(html).toMatch(/<h2[ >]|role="heading" aria-level="2"/);
+	});
+});
+
+describe("renderWebPageDocument", () => {
+	it("draws the gray desk for visitors and leaves it out for the editor's preview", async () => {
+		const page = await renderResumeWebPage({ data: sampleResumeData });
+		const messages = webPageMessages("en-US");
+		const clear = "html,body{background:transparent}";
+
+		expect(renderWebPageDocument({ page, messages })).not.toContain(clear);
+		expect(renderWebPageDocument({ page, messages, clearDesk: true })).toContain(clear);
 	});
 });

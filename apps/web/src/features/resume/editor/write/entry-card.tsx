@@ -10,13 +10,16 @@ import { useLingui } from "@lingui/react";
 import { Trans } from "@lingui/react/macro";
 import { AnimatePresence, m } from "motion/react";
 import { useEffect, useState } from "react";
+import { FocusScope } from "react-aria";
 import { useLocale } from "react-aria-components";
+import { createPortal } from "react-dom";
 import { createEntry, describeEntry, getEntries, getPrimaryField, isDraftEntry } from "@rezumi/resume/write";
 import { Icon } from "@rezumi/ui/components/icon";
 import { IconButton } from "@rezumi/ui/components/icon-button";
 import { toast } from "@rezumi/ui/components/toast";
 import { useBreakpoint } from "@rezumi/ui/hooks/use-breakpoint";
 import { cn } from "@rezumi/utils/style";
+import { useSheetLayer } from "../chrome/sheet-layer";
 import { useEditorStore } from "../store";
 import { EntryFields } from "./entries";
 import { useEntry, useEntryWriter } from "./fields";
@@ -201,20 +204,33 @@ type PhoneEntryScreenProps = {
 	children: ReactNode;
 };
 
-/** Phones: an open entry pushes in full screen, with a back label naming its section and 44px fields. */
+/**
+ * Phones: an open entry pushes in full screen, with a back label naming its section and 44px fields. In the editor's
+ * sheet it renders into the sheet's top layer, so the list behind can't paint over it; focus moves in, stays in, and
+ * returns to the entry's row on the way back (Escape goes back too).
+ */
 function PhoneEntryScreen({ section, title, locked, onBack, onDelete, children }: PhoneEntryScreenProps) {
 	const sectionTitle = useSectionTitle(section);
+	const layer = useSheetLayer();
 	// Off-screen at the end edge: the screen pushes in from there and goes back there.
 	const offscreen = useLocale().direction === "rtl" ? "translateX(-100%)" : "translateX(100%)";
 
-	return (
+	const screen = (
 		<m.div
 			role="dialog"
+			aria-modal="true"
 			aria-label={title || t`Untitled`}
 			className="fixed inset-0 z-40 flex flex-col bg-surface pb-[env(safe-area-inset-bottom)]"
 			initial={{ transform: offscreen }}
 			animate={{ transform: "translateX(0%)", transition: { duration: D3, ease: EASE_DRAWER } }}
 			exit={{ transform: offscreen, transition: { duration: D3 * EXIT, ease: EASE_DRAWER } }}
+			onKeyDown={(event) => {
+				if (event.key !== "Escape" || event.defaultPrevented) return;
+				// Back to the list, not out of the sheet.
+				event.preventDefault();
+				event.stopPropagation();
+				onBack();
+			}}
 		>
 			<div className="flex h-14 shrink-0 items-center gap-1 border-b border-separator px-1.5">
 				<Button variant="ghost" size="lg" onPress={onBack} className="gap-0.5 px-2 text-accent-soft-foreground">
@@ -232,6 +248,13 @@ function PhoneEntryScreen({ section, title, locked, onBack, onDelete, children }
 			</fieldset>
 		</m.div>
 	);
+
+	const scoped = (
+		<FocusScope contain restoreFocus autoFocus>
+			{screen}
+		</FocusScope>
+	);
+	return layer ? createPortal(scoped, layer) : scoped;
 }
 
 function deleteEntry(source: WriteSource, section: WriteSection, entryId: string) {

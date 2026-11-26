@@ -21,7 +21,10 @@ type NavigationProps = {
 	sections?: readonly PortfolioViewSection[];
 	/** A link's text; the section's title by default. */
 	label?: (section: PortfolioViewSection) => string;
-	/** A "Send a message" button to this anchor after the links, on wide screens; its item takes `className`. */
+	/**
+	 * A button to Contact at this anchor after the links, on wide screens; its item takes `className`. It reads "Send a
+	 * message" when Contact holds the form, else "Contact".
+	 */
 	message?: { anchor: string; className?: string } | null;
 };
 
@@ -35,6 +38,8 @@ export function Navigation(props: NavigationProps) {
 	const onWork = page.kind === "work";
 	const target = (anchor: string) => (onWork ? homeLink(view, anchor) : `#${anchor}`);
 	const links = navSections(props.sections ?? view.sections);
+	const contact = view.sections.find((section) => section.kind === "contact");
+	const hasForm = contact?.kind === "contact" && contact.contact.form;
 	const items = links.map((section) => (
 		<li key={section.key}>
 			<a href={target(section.anchor)}>{props.label ? props.label(section) : section.title}</a>
@@ -53,7 +58,7 @@ export function Navigation(props: NavigationProps) {
 						{props.message && (
 							<li className={props.message.className}>
 								<a className="pf-btn pf-btn--primary" href={target(props.message.anchor)} data-pf-event="contact">
-									{messages.sendMessage}
+									{hasForm ? messages.sendMessage : messages.contact}
 								</a>
 							</li>
 						)}

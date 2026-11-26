@@ -35,6 +35,7 @@ async function renderPreview(data: ResumeData, settings: PreviewSettings) {
 		// The preview is inert (no scripts, no requests); these only decide which controls show.
 		downloadUrl: settings.showDownloadButtons ? "#" : undefined,
 		creditUrl: data.metadata.web?.showCredit === false ? undefined : window.location.origin,
+		clearDesk: true,
 	});
 }
 
@@ -68,7 +69,7 @@ export function WebPagePreview() {
 	}, [debouncedData, hideContactDetails, showDownloadButtons]);
 
 	return (
-		<div className="flex h-full min-h-0 flex-col items-center gap-3 bg-background p-4">
+		<div className="flex h-full min-h-0 flex-col items-center gap-3 bg-background pt-4">
 			<Segment
 				aria-label={t`Preview size`}
 				selectedKey={device}
@@ -86,9 +87,12 @@ export function WebPagePreview() {
 			</Segment>
 			<div
 				className={cn(
-					// The ring sits on an overlay: an inset ring on the frame itself would paint under the iframe.
-					"relative min-h-0 w-full flex-1 overflow-hidden rounded-xl bg-surface transition-[max-width] duration-standard ease-enter after:pointer-events-none after:absolute after:inset-0 after:rounded-xl after:ring-1 after:ring-black/5 after:ring-inset dark:after:ring-white/10",
-					device === "phone" ? "max-w-[390px]" : "max-w-full",
+					// At a computer's width the page fills the canvas with no frame of its own. At a phone's, a hairline
+					// on an overlay marks the screen's edges (an inset ring on the frame itself would paint under the iframe).
+					"relative min-h-0 w-full flex-1 overflow-hidden transition-[max-width] duration-standard ease-enter",
+					device === "phone"
+						? "max-w-[390px] rounded-t-xl after:pointer-events-none after:absolute after:inset-0 after:rounded-t-xl after:ring-1 after:ring-black/5 after:ring-inset dark:after:ring-white/10"
+						: "max-w-full",
 				)}
 			>
 				{document ? (

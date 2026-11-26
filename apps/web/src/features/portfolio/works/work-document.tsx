@@ -122,19 +122,18 @@ function WorkStatus({ work, update }: PartProps) {
 				{work.hidden ? <Trans>Hidden from the page</Trans> : <Trans>Shown on the page</Trans>}
 			</ToggleButton>
 			<span className="flex-1" />
+			{/* The button is the trigger itself: a Tooltip.Trigger wrapper is a second, empty stop for Tab. */}
 			<Tooltip>
-				<Tooltip.Trigger>
-					<Button
-						size="sm"
-						variant="ghost"
-						isIconOnly
-						aria-label={t`Delete ${title}`}
-						className="text-muted hover:text-danger"
-						onPress={() => void remove()}
-					>
-						<Icon name="trash" size={16} />
-					</Button>
-				</Tooltip.Trigger>
+				<Button
+					size="sm"
+					variant="ghost"
+					isIconOnly
+					aria-label={t`Delete ${title}`}
+					className="text-muted hover:text-danger"
+					onPress={() => void remove()}
+				>
+					<Icon name="trash" size={16} />
+				</Button>
 				<Tooltip.Content>
 					<Trans>Delete work</Trans>
 				</Tooltip.Content>

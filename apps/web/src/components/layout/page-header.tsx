@@ -4,6 +4,8 @@ import { renderAsH1 } from "@/libs/typography";
 
 type PageHeaderProps = {
 	title: ReactNode;
+	/** Beside the title, outside the heading: a small status such as a save indicator. */
+	titleAddon?: ReactNode;
 	/** One line under the title. */
 	description?: ReactNode;
 	/** A small back link above the title. */
@@ -15,15 +17,26 @@ type PageHeaderProps = {
 };
 
 /** The one header every dashboard page uses. Renders as siblings, so the page's own gap spaces the rows. */
-export function PageHeader({ title, description, back, actions, children }: PageHeaderProps) {
+export function PageHeader({ title, titleAddon, description, back, actions, children }: PageHeaderProps) {
+	const heading = (
+		<Typography type="h2" render={renderAsH1}>
+			{title}
+		</Typography>
+	);
+
 	return (
 		<>
 			<header className="flex flex-wrap items-center justify-between gap-3">
 				<div className="grid min-w-0 gap-1">
 					{back && <div className="mb-2">{back}</div>}
-					<Typography type="h2" render={renderAsH1}>
-						{title}
-					</Typography>
+					{titleAddon ? (
+						<div className="flex min-w-0 items-center gap-2">
+							{heading}
+							{titleAddon}
+						</div>
+					) : (
+						heading
+					)}
 					{description && <p className="text-body-sm text-muted">{description}</p>}
 				</div>
 				{actions && <div className="flex items-center gap-2">{actions}</div>}

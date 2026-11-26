@@ -241,17 +241,24 @@ function ResumePageCaption(props: ResumePageCaptionProps) {
 	);
 }
 
-type OverflowChipProps = { authored: number; lines: number | null };
+type OverflowChipProps = { authored: number; pageCount: number; lines: number | null };
 
-/** "Runs onto page 2 by about 6 lines" with Fit, which tightens the design until it fits (one undo step). */
-function OverflowChip({ authored, lines }: OverflowChipProps) {
+/**
+ * "Runs onto page 2 by about 6 lines" with Fit, which tightens the design until it fits (one undo step). Content that
+ * spills over more than one page names the last page and the planned count instead: "Runs to page 5, 3 planned".
+ */
+function OverflowChip({ authored, pageCount, lines }: OverflowChipProps) {
 	const [fitting, setFitting] = useState(false);
 	const next = authored + 1;
 
 	return (
 		<span className="flex min-h-8 items-center gap-2 rounded-full bg-warning-soft py-1 ps-3 pe-1 text-sm text-warning-soft-foreground">
 			<Icon name="square-split-horizontal" size={18} />
-			{lines ? (
+			{pageCount > next ? (
+				<Trans>
+					Runs to page {pageCount}, {authored} planned
+				</Trans>
+			) : lines ? (
 				<Plural
 					value={lines}
 					one={`Runs onto page ${next} by about # line`}

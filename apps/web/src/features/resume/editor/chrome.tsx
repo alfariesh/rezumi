@@ -5,8 +5,8 @@ import { Button, buttonVariants, Separator, Tooltip } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Plural, Trans } from "@lingui/react/macro";
 import { useHotkey } from "@tanstack/react-hotkeys";
-import { Link } from "@tanstack/react-router";
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
+import { Link as AriaLink } from "react-aria-components";
 import { Icon } from "@rezumi/ui/components/icon";
 import { IconButton } from "@rezumi/ui/components/icon-button";
 import { useBreakpoint } from "@rezumi/ui/hooks/use-breakpoint";
@@ -176,21 +176,23 @@ export function DocumentTitle({ name, isLocked, onRename, maxLength = 100 }: Doc
 	);
 }
 
-/** Leaving the editor is navigation, so it's a link styled as an icon button. */
+/**
+ * Leaving the editor is navigation, so it's a link styled as an icon button. React Aria's link (routed through the
+ * app's RouterProvider) is the tooltip's trigger itself: a Tooltip.Trigger around a router link adds a `role="button"`
+ * Tab stop that goes nowhere.
+ */
 export function BackLink() {
 	const label = t`Back to documents`;
 
 	return (
 		<Tooltip>
-			<Tooltip.Trigger>
-				<Link
-					to="/dashboard/documents"
-					aria-label={label}
-					className={buttonVariants({ variant: "ghost", size: "md", isIconOnly: true })}
-				>
-					<Icon name="arrow-left" />
-				</Link>
-			</Tooltip.Trigger>
+			<AriaLink
+				href="/dashboard/documents"
+				aria-label={label}
+				className={buttonVariants({ variant: "ghost", size: "md", isIconOnly: true })}
+			>
+				<Icon name="arrow-left" />
+			</AriaLink>
 			<Tooltip.Content placement="right">{label}</Tooltip.Content>
 		</Tooltip>
 	);

@@ -25,6 +25,11 @@ export type WebPageDocumentOptions = {
 	downloadUrl?: string | undefined;
 	/** Where the footer credit links; absent when the owner turned it off. */
 	creditUrl?: string | undefined;
+	/**
+	 * The editor's preview: no gray desk behind the sheet, so the page sits on the editor's own canvas instead of a
+	 * second, darker block. Visitors always get the desk.
+	 */
+	clearDesk?: boolean | undefined;
 };
 
 /**
@@ -35,7 +40,7 @@ const SHELL_CSS = `
 html{-webkit-text-size-adjust:100%}
 body{margin:0;background:#ececef;color:#111;font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
 .rr.rr-desk{padding:40px 16px 112px}
-.rr-page{box-shadow:0 1px 2px rgb(0 0 0/.06),0 8px 32px rgb(0 0 0/.08)}
+.rr-page{border-radius:6px;box-shadow:0 1px 2px rgb(0 0 0/.06),0 8px 32px rgb(0 0 0/.08)}
 .rr-actions a:focus-visible,.rr-actions button:focus-visible,.rr .rr-credit:focus-visible{outline:2px solid #2563eb;outline-offset:4px}
 .rr .rr-credit{display:flex;flex-direction:column;align-items:center;gap:6px;width:max-content;margin:36px auto 0;color:#8e8e96;opacity:.7;text-decoration:none;font:500 11px/1 system-ui,-apple-system,"Segoe UI",sans-serif;letter-spacing:.02em;border-radius:6px;transition:opacity .2s,color .2s}
 .rr .rr-credit svg{width:18px;height:18px}
@@ -47,13 +52,15 @@ body{margin:0;background:#ececef;color:#111;font-family:system-ui,-apple-system,
 .rr-toast[data-on]{opacity:1}
 @media (max-width:640px){
 .rr.rr-desk{padding:0 0 96px}
-.rr-page{box-shadow:none}
+.rr-page{border-radius:0;box-shadow:none}
 .rr-actions{left:0;right:0;bottom:0;padding:12px 16px calc(12px + env(safe-area-inset-bottom));background:rgb(255 255 255/.92);backdrop-filter:blur(12px);box-shadow:0 -1px 0 rgb(0 0 0/.08)}
 .rr-actions a,.rr-actions button{flex:1;justify-content:center;height:48px;font-size:16px;box-shadow:none;border:1px solid rgb(0 0 0/.12)}
 .rr-actions .rr-primary{border-color:#111}
 }
-@media print{body{background:#fff}.rr.rr-desk{padding:0}.rr-page{box-shadow:none}.rr-actions,.rr-credit,.rr-toast{display:none}}
+@media print{body{background:#fff}.rr.rr-desk{padding:0}.rr-page{border-radius:0;box-shadow:none}.rr-actions,.rr-credit,.rr-toast{display:none}}
 `;
+
+const CLEAR_DESK_CSS = "html,body{background:transparent}";
 
 const MESSAGE_CSS = `
 body{margin:0;min-height:100vh;display:grid;place-items:center;background:#ececef;color:#111;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;padding:24px;box-sizing:border-box}
@@ -135,6 +142,7 @@ export function renderWebPageDocument({
 	messages,
 	downloadUrl,
 	creditUrl,
+	clearDesk,
 }: WebPageDocumentOptions): string {
 	const download = downloadUrl
 		? `<a class="rr-primary" href="${escapeHtml(downloadUrl)}" download>${escapeHtml(messages.downloadPdf)}</a>`
@@ -149,7 +157,7 @@ export function renderWebPageDocument({
 		`<div class="rr-toast" role="status" aria-live="polite">${escapeHtml(messages.linkCopied)}</div>`,
 		`<script>${WEB_PAGE_SCRIPT}</script>`,
 	].join("");
-	return shell(page.lang, metaTags(head), `${SHELL_CSS}${page.css}`, body);
+	return shell(page.lang, metaTags(head), `${SHELL_CSS}${clearDesk ? CLEAR_DESK_CSS : ""}${page.css}`, body);
 }
 
 /** The page a password-protected resume shows until the visitor unlocks it. */
