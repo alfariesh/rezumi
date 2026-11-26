@@ -7,8 +7,11 @@ export const JOB_SEARCH_POSTED_WITHIN_DAYS = [1, 7, 14, 30] as const;
 export const JOB_SEARCH_REMOTE = ["any", "only", "exclude"] as const;
 /** The highest minimum yearly pay a search takes; high enough for currencies such as IDR and VND. */
 export const MAX_JOB_SEARCH_SALARY = 1_000_000_000_000;
-/** Listings a page of results holds (K3). */
-export const JOB_SEARCH_PAGE_SIZE = 20;
+/**
+ * Listings a page of results holds (K3). Each listing a provider returns is paid for and most people read only the top of
+ * the list, so a page is kept short; "load more" brings the next.
+ */
+export const JOB_SEARCH_PAGE_SIZE = 10;
 
 export const jobSearchInputSchema = z.object({
 	query: z.string().trim().min(2).max(200),

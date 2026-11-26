@@ -46,3 +46,11 @@ Belum / catatan:
 - `remote: "exclude"` (hanya lewat API/MCP) tidak bisa ditampilkan di halaman; dibuka dari riwayat menjadi "On-site, hybrid or remote", jadi dihitung pencarian baru.
 - "Free today" dibaca dari penghitung bersama (`seen:` per hari akun); bila penghitung bersama gagal dan jatuh ke memori proses, lencana bisa keliru "Uses 1 search" walau server tetap tidak menghitung dua kali.
 - Screenshot panduan `searching-for-jobs` belum dibuat ulang.
+
+## Penghematan lanjutan 2026-11-26 (setelah paket hemat, `02-teknis.md` 22)
+
+- **Cari dulu di database sendiri.** Semua lowongan yang sudah dibayar ada di `job_listing` sampai 30 hari. Bila stok lokal yang cocok (judul, negara, umur posting, belum tutup) cukup untuk satu halaman, jawab dari sana dengan $0. Penghematan terbesar seiring jumlah pengguna. JobsPipe sudah mengizinkan simpan 30 hari; **ketentuan Hirebase perlu dicek dulu**.
+- **Sinonim kata kunci** (HR = Human Resources, SWE = software engineer): ukur dulu dengan `*.count` gratis bahwa hasilnya setara sebelum disatukan dalam kunci cache.
+- **Kuota per paket vs biaya.** Dengan ±$0,015–0,03 per halaman, pemakaian penuh: Free 3/hari ±$1–2,6 per bulan tanpa pemasukan, Plus 15/hari ±$7–13 (harga $4,99), Pro AI 40/hari ±$18–35 ($9,99). Pilihan: turunkan batas, Free hanya hasil simpanan setelah pencarian pertama, atau batas biaya per akun dalam dolar. Keputusan pemilik.
+- **Notifikasi lowongan** masih meminta 20 per penyedia per cek (`ALERT_PAGE_SIZE`); Pro AI bisa 10 notifikasi. Pertimbangkan 10.
+- Pantau **Cost per results page** dan persentase "tampil dari yang dibayar" di dasbor setelah deploy; bila persentase rendah, cari filter mana yang membuang (negara, level, gaji).

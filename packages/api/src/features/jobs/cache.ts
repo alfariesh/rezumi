@@ -11,7 +11,11 @@ import { toJobListing } from "./store";
  * until the daily upkeep removes it (Phase 05).
  */
 
-export const JOB_SEARCH_CACHE_TTL_MS = 6 * 60 * 60 * 1000;
+/**
+ * A day: postings change slowly, the daily upkeep drops closed ones, and each extra hour lets more people asking the same
+ * thing get the saved answer free.
+ */
+export const JOB_SEARCH_CACHE_TTL_MS = 24 * 60 * 60 * 1000;
 
 export type CachedSearch = {
 	key: string;

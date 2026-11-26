@@ -679,6 +679,12 @@ msgstr ""
 msgid "{0} of the {1} daily budget (UTC day {2})"
 msgstr ""
 
+#. placeholder {0}: percent(perPage.shownShare)
+#. placeholder {1}: integer(ok.search.paidListings)
+#: src/features/jobs/admin/costs-page.tsx
+msgid "{0} of the {1} listings paid for were shown"
+msgstr ""
+
 #. placeholder {0}: creditCount(credits)
 #: src/features/assistant/assistant-panel.tsx
 msgid "{0} per reply"
@@ -5321,6 +5327,10 @@ msgstr ""
 
 #: src/features/jobs/admin/costs-page.tsx
 msgid "Cost per day"
+msgstr ""
+
+#: src/features/jobs/admin/costs-page.tsx
+msgid "Cost per results page"
 msgstr ""
 
 #: src/features/career/knowledge/facts.tsx
@@ -11414,10 +11424,6 @@ msgstr "ତଳକୁ ଯାଅ |"
 msgid "Move each job from saved to offer, with notes, dates and the resume you sent."
 msgstr ""
 
-#: src/features/resume/editor/write/basics-card.tsx
-msgid "Move field up"
-msgstr "କ୍ଷେତ୍ରକୁ ଘୁଞ୍ଚାନ୍ତୁ |"
-
 #: src/features/resume/editor/check/issues.ts
 msgid "Move it to the main column"
 msgstr "ଏହାକୁ ମୁଖ୍ୟ ସ୍ତମ୍ଭକୁ ଘୁଞ୍ଚାନ୍ତୁ |"
@@ -12048,6 +12054,10 @@ msgstr "ତୁଳନା କରିବାକୁ ଏପର୍ଯ୍ୟନ୍ତ କ
 #: src/routes/builder/$resumeId/-components/editor-bar.tsx
 msgid "No open issues"
 msgstr "କ open ଣସି ଖୋଲା ପ୍ରସଙ୍ଗ ନାହିଁ |"
+
+#: src/features/jobs/admin/costs-page.tsx
+msgid "No page asked of the providers yet"
+msgstr ""
 
 #: src/features/docs/sidebar.tsx
 msgid "No pages match “{term}”."
@@ -13041,6 +13051,7 @@ msgstr "{0} ପାଇଁ ବିକଳ୍ପଗୁଡ଼ିକ |"
 msgid "Options for {0} at {1}"
 msgstr "{1} ରେ {0} ପାଇଁ ବିକଳ୍ପଗୁଡ଼ିକ |"
 
+#: src/features/resume/editor/write/basics-card.tsx
 #: src/features/resume/editor/write/section-row.tsx
 #: src/features/resume/share/history-tab.tsx
 msgid "Options for {title}"
@@ -15407,6 +15418,7 @@ msgstr ""
 
 #: src/features/portfolio/editor/content-panel.tsx
 #: src/features/portfolio/works/works-panel.tsx
+#: src/features/resume/editor/write/basics-card.tsx
 #: src/features/resume/editor/write/section-row.tsx
 #: src/routes/builder/$resumeId/-sidebar/right/sections/layout/pages.tsx
 msgid "Reorder {title}"

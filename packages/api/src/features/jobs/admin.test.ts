@@ -100,6 +100,19 @@ describe("summarizeJobEvents", () => {
 			ms: 2100,
 			results: 10,
 		},
+		// Pages: their cost is already in the provider rows above.
+		{
+			day: "2026-11-20",
+			provider: "hirebase",
+			tool: "page",
+			outcome: "miss",
+			kind: "search",
+			calls: 6,
+			cost: 219200,
+			ms: 11500,
+			results: 50,
+			paid: "130",
+		},
 		{
 			day: "2026-11-20",
 			provider: "serper",
@@ -121,7 +134,17 @@ describe("summarizeJobEvents", () => {
 			{ date: "2026-11-20", provider: "jobspipe", costMicro: 39200, calls: 1 },
 			{ date: "2026-11-20", provider: "serper", costMicro: 5000, calls: 5 },
 		]);
-		expect(summary.search).toEqual({ cacheHits: 9, stale: 1, providerCalls: 7, budget: 3 });
+		expect(summary.search).toEqual({
+			cacheHits: 9,
+			stale: 1,
+			providerCalls: 7,
+			budget: 3,
+			pages: 6,
+			pageCostMicro: 219200,
+			paidListings: 130,
+			shownListings: 50,
+		});
+		expect(summary.tools.some((row) => row.tool === "page")).toBe(false);
 	});
 
 	it("averages speed over calls that reached the provider and counts failures", () => {

@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vite-plus/test";
 import { jobSearchInputSchema } from "@rezumi/schema/jobs/search";
-import { jobSearchKey, normalizeJobSearch, stableJson } from "./search-key";
+import { cleanJobQuery, jobSearchKey, normalizeJobSearch, stableJson } from "./search-key";
 
 const input = (value: Record<string, unknown>) => jobSearchInputSchema.parse(value);
 const key = (value: Record<string, unknown>, after?: Record<string, string>) =>
@@ -56,5 +56,32 @@ describe("jobSearchKey", () => {
 		expect(await key({ query: "nurse" }, { hirebase: "2", jobspipe: "abc" })).toBe(
 			await key({ query: "nurse" }, { jobspipe: "abc", hirebase: "2" }),
 		);
+	});
+});
+
+describe("cleanJobQuery", () => {
+	it("leaves out words that only say 'a job' at either end", () => {
+		expect(cleanJobQuery("HR jobs")).toBe("HR");
+		expect(cleanJobQuery("Lowongan kerja  admin gudang")).toBe("admin gudang");
+		expect(cleanJobQuery("loker HR")).toBe("HR");
+		expect(cleanJobQuery("hiring: data engineer")).toBe("data engineer");
+		expect(cleanJobQuery("nurse vacancies")).toBe("nurse");
+	});
+
+	it("keeps words that are part of the role", () => {
+		expect(cleanJobQuery("kerja remote")).toBe("kerja remote");
+		expect(cleanJobQuery("job coach")).toBe("job coach");
+		expect(cleanJobQuery("part time job")).toBe("part time job");
+		expect(cleanJobQuery("product manager")).toBe("product manager");
+	});
+
+	it("keeps the text as typed when nothing would be left", () => {
+		expect(cleanJobQuery("jobs")).toBe("jobs");
+		expect(cleanJobQuery("hiring")).toBe("hiring");
+		expect(cleanJobQuery("lowongan kerja")).toBe("lowongan kerja");
+	});
+
+	it("gives 'HR jobs' and 'hr' one cache key", async () => {
+		expect(await key({ query: "HR jobs" })).toBe(await key({ query: "hr" }));
 	});
 });

@@ -9,7 +9,16 @@ import { Trans } from "@lingui/react/macro";
 import { keepPreviousData, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { Icon } from "@rezumi/ui/components/icon";
-import { cacheShare, dailyCostSeries, featureName, formatUsd, kindName, PROVIDER_COLORS, providerName } from "./costs";
+import {
+	cacheShare,
+	dailyCostSeries,
+	featureName,
+	formatUsd,
+	kindName,
+	pageCost,
+	PROVIDER_COLORS,
+	providerName,
+} from "./costs";
 import { AdminCard, IconButton, LegendDot, MiniStat, StatWidget } from "@/features/billing/admin/parts";
 import { getReadableErrorMessage } from "@/libs/error-message";
 import { orpc } from "@/libs/orpc/client";
@@ -66,10 +75,11 @@ function KpiRow({ report }: ReportProps) {
 	const share = today.budgetMicro ? today.spentMicro / today.budgetMicro : 0;
 	const ok = events.status === "ok" ? events : null;
 	const cache = ok ? cacheShare(ok.search) : null;
+	const perPage = ok ? pageCost(ok.search) : null;
 	const errors = ok ? ok.tools.reduce((sum, row) => sum + row.errors, 0) : null;
 	const refused = ok ? ok.tools.reduce((sum, row) => sum + row.budget, 0) : 0;
 	return (
-		<div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
+		<div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-5">
 			<StatWidget
 				icon={<Icon name="scales" size={16} />}
 				title={<Trans>Spent today</Trans>}
@@ -97,6 +107,18 @@ function KpiRow({ report }: ReportProps) {
 					ok
 						? t`${integer(ok.search.cacheHits + ok.search.stale)} from cache · ${integer(ok.search.providerCalls)} provider calls`
 						: t`Counted on Cloudflare only`
+				}
+			/>
+			<StatWidget
+				icon={<Icon name="tag" size={16} />}
+				title={<Trans>Cost per results page</Trans>}
+				value={perPage ? formatUsd(perPage.averageMicro) : "—"}
+				footer={
+					!ok
+						? t`Counted on Cloudflare only`
+						: perPage?.shownShare != null
+							? t`${percent(perPage.shownShare)} of the ${integer(ok.search.paidListings)} listings paid for were shown`
+							: t`No page asked of the providers yet`
 				}
 			/>
 			<StatWidget
@@ -449,7 +471,7 @@ export function JobCostsPage() {
 					{getReadableErrorMessage(report.error, t`The numbers couldn't load.`)}
 				</p>
 			) : (
-				<div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
+				<div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-5">
 					{[0, 1, 2, 3].map((index) => (
 						<Skeleton key={index} className="h-36 rounded-2xl" />
 					))}

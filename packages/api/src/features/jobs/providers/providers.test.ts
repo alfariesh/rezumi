@@ -197,7 +197,7 @@ describe("Hirebase search", () => {
 			{
 				indexes: ["hirebase"],
 				blobs: ["hirebase", "hirebase.jobs.search", "miss", "US", "search"],
-				doubles: [1500, expect.any(Number), 1],
+				doubles: [1500, expect.any(Number), 1, 0],
 			},
 		]);
 	});
@@ -232,7 +232,8 @@ describe("JobsPipe mapping", () => {
 			title: "Data Engineering Solution Lead - Remote",
 			company: { name: "Mindex", domain: "mindex.com" },
 			location: { city: "Rochester", country: "United States", countryCode: "US", text: "Rochester, NY 14607" },
-			seniority: "executive",
+			// JobsPipe's `director` level holds leads too.
+			seniority: "lead",
 			salary: { min: 105000, max: 155000, currency: "USD", period: "year" },
 			postingUrl: "https://www.indeed.com/viewjob?jk=23e9b4d3e84b0dcb",
 			applyUrl: "https://apply.workable.com/j/0B945F033E",
@@ -317,6 +318,22 @@ describe("JobsPipe search", () => {
 		expect(jobspipeSearchBody({ ...input, includeNoSalary: false, salaryCurrency: "GBP" }, 20)).not.toHaveProperty(
 			"min_salary_usd",
 		);
+	});
+
+	it("sends the level in JobsPipe's words, and none for junior, which it lacks", () => {
+		const input = jobSearchInputSchema.parse({ query: "data analyst" });
+		const levels = {
+			entry: "entry_level",
+			mid: "mid_level",
+			senior: "senior",
+			lead: "director",
+			executive: "executive",
+		};
+		for (const [seniority, level] of Object.entries(levels))
+			expect(jobspipeSearchBody({ ...input, seniority } as typeof input, 10)).toMatchObject({
+				job_seniority_or: [level],
+			});
+		expect(jobspipeSearchBody({ ...input, seniority: "junior" }, 10)).not.toHaveProperty("job_seniority_or");
 	});
 
 	it("returns listings with the provider's next cursor and cost", async () => {

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vite-plus/test";
-import { cacheShare, dailyCostSeries, formatUsd } from "./costs";
+import { cacheShare, dailyCostSeries, formatUsd, pageCost } from "./costs";
 
 describe("job cost dashboard helpers", () => {
 	it("gives every day of the period a bar, with each provider's dollars", () => {
@@ -23,13 +23,27 @@ describe("job cost dashboard helpers", () => {
 	});
 
 	it("shares cache answers against provider calls", () => {
-		expect(cacheShare({ cacheHits: 9, stale: 1, providerCalls: 10, budget: 3 })).toBe(0.5);
-		expect(cacheShare({ cacheHits: 0, stale: 0, providerCalls: 0, budget: 0 })).toBeNull();
+		expect(cacheShare({ cacheHits: 9, stale: 1, providerCalls: 10 })).toBe(0.5);
+		expect(cacheShare({ cacheHits: 0, stale: 0, providerCalls: 0 })).toBeNull();
 	});
 
 	it("writes small amounts to a hundredth of a cent", () => {
 		expect(formatUsd(1_500)).toBe("$0.0015");
 		expect(formatUsd(0)).toBe("$0.00");
 		expect(formatUsd(1_250_000)).toBe("$1.25");
+	});
+});
+
+describe("pageCost", () => {
+	it("averages a page and says how much of what was paid for was shown", () => {
+		expect(pageCost({ pages: 4, pageCostMicro: 100_000, paidListings: 50, shownListings: 40 })).toEqual({
+			averageMicro: 25_000,
+			shownShare: 0.8,
+		});
+		expect(pageCost({ pages: 2, pageCostMicro: 0, paidListings: 0, shownListings: 0 })).toEqual({
+			averageMicro: 0,
+			shownShare: null,
+		});
+		expect(pageCost({ pages: 0, pageCostMicro: 0, paidListings: 0, shownListings: 0 })).toBeNull();
 	});
 });

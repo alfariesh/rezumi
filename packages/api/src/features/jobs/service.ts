@@ -37,7 +37,7 @@ import { listingMatches, profileMatchText } from "./match";
 import { JOB_SOURCES } from "./providers";
 import { listRecentSearches, recordRecentSearch } from "./recent";
 import { hasMorePages, routeSearch, SEARCH_PROVIDERS } from "./routing";
-import { jobSearchKey, normalizeJobSearch, stableJson } from "./search-key";
+import { cleanJobQuery, jobSearchKey, normalizeJobSearch, stableJson } from "./search-key";
 import { toJobListingCard, upsertListings } from "./store";
 import { trackedApplications } from "./track";
 import { isTregConfigured, TregError } from "./treg";
@@ -194,6 +194,18 @@ export function createJobSearchService(overrides: Partial<JobSearchDependencies>
 		}
 
 		const fetchedAt = deps.now();
+		// The page as a whole: what it cost, how many listings were paid for and how many were shown.
+		recordJobEvent({
+			provider: page.providers[0] ?? "hirebase",
+			tool: "page",
+			outcome: "miss",
+			countryCode: input.country,
+			kind: "search",
+			costMicro: page.costMicro,
+			ms: fetchedAt.getTime() - started,
+			resultCount: page.listings.length,
+			paidCount: page.returned.length,
+		});
 		await recordSpend(deps.counters, page.costMicro, fetchedAt);
 		const stored = await upsertListings(page.returned, fetchedAt);
 		const ids = new Map(stored.map((listing) => [`${listing.provider}:${listing.externalId}`, listing.id]));
@@ -240,7 +252,8 @@ export function createJobSearchService(overrides: Partial<JobSearchDependencies>
 			if (!(await jobSearchBurstAllowed(userId))) throw new JobSearchError("rate-limit");
 			const now = deps.now();
 			const { cursor, ...rest } = request;
-			const input: JobSearchInput = { ...rest, cursor: undefined };
+			// Providers get the role without words such as "jobs", the same text the shared cache is keyed by.
+			const input: JobSearchInput = { ...rest, query: cleanJobQuery(rest.query), cursor: undefined };
 			const search = normalizeJobSearch(input);
 			const continued = cursor ? await continuedPage(cursor, input, search) : undefined;
 			const key = await jobSearchKey(search, SEARCH_PROVIDERS, continued?.after);
