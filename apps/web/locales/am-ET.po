@@ -679,6 +679,12 @@ msgstr ""
 msgid "{0} of the {1} daily budget (UTC day {2})"
 msgstr ""
 
+#. placeholder {0}: percent(perPage.shownShare)
+#. placeholder {1}: integer(ok.search.paidListings)
+#: src/features/jobs/admin/costs-page.tsx
+msgid "{0} of the {1} listings paid for were shown"
+msgstr ""
+
 #. placeholder {0}: creditCount(credits)
 #: src/features/assistant/assistant-panel.tsx
 msgid "{0} per reply"
@@ -1419,6 +1425,11 @@ msgstr "<0> ምንም የሚስተካከል የለም።</0> እያንዳንዱ 
 msgid "<0>Submitted on {0}.</0> The versions you sent are kept in Saved. Edits here don't change what {1} received."
 msgstr "<0>በ{0} ገብቷል።</0> የላኳቸው ስሪቶች በ«ተቀምጧል» ውስጥ ይቀመጣሉ። እዚህ የሚያደርጓቸው ማስተካከያዎች {1} የተቀበለውን አይቀይሩም።"
 
+#. placeholder {0}: formatUsd(budget.maxMicro)
+#: src/features/jobs/admin/budget-card.tsx
+msgid "$0 stops paid searches: people get saved results only. The most this can be set to is {0} a day."
+msgstr ""
+
 #: src/features/resume/editor/write/section-row.tsx
 msgid "1 column, inline"
 msgstr "1 አምድ፣ መስመር ውስጥ"
@@ -1585,6 +1596,14 @@ msgstr "የቀን ክልል አብዛኞቹ ሶፍትዌሮች ማንበብ በ�
 #: src/features/resume/editor/check/issues.ts
 msgid "A date won't be read"
 msgstr "ቀን አይነበብም።"
+
+#: src/features/jobs/admin/budget-card.tsx
+msgid "A day, set here"
+msgstr ""
+
+#: src/features/jobs/admin/budget-card.tsx
+msgid "A day, the server default"
+msgstr ""
 
 #: src/dialogs/resume/template/data.ts
 msgid "A deep night sidebar where a large serif name, the portrait and the contact lines glow in light text, beside a white main column."
@@ -4115,6 +4134,7 @@ msgstr "የማረጋገጫዎች"
 msgid "Challenge, approach and stack, key decisions, outcome"
 msgstr ""
 
+#: src/features/jobs/admin/budget-card.tsx
 #: src/features/resume/editor/check/job-match.tsx
 #: src/features/resume/editor/check/writing-tab.tsx
 #: src/features/settings/account/security.tsx
@@ -4158,6 +4178,10 @@ msgstr ""
 
 #: src/features/portfolio/location/location-fields.tsx
 msgid "Change the city"
+msgstr ""
+
+#: src/features/jobs/admin/budget-card.tsx
+msgid "Change the daily budget"
 msgstr ""
 
 #: src/features/applications/components/detail/next-step-card.tsx
@@ -5323,6 +5347,10 @@ msgstr ""
 msgid "Cost per day"
 msgstr ""
 
+#: src/features/jobs/admin/costs-page.tsx
+msgid "Cost per results page"
+msgstr ""
+
 #: src/features/career/knowledge/facts.tsx
 msgid "Couldn't add that fact. Try again."
 msgstr "ያንን እውነታ ማከል አልተቻለም። እንደገና ይሞክሩ።"
@@ -6355,6 +6383,14 @@ msgstr "ቼክኛ"
 #: src/features/career/today.tsx
 msgid "Daily at {clock} · next {next}"
 msgstr "በየቀኑ በ{clock} · ቀጣይ {next}"
+
+#: src/features/jobs/admin/budget-card.tsx
+msgid "Daily budget"
+msgstr ""
+
+#: src/features/jobs/admin/budget-card.tsx
+msgid "Daily budget set."
+msgstr ""
 
 #: src/features/portfolio/statistics/portfolio-statistics.tsx
 msgid "Daily numbers"
@@ -11413,10 +11449,6 @@ msgstr "ወደ ታች ውሰድ"
 msgid "Move each job from saved to offer, with notes, dates and the resume you sent."
 msgstr ""
 
-#: src/features/resume/editor/write/basics-card.tsx
-msgid "Move field up"
-msgstr "መስክ ወደ ላይ አንቀሳቅስ"
-
 #: src/features/resume/editor/check/issues.ts
 msgid "Move it to the main column"
 msgstr "ወደ ዋናው አምድ ይውሰዱት።"
@@ -12047,6 +12079,10 @@ msgstr "ለማነጻጸር እስካሁን ቅናሾች የሉም"
 #: src/routes/builder/$resumeId/-components/editor-bar.tsx
 msgid "No open issues"
 msgstr "ምንም ክፍት ችግሮች የሉም"
+
+#: src/features/jobs/admin/costs-page.tsx
+msgid "No page asked of the providers yet"
+msgstr ""
 
 #: src/features/docs/sidebar.tsx
 msgid "No pages match “{term}”."
@@ -13039,6 +13075,7 @@ msgstr "ለ {0} አማራጮች"
 msgid "Options for {0} at {1}"
 msgstr "አማራጮች ለ {0} በ {1}"
 
+#: src/features/resume/editor/write/basics-card.tsx
 #: src/features/resume/editor/write/section-row.tsx
 #: src/features/resume/share/history-tab.tsx
 msgid "Options for {title}"
@@ -15405,6 +15442,7 @@ msgstr ""
 
 #: src/features/portfolio/editor/content-panel.tsx
 #: src/features/portfolio/works/works-panel.tsx
+#: src/features/resume/editor/write/basics-card.tsx
 #: src/features/resume/editor/write/section-row.tsx
 #: src/routes/builder/$resumeId/-sidebar/right/sections/layout/pages.tsx
 msgid "Reorder {title}"
@@ -16755,6 +16793,10 @@ msgstr "ሰርቢኛ"
 msgid "Serper (web search)"
 msgstr ""
 
+#: src/features/jobs/admin/budget-card.tsx
+msgid "Server default"
+msgstr ""
+
 #: src/features/portfolio/editor/offer-forms.tsx
 msgid "Service"
 msgstr ""
@@ -16779,6 +16821,17 @@ msgstr "ክትትልን ያቀናብሩ…"
 msgid "Set a password"
 msgstr "የይለፍ ቃል ያዘጋጁ"
 
+#: src/features/jobs/admin/budget-card.tsx
+msgid "Set budget"
+msgstr ""
+
+#. placeholder {0}: budget.updatedBy
+#. placeholder {1}: i18n.date(budget.updatedAt, { dateStyle: "medium", timeStyle: "short" })
+#. placeholder {2}: budget.reason
+#: src/features/jobs/admin/budget-card.tsx
+msgid "Set by {0} on {1}: “{2}”"
+msgstr ""
+
 #. placeholder {0}: formatShort(searchOverride.expiresAt)
 #: src/features/billing/admin/customer.tsx
 msgid "set by hand until {0}"
@@ -16794,6 +16847,12 @@ msgstr ""
 
 #: src/features/billing/admin/customer.tsx
 msgid "Set limit"
+msgstr ""
+
+#. placeholder {0}: i18n.date(budget.updatedAt, { dateStyle: "medium", timeStyle: "short" })
+#. placeholder {1}: budget.reason
+#: src/features/jobs/admin/budget-card.tsx
+msgid "Set on {0}: “{1}”"
 msgstr ""
 
 #: src/features/portfolio/editor/password-group.tsx
@@ -17494,6 +17553,7 @@ msgstr ""
 msgid "Spell the month, as in \"Mar 2022\"."
 msgstr "ወሩን በፊደል ይጻፉ፣ እንደ \"Mar 2022\" ያለ።"
 
+#: src/features/jobs/admin/budget-card.tsx
 #: src/features/jobs/admin/costs-page.tsx
 msgid "Spent today"
 msgstr ""
@@ -18541,6 +18601,11 @@ msgstr ""
 msgid "The brief"
 msgstr ""
 
+#. placeholder {0}: formatUsd(budget.defaultMicro)
+#: src/features/jobs/admin/budget-card.tsx
+msgid "The budget set here is removed; the server default of {0} a day applies again."
+msgstr ""
+
 #: src/features/jobs/admin/costs-page.tsx
 msgid "The call statistics couldn't be read. Try Refresh in a moment."
 msgstr ""
@@ -19047,6 +19112,10 @@ msgstr ""
 
 #: src/features/portfolio/editor/save-problem.ts
 msgid "The server couldn't save your changes. Saving tries again by itself."
+msgstr ""
+
+#: src/features/jobs/admin/budget-card.tsx
+msgid "The server default applies again."
 msgstr ""
 
 #. Story outline heading
@@ -20623,6 +20692,10 @@ msgstr ""
 msgid "URL"
 msgstr "URL"
 
+#: src/features/jobs/admin/budget-card.tsx
+msgid "US dollars a day (0–{maxUsd})"
+msgstr ""
+
 #: src/features/portfolio/statistics/portfolio-statistics.tsx
 msgid "Use {device}"
 msgstr ""
@@ -20712,6 +20785,7 @@ msgstr "ቢበዛ 64 ቁምፊዎችን ይጠቀሙ።"
 msgid "Use between 6 and 64 characters."
 msgstr "ከ6 እስከ 64 ቁምፊዎችን ይጠቀሙ።"
 
+#: src/features/jobs/admin/budget-card.tsx
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Use default"
 msgstr "ነባሪውን ተጠቀም"
@@ -20764,8 +20838,16 @@ msgstr ""
 msgid "Use sample"
 msgstr "ናሙና ይጠቀሙ"
 
+#: src/features/jobs/admin/budget-card.tsx
+msgid "Use server default"
+msgstr ""
+
 #: src/features/portfolio/blocks/link-block.tsx
 msgid "Use the page's picture?"
+msgstr ""
+
+#: src/features/jobs/admin/budget-card.tsx
+msgid "Use the server default"
 msgstr ""
 
 #: src/features/resume/editor/check/issues.ts
@@ -21472,6 +21554,10 @@ msgstr "ስኬት ምን እንደሚመስል፣ የትኛው ተግዳሮት �
 #: src/features/resume/editor/check/check-panel.tsx
 msgid "What the file-level check found in the PDF you'd send. It ran in this tab; nothing was uploaded."
 msgstr "በምትልኩት PDF ውስጥ የፋይል ደረጃ ፍተሻ ምን አገኘ። በዚህ ትር ውስጥ ሮጦ ነበር; ምንም አልተሰቀለም."
+
+#: src/features/jobs/admin/budget-card.tsx
+msgid "What the job providers may cost in a UTC day. Past it, people get saved results only until midnight UTC. A change applies within a minute, without a deploy."
+msgstr ""
 
 #: src/features/jobs/listing-sheet.tsx
 msgid "What they ask for"

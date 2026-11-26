@@ -4,6 +4,7 @@ import type { JobProvider } from "@rezumi/schema/jobs/listing";
 import type { JobSearchInput } from "@rezumi/schema/jobs/search";
 import { JOB_SEARCH_PAGE_SIZE } from "@rezumi/schema/jobs/search";
 import { matchesSearch, spreadCompanies, withoutDuplicates } from "./filters";
+import { jobspipeFits } from "./providers/jobspipe";
 import { TregError } from "./treg";
 
 /**
@@ -11,8 +12,9 @@ import { TregError } from "./treg";
  * instance per country once the cost dashboard shows a reason to.
  *
  * - Hirebase first, for every country and remote: cheaper, and its links go to the employer.
- * - JobsPipe tops the page up to JOB_PAGE_SIZE when Hirebase failed or found fewer than TOP_UP_BELOW fitting jobs.
- *   It is left out of searches for visa sponsorship, since its listings don't say.
+ * - JobsPipe tops the page up to JOB_PAGE_SIZE when Hirebase failed or found fewer than TOP_UP_BELOW fitting jobs, and
+ *   is asked only for the missing ones, so a page Hirebase mostly filled isn't topped up. It is left out of searches it
+ *   can't answer (`jobspipeFits`: visa sponsorship, junior level).
  * - A page has a time limit: once it passes, a provider still answering is given up on, and the page shows what the
  *   others answered.
  * - No company fills the top of a page (`spreadCompanies`).
@@ -21,7 +23,7 @@ import { TregError } from "./treg";
  */
 
 export const JOB_PAGE_SIZE = JOB_SEARCH_PAGE_SIZE;
-export const TOP_UP_BELOW = 10;
+export const TOP_UP_BELOW = 5;
 /** The providers a search may use, in the order they're asked; part of the cache key. */
 export const SEARCH_PROVIDERS = ["hirebase", "jobspipe"] as const satisfies readonly JobProvider[];
 
@@ -52,7 +54,7 @@ export type RouteOptions = {
 };
 
 const jobspipeAllowed = (input: JobSearchInput, cursors: ProviderCursors) =>
-	!input.visaSponsorship && cursors.jobspipe !== "";
+	jobspipeFits(input) && cursors.jobspipe !== "";
 
 export const hasMorePages = (input: JobSearchInput, cursors: ProviderCursors) =>
 	cursors.hirebase !== "" || jobspipeAllowed(input, cursors);

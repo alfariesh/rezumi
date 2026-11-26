@@ -9,7 +9,9 @@ import { budgetLeft, recordSpend } from "./allowance";
 import { jobCounters } from "./counters";
 import { matchesSearch, withoutDuplicates } from "./filters";
 import { JOB_SOURCES } from "./providers";
+import { jobspipeFits } from "./providers/jobspipe";
 import { TOP_UP_BELOW } from "./routing";
+import { cleanJobQuery } from "./search-key";
 import { isTregConfigured, TregError } from "./treg";
 
 /**
@@ -111,7 +113,7 @@ export async function checkJobAlert(
 	if ((options.switchedOff ?? (() => Boolean(env.FLAG_DISABLE_JOB_SEARCH)))()) return empty;
 	if (!(await budgetLeft(counters, now))) throw new JobAlertPostponed(nextBudgetDay(now));
 
-	const input: JobSearchInput = { ...search, cursor: undefined };
+	const input: JobSearchInput = { ...search, query: cleanJobQuery(search.query), cursor: undefined };
 	const base: ProviderSearchOptions = {
 		limit: ALERT_PAGE_SIZE,
 		kind: "discovery",
@@ -146,8 +148,8 @@ export async function checkJobAlert(
 		errors.push(error);
 	}
 
-	// JobsPipe listings don't say whether a job sponsors visas, so it stays out of those searches, as in a search.
-	if ((errors.length > 0 || shown.length < TOP_UP_BELOW) && !input.visaSponsorship) {
+	// JobsPipe stays out of searches it can't answer (visa sponsorship, junior level), as in a search.
+	if ((errors.length > 0 || shown.length < TOP_UP_BELOW) && jobspipeFits(input)) {
 		const fresh =
 			state?.jobspipeDelta &&
 			state.jobspipeDeltaAt &&

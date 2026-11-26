@@ -7,8 +7,11 @@ import type { JobSearchInput } from "@rezumi/schema/jobs/search";
  * Two people asking the same thing get the same key, so the second answer is free. No synonyms yet (backlog).
  */
 
-/** Raise when the stored answer of the same search would differ: a new mapping, filter or provider rule. */
-const JOB_SEARCH_CACHE_VERSION = 1;
+/**
+ * Raise when the stored answer of the same search would differ: a new mapping, filter, provider rule or page size.
+ * 2: pages of 10, JobsPipe level filter, words such as "jobs" left out of the query.
+ */
+const JOB_SEARCH_CACHE_VERSION = 2;
 
 export type NormalizedJobSearch = {
 	query: string;
@@ -26,11 +29,39 @@ export type NormalizedJobSearch = {
 
 const tidy = (value: string) => value.normalize("NFKC").toLowerCase().replace(/\s+/g, " ").trim();
 
+/** Words before a role that only say "a job": "lowongan admin", "hiring: nurse". */
+const LEADING_JOB_WORDS = new Set(["lowongan", "loker", "hiring"]);
+/** "kerja" only right after one of them ("lowongan kerja"); alone it can be part of a role. */
+const AFTER_LEADING = new Set(["kerja"]);
+/** Words after a role that only say "jobs": "HR jobs". Singular "job" stays, as in "job coach". */
+const TRAILING_JOB_WORDS = new Set(["jobs", "vacancy", "vacancies", "openings", "lowongan"]);
+
+/**
+ * The role as providers are asked for it: the person's words without "jobs", "lowongan kerja" and the like at either
+ * end, so "HR jobs" and "hr" are one search (one paid answer, then shared). Falls back to the text as typed when nothing
+ * would be left.
+ */
+export function cleanJobQuery(query: string): string {
+	const words = query.normalize("NFKC").replace(/\s+/g, " ").trim().split(" ");
+	const plain = (index: number) => (words[index] ?? "").toLowerCase().replace(/[^\p{L}\p{N}]+/gu, "");
+	let start = 0;
+	let end = words.length;
+	while (start < end) {
+		const word = plain(start);
+		const leading = LEADING_JOB_WORDS.has(word);
+		if (leading || (start > 0 && AFTER_LEADING.has(word) && LEADING_JOB_WORDS.has(plain(start - 1)))) start++;
+		else break;
+	}
+	while (end > start && TRAILING_JOB_WORDS.has(plain(end - 1))) end--;
+	const cleaned = words.slice(start, end).join(" ");
+	return cleaned.length >= 2 ? cleaned : query.trim();
+}
+
 /** The search as the cache sees it; also what is stored in `job_search_cache.query`. Drops the provider cursor. */
 export function normalizeJobSearch(input: JobSearchInput): NormalizedJobSearch {
 	const location = input.location ? tidy(input.location) : "";
 	return {
-		query: tidy(input.query),
+		query: tidy(cleanJobQuery(input.query)),
 		...(location ? { location } : {}),
 		...(input.country ? { country: input.country } : {}),
 		remote: input.workArrangement ? "any" : input.remote,

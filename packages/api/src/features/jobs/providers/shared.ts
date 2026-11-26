@@ -186,8 +186,9 @@ export const englishCountryName = (code: string) => countryName(code, "en");
 export function seniority(value: unknown): JobSeniority | undefined {
 	const text = str(value, 100)?.toLowerCase();
 	if (!text) return undefined;
-	if (/exec|director|\bvp\b|vice president|c[-_ ]?level|chief|head/.test(text)) return "executive";
-	if (/lead|principal|staff|manager/.test(text)) return "lead";
+	if (/exec|\bvp\b|vice president|c[-_ ]?level|chief|head/.test(text)) return "executive";
+	// JobsPipe's `director` level holds leads and managers too (its filter has no separate lead level).
+	if (/director|lead|principal|staff|manager/.test(text)) return "lead";
 	if (/senior|\bsr\b/.test(text)) return "senior";
 	if (/mid|intermediate/.test(text)) return "mid";
 	if (/junior|associate|\bjr\b/.test(text)) return "junior";

@@ -463,12 +463,12 @@ describe("registerTools", () => {
 		};
 		const cursor = "a".repeat(64);
 
-		it("returns at most ten listings, then the rest of the page, then the next page's cursor", async () => {
+		it("returns a page in parts when asked for fewer, then the next page's cursor", async () => {
 			const search = tool(MCP_TOOL_NAME.searchJobs);
 			const schema = TOOL_META[MCP_TOOL_NAME.searchJobs].inputSchema;
-			clientMock.jobs.search.mockResolvedValue(page(20, cursor));
+			clientMock.jobs.search.mockResolvedValue(page(10, cursor));
 
-			const first = await search.handler(schema.parse({ query: "product designer", country: "DE" }));
+			const first = await search.handler(schema.parse({ query: "product designer", country: "DE", limit: 4 }));
 			expect(clientMock.jobs.search).toHaveBeenLastCalledWith({
 				query: "product designer",
 				country: "DE",
@@ -477,21 +477,21 @@ describe("registerTools", () => {
 				includeNoSalary: true,
 			});
 			const head = first.structuredContent as Record<string, unknown> & { listings: Record<string, unknown>[] };
-			expect(head.listings).toHaveLength(10);
+			expect(head.listings).toHaveLength(4);
 			expect(head.listings[0]).toMatchObject({
 				postingUrl: "https://jobs.example.com/0",
 				trackedApplicationId: null,
 				matchedSkills: ["Figma"],
 			});
 			expect(head.listings[1]).toMatchObject({ trackedApplicationId: "application-9", matchedSkills: [] });
-			expect(head).toMatchObject({ offset: 0, nextOffset: 10, cursor: null, quota: { used: 1, max: 3 } });
+			expect(head).toMatchObject({ offset: 0, nextOffset: 4, cursor: null, quota: { used: 1, max: 3 } });
 
-			const rest = await search.handler(schema.parse({ query: "product designer", country: "DE", offset: 10 }));
+			const rest = await search.handler(schema.parse({ query: "product designer", country: "DE", offset: 4 }));
 			const tail = rest.structuredContent as Record<string, unknown> & { listings: { id: string }[] };
 			expect(tail.listings.map((listing) => listing.id)).toEqual(
-				Array.from({ length: 10 }, (_, index) => `listing-${index + 10}`),
+				Array.from({ length: 6 }, (_, index) => `listing-${index + 4}`),
 			);
-			expect(tail).toMatchObject({ offset: 10, nextOffset: null, cursor });
+			expect(tail).toMatchObject({ offset: 4, nextOffset: null, cursor });
 
 			clientMock.jobs.search.mockResolvedValue(page(4));
 			const last = await search.handler(schema.parse({ query: "product designer", cursor, limit: 3 }));

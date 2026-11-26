@@ -33,12 +33,16 @@ const databaseUrl = process.env.INTEGRATIONS_TEST_DATABASE_URL;
 describe.skipIf(!databaseUrl)("job search service", () => {
 	let service: typeof import("./service");
 	let counters: typeof import("./counters");
+	let budget: typeof import("./budget");
 	let pool: Pool;
 	let admin: Pool;
 	const schemaName = `jobs_search_test_${randomUUID().replaceAll("-", "")}`;
 	let clock: Date;
 
 	const request = (value: Record<string, unknown>) => jobSearchRequestSchema.parse(value);
+	/** Ends every saved answer's freshness now, as a day passing would (without starting a new budget day). */
+	const expireCache = () =>
+		pool.query("UPDATE job_search_cache SET expires_at = $1", [new Date(clock.getTime() - 1000)]);
 
 	/** A service with fake providers, its own counters and a clock the test moves. */
 	function setup(
@@ -85,6 +89,7 @@ describe.skipIf(!databaseUrl)("job search service", () => {
 			);
 		service = await import("./service");
 		counters = await import("./counters");
+		budget = await import("./budget");
 	}, 60_000);
 
 	afterAll(async () => {
@@ -97,15 +102,16 @@ describe.skipIf(!databaseUrl)("job search service", () => {
 		clock = new Date("2026-11-20T10:00:00Z");
 		Object.assign(fixture.env, { BILLING_MODE: "off", JOB_SEARCH_DAILY_BUDGET_USD: 1, FLAG_DISABLE_JOB_SEARCH: false });
 		await pool.query(
-			"DELETE FROM job_search_cache; DELETE FROM job_listing_hidden; DELETE FROM job_listing; DELETE FROM job_search_recent;",
+			"DELETE FROM job_search_cache; DELETE FROM job_listing_hidden; DELETE FROM job_listing; DELETE FROM job_search_recent; DELETE FROM job_search_setting;",
 		);
+		budget.forgetBudgetSetting();
 	});
 
 	it("asks the providers once, then answers the same search from the cache for free", async () => {
-		const { jobs, hirebase } = setup([listings("hirebase", 20), listings("hirebase", 20, 21)]);
+		const { jobs, hirebase } = setup([listings("hirebase", 10), listings("hirebase", 10, 11)]);
 		const first = await jobs.search("alice", request({ query: "Data Analyst", country: "DE" }));
 		expect(first).toMatchObject({ fromCache: false, stale: false, budgetLimited: false });
-		expect(first.listings).toHaveLength(20);
+		expect(first.listings).toHaveLength(10);
 		expect(first.listings[0]).not.toHaveProperty("description");
 		expect(first.listings[0]?.postingUrl).toBe("https://jobs.example.com/hirebase/1");
 		expect(first.cursor).toMatch(/^[a-f0-9]{64}$/);
@@ -116,10 +122,16 @@ describe.skipIf(!databaseUrl)("job search service", () => {
 		expect(second.listings.map((listing) => listing.id)).toEqual(first.listings.map((listing) => listing.id));
 		expect(second.fetchedAt).toBe(first.fetchedAt);
 		expect(hirebase.calls).toHaveLength(1);
+
+		// The saved answer lasts a day, and "jobs" after the role doesn't make it another search.
+		clock = new Date(clock.getTime() + 23 * 60 * 60 * 1000);
+		const later = await jobs.search("carol", request({ query: "data analyst jobs", country: "DE" }));
+		expect(later.fromCache).toBe(true);
+		expect(hirebase.calls).toHaveLength(1);
 	});
 
 	it("doesn't count opening the same page again the same day", async () => {
-		const { jobs } = setup([listings("hirebase", 20)]);
+		const { jobs } = setup([listings("hirebase", 10)]);
 		await jobs.search("alice", request({ query: "nurse" }));
 		const again = await jobs.search("alice", request({ query: "Nurse" }));
 		expect(again.quota.used).toBe(1);
@@ -127,7 +139,7 @@ describe.skipIf(!databaseUrl)("job search service", () => {
 	});
 
 	it("lets one of two simultaneous searches ask the providers, and the other wait for its answer", async () => {
-		const { jobs, hirebase } = setup([listings("hirebase", 20)], [], { delayMs: 150 });
+		const { jobs, hirebase } = setup([listings("hirebase", 10)], [], { delayMs: 150 });
 		const [first, second] = await Promise.all([
 			jobs.search("alice", request({ query: "devops", country: "US" })),
 			jobs.search("bob", request({ query: "devops", country: "US" })),
@@ -139,7 +151,7 @@ describe.skipIf(!databaseUrl)("job search service", () => {
 
 	it("refuses the search after the plan's last one today, and allows it again tomorrow", async () => {
 		fixture.env.BILLING_MODE = "on";
-		const { jobs } = setup([listings("hirebase", 20)]);
+		const { jobs } = setup([listings("hirebase", 10)]);
 		for (const query of ["one", "two", "three"]) await jobs.search("alice", request({ query }));
 		await expect(jobs.search("alice", request({ query: "four" }))).rejects.toMatchObject({
 			code: "PLAN_LIMIT_REACHED",
@@ -156,7 +168,7 @@ describe.skipIf(!databaseUrl)("job search service", () => {
 		await pool.query(
 			`INSERT INTO "user" (id, name, email, username, display_username, timezone) VALUES ('dave', 'dave', 'dave@example.com', 'dave', 'dave', 'Pacific/Kiritimati')`,
 		);
-		const { jobs } = setup([listings("hirebase", 20)]);
+		const { jobs } = setup([listings("hirebase", 10)]);
 		// 10:00 UTC is the 21st in Kiritimati (UTC+14) and the 19th at UTC-12: three account days, one UTC day.
 		for (const query of ["one", "two", "three"]) await jobs.search("dave", request({ query }));
 		await pool.query(`UPDATE "user" SET timezone = 'UTC' WHERE id = 'dave'`);
@@ -175,7 +187,7 @@ describe.skipIf(!databaseUrl)("job search service", () => {
 		});
 
 		it("remembers new searches newest first, one row per search however it's typed, not load more", async () => {
-			const { jobs } = setup([listings("hirebase", 20), listings("hirebase", 20, 21)]);
+			const { jobs } = setup([listings("hirebase", 10), listings("hirebase", 10, 11)]);
 			const first = await jobs.search("alice", request({ query: "Data Analyst", country: "DE" }));
 			clock = new Date(clock.getTime() + 60_000);
 			await jobs.search("alice", request({ query: "nurse" }));
@@ -189,7 +201,7 @@ describe.skipIf(!databaseUrl)("job search service", () => {
 		});
 
 		it(`keeps the last ${10} searches`, async () => {
-			const { jobs } = setup([listings("hirebase", 20)]);
+			const { jobs } = setup([listings("hirebase", 10)]);
 			for (let index = 0; index < 12; index++) {
 				clock = new Date(clock.getTime() + 1_000);
 				await jobs.search("alice", request({ query: `role ${index}` }));
@@ -201,7 +213,7 @@ describe.skipIf(!databaseUrl)("job search service", () => {
 		});
 
 		it("says whether opening a search again is free today", async () => {
-			const { jobs } = setup([listings("hirebase", 20)]);
+			const { jobs } = setup([listings("hirebase", 10)]);
 			await jobs.search("alice", request({ query: "designer" }));
 			expect((await jobs.recent("alice"))[0]).toMatchObject({ seenToday: true });
 			clock = new Date("2026-11-21T10:00:00Z");
@@ -209,7 +221,7 @@ describe.skipIf(!databaseUrl)("job search service", () => {
 		});
 
 		it("keeps each account's searches to itself", async () => {
-			const { jobs } = setup([listings("hirebase", 20)]);
+			const { jobs } = setup([listings("hirebase", 10)]);
 			await jobs.search("alice", request({ query: "designer" }));
 			await jobs.search("bob", request({ query: "nurse" }));
 			const [alices] = await jobs.recent("alice");
@@ -231,14 +243,14 @@ describe.skipIf(!databaseUrl)("job search service", () => {
 	});
 
 	it("starts the day at midnight in the account's time zone", async () => {
-		const { jobs } = setup([listings("hirebase", 20)]);
+		const { jobs } = setup([listings("hirebase", 10)]);
 		// 18:00 UTC is already the 21st in Jakarta (UTC+7).
 		clock = new Date("2026-11-20T18:00:00Z");
 		expect((await jobs.status("carol")).quota.resetsAt).toBe("2026-11-21T17:00:00.000Z");
 	});
 
 	it("never shows hidden or closed listings", async () => {
-		const { jobs } = setup([listings("hirebase", 20)]);
+		const { jobs } = setup([listings("hirebase", 10)]);
 		const first = await jobs.search("alice", request({ query: "teacher" }));
 		const [hidden, closed] = first.listings;
 		expect(await jobs.hide("alice", hidden?.id ?? "", true)).toBe(true);
@@ -246,23 +258,23 @@ describe.skipIf(!databaseUrl)("job search service", () => {
 
 		const again = await jobs.search("alice", request({ query: "teacher" }));
 		const ids = again.listings.map((listing) => listing.id);
-		expect(ids).toHaveLength(18);
+		expect(ids).toHaveLength(8);
 		expect(ids).not.toContain(hidden?.id);
 		expect(ids).not.toContain(closed?.id);
 		// Someone else still sees the hidden one.
 		expect((await jobs.search("bob", request({ query: "teacher" }))).listings.map((l) => l.id)).toContain(hidden?.id);
 
 		expect(await jobs.hide("alice", hidden?.id ?? "", false)).toBe(true);
-		expect((await jobs.search("alice", request({ query: "teacher" }))).listings).toHaveLength(19);
+		expect((await jobs.search("alice", request({ query: "teacher" }))).listings).toHaveLength(9);
 		expect(await jobs.hide("alice", "missing", true)).toBe(false);
 	});
 
 	it("continues with the next page from each provider's cursor, leaving out what the first page showed", async () => {
-		const { jobs, hirebase } = setup([listings("hirebase", 20), listings("hirebase", 20, 21)]);
+		const { jobs, hirebase } = setup([listings("hirebase", 10), listings("hirebase", 10, 11)]);
 		const first = await jobs.search("alice", request({ query: "accountant" }));
 		const second = await jobs.search("alice", request({ query: "accountant", cursor: first.cursor }));
 		expect(hirebase.calls.map((call) => call.input.cursor)).toEqual([undefined, "2"]);
-		expect(second.listings[0]?.externalId).toBe("hirebase-21");
+		expect(second.listings[0]?.externalId).toBe("hirebase-11");
 		expect(second.quota.used).toBe(2);
 		// Hirebase has no third page and JobsPipe hasn't been asked: it can still add more.
 		expect(second.cursor).toBeDefined();
@@ -276,25 +288,60 @@ describe.skipIf(!databaseUrl)("job search service", () => {
 	});
 
 	it("gives the older answer with a flag once today's budget is spent, and refuses a new search", async () => {
-		const { jobs, hirebase } = setup([listings("hirebase", 20)]);
+		const { jobs, hirebase } = setup([listings("hirebase", 10)]);
 		await jobs.search("alice", request({ query: "sales" }));
-		// The first search cost 20,000 millionths of a dollar; the budget is lowered below that.
-		fixture.env.JOB_SEARCH_DAILY_BUDGET_USD = 0.01;
+		// The first search cost 10,000 millionths of a dollar; the budget is lowered below that.
+		fixture.env.JOB_SEARCH_DAILY_BUDGET_USD = 0.005;
 		clock = new Date(clock.getTime() + 7 * 60 * 60 * 1000);
+		await expireCache();
 
 		const stale = await jobs.search("bob", request({ query: "sales" }));
 		expect(stale).toMatchObject({ fromCache: true, stale: true, budgetLimited: true });
-		expect(stale.listings).toHaveLength(20);
+		expect(stale.listings).toHaveLength(10);
 		await expect(jobs.search("bob", request({ query: "marketing" }))).rejects.toMatchObject({ code: "budget" });
 		expect(hirebase.calls).toHaveLength(1);
 		expect((await jobs.status("bob")).cacheOnly).toBe(true);
 	});
 
+	it("uses the budget set on the dashboard at once, and the server default again once it's removed", async () => {
+		await pool.query("DELETE FROM billing_audit_log WHERE action LIKE 'jobs.budget.%'");
+		const { jobs } = setup([listings("hirebase", 10), listings("hirebase", 10, 11)]);
+		await jobs.search("alice", request({ query: "sales" }));
+		// The search cost 10,000 millionths of a dollar; a budget below that stops new searches.
+		const set = await budget.setJobSearchBudget({ usd: 0.005, reason: "trying a lower budget", actorUserId: "alice" });
+		expect(set).toMatchObject({
+			budgetMicro: 5000,
+			source: "setting",
+			defaultMicro: 1_000_000,
+			maxMicro: 50_000_000,
+			reason: "trying a lower budget",
+			updatedBy: "alice",
+		});
+		await expect(jobs.search("bob", request({ query: "marketing" }))).rejects.toMatchObject({ code: "budget" });
+		expect((await jobs.status("bob")).cacheOnly).toBe(true);
+
+		const back = await budget.setJobSearchBudget({ usd: null, reason: "back to normal", actorUserId: "alice" });
+		expect(back).toMatchObject({ budgetMicro: 1_000_000, source: "default", reason: null, updatedBy: null });
+		expect((await jobs.search("bob", request({ query: "marketing" }))).fromCache).toBe(false);
+
+		const { rows } = await pool.query<{ action: string; reason: string; details: unknown }>(
+			"SELECT action, reason, details FROM billing_audit_log WHERE action LIKE 'jobs.budget.%' ORDER BY created_at",
+		);
+		expect(rows).toEqual([
+			{
+				action: "jobs.budget.set",
+				reason: "trying a lower budget",
+				details: { fromMicro: 1_000_000, toMicro: 5000 },
+			},
+			{ action: "jobs.budget.cleared", reason: "back to normal", details: { fromMicro: 5000, toMicro: 1_000_000 } },
+		]);
+	});
+
 	it("emails the owner once when spending passes 80% of the day's budget", async () => {
 		await pool.query("DELETE FROM billing_notification");
-		// One search costs 20,000 millionths of a dollar: the first crosses 80% of $0.024, the second adds to it.
-		fixture.env.JOB_SEARCH_DAILY_BUDGET_USD = 0.024;
-		const { jobs } = setup([listings("hirebase", 20), listings("hirebase", 20)]);
+		// One search costs 10,000 millionths of a dollar: the first crosses 80% of $0.012, the second adds to it.
+		fixture.env.JOB_SEARCH_DAILY_BUDGET_USD = 0.012;
+		const { jobs } = setup([listings("hirebase", 10), listings("hirebase", 10)]);
 		await jobs.search("alice", request({ query: "nurse" }));
 		const { rows } = await pool.query<{ kind: string; count: number }>(
 			"SELECT kind, count FROM billing_notification WHERE kind = 'job_search_budget'",
@@ -307,7 +354,7 @@ describe.skipIf(!databaseUrl)("job search service", () => {
 	});
 
 	it("reports stored listings, cached pages and the treg figures on the cost dashboard", async () => {
-		const { jobs } = setup([listings("hirebase", 20)]);
+		const { jobs } = setup([listings("hirebase", 10)]);
 		await jobs.search("alice", request({ query: "pilot" }));
 		const { jobCostReport } = await import("./admin");
 		const report = await jobCostReport(
@@ -319,15 +366,17 @@ describe.skipIf(!databaseUrl)("job search service", () => {
 			today: { day: "2026-11-20", budgetMicro: 1_000_000, available: false, switchedOff: false },
 			treg: { status: "unavailable" },
 			events: { status: "not-configured" },
-			store: { openListings: 20, closedListings: 0, cachePages: 1, freshCachePages: 1 },
+			budget: { budgetMicro: 1_000_000, source: "default" },
+			store: { openListings: 10, closedListings: 0, cachePages: 1, freshCachePages: 1 },
 		});
 	});
 
 	it("gives the older answer when the providers fail, and an error when there is none", async () => {
 		const failing: FakePage[] = [new TregError("busy")];
-		const { jobs } = setup([listings("hirebase", 20)]);
+		const { jobs } = setup([listings("hirebase", 10)]);
 		await jobs.search("alice", request({ query: "python" }));
 		clock = new Date(clock.getTime() + 7 * 60 * 60 * 1000);
+		await expireCache();
 		const broken = setup(failing, failing);
 		const stale = await broken.jobs.search("bob", request({ query: "python" }));
 		expect(stale).toMatchObject({ fromCache: true, stale: true, budgetLimited: false });
@@ -337,7 +386,7 @@ describe.skipIf(!databaseUrl)("job search service", () => {
 	});
 
 	it("only answers from the cache while searching is switched off, and not at all without a token", async () => {
-		const { jobs, hirebase } = setup([listings("hirebase", 20)]);
+		const { jobs, hirebase } = setup([listings("hirebase", 10)]);
 		fixture.env.FLAG_DISABLE_JOB_SEARCH = true;
 		await expect(jobs.search("alice", request({ query: "ux designer" }))).rejects.toMatchObject({
 			code: "unavailable",
@@ -345,7 +394,7 @@ describe.skipIf(!databaseUrl)("job search service", () => {
 		expect(hirebase.calls).toHaveLength(0);
 		expect((await jobs.status("alice")).cacheOnly).toBe(true);
 
-		const unconfigured = setup([listings("hirebase", 20)], [], { overrides: { configured: () => false } });
+		const unconfigured = setup([listings("hirebase", 10)], [], { overrides: { configured: () => false } });
 		await expect(unconfigured.jobs.search("alice", request({ query: "ux designer" }))).rejects.toMatchObject({
 			code: "unavailable",
 		});

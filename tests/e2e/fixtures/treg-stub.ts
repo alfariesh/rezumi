@@ -5,7 +5,7 @@ import { createServer } from "node:http";
 /**
  * A stand-in for treg (https://treg.to) for the browser tests: the server sends job searches here through
  * `TREG_BASE_URL`, so no test ever calls treg or pays for a listing. Hirebase answers twelve made-up listings for a
- * title at fictional companies (none for a title containing "nothing"); JobsPipe answers none. Each listing's id comes
+ * title at fictional companies, a page of `limit` at a time (none for a title containing "nothing"); JobsPipe answers none. Each listing's id comes
  * from the title and place, so one search always answers the same listings and different searches never share one. A job
  * alert's check (`ingested_after`) answers four newer listings of its own, posted today; JobsPipe's new-jobs feed answers
  * none. The daily upkeep's feeds (Hirebase's closed jobs, JobsPipe's lookups by id) answer nothing closed. Product guide
@@ -131,8 +131,12 @@ const server = createServer(async (request, response) => {
 		const titles = Array.isArray(body.job_titles) ? body.job_titles.map(String) : [];
 		const places = Array.isArray(body.geo_locations) ? (body.geo_locations as Place[]) : [];
 		const ingestedAfter = typeof body.ingested_after === "string" ? body.ingested_after : undefined;
-		const jobs = hirebaseJobs(titles[0] ?? "Job", places[0] ?? {}, ingestedAfter);
-		return send(response, { jobs, total_count: jobs.length, page: 1, total_pages: 1 });
+		const all = hirebaseJobs(titles[0] ?? "Job", places[0] ?? {}, ingestedAfter);
+		// Pages as Hirebase does: `limit` listings from `page`.
+		const limit = Math.max(1, Number(body.limit) || all.length);
+		const page = Math.max(1, Number(body.page) || 1);
+		const jobs = all.slice((page - 1) * limit, page * limit);
+		return send(response, { jobs, total_count: all.length, page, total_pages: Math.ceil(all.length / limit) });
 	}
 	if (tool === "jobspipe.jobs.search" || tool === "jobspipe.jobs.new")
 		return send(response, { data: [], metadata: { next_delta_cursor: "stub-delta" } });

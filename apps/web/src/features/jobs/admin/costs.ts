@@ -101,8 +101,28 @@ const order = (provider: string) => {
 };
 
 /** Share of search answers that came from Rezumi's cache, against provider calls; null before any search. */
-export function cacheShare(search: JobCostEvents["search"]) {
+export function cacheShare(search: Pick<JobCostEvents["search"], "cacheHits" | "stale" | "providerCalls">) {
 	const fromCache = search.cacheHits + search.stale;
 	const total = fromCache + search.providerCalls;
 	return total ? fromCache / total : null;
+}
+
+/**
+ * What one page of results cost on average, and the share of the listings paid for that people were shown (the rest
+ * failed a filter on Rezumi's side or repeated a job); null before any page was asked of the providers.
+ */
+export function pageCost(
+	search: Pick<JobCostEvents["search"], "pages" | "pageCostMicro" | "paidListings" | "shownListings">,
+) {
+	if (!search.pages) return null;
+	return {
+		averageMicro: Math.round(search.pageCostMicro / search.pages),
+		shownShare: search.paidListings ? Math.min(1, search.shownListings / search.paidListings) : null,
+	};
+}
+
+/** Dollars typed by the admin ("5", "2.50", "2,5"); null until it reads as an amount with at most two decimals. */
+export function typedUsd(text: string): number | null {
+	const value = text.trim().replace(",", ".");
+	return /^\d{1,6}(\.\d{1,2})?$/.test(value) ? Number(value) : null;
 }

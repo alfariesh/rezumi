@@ -1,6 +1,7 @@
 import type { FitData } from "@rezumi/schema/career";
 import type { JobProvider } from "@rezumi/schema/jobs/listing";
 import type { JobSearchCriteria } from "@rezumi/schema/jobs/search";
+import { sql } from "drizzle-orm";
 import * as pg from "drizzle-orm/pg-core";
 import { JOB_PROVIDERS } from "@rezumi/schema/jobs/listing";
 import { generateId } from "@rezumi/utils/string";
@@ -171,3 +172,25 @@ export const jobMaintenance = pg.pgTable("job_maintenance", {
 	leaseUntil: pg.timestamp("lease_until", { withTimezone: true }),
 	completedAt: pg.timestamp("completed_at", { withTimezone: true }),
 });
+
+/**
+ * Job search settings an administrator changes on the cost dashboard, without a deploy (`02-teknis.md` section 23).
+ * One row per key; no row means the server's default (`JOB_SEARCH_DAILY_BUDGET_USD`). Every change is also written to
+ * `billing_audit_log` with its reason.
+ */
+export const jobSearchSetting = pg.pgTable(
+	"job_search_setting",
+	{
+		/** `daily_budget`: the providers' spending a UTC day may reach, in millionths of a US dollar. */
+		key: pg.text("key").primaryKey().$type<"daily_budget">(),
+		value: pg.integer("value").notNull(),
+		reason: pg.text("reason").notNull(),
+		updatedBy: pg.text("updated_by").references(() => user.id, { onDelete: "set null" }),
+		updatedAt: pg
+			.timestamp("updated_at", { withTimezone: true })
+			.notNull()
+			.defaultNow()
+			.$onUpdate(() => /* @__PURE__ */ new Date()),
+	},
+	(t) => [pg.check("job_search_setting_value_not_negative", sql`${t.value} >= 0`)],
+);

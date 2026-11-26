@@ -21,6 +21,9 @@ test("searches with no setup, opens a listing and tracks it into Applications", 
 	await expect(first).toBeVisible();
 	// The search as the address holds it, with the country the form started from.
 	const searched = page.url();
+	// A page holds ten; "Load more" brings the other two.
+	await expect(page.getByText("10 jobs")).toBeVisible();
+	await page.getByRole("button", { name: "Load more" }).click();
 	await expect(page.getByText("12 jobs")).toBeVisible();
 	// On a wide screen the first listing opens beside the results: the provider's description as text.
 	const open = page.getByRole("complementary", { name: "Job details" });

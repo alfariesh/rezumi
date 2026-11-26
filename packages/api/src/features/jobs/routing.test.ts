@@ -17,25 +17,33 @@ function sources(hirebasePages: Parameters<typeof fakeSource>[1], jobspipePages:
 
 describe("routeSearch", () => {
 	it("asks Hirebase only when it finds enough", async () => {
-		const { hirebase, jobspipe, all } = sources([listings("hirebase", 20), listings("hirebase", 20, 21)], []);
+		const { hirebase, jobspipe, all } = sources([listings("hirebase", 10), listings("hirebase", 10, 11)], []);
 		const page = await routeSearch(input(), undefined, all);
 		expect(hirebase.calls).toHaveLength(1);
 		expect(hirebase.calls[0]?.limit).toBe(JOB_PAGE_SIZE);
+		expect(JOB_PAGE_SIZE).toBe(10);
 		expect(jobspipe.calls).toHaveLength(0);
-		expect(page.listings).toHaveLength(20);
+		expect(page.listings).toHaveLength(10);
 		expect(page.providers).toEqual(["hirebase"]);
 		expect(page.cursors).toEqual({ hirebase: "2" });
 		expect(page.hasMore).toBe(true);
-		expect(page.costMicro).toBe(20_000);
+		expect(page.costMicro).toBe(10_000);
 	});
 
-	it("tops up with JobsPipe when Hirebase finds fewer than 10", async () => {
-		const { jobspipe, all } = sources([listings("hirebase", 6)], [listings("jobspipe", 20), listings("jobspipe", 5)]);
+	it("doesn't top up a page Hirebase mostly filled", async () => {
+		const { jobspipe, all } = sources([listings("hirebase", 5)], [listings("jobspipe", 10)]);
 		const page = await routeSearch(input(), undefined, all);
-		expect(jobspipe.calls[0]?.limit).toBe(14);
+		expect(jobspipe.calls).toHaveLength(0);
+		expect(page.listings).toHaveLength(5);
+	});
+
+	it("tops up with JobsPipe, only the missing ones, when Hirebase finds fewer than 5", async () => {
+		const { jobspipe, all } = sources([listings("hirebase", 3)], [listings("jobspipe", 7), listings("jobspipe", 5)]);
+		const page = await routeSearch(input(), undefined, all);
+		expect(jobspipe.calls[0]?.limit).toBe(7);
 		expect(page.listings.map((listing) => listing.provider)).toEqual([
-			...Array<string>(6).fill("hirebase"),
-			...Array<string>(14).fill("jobspipe"),
+			...Array<string>(3).fill("hirebase"),
+			...Array<string>(7).fill("jobspipe"),
 		]);
 		expect(page.providers).toEqual(["hirebase", "jobspipe"]);
 		// Hirebase has no more; JobsPipe continues on its own cursor.
@@ -44,10 +52,10 @@ describe("routeSearch", () => {
 	});
 
 	it("tops up with JobsPipe when Hirebase fails, and says the page is partial", async () => {
-		const { jobspipe, all } = sources([new TregError("busy")], [listings("jobspipe", 20)]);
+		const { jobspipe, all } = sources([new TregError("busy")], [listings("jobspipe", 10)]);
 		const page = await routeSearch(input(), undefined, all);
-		expect(jobspipe.calls[0]?.limit).toBe(20);
-		expect(page.listings).toHaveLength(20);
+		expect(jobspipe.calls[0]?.limit).toBe(10);
+		expect(page.listings).toHaveLength(10);
 		expect(page.partial).toBe(true);
 		// Hirebase wasn't answered, so a later page asks it again from the start.
 		expect(page.cursors.hirebase).toBeUndefined();
@@ -68,11 +76,11 @@ describe("routeSearch", () => {
 	});
 
 	it("starts JobsPipe on a later page once Hirebase has nothing more", async () => {
-		const { hirebase, jobspipe, all } = sources([listings("hirebase", 20)], [listings("jobspipe", 20)]);
+		const { hirebase, jobspipe, all } = sources([listings("hirebase", 10)], [listings("jobspipe", 10)]);
 		const page = await routeSearch(input(), { hirebase: "" }, all);
 		expect(hirebase.calls).toHaveLength(0);
 		expect(jobspipe.calls[0]?.input.cursor).toBeUndefined();
-		expect(page.listings).toHaveLength(20);
+		expect(page.listings).toHaveLength(10);
 	});
 
 	it("leaves JobsPipe out of visa sponsorship searches, since its listings don't say", async () => {
@@ -82,6 +90,13 @@ describe("routeSearch", () => {
 		expect(jobspipe.calls).toHaveLength(0);
 		expect(page.listings).toHaveLength(3);
 		expect(page.returned).toHaveLength(6);
+		expect(page.hasMore).toBe(false);
+	});
+
+	it("leaves JobsPipe out of junior searches, since it has no junior level", async () => {
+		const { jobspipe, all } = sources([listings("hirebase", 2)], [listings("jobspipe", 10)]);
+		const page = await routeSearch(input({ seniority: "junior" }), undefined, all);
+		expect(jobspipe.calls).toHaveLength(0);
 		expect(page.hasMore).toBe(false);
 	});
 

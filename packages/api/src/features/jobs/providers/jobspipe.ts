@@ -1,5 +1,5 @@
 import type { JobSourceAdapter, MappedJob, ProviderSearchOptions, ProviderSearchResult } from "./shared";
-import type { JobWorkArrangement } from "@rezumi/schema/jobs/listing";
+import type { JobSeniority, JobWorkArrangement } from "@rezumi/schema/jobs/listing";
 import type { JobSearchInput } from "@rezumi/schema/jobs/search";
 import { recordJobEvent } from "../events";
 import { callTreg, TregError } from "../treg";
@@ -28,8 +28,30 @@ import {
 
 const JOBSPIPE_SEARCH_TOOL = "jobspipe.jobs.search";
 const JOBSPIPE_COUNT_TOOL = "jobspipe.jobs.search.count";
-/** treg's price for one job returned by `jobspipe.jobs.search` (catalog, 2026-11-20); a repeat this month is free. */
-export const JOBSPIPE_PRICE_USD = 0.00392;
+/**
+ * What treg charges for one job returned by `jobspipe.jobs.search`: one JobsPipe credit (ledger, 2026-11-26; the catalog's
+ * $0.00392 is the price with `include_technologies`, which isn't sent). A job already returned this month is free.
+ */
+export const JOBSPIPE_PRICE_USD = 0.00196;
+
+/**
+ * JobsPipe's levels for `job_seniority_or` (measured with the free count endpoint, 2026-11-26). It has no junior level:
+ * "associate" falls in `mid_level`.
+ */
+const SENIORITY_FILTERS: Record<Exclude<JobSeniority, "junior">, string> = {
+	entry: "entry_level",
+	mid: "mid_level",
+	senior: "senior",
+	lead: "director",
+	executive: "executive",
+};
+
+/**
+ * Whether JobsPipe can answer a search at all. Its listings never say whether a job sponsors visas, and it has no junior
+ * level, so for those searches every listing it returned would be paid for and then left out.
+ */
+export const jobspipeFits = (input: Pick<JobSearchInput, "visaSponsorship" | "seniority">) =>
+	!input.visaSponsorship && input.seniority !== "junior";
 
 const ARRANGEMENTS: Record<string, JobWorkArrangement> = {
 	remote: "remote",
@@ -157,6 +179,9 @@ export function jobspipeSearchBody(input: JobSearchInput, limit: number) {
 		...(input.country ? { job_country_code_or: [input.country] } : {}),
 		...(input.location ? { city_or: [input.location] } : {}),
 		...(remote === undefined ? {} : { remote }),
+		...(input.seniority && input.seniority !== "junior"
+			? { job_seniority_or: [SENIORITY_FILTERS[input.seniority]] }
+			: {}),
 		posted_at_max_age_days: input.postedWithinDays,
 		...(salaryFilter ? { min_salary_usd: input.salaryMin } : {}),
 		status: "active",

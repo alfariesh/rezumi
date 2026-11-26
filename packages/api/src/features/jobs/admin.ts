@@ -5,7 +5,8 @@ import z from "zod";
 import { db } from "@rezumi/db/client";
 import * as schema from "@rezumi/db/schema";
 import { env } from "@rezumi/env/server";
-import { dailyBudgetMicro, spentToday } from "./allowance";
+import { spentToday } from "./allowance";
+import { readJobSearchBudget } from "./budget";
 import { jobCounters } from "./counters";
 import { jobEventSql } from "./events";
 import { isTregConfigured } from "./treg";
@@ -60,6 +61,16 @@ export const jobCostReportSchema = z.object({
 		/** `FLAG_DISABLE_JOB_SEARCH`: only saved results are given. */
 		switchedOff: z.boolean(),
 	}),
+	/** The daily budget as set on this dashboard (`budget.ts`), or the server's default. */
+	budget: z.object({
+		budgetMicro: z.number(),
+		source: z.enum(["setting", "default"]),
+		defaultMicro: z.number(),
+		maxMicro: z.number(),
+		reason: z.string().nullable(),
+		updatedAt: z.date().nullable(),
+		updatedBy: z.string().nullable(),
+	}),
 	treg: z.discriminatedUnion("status", [
 		z.object({
 			status: z.literal("ok"),
@@ -75,7 +86,17 @@ export const jobCostReportSchema = z.object({
 			status: z.literal("ok"),
 			daily: z.array(z.object({ date: z.string(), provider: z.string(), costMicro: z.number(), calls: z.number() })),
 			tools: z.array(toolRowSchema),
-			search: z.object({ cacheHits: z.number(), stale: z.number(), providerCalls: z.number(), budget: z.number() }),
+			search: z.object({
+				cacheHits: z.number(),
+				stale: z.number(),
+				providerCalls: z.number(),
+				budget: z.number(),
+				/** Pages of results the providers answered, what they cost, and the listings paid for and shown on them. */
+				pages: z.number(),
+				pageCostMicro: z.number(),
+				paidListings: z.number(),
+				shownListings: z.number(),
+			}),
 		}),
 		z.object({ status: z.enum(["not-configured", "unavailable"]) }),
 	]),
@@ -113,7 +134,7 @@ export function jobCostQueries(start: string) {
 	const params = { start };
 	return {
 		grouped: {
-			query: `SELECT toStartOfInterval(timestamp, INTERVAL '1' DAY, 'UTC') AS day, blob1 AS provider, blob2 AS tool, blob3 AS outcome, blob5 AS kind, COUNT(*) AS calls, SUM(double1) AS cost, SUM(double2) AS ms, SUM(double3) AS results FROM ${DATASET} WHERE timestamp >= $start GROUP BY day, blob1, blob2, blob3, blob5 ORDER BY day ASC LIMIT 10000`,
+			query: `SELECT toStartOfInterval(timestamp, INTERVAL '1' DAY, 'UTC') AS day, blob1 AS provider, blob2 AS tool, blob3 AS outcome, blob5 AS kind, COUNT(*) AS calls, SUM(double1) AS cost, SUM(double2) AS ms, SUM(double3) AS results, SUM(double4) AS paid FROM ${DATASET} WHERE timestamp >= $start GROUP BY day, blob1, blob2, blob3, blob5 ORDER BY day ASC LIMIT 10000`,
 			params,
 		},
 		p95: {
@@ -137,7 +158,16 @@ type GroupedRow = Record<string, unknown>;
 export function summarizeJobEvents(rows: GroupedRow[], p95Rows: GroupedRow[] | null) {
 	const daily = new Map<string, { date: string; provider: string; costMicro: number; calls: number }>();
 	const tools = new Map<string, JobCostToolRow & { reached: number; totalMs: number }>();
-	const search = { cacheHits: 0, stale: 0, providerCalls: 0, budget: 0 };
+	const search = {
+		cacheHits: 0,
+		stale: 0,
+		providerCalls: 0,
+		budget: 0,
+		pages: 0,
+		pageCostMicro: 0,
+		paidListings: 0,
+		shownListings: 0,
+	};
 	for (const row of rows) {
 		const provider = text(row.provider);
 		const tool = text(row.tool);
@@ -148,6 +178,14 @@ export function summarizeJobEvents(rows: GroupedRow[], p95Rows: GroupedRow[] | n
 		if (kind === "search" && tool === "cache") {
 			if (outcome === "hit") search.cacheHits += calls;
 			if (outcome === "stale") search.stale += calls;
+			continue;
+		}
+		// A page sums its provider calls, which have their own rows: kept out of the daily and per-tool figures.
+		if (kind === "search" && tool === "page") {
+			search.pages += calls;
+			search.pageCostMicro += costMicro;
+			search.shownListings += Math.round(number(row.results));
+			search.paidListings += Math.round(number(row.paid));
 			continue;
 		}
 		if (kind === "search" && outcome === "miss" && !tool.endsWith(".count")) search.providerCalls += calls;
@@ -259,13 +297,14 @@ export async function jobCostReport(
 ): Promise<JobCostReport> {
 	const now = input.now ?? new Date();
 	const sql = "sql" in dependencies ? dependencies.sql : jobEventSql();
-	const [spentMicro, treg, events, store] = await Promise.all([
+	const [spentMicro, treg, events, store, budget] = await Promise.all([
 		spentToday(jobCounters, now).catch(() => 0),
 		(dependencies.treg ?? readTregAccount)(input.days),
 		readEvents(sql, reportStart(now, input.days)),
 		readStore(now),
+		readJobSearchBudget(),
 	]);
-	const budgetMicro = dailyBudgetMicro();
+	const { budgetMicro } = budget;
 	return {
 		days: input.days,
 		generatedAt: now,
@@ -277,6 +316,7 @@ export async function jobCostReport(
 			available: isTregConfigured(),
 			switchedOff: env.FLAG_DISABLE_JOB_SEARCH,
 		},
+		budget,
 		treg: typeof treg === "string" ? { status: treg } : { status: "ok", ...treg },
 		events,
 		store,

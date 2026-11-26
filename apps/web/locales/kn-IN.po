@@ -679,6 +679,12 @@ msgstr ""
 msgid "{0} of the {1} daily budget (UTC day {2})"
 msgstr ""
 
+#. placeholder {0}: percent(perPage.shownShare)
+#. placeholder {1}: integer(ok.search.paidListings)
+#: src/features/jobs/admin/costs-page.tsx
+msgid "{0} of the {1} listings paid for were shown"
+msgstr ""
+
 #. placeholder {0}: creditCount(credits)
 #: src/features/assistant/assistant-panel.tsx
 msgid "{0} per reply"
@@ -1419,6 +1425,11 @@ msgstr "<0> ಸರಿಪಡಿಸಲು ಏನೂ ಇಲ್ಲ.</0> ಪ್ರತ
 msgid "<0>Submitted on {0}.</0> The versions you sent are kept in Saved. Edits here don't change what {1} received."
 msgstr "<0>{0} ರಂದು ಸಲ್ಲಿಸಲಾಗಿದೆ.</0> ನೀವು ಕಳುಹಿಸಿದ ಆವೃತ್ತಿಗಳನ್ನು “ಉಳಿಸಲಾಗಿದೆ” ನಲ್ಲಿ ಇರಿಸಲಾಗಿದೆ. ಇಲ್ಲಿ ಮಾಡುವ ಬದಲಾವಣೆಗಳು {1} ಸ್ವೀಕರಿಸಿದ್ದನ್ನು ಬದಲಾಯಿಸುವುದಿಲ್ಲ."
 
+#. placeholder {0}: formatUsd(budget.maxMicro)
+#: src/features/jobs/admin/budget-card.tsx
+msgid "$0 stops paid searches: people get saved results only. The most this can be set to is {0} a day."
+msgstr ""
+
 #: src/features/resume/editor/write/section-row.tsx
 msgid "1 column, inline"
 msgstr "1 ಕಾಲಮ್, ಇನ್‌ಲೈನ್"
@@ -1585,6 +1596,14 @@ msgstr "ದಿನಾಂಕ ವ್ಯಾಪ್ತಿಯನ್ನು ಹೆಚ್�
 #: src/features/resume/editor/check/issues.ts
 msgid "A date won't be read"
 msgstr "ದಿನಾಂಕವನ್ನು ಓದಲಾಗುವುದಿಲ್ಲ"
+
+#: src/features/jobs/admin/budget-card.tsx
+msgid "A day, set here"
+msgstr ""
+
+#: src/features/jobs/admin/budget-card.tsx
+msgid "A day, the server default"
+msgstr ""
 
 #: src/dialogs/resume/template/data.ts
 msgid "A deep night sidebar where a large serif name, the portrait and the contact lines glow in light text, beside a white main column."
@@ -4115,6 +4134,7 @@ msgstr "ಪ್ರಮಾಣಪತ್ರಗಳು"
 msgid "Challenge, approach and stack, key decisions, outcome"
 msgstr ""
 
+#: src/features/jobs/admin/budget-card.tsx
 #: src/features/resume/editor/check/job-match.tsx
 #: src/features/resume/editor/check/writing-tab.tsx
 #: src/features/settings/account/security.tsx
@@ -4158,6 +4178,10 @@ msgstr ""
 
 #: src/features/portfolio/location/location-fields.tsx
 msgid "Change the city"
+msgstr ""
+
+#: src/features/jobs/admin/budget-card.tsx
+msgid "Change the daily budget"
 msgstr ""
 
 #: src/features/applications/components/detail/next-step-card.tsx
@@ -5323,6 +5347,10 @@ msgstr ""
 msgid "Cost per day"
 msgstr ""
 
+#: src/features/jobs/admin/costs-page.tsx
+msgid "Cost per results page"
+msgstr ""
+
 #: src/features/career/knowledge/facts.tsx
 msgid "Couldn't add that fact. Try again."
 msgstr "ಆ ಸಂಗತಿಯನ್ನು ಸೇರಿಸಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ. ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ."
@@ -6355,6 +6383,14 @@ msgstr "ಚೆಕ್"
 #: src/features/career/today.tsx
 msgid "Daily at {clock} · next {next}"
 msgstr "ಪ್ರತಿದಿನ {clock} ಕ್ಕೆ · ಮುಂದಿನದು {next}"
+
+#: src/features/jobs/admin/budget-card.tsx
+msgid "Daily budget"
+msgstr ""
+
+#: src/features/jobs/admin/budget-card.tsx
+msgid "Daily budget set."
+msgstr ""
 
 #: src/features/portfolio/statistics/portfolio-statistics.tsx
 msgid "Daily numbers"
@@ -11413,10 +11449,6 @@ msgstr "ಕೆಳಗೆ ಸರಿಸಿ"
 msgid "Move each job from saved to offer, with notes, dates and the resume you sent."
 msgstr ""
 
-#: src/features/resume/editor/write/basics-card.tsx
-msgid "Move field up"
-msgstr "ಕ್ಷೇತ್ರವನ್ನು ಮೇಲಕ್ಕೆ ಸರಿಸಿ"
-
 #: src/features/resume/editor/check/issues.ts
 msgid "Move it to the main column"
 msgstr "ಅದನ್ನು ಮುಖ್ಯ ಕಾಲಮ್‌ಗೆ ಸರಿಸಿ"
@@ -12047,6 +12079,10 @@ msgstr "ಹೋಲಿಸಲು ಇನ್ನೂ ಆಫರ್‌ಗಳಿಲ್ಲ"
 #: src/routes/builder/$resumeId/-components/editor-bar.tsx
 msgid "No open issues"
 msgstr "ಮುಕ್ತ ಸಮಸ್ಯೆಗಳಿಲ್ಲ"
+
+#: src/features/jobs/admin/costs-page.tsx
+msgid "No page asked of the providers yet"
+msgstr ""
 
 #: src/features/docs/sidebar.tsx
 msgid "No pages match “{term}”."
@@ -13039,6 +13075,7 @@ msgstr "{0} ಗಾಗಿ ಆಯ್ಕೆಗಳು"
 msgid "Options for {0} at {1}"
 msgstr "{1} ನಲ್ಲಿ {0} ಗಾಗಿ ಆಯ್ಕೆಗಳು"
 
+#: src/features/resume/editor/write/basics-card.tsx
 #: src/features/resume/editor/write/section-row.tsx
 #: src/features/resume/share/history-tab.tsx
 msgid "Options for {title}"
@@ -15405,6 +15442,7 @@ msgstr ""
 
 #: src/features/portfolio/editor/content-panel.tsx
 #: src/features/portfolio/works/works-panel.tsx
+#: src/features/resume/editor/write/basics-card.tsx
 #: src/features/resume/editor/write/section-row.tsx
 #: src/routes/builder/$resumeId/-sidebar/right/sections/layout/pages.tsx
 msgid "Reorder {title}"
@@ -16755,6 +16793,10 @@ msgstr "ಸರ್ಬಿಯನ್"
 msgid "Serper (web search)"
 msgstr ""
 
+#: src/features/jobs/admin/budget-card.tsx
+msgid "Server default"
+msgstr ""
+
 #: src/features/portfolio/editor/offer-forms.tsx
 msgid "Service"
 msgstr ""
@@ -16779,6 +16821,17 @@ msgstr "ಅನುಸರಣೆಯನ್ನು ಹೊಂದಿಸಿ..."
 msgid "Set a password"
 msgstr "ಪಾಸ್ವರ್ಡ್ ಹೊಂದಿಸಿ"
 
+#: src/features/jobs/admin/budget-card.tsx
+msgid "Set budget"
+msgstr ""
+
+#. placeholder {0}: budget.updatedBy
+#. placeholder {1}: i18n.date(budget.updatedAt, { dateStyle: "medium", timeStyle: "short" })
+#. placeholder {2}: budget.reason
+#: src/features/jobs/admin/budget-card.tsx
+msgid "Set by {0} on {1}: “{2}”"
+msgstr ""
+
 #. placeholder {0}: formatShort(searchOverride.expiresAt)
 #: src/features/billing/admin/customer.tsx
 msgid "set by hand until {0}"
@@ -16794,6 +16847,12 @@ msgstr ""
 
 #: src/features/billing/admin/customer.tsx
 msgid "Set limit"
+msgstr ""
+
+#. placeholder {0}: i18n.date(budget.updatedAt, { dateStyle: "medium", timeStyle: "short" })
+#. placeholder {1}: budget.reason
+#: src/features/jobs/admin/budget-card.tsx
+msgid "Set on {0}: “{1}”"
 msgstr ""
 
 #: src/features/portfolio/editor/password-group.tsx
@@ -17494,6 +17553,7 @@ msgstr ""
 msgid "Spell the month, as in \"Mar 2022\"."
 msgstr "\"Mar 2022\" ರಂತೆ ತಿಂಗಳ ಹೆಸರನ್ನು ಬರೆಯಿರಿ."
 
+#: src/features/jobs/admin/budget-card.tsx
 #: src/features/jobs/admin/costs-page.tsx
 msgid "Spent today"
 msgstr ""
@@ -18541,6 +18601,11 @@ msgstr ""
 msgid "The brief"
 msgstr ""
 
+#. placeholder {0}: formatUsd(budget.defaultMicro)
+#: src/features/jobs/admin/budget-card.tsx
+msgid "The budget set here is removed; the server default of {0} a day applies again."
+msgstr ""
+
 #: src/features/jobs/admin/costs-page.tsx
 msgid "The call statistics couldn't be read. Try Refresh in a moment."
 msgstr ""
@@ -19047,6 +19112,10 @@ msgstr ""
 
 #: src/features/portfolio/editor/save-problem.ts
 msgid "The server couldn't save your changes. Saving tries again by itself."
+msgstr ""
+
+#: src/features/jobs/admin/budget-card.tsx
+msgid "The server default applies again."
 msgstr ""
 
 #. Story outline heading
@@ -20623,6 +20692,10 @@ msgstr ""
 msgid "URL"
 msgstr "URL"
 
+#: src/features/jobs/admin/budget-card.tsx
+msgid "US dollars a day (0–{maxUsd})"
+msgstr ""
+
 #: src/features/portfolio/statistics/portfolio-statistics.tsx
 msgid "Use {device}"
 msgstr ""
@@ -20712,6 +20785,7 @@ msgstr "ಗರಿಷ್ಠ 64 ಅಕ್ಷರಗಳನ್ನು ಬಳಸಿ."
 msgid "Use between 6 and 64 characters."
 msgstr "6 ಮತ್ತು 64 ಅಕ್ಷರಗಳ ನಡುವೆ ಬಳಸಿ."
 
+#: src/features/jobs/admin/budget-card.tsx
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Use default"
 msgstr "ಡೀಫಾಲ್ಟ್ ಬಳಸಿ"
@@ -20764,8 +20838,16 @@ msgstr ""
 msgid "Use sample"
 msgstr "ಮಾದರಿ ಬಳಸಿ"
 
+#: src/features/jobs/admin/budget-card.tsx
+msgid "Use server default"
+msgstr ""
+
 #: src/features/portfolio/blocks/link-block.tsx
 msgid "Use the page's picture?"
+msgstr ""
+
+#: src/features/jobs/admin/budget-card.tsx
+msgid "Use the server default"
 msgstr ""
 
 #: src/features/resume/editor/check/issues.ts
@@ -21472,6 +21554,10 @@ msgstr "ಯಶಸ್ಸು ಹೇಗಿರುತ್ತದೆ, ಯಾವ ಸವ�
 #: src/features/resume/editor/check/check-panel.tsx
 msgid "What the file-level check found in the PDF you'd send. It ran in this tab; nothing was uploaded."
 msgstr "ನೀವು ಕಳುಹಿಸಲು ಬಯಸುವ PDF ನಲ್ಲಿ ಫೈಲ್ ಮಟ್ಟದ ಪರಿಶೀಲನೆ ಕಂಡುಬಂದಿದೆ. ಇದು ಈ ಟ್ಯಾಬ್‌ನಲ್ಲಿ ಓಡಿತು; ಏನನ್ನೂ ಅಪ್‌ಲೋಡ್ ಮಾಡಲಾಗಿಲ್ಲ."
+
+#: src/features/jobs/admin/budget-card.tsx
+msgid "What the job providers may cost in a UTC day. Past it, people get saved results only until midnight UTC. A change applies within a minute, without a deploy."
+msgstr ""
 
 #: src/features/jobs/listing-sheet.tsx
 msgid "What they ask for"

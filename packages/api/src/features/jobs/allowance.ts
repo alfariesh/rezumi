@@ -12,6 +12,7 @@ import { raiseBillingAlertQuietly } from "../billing/alerts";
 import { getEntitlements } from "../billing/entitlements";
 import { activeLimitOverride } from "../billing/limit-overrides";
 import { dayInTimeZone, startOfDayInTimeZone } from "../portfolio/traffic";
+import { dailyBudgetMicro } from "./budget";
 
 /**
  * What limits job searching (`02-teknis.md` section 8): a short burst limit per account, the plan's searches per day
@@ -132,15 +133,12 @@ export async function countSearch(
 	return { allowed: result.allowed, used: result.total };
 }
 
-// ---- Server budget (K7) ------------------------------------------------------------------------------------------
+// ---- Server budget (K7; the amount: `budget.ts`) ------------------------------------------------------------------------------------------
 
 /** Share of the budget after which a warning is logged once. */
 const WARN_SHARE = 0.8;
 
 const budgetKey = (now: Date) => `budget:${utcDay(now)}`;
-
-/** Today's budget in millionths of a US dollar (`JOB_SEARCH_DAILY_BUDGET_USD`, default $1). */
-export const dailyBudgetMicro = () => Math.round((env.JOB_SEARCH_DAILY_BUDGET_USD ?? 1) * 1_000_000);
 
 /** What the providers cost so far this UTC day, in millionths of a US dollar. */
 export async function spentToday(counters: JobCounters, now: Date): Promise<number> {
@@ -149,7 +147,8 @@ export async function spentToday(counters: JobCounters, now: Date): Promise<numb
 
 /** Whether today's budget still allows asking a provider. */
 export async function budgetLeft(counters: JobCounters, now: Date): Promise<boolean> {
-	return (await spentToday(counters, now)) < dailyBudgetMicro();
+	const [spent, budget] = await Promise.all([spentToday(counters, now), dailyBudgetMicro(now.getTime())]);
+	return spent < budget;
 }
 
 /**
@@ -160,10 +159,11 @@ export async function recordSpend(counters: JobCounters, costMicro: number, now:
 	const amount = Math.max(0, Math.round(costMicro));
 	if (amount === 0) return;
 	const { total } = await counters.add(budgetKey(now), amount, { window: budgetWindow(now) });
-	const warnAt = dailyBudgetMicro() * WARN_SHARE;
+	const budget = await dailyBudgetMicro(now.getTime());
+	const warnAt = budget * WARN_SHARE;
 	if (total >= warnAt && total - amount < warnAt) {
 		console.warn(
-			`[jobs] Job search spending passed ${WARN_SHARE * 100}% of today's budget: $${(total / 1e6).toFixed(4)} of $${(dailyBudgetMicro() / 1e6).toFixed(2)}.`,
+			`[jobs] Job search spending passed ${WARN_SHARE * 100}% of today's budget: $${(total / 1e6).toFixed(4)} of $${(budget / 1e6).toFixed(2)}.`,
 		);
 		await raiseBillingAlertQuietly({ kind: "job_search_budget", now });
 	}
