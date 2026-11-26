@@ -22,7 +22,7 @@ import { TemplatePreviewCaption } from "./preview-caption";
 import { TemplateCard } from "./template-card";
 import { useThumbnailContent } from "./thumbnails";
 import { nativeEnvironment } from "@/draft/native";
-import { isLabelledTemplate, listedTemplates, usePlan } from "@/features/billing/plan";
+import { isLabelledTemplate, usePlan } from "@/features/billing/plan";
 import { ResumePage } from "@/preview/page";
 import { useIsTablet } from "@/shell/use-is-tablet";
 import { Button, EmptyState, Skeleton, Text, space } from "@/ui";
@@ -74,8 +74,7 @@ function Gallery({ id, opened }: GalleryProps) {
 
 	const current = data.metadata.template;
 	const disabled = draft.locked;
-	// iOS lists only the templates the account can use; Android lists all, the locked ones labelled.
-	const listed = listedTemplates(plan, TEMPLATES, current);
+	const listed = TEMPLATES;
 	const shown = listed.filter(
 		(template) => matchesFilter(template, filter.layout) && suitsCareerField(template, filter.field),
 	);

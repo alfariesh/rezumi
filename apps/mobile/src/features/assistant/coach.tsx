@@ -62,6 +62,7 @@ function useCoachProfile() {
 type CoachProps = {
 	offerIds?: readonly string[] | undefined;
 	initialThread?: string | undefined;
+	initialQuestion?: string | undefined;
 	onClose: () => void;
 	expand?: { expanded: boolean; onPress: () => void } | undefined;
 };
@@ -84,7 +85,7 @@ export function Coach(props: CoachProps) {
 	);
 }
 
-function CoachConversation({ offerIds = noOffers, initialThread, onClose, expand }: CoachProps) {
+function CoachConversation({ offerIds = noOffers, initialThread, initialQuestion, onClose, expand }: CoachProps) {
 	const { t, i18n } = useLingui();
 	const queryClient = useQueryClient();
 	const providers = useHasAIProvider();
@@ -95,7 +96,9 @@ function CoachConversation({ offerIds = noOffers, initialThread, onClose, expand
 	const [chips, setChips] = useState<Chips>(DEFAULT_CHIPS);
 	const [history, setHistory] = useState(false);
 	const [modelOpen, setModelOpen] = useState(false);
-	const conversations = (threads.data ?? []).filter((thread) => thread.scope === "career");
+	const conversations = (threads.data ?? []).filter(
+		(thread) => thread.scope === "career" || thread.scope === "application",
+	);
 	const summary = conversations.find((thread) => thread.id === threadId);
 	const { provider, label, sourceNote, switching, choose } = useConversationProvider(providers, summary, threadId);
 	const title = useThreadTitle();
@@ -212,6 +215,7 @@ function CoachConversation({ offerIds = noOffers, initialThread, onClose, expand
 								<ChatView
 									key={draftKey}
 									threadId={threadId}
+									initialDraft={draftKey === 0 && !threadId ? initialQuestion : undefined}
 									createThread={async (scope) =>
 										(
 											await client.agent.threads.start(

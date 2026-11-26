@@ -72,7 +72,7 @@ jest.mock("@/features/ai/providers", () => ({
 	AIProviderSetupSheet: () => null,
 }));
 jest.mock("@/features/ai/report-content", () => ({ ReportAiContent: () => null }));
-jest.mock("@/features/settings/queries", () => ({ useProfile: () => ({ data: { timezone: "UTC" } }) }));
+jest.mock("@/features/account/queries", () => ({ useProfile: () => ({ data: { timezone: "UTC" } }) }));
 jest.mock("@/auth/session", () => {
 	// One session object, as the app's store keeps it: drafts re-read their scope when it changes.
 	const session = { status: "signed-in", server: "https://rezumi.app" };

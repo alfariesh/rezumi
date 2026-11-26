@@ -4,7 +4,7 @@ export type Searchable = {
 	/** What the row shows first; matches here rank highest. */
 	title: string;
 	/** Secondary text and extra keywords; a match here ranks below any title match. */
-	keywords?: readonly (string | null | undefined)[];
+	keywords?: readonly (string | null | undefined)[] | undefined;
 	/** Newer first among equal scores (ms since epoch). */
 	time?: number;
 };

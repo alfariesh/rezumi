@@ -19,7 +19,7 @@ import { safeFileName } from "./model";
 import { client } from "@/api/client";
 import { useLetterStore, useResumeStore } from "@/draft";
 import { useApplications } from "@/features/applications/queries";
-import { canShowPlans, hasPlanFeature, showPlanAlert, usePlan } from "@/features/billing/plan";
+import { hasPlanFeature, showPlanAlert, usePlan } from "@/features/billing/plan";
 import { letterFileName, letterPageData } from "@/features/letters/compose";
 import { routes } from "@/routes";
 import { Button, ListRow, ListSection, Switch, Text } from "@/ui";
@@ -41,7 +41,7 @@ export function DownloadTab({ resume, offline }: DownloadProps) {
 	const active = useRef(false);
 	const [error, setError] = useState<string | null>(null);
 	const plan = usePlan();
-	// Word and ODT need the plan's feature: Android shows them locked, iOS lists only what the account can use.
+	// Word and ODT downloads use the same entitlement and explanation on both platforms.
 	const wordLocked = !hasPlanFeature(plan, "wordOdtExport");
 	const isWord = (id: ExportFormat) => id === "docx" || id === "odt";
 	const allFormats: FormatOption<ExportFormat>[] = [
@@ -81,9 +81,11 @@ export function DownloadTab({ resume, offline }: DownloadProps) {
 			icon: "file-text",
 		},
 	];
-	const formats = (wordLocked && !canShowPlans() ? allFormats.filter((item) => !isWord(item.id)) : allFormats).map(
-		(item) => ({ ...item, locked: wordLocked && isWord(item.id), unavailable: offline && item.id !== "pdf" }),
-	);
+	const formats = allFormats.map((item) => ({
+		...item,
+		locked: wordLocked && isWord(item.id),
+		unavailable: offline && item.id !== "pdf",
+	}));
 
 	const download = async (chosen: ExportFormat, print = false, includeLetter = withLetter) => {
 		if (active.current) return;

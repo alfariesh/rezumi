@@ -2,7 +2,7 @@ import type { DocumentSummary } from "./filter";
 import { publicResumeUrl } from "@rezumi/resume/sharing";
 import { useFlags } from "@/api/flags";
 import { getServer } from "@/auth/session";
-import { useProfile } from "@/features/settings/queries";
+import { useProfile } from "@/features/account/queries";
 
 /** A resume's public address while its link is on, otherwise null. Uses the app's alias when the server has one. */
 export function usePublicLink(document: DocumentSummary | null) {

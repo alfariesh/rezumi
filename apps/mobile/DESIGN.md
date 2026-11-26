@@ -157,7 +157,7 @@ imported by subpath (`heroui-native-pro/segment`), never from the package root.
   Applications) with quiet counts, New and the account at its foot, a rail of icons under 1000 pt. Portfolio shows only
   when the account has portfolios.
 - **Top bar of a tab:** `TabTopBar` (actions row: Coach, Search, avatar; then the 30 pt title). The avatar opens the
-  account menu (Account, Plan on Android only, App settings, Help & legal, Sign out).
+  account menu (Account, Plan, App settings, Help & legal, Sign out).
 - **New:** `NewFab` on Home and Documents, phones only (the sidebar has New on tablets). It opens the New sheet.
 - **Offline:** `OfflineStrip` under the status bar above every tab.
 - **Leaving with unsaved edits:** `useUnsavedChangesGuard({ dirty })` asks with the system dialog for every way out.

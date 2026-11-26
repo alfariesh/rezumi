@@ -599,6 +599,42 @@ describe.skipIf(!databaseUrl)("durable career scheduling", () => {
 		]);
 	});
 
+	it("revokes scheduled AI work without editing the interview or another user's schedule", async () => {
+		await interviewApplication(new Date("2030-10-08T10:00:00Z"));
+		const unrelated = await schedule("alice-app");
+		await getDb().insert(tables.careerSchedule).values({
+			id: "interview-approval",
+			userId: "alice",
+			applicationId: "alice-app",
+			interviewId: "interview-round",
+			aiProviderId: "preparation-provider",
+			kind: "prepare",
+			lead: "2h",
+			enabled: true,
+			nextRunAt: due(),
+		});
+		await getDb().insert(tables.careerJob).values({
+			userId: "alice",
+			scheduleId: "interview-approval",
+			dueAt: due(),
+			status: "queued",
+		});
+		await expect(jobs.revokeScheduleAi("bob", "interview-approval")).rejects.toMatchObject({ code: "NOT_FOUND" });
+		await expect(jobs.revokeScheduleAi("alice", unrelated.id)).rejects.toMatchObject({ code: "NOT_FOUND" });
+		await jobs.revokeScheduleAi("alice", "interview-approval");
+		expect(await jobs.list("alice")).toEqual(
+			expect.arrayContaining([
+				expect.objectContaining({ id: "interview-approval", interviewId: "interview-round", enabled: false }),
+				expect.objectContaining({ id: unrelated.id, enabled: true }),
+			]),
+		);
+		expect(await getDb().select({ status: tables.careerJob.status }).from(tables.careerJob)).toEqual([
+			{ status: "canceled" },
+		]);
+		await run();
+		expect(fixture.generate).not.toHaveBeenCalled();
+	});
+
 	it.each(["update", "delete"] as const)(
 		"follows a rescheduled interview and pauses when it is removed, cancelling pending work (%s)",
 		async (action) => {

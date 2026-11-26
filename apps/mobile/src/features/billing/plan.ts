@@ -6,17 +6,16 @@ import { t } from "@lingui/core/macro";
 import { useQuery } from "@tanstack/react-query";
 import { templateName } from "@rezumi/resume/design-presets";
 import { FREE_TEMPLATES, isFreeTemplate } from "@rezumi/schema/billing";
-import { canShowPlans } from "./plan-alert";
 import { orpc } from "@/api/client";
 import { useSession } from "@/auth/session";
 
-export { canShowPlans, showPlanAlert } from "./plan-alert";
+export { showPlanAlert } from "./plan-alert";
 export type { PlanFeature } from "./plan-alert";
 
 export type PlanSummary = RouterOutput["billing"]["summary"];
 
 /** The account's plan and usage, for display only: the server enforces every rule. */
-export function usePlan(): PlanSummary | undefined {
+export function usePlanQuery() {
 	const session = useSession();
 	return useQuery(
 		orpc.billing.summary.queryOptions({
@@ -24,7 +23,11 @@ export function usePlan(): PlanSummary | undefined {
 			enabled: session.status === "signed-in",
 			retry: false,
 		}),
-	).data;
+	);
+}
+
+export function usePlan(): PlanSummary | undefined {
+	return usePlanQuery().data;
 }
 
 /** Whether a feature is open: until the plan loads and while plans don't apply to the account, it is. */
@@ -35,16 +38,9 @@ export const hasPlanFeature = (plan: PlanSummary | undefined, feature: PlanFeatu
 export const isLockedTemplate = (plan: PlanSummary | undefined, template: Template) =>
 	!isFreeTemplate(template) && !hasPlanFeature(plan, "premiumTemplates");
 
-/** Android labels premium templates while plans apply; iOS never labels them. */
+/** Labels premium templates while plans apply. */
 export const isLabelledTemplate = (plan: PlanSummary | undefined, template: Template) =>
-	canShowPlans() && Boolean(plan?.enabled) && !isFreeTemplate(template);
-
-/**
- * The templates a picker lists. Android lists every one (locked ones labelled); iOS lists only those the account can
- * use, and the document's own.
- */
-export const listedTemplates = (plan: PlanSummary | undefined, templates: readonly Template[], current: Template) =>
-	canShowPlans() ? templates : templates.filter((id) => id === current || !isLockedTemplate(plan, id));
+	Boolean(plan?.enabled) && !isFreeTemplate(template);
 
 export const getPlanName = (planId: PlanId) => (planId === "free" ? t`Free` : planId === "plus" ? "Plus" : "Pro AI");
 

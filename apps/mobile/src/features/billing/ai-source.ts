@@ -3,17 +3,12 @@ import { plural, t } from "@lingui/core/macro";
 import { ORPCError } from "@orpc/client";
 import { Alert } from "react-native";
 import { CAREER_TASK_CREDIT_ACTIONS, CREDIT_COSTS } from "@rezumi/schema/billing";
-import { canShowPlans } from "./plan-alert";
 
 // Kept apart from plan.ts and credits.ts, which read the API: the API client reads these and must not import itself.
 
 const creditCount = (count: number) => plural(count, { one: "# credit", other: "# credits" });
 
-/**
- * Store rules (00-keputusan-produk.md §6): Android offers Rezumi AI with its credits; iOS never does until In-App
- * Purchase exists, so it never sends work to Rezumi AI and only ever uses the user's own connection.
- */
-export const canUseRezumiAi = canShowPlans;
+export { canUseRezumiAi } from "@/shell/managed-ai";
 
 const field = (input: unknown, name: string) =>
 	input && typeof input === "object" ? (input as Record<string, unknown>)[name] : undefined;

@@ -1,4 +1,5 @@
 import type { AIProvider, SavedProvider } from "./catalog";
+import type { ComponentProps, ReactNode } from "react";
 import { useLingui } from "@lingui/react/macro";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useRef, useState } from "react";
@@ -17,15 +18,36 @@ import { getServer } from "@/auth/session";
 import {
 	Button,
 	ConfirmDialog,
+	Description,
 	IconButton,
+	Input,
+	Label,
+	ListGroup,
 	ListRow,
-	SelectSheet,
+	PickerSheet,
 	Sheet,
 	Switch,
 	Text,
 	TextField,
-	useTheme,
-} from "@/ui-legacy";
+} from "@/ui";
+
+type ProviderFieldProps = ComponentProps<typeof Input> & {
+	label: string;
+	helper?: string | undefined;
+	trailing?: ReactNode;
+};
+function ProviderField({ label, helper, trailing, ...props }: ProviderFieldProps) {
+	return (
+		<TextField>
+			<Label>{label}</Label>
+			<View className="flex-row items-center gap-2">
+				<Input {...props} accessibilityLabel={label} variant="secondary" className="flex-1" />
+				{trailing}
+			</View>
+			{helper ? <Description>{helper}</Description> : null}
+		</TextField>
+	);
+}
 
 export type AIProviderSetupSheetProps = {
 	open: boolean;
@@ -40,14 +62,22 @@ export function AIProviderSetupSheet({ open, onClose, onReady }: AIProviderSetup
 	const state = useHasAIProvider();
 	const managed = state.providers.some((provider) => provider.managed);
 	return (
-		<Sheet open={open} onClose={onClose} title={t`Set up a provider`} detents={[0.9]}>
+		<Sheet
+			isOpen={open}
+			onOpenChange={(value) => {
+				if (!value) onClose();
+			}}
+			title={t`Set up a provider`}
+			closeLabel={t`Close`}
+			detents={[0.9]}
+		>
 			{open &&
 				(state.isUnavailable || managed ? (
 					<>
-						<Text color="ink2">
+						<Text tone="muted">
 							{state.error ? aiSettingsError(state.error) : managed ? t`Managed by your server` : t`Loading providers…`}
 						</Text>
-						{state.error && <Button label={t`Try again`} onPress={state.retry} />}
+						{state.error && <Button onPress={state.retry}>{t`Try again`}</Button>}
 					</>
 				) : (
 					<ProviderForm onClose={onClose} onReady={onReady} />
@@ -59,8 +89,17 @@ export function AIProviderSetupSheet({ open, onClose, onReady }: AIProviderSetup
 type ProviderEditorSheetProps = AIProviderSetupSheetProps & { provider: SavedProvider };
 
 export function ProviderEditorSheet({ open, provider, onClose }: ProviderEditorSheetProps) {
+	const { t } = useLingui();
 	return (
-		<Sheet open={open} onClose={onClose} title={provider.label} detents={[0.9]}>
+		<Sheet
+			isOpen={open}
+			onOpenChange={(value) => {
+				if (!value) onClose();
+			}}
+			title={provider.label}
+			closeLabel={t`Close`}
+			detents={[0.9]}
+		>
 			{open && <ProviderForm key={provider.id} saved={provider} onClose={onClose} />}
 		</Sheet>
 	);
@@ -74,7 +113,7 @@ type ProviderFormProps = {
 
 function ProviderForm({ saved, onClose, onReady }: ProviderFormProps) {
 	const { t } = useLingui();
-	const { space } = useTheme();
+	const [pickingProvider, setPickingProvider] = useState(false);
 	const queryClient = useQueryClient();
 	const [provider, setProvider] = useState<AIProvider>(saved?.provider ?? "openai");
 	const [fields, setFields] = useState({
@@ -215,19 +254,34 @@ function ProviderForm({ saved, onClose, onReady }: ProviderFormProps) {
 	};
 
 	return (
-		<View style={{ gap: space.s4, padding: space.s4 }}>
-			<Text color="ink2">{t`The key is encrypted on the server and never shown again. Saving tests the connection.`}</Text>
-			<SelectSheet
-				label={t`Provider`}
+		<View className="gap-4">
+			<Text tone="muted">{t`The key is encrypted on the server and never shown again. Saving tests the connection.`}</Text>
+			<ListGroup>
+				<ListRow
+					title={t`Provider`}
+					description={providerLabel(provider)}
+					icon="robot"
+					isDisabled={pending || !!current}
+					onPress={() => setPickingProvider(true)}
+				/>
+			</ListGroup>
+			<PickerSheet
+				title={t`Provider`}
+				closeLabel={t`Close`}
+				searchLabel={t`Search providers`}
+				emptyLabel={() => t`No provider matches.`}
+				isOpen={pickingProvider}
+				onOpenChange={setPickingProvider}
 				value={provider}
 				options={providerOptions}
-				disabled={pending || !!current}
-				onChange={(next) => {
+				onPick={(value) => {
+					const next = providerOptions.find((option) => option.value === value)?.value;
+					if (next === undefined) return;
 					setProvider(next);
 					set({ ...providerDefaults(next), apiKey: "" });
 				}}
 			/>
-			<TextField
+			<ProviderField
 				label={t`API key`}
 				value={fields.apiKey}
 				onChangeText={(apiKey) => set({ apiKey })}
@@ -260,7 +314,7 @@ function ProviderForm({ saved, onClose, onReady }: ProviderFormProps) {
 					/>
 				}
 			/>
-			<TextField
+			<ProviderField
 				label={t`Model`}
 				value={fields.model}
 				onChangeText={(model) => set({ model })}
@@ -289,19 +343,19 @@ function ProviderForm({ saved, onClose, onReady }: ProviderFormProps) {
 						<ListRow
 							key={model.id}
 							title={model.id}
-							subtitle={model.name}
+							description={model.name}
 							onPress={() => set({ model: model.id })}
-							disabled={pending}
+							isDisabled={pending}
 						/>
 					))}
-			<TextField
+			<ProviderField
 				label={t`Name`}
 				value={fields.label}
 				placeholder={providerLabel(provider)}
 				onChangeText={(label) => set({ label })}
 				editable={!pending}
 			/>
-			<TextField
+			<ProviderField
 				label={t`Base URL`}
 				value={fields.baseURL}
 				onChangeText={(baseURL) => set({ baseURL })}
@@ -313,42 +367,36 @@ function ProviderForm({ saved, onClose, onReady }: ProviderFormProps) {
 			{current && (
 				<>
 					<Text>{t`Use this provider`}</Text>
-					<Text variant="callout" color="ink3">{t`Only providers that pass their test can be turned on.`}</Text>
+					<Text size="sm" tone="muted">{t`Only providers that pass their test can be turned on.`}</Text>
 					<Switch
-						label={t`Use this provider`}
-						value={current.enabled}
-						onValueChange={(enabled) => void setEnabled(enabled)}
-						disabled={pending || current.testStatus !== "success"}
-					/>
-					<Button
-						label={t`Delete provider`}
-						variant="danger"
-						disabled={pending}
-						onPress={() => setConfirmDelete(true)}
-					/>
+						accessibilityLabel={t`Use this provider`}
+						isSelected={current.enabled}
+						onSelectedChange={(enabled) => void setEnabled(enabled)}
+						isDisabled={pending || current.testStatus !== "success"}
+					/>{" "}
+					<Button variant="danger-soft" isDisabled={pending} onPress={() => setConfirmDelete(true)}>
+						{t`Delete provider`}
+					</Button>
 				</>
 			)}
 			{failure && (
-				<Text accessibilityRole="alert" color="dangerText">
+				<Text accessibilityRole="alert" tone="danger">
 					{failure}
 				</Text>
 			)}
-			<Button
-				label={pending ? t`Testing the connection…` : t`Save and test`}
-				loading={pending}
-				disabled={!ready}
-				onPress={() => void save()}
-				fullWidth
-			/>
-			<Button label={t`Cancel`} variant="ghost" disabled={pending} onPress={onClose} />
+			<Button isDisabled={pending || !ready} onPress={() => void save()}>
+				{pending ? t`Testing the connection…` : t`Save and test`}
+			</Button>
+			<Button variant="ghost" isDisabled={pending} onPress={onClose}>{t`Cancel`}</Button>
 			<ConfirmDialog
-				open={confirmDelete}
+				isOpen={confirmDelete}
+				onOpenChange={setConfirmDelete}
 				title={t`Delete this provider?`}
 				message={t`Its saved key is deleted. Conversations using it need another provider.`}
 				confirmLabel={t`Delete provider`}
 				destructive
 				onConfirm={() => void remove()}
-				onCancel={() => setConfirmDelete(false)}
+				cancelLabel={t`Keep provider`}
 			/>
 		</View>
 	);

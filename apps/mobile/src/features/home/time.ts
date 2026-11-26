@@ -1,6 +1,6 @@
 // Dates on Home in the account's timezone and the interface language, as on the web's Home.
 import { useLingui } from "@lingui/react/macro";
-import { useProfile } from "@/features/settings/queries";
+import { useProfile } from "@/features/account/queries";
 
 const ymd = (at: Date, timeZone: string) =>
 	new Intl.DateTimeFormat("en-CA", { timeZone, year: "numeric", month: "2-digit", day: "2-digit" }).format(at);

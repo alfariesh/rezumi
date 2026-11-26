@@ -19,6 +19,7 @@ import {
 } from "../../dto/career";
 import { resumeDto } from "../../dto/resume";
 import { accountRateLimit } from "../../middleware/rate-limit";
+import { isFirstPartyClient } from "../billing/automation";
 import { portfolioExportSchema } from "../portfolio/export";
 import { authService } from "./service";
 
@@ -105,6 +106,16 @@ export const authRouter = {
 				...(input.timezone !== undefined ? { timezone: input.timezone } : {}),
 			}),
 		),
+
+	signOutAllDevices: accountProcedure
+		.route({ method: "POST", tags: ["Internal"] })
+		.input(z.undefined())
+		.output(z.object({ success: z.literal(true) }))
+		.handler(async ({ context }) => {
+			if (!context.authentication || !(await isFirstPartyClient(context.authentication)))
+				throw new ORPCError("FORBIDDEN");
+			return authService.signOutAllDevices(context.user.id);
+		}),
 
 	apiKeys: {
 		list: accountProcedure

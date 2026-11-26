@@ -44,7 +44,7 @@ const mocks = {
 	"@lingui/react/macro": { useLingui: () => ({ t: tag }) },
 	"expo-router": { useRouter: () => router, usePathname: () => "/documents", useIsFocused: () => true },
 	"react-native-keyboard-controller": { KeyboardAwareScrollView: "ScrollView", useKeyboardState: () => false },
-	"react-native-reanimated": { useAnimatedReaction: (prepare, react) => effects.push(() => react(prepare(), null)) },
+	"react-native-reanimated": { useAnimatedReaction() {} },
 	"react-native-worklets": { scheduleOnRN: (run, ...args) => run(...args) },
 	"@/routes": { routes },
 };
@@ -89,9 +89,6 @@ mocks["./theme"] = ui;
 // Gesture state has its own timing regression; layout fixtures do not pull.
 const pullRefresh = { usePullRefresh: () => ({ refreshing: false, onRefresh() {} }) };
 mocks["@/ui/use-pull-refresh"] = pullRefresh;
-mocks["@/components/collection-header"] = { CollectionHeader: "CollectionHeader" };
-// The rebuilt tab chrome (Jest-tested in src/shell) only matters here as the old headers' outside-the-tabs default.
-mocks["@/shell/tab-chrome"] = { TabBarActions: "TabBarActions", useInTabs: () => false };
 mocks["@/ui"] = { size: { wide: 700 }, ...pullRefresh };
 // Bottom bars report their height so toasts clear them; layout fixtures do not show toasts.
 mocks["@/ui/toast"] = { setToastBarHeight() {} };
@@ -157,167 +154,30 @@ ui.useReducedMotion = () => false;
 mocks["@/shell/use-is-tablet"] = { useIsTablet: isTablet };
 mocks["expo-router"].Stack = { Screen: "Stack.Screen" };
 const { useTabStackOptions: stackOptions } = load("shell/app-banner.tsx");
-const { SettingsPage } = load("features/settings/layout.tsx");
 for (const [width, largeTitle] of [
 	[951, false],
 	[466, true],
 ]) {
 	window = { ...window, width };
 	assert.equal(stackOptions().headerLargeTitle, largeTitle);
-	const settings = SettingsPage({ title: "Settings", root: true, children: null });
-	assert.equal(nodes(settings).find((node) => node.type === "Stack.Screen").props.options.headerShown, false);
-	assert.ok(nodes(settings).some((node) => node.type === "CollectionHeader" && node.props.title === "Settings"));
-	const pushed = SettingsPage({ title: "Account", children: null });
-	assert.equal(nodes(pushed).find((node) => node.type === "Stack.Screen").props.options.headerShown, true);
 }
-const hooks = [];
-let cursor = 0;
-let effects = [];
-react.useState = (initial) => {
-	const index = cursor++;
-	if (!(index in hooks)) hooks[index] = initial;
-	return [
-		hooks[index],
-		(value) => {
-			hooks[index] = value;
-		},
-	];
-};
-react.useRef = (initial) => react.useState({ current: initial })[0];
-react.useEffect = (effect, deps) => {
-	const index = cursor++;
-	const previous = hooks[index];
-	if (!previous || deps.some((value, i) => value !== previous.deps[i])) {
-		previous?.cleanup?.();
-		effects.push(() => {
-			hooks[index] = { deps, cleanup: effect() };
-		});
-	}
-};
-native.ActivityIndicator = "ActivityIndicator";
-native.PixelRatio = { get: () => 2 };
-
-// Large text must reflow chrome without taking scrolling content or row titles out of reach.
-const render = (component, props = {}) => {
-	cursor = 0;
-	effects = [];
-	const tree = component(props);
-	for (const effect of effects) effect();
-	return tree;
-};
-hooks.length = 0;
-react.useCallback = (callback) => callback;
-hooks.length = 0;
-native.StyleSheet = { hairlineWidth: 1 };
-const animation = {
-	View: "Animated.View",
-	useSharedValue: (initial) => ({ get: () => initial, set() {} }),
-	useAnimatedStyle: () => ({}),
-	withTiming: (value) => value,
-	withSpring: (value) => value,
-	withSequence: (...values) => values.at(-1),
-};
-const componentFixtures = {
+const { EmptyState } = load("ui-legacy/layout.tsx", {
+	"@/ui/motion": ui,
 	"./button": ui,
 	"./icon": ui,
-	"@/ui/motion": ui,
-	"./pressable": { FeedbackPressable: "Pressable" },
 	"./text": ui,
-	"expo-image": { Image: "Image" },
-	"react-native-reanimated": animation,
-	// Metro resolves an image to an asset id; the avatar placeholder is only drawn, never measured.
-	"../../assets/avatar-placeholder.webp": 1,
-};
-const { CollectionHeader } = load("components/collection-header.tsx");
-const { ListRow, EmptyState } = load("ui-legacy/layout.tsx", componentFixtures);
-native.FlatList = "FlatList";
-// Changing library columns remounts its header; an active filter must remain visible and clearable.
-hooks.length = 0;
-let restoredSearch = "Fold QA duplicate";
-const searchedHeader = render(CollectionHeader, {
-	title: "Documents",
-	searchLabel: "Search documents",
-	placeholder: "Search",
-	value: restoredSearch,
-	onChangeText(value) {
-		restoredSearch = value;
-	},
 });
-assert.equal(nodes(searchedHeader).find((node) => node.type === "TextInput")?.props.value, restoredSearch);
-assert.equal(
-	nodes(searchedHeader).find((node) => node.type === "TextInput").props.autoFocus,
-	false,
-	"Restoring an active filter must not summon the keyboard",
-);
-nodes(searchedHeader)
-	.find((node) => node.props.label === "Close search")
-	.props.onPress();
-assert.equal(restoredSearch, "");
 
-for (const fontScale of [1, 1.95, 3.12]) {
-	window = { width: 320, height: 568, fontScale };
-	hooks.length = 0;
-	const header = render(CollectionHeader, {
-		title: "Documents",
-		searchLabel: "Search documents",
-		placeholder: "Search",
-		value: "",
-		onChangeText() {},
-		actions: element("NewDocument", {}),
-	});
-	assert.equal(header.props.style.flexDirection, fontScale > 1.3 ? "column" : "row");
-	assert.ok(nodes(header).some((node) => node.type === "NewDocument"));
-	const row = render(ListRow, {
-		title: "Preferences",
-		value: "System",
-		leading: "circle-half",
-		chevron: true,
-		trailing: element("Switch", {}),
-	});
-	const title = nodes(row).find((node) => node.props.children?.includes("Preferences"));
-	const content = nodes(row).find((node) => node.props.children?.includes(title));
-	const rowStyle = typeof row.props.style === "function" ? row.props.style({ pressed: false }) : row.props.style;
-	assert.equal(rowStyle.flexDirection, fontScale > 1.3 ? "column" : "row");
-	if (fontScale > 1.3) {
-		assert.equal(rowStyle.alignItems, "stretch", "Large row titles need full width");
-		assert.equal(
-			nodes(content).some((node) => node.type === "Icon"),
-			false,
-		);
-		const leading = nodes(row).find((node) => node.props.name === "circle-half");
-		const band = nodes(row).find((node) => node.props.children?.includes(leading));
-		assert.ok(nodes(band).some((node) => node.props.name === "caret-right"));
-	}
-	assert.equal(
-		nodes(content).some((node) => node.type === "Switch"),
-		fontScale > 1.3,
-	);
-	const values = nodes(row).filter((node) => node.props.children?.includes("System"));
-	assert.equal(values.length, 1);
-	if (fontScale > 1.3) assert.equal(values[0].props.numberOfLines, undefined);
-}
-
-console.log(
-	"PASS safe areas, measured Screen viewport, Duo rail navigation/targets, tablet sidebar, responsive editor modes, history split, measured PDF pages, large-text chrome/rows/navigation, workspace selection and overflow",
-);
+console.log("PASS safe areas, measured screen viewport, and responsive section navigation");
 
 // Long empty-state headings need bounded width before Android measures wrapped text.
 for (const title of ["All your applications are closed", "Your job search starts here"]) {
-	const empty = render(EmptyState, { title });
+	const empty = EmptyState({ title });
 	const heading = nodes(empty).find((node) => node.props.accessibilityRole === "header");
 	assert.equal(heading.props.children[0], title);
 	assert.equal(heading.props.style.alignSelf, "stretch");
 	assert.equal(heading.props.numberOfLines, undefined);
 }
-
-assert.equal(
-	render(ListRow, { title: "Setting", trailing: element("Switch", {}) }).props.accessible,
-	false,
-	"Passive rows must expose their child switches as independent accessibility controls",
-);
-assert.equal(render(ListRow, { title: "Setting", trailing: element("Switch", {}) }).type, "View");
-assert.equal(render(ListRow, { title: "Status", value: "Saved" }).props.accessible, true);
-assert.equal(render(ListRow, { title: "Open", onPress() {} }).props.accessible, true);
 
 // An unknown decorative icon crashes its entire screen, including rows accepting ReactNode leading content.
 const appIconNames = new Set(
@@ -335,4 +195,4 @@ for (const directory of [new URL("../src/", import.meta.url), new URL("../app/",
 		}
 	}
 }
-console.log("PASS wrapped empty-state titles, list rows and resolvable icons");
+console.log("PASS wrapped empty-state titles and resolvable icons");

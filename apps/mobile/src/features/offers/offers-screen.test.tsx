@@ -28,7 +28,7 @@ jest.mock("./queries", () => ({
 }));
 // 20:00 on 22 November in Los Angeles, already 23 November in UTC.
 jest.mock("@/features/career/hooks", () => ({ useNow: () => new Date("2026-11-23T04:00:00Z") }));
-jest.mock("@/features/settings/queries", () => ({ useProfile: () => ({ data: { timezone: "America/Los_Angeles" } }) }));
+jest.mock("@/features/account/queries", () => ({ useProfile: () => ({ data: { timezone: "America/Los_Angeles" } }) }));
 jest.mock("@/api/online", () => ({ useOnline: () => mockOnline }));
 jest.mock("@/shell/use-is-tablet", () => ({ useIsTablet: () => false }));
 

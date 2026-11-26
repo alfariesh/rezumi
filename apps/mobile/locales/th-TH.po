@@ -284,7 +284,7 @@ msgstr ""
 
 #. placeholder {0}: creditCount(TRIAL_CREDITS.amount)
 #. placeholder {1}: TRIAL_CREDITS.validDays
-#: app/account/membership.tsx
+#: src/features/account/plan-screen.tsx
 msgid "{0} come with your first use of Rezumi AI, valid for {1} days."
 msgstr ""
 
@@ -300,7 +300,7 @@ msgstr ""
 
 #. placeholder {0}: creditCount(credits.nextExpiry.credits)
 #. placeholder {1}: formatDate(credits.nextExpiry.at)
-#: app/account/membership.tsx
+#: src/features/account/plan-screen.tsx
 msgid "{0} expire on {1}"
 msgstr ""
 
@@ -344,6 +344,11 @@ msgstr ""
 #. placeholder {0}: face.weight
 #: src/features/design/uploaded-fonts.tsx
 msgid "{0} italic"
+msgstr ""
+
+#. placeholder {0}: i18n.number(bytes.data / 1024, { maximumFractionDigits: 1 })
+#: src/features/account/storage-screen.tsx
+msgid "{0} KB"
 msgstr ""
 
 #. placeholder {0}: clock.money(terms.currency, difference)
@@ -946,11 +951,11 @@ msgstr ""
 msgid "{unread, plural, one {# unread message} other {# unread messages}}"
 msgstr ""
 
-#: app/account/membership.tsx
+#: src/features/account/plan-screen.tsx
 msgid "{used} in use"
 msgstr ""
 
-#: app/account/membership.tsx
+#: src/features/account/plan-screen.tsx
 msgid "{used} of {max}"
 msgstr ""
 
@@ -1189,6 +1194,10 @@ msgstr "ประมาณ 90 วินาทีเมื่อพูด"
 msgid "About me"
 msgstr ""
 
+#: src/features/account/help-screen.tsx
+msgid "About Rezumi"
+msgstr ""
+
 #: src/features/jobs/listing-detail.tsx
 msgid "About the job"
 msgstr ""
@@ -1232,9 +1241,7 @@ msgstr "ข้อเสนอที่ตอบรับแล้ว"
 msgid "Accomplishment"
 msgstr "ความสำเร็จ"
 
-#: app/account/account.tsx
-#: app/account/index.tsx
-#: src/features/search/search-screen.tsx
+#: src/features/account/account-screen.tsx
 #: src/shell/account-menu.tsx
 #: src/shell/app-drawer.tsx
 msgid "Account"
@@ -1248,24 +1255,19 @@ msgstr ""
 msgid "Action"
 msgstr "การกระทำ"
 
-#: src/features/search/search-screen.tsx
-msgid "Actions"
-msgstr "การดำเนินการ"
-
 #: src/features/share/custom-domain.tsx
 msgid "Active"
 msgstr "คล่องแคล่ว"
 
-#: app/account/membership.tsx
+#: src/features/account/plan-screen.tsx
 msgid "Active cover letters"
 msgstr ""
 
-#: app/account/membership.tsx
+#: src/features/account/plan-screen.tsx
 msgid "Active resumes"
 msgstr ""
 
-#. placeholder {0}: formatDate(plan.currentPeriodEndsAt)
-#: app/account/membership.tsx
+#. placeholder {0}: formatDate(end)
 #: src/features/billing/plan-card.tsx
 msgid "Active until {0}"
 msgstr ""
@@ -1435,10 +1437,6 @@ msgstr ""
 #: src/features/profile/bring-screen.tsx
 msgid "Add any of these and we'll find what your Profile is missing. You check everything before it's added."
 msgstr ""
-
-#: src/features/search/search-screen.tsx
-msgid "Add application"
-msgstr "เพิ่มใบสมัคร"
 
 #: src/features/entries/fields.ts
 msgid "Add award"
@@ -1718,6 +1716,10 @@ msgstr ""
 msgid "Address"
 msgstr "ที่อยู่"
 
+#: src/features/account/mcp-screen.tsx
+msgid "Address copied"
+msgstr ""
+
 #: src/features/workspace/messages/describe-change.ts
 msgid "Adds a reminder to Today if you haven't heard back by then."
 msgstr "เพิ่มการแจ้งเตือนใน “วันนี้” หากยังไม่ได้รับการตอบกลับภายในเวลานั้น"
@@ -1734,7 +1736,7 @@ msgstr ""
 msgid "Advanced"
 msgstr "ขั้นสูง"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Afrikaans"
 msgstr "อาฟรีกานส์"
 
@@ -1775,9 +1777,8 @@ msgstr "เทียบกับข้อกำหนดของคุณ"
 msgid "AI"
 msgstr ""
 
-#: app/account/ai.tsx
-#: app/account/index.tsx
-#: src/features/search/search-screen.tsx
+#: src/features/account/ai-screen.tsx
+#: src/features/account/preferences-screen.tsx
 msgid "AI & developer"
 msgstr "AI และนักพัฒนา"
 
@@ -1805,6 +1806,15 @@ msgstr "ยังโหลดการเชื่อมต่อ AI ไม่�
 msgid "AI couldn't read everything. Check the details, or fill them in by hand."
 msgstr ""
 
+#: src/features/account/ai-privacy-screen.tsx
+#: src/features/account/ai-screen.tsx
+msgid "AI data sharing"
+msgstr ""
+
+#: src/api/ai-consent.ts
+msgid "AI data sharing is off on this device. You can change it in App settings."
+msgstr ""
+
 #: src/features/history/format.ts
 msgid "AI edit"
 msgstr "เอไอแก้ไข"
@@ -1817,9 +1827,8 @@ msgstr ""
 msgid "AI provider"
 msgstr "ผู้ให้บริการ AI"
 
-#: app/account/ai-providers.tsx
-#: app/account/ai.tsx
-#: src/features/search/search-screen.tsx
+#: src/features/account/ai-screen.tsx
+#: src/features/account/providers-screen.tsx
 msgid "AI providers"
 msgstr "ผู้ให้บริการ AI"
 
@@ -1851,7 +1860,7 @@ msgstr ""
 msgid "AI settings"
 msgstr ""
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Albanian"
 msgstr "แอลเบเนีย"
 
@@ -1886,6 +1895,14 @@ msgstr ""
 
 #: src/features/design/gallery-filters.tsx
 msgid "All fields"
+msgstr ""
+
+#: src/features/account/plan-screen.tsx
+msgid "All portfolio intro effects"
+msgstr ""
+
+#: src/features/account/plan-screen.tsx
+msgid "All portfolio themes"
 msgstr ""
 
 #: src/features/applications/list/list-menus.tsx
@@ -1954,7 +1971,7 @@ msgstr ""
 msgid "Alternative text"
 msgstr ""
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Amharic"
 msgstr "อัมฮาริค"
 
@@ -2060,15 +2077,12 @@ msgstr "ที่ไหนก็ได้"
 msgid "Anywhere in the country"
 msgstr ""
 
+#: src/features/account/api-keys.tsx
 #: src/features/billing/plan-alert.ts
 msgid "API and MCP access isn't available"
 msgstr ""
 
-#: src/features/billing/plan-alert.ts
-msgid "API and MCP access isn't in your plan"
-msgstr ""
-
-#: app/account/membership.tsx
+#: src/features/account/plan-screen.tsx
 msgid "API and MCP for other apps"
 msgstr ""
 
@@ -2076,24 +2090,24 @@ msgstr ""
 msgid "API key"
 msgstr "กุญแจ API"
 
-#: src/features/settings/api-keys.tsx
+#: src/features/account/api-keys.tsx
 msgid "API key revoked. Apps using it stop working now."
 msgstr "คีย์ API ถูกเพิกถอน แอพที่ใช้มันหยุดทำงานแล้ว"
 
-#: src/features/search/search-screen.tsx
-#: src/features/settings/api-keys.tsx
+#: src/features/account/api-keys.tsx
 msgid "API keys"
 msgstr "คีย์ API"
 
-#: src/features/settings/api-keys.tsx
-msgid "API keys need the Plus or Pro AI plan"
-msgstr ""
-
+#: src/features/account/preferences-screen.tsx
 #: src/shell/account-menu.tsx
 msgid "App settings"
 msgstr ""
 
-#: app/account/preferences.tsx
+#: src/features/account/help-screen.tsx
+msgid "App version"
+msgstr ""
+
+#: src/features/account/preferences-screen.tsx
 msgid "Appearance"
 msgstr "รูปร่าง"
 
@@ -2228,10 +2242,6 @@ msgstr "ปรับใช้แล้ว อัปเดตใบสมัค�
 msgid "Applies the template you are trying."
 msgstr ""
 
-#: app/account/preferences.tsx
-msgid "Applies to this device only."
-msgstr "มีผลกับอุปกรณ์นี้เท่านั้น"
-
 #: src/features/design/template-gallery.tsx
 #: src/features/workspace/working.ts
 msgid "Apply"
@@ -2245,12 +2255,16 @@ msgstr ""
 msgid "Approach"
 msgstr ""
 
+#: src/features/account/ai-privacy-screen.tsx
+msgid "Approval withdrawn"
+msgstr ""
+
 #. placeholder {0}: selected?.name ?? ""
-#: src/features/settings/api-keys.tsx
+#: src/features/account/api-keys.tsx
 msgid "Apps using “{0}” will stop working. This can't be undone."
 msgstr "แอปที่ใช้ “{0}” จะหยุดทำงาน การดำเนินการนี้ไม่สามารถย้อนกลับได้"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Arabic"
 msgstr "อารบิก"
 
@@ -2267,7 +2281,6 @@ msgid "Ascending"
 msgstr "จากน้อยไปมาก"
 
 #: src/features/entries/improve.tsx
-#: src/features/search/search-screen.tsx
 msgid "Ask"
 msgstr "ถาม"
 
@@ -2300,6 +2313,10 @@ msgstr "ถามทั้งสองที่"
 msgid "Ask coach"
 msgstr ""
 
+#: src/features/search/search-screen.tsx
+msgid "Ask Coach “{term}”"
+msgstr ""
+
 #: src/features/profile/preferences.tsx
 msgid "Ask first"
 msgstr "ถามก่อน"
@@ -2311,10 +2328,6 @@ msgstr ""
 #: src/features/entries/improve.tsx
 msgid "Ask for something else…"
 msgstr "ขออย่างอื่น…"
-
-#: src/features/search/search-screen.tsx
-msgid "Ask the assistant “{question}”"
-msgstr "ถามผู้ช่วย “{question}”"
 
 #: src/features/check/term-sheet.tsx
 msgid "Ask the assistant to work it in"
@@ -2337,10 +2350,6 @@ msgstr "อัตราส่วนภาพ"
 #: src/features/assistant/assistant-screen.tsx
 msgid "Assistant"
 msgstr "ผู้ช่วย"
-
-#: src/features/search/search-screen.tsx
-msgid "Assistant conversations"
-msgstr "การสนทนาของผู้ช่วย"
 
 #: src/features/applications/detail/follow-up-sheet.tsx
 msgid "At 09:00 that day ({timeZone})."
@@ -2430,7 +2439,7 @@ msgstr "ผู้ได้รับรางวัล"
 msgid "Awards"
 msgstr "รางวัล"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Azerbaijani"
 msgstr "อาเซอร์ไบจาน"
 
@@ -2443,7 +2452,6 @@ msgstr "อาเซอร์ไบจาน"
 #: src/features/onboarding/onboarding-screen.tsx
 #: src/features/portfolio/layout.tsx
 #: src/features/profile/bring-screen.tsx
-#: src/features/search/search-screen.tsx
 #: src/features/workspace/bar.tsx
 #: src/shell/builder-chrome/top-bar.tsx
 msgid "Back"
@@ -2563,12 +2571,16 @@ msgstr "เชิงพฤติกรรม"
 msgid "Behavioral interview"
 msgstr "การสัมภาษณ์เชิงพฤติกรรม"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Bengali"
 msgstr "เบงกาลี"
 
 #: src/features/onboarding/intro-screen.tsx
 msgid "BI analyst"
+msgstr ""
+
+#: src/features/account/ai-privacy-screen.tsx
+msgid "Block AI sharing on this device"
 msgstr ""
 
 #: src/features/portfolio/editor/blocks.tsx
@@ -2682,11 +2694,15 @@ msgstr ""
 msgid "Browse templates"
 msgstr ""
 
+#: src/features/account/help-screen.tsx
+msgid "Build number"
+msgstr ""
+
 #: src/features/design/preset-names.ts
 msgid "Buildings"
 msgstr ""
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Bulgarian"
 msgstr "บัลแกเรีย"
 
@@ -2699,6 +2715,10 @@ msgstr "รายการ {n}"
 #: src/features/write/section-sheet-pages.tsx
 msgid "Bulleted list"
 msgstr "รายการหัวข้อย่อย"
+
+#: src/features/account/help-screen.tsx
+msgid "Bundled with app"
+msgstr ""
 
 #: src/features/design/preset-names.ts
 msgid "Burgundy"
@@ -2721,9 +2741,21 @@ msgstr ""
 msgid "Button URL"
 msgstr ""
 
-#: app/account/index.tsx
-msgid "by <0>Salman Alfariesh</0>"
-msgstr "โดย <0>Salman Alfariesh</0>"
+#: src/features/account/storage-screen.tsx
+msgid "Cache cleared"
+msgstr ""
+
+#: src/features/account/storage-screen.tsx
+msgid "Cached files"
+msgstr ""
+
+#: src/features/account/storage-screen.tsx
+msgid "Cached previews and temporary exports can be created again. Your offline drafts are kept."
+msgstr ""
+
+#: src/features/account/storage-screen.tsx
+msgid "Calculating…"
+msgstr ""
 
 #: src/features/applications/views-row.tsx
 msgid "Calendar"
@@ -2770,7 +2802,6 @@ msgstr ""
 #: src/features/profile/facts-detail.tsx
 #: src/features/profile/facts.tsx
 #: src/features/profile/stories.tsx
-#: src/features/search/search-screen.tsx
 #: src/features/workspace/fit/requirement-card.tsx
 #: src/linking/open.ts
 #: src/ui-legacy/overlays.tsx
@@ -2785,6 +2816,10 @@ msgstr "ยกเลิกการบันทึก"
 msgid "Caption"
 msgstr ""
 
+#: src/features/billing/plan-card.tsx
+msgid "Card subscription"
+msgstr ""
+
 #: src/features/profile/profile-screen.tsx
 msgid "Career"
 msgstr ""
@@ -2793,7 +2828,7 @@ msgstr ""
 msgid "Carousel"
 msgstr ""
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Catalan"
 msgstr "คาตาลัน"
 
@@ -2826,10 +2861,6 @@ msgstr ""
 msgid "Change it in Design"
 msgstr ""
 
-#: src/features/search/search-screen.tsx
-msgid "Change language to…"
-msgstr "เปลี่ยนภาษาเป็น…"
-
 #. placeholder {0}: companyOf(offer)
 #: src/features/offers/offer-header.tsx
 msgid "Change offer: {0}"
@@ -2839,7 +2870,7 @@ msgstr ""
 msgid "Change password"
 msgstr "เปลี่ยนรหัสผ่าน"
 
-#: src/features/settings/profile.tsx
+#: src/features/account/profile.tsx
 msgid "Change photo"
 msgstr "เปลี่ยนรูปภาพ"
 
@@ -2854,10 +2885,6 @@ msgstr "เปลี่ยนการออกแบบเรซูเม่"
 #: src/features/applications/interview/when-fields.tsx
 msgid "Change the time zone"
 msgstr ""
-
-#: src/features/search/search-screen.tsx
-msgid "Change theme to…"
-msgstr "เปลี่ยนธีมเป็น…"
 
 #: src/features/profile/preferences.tsx
 msgid "Change timezone"
@@ -2895,10 +2922,6 @@ msgstr ""
 msgctxt "Editor mode"
 msgid "Check"
 msgstr ""
-
-#: src/features/search/search-screen.tsx
-msgid "Check a PDF"
-msgstr "ตรวจสอบ PDF"
 
 #: src/features/documents/new-choices.tsx
 msgid "Check a PDF with the ATS checker"
@@ -3053,11 +3076,11 @@ msgstr "ตรวจสอบตามหมวดหมู่"
 msgid "Checks every bullet for action and result"
 msgstr "ตรวจสอบทุกรายการเพื่อดูการดำเนินการและผลลัพธ์"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Chinese (Simplified)"
 msgstr "จีน (ตัวย่อ)"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Chinese (Traditional)"
 msgstr "จีน (ตัวเต็ม)"
 
@@ -3118,8 +3141,8 @@ msgstr ""
 msgid "Choose a PDF, Word, JSON or LinkedIn export file"
 msgstr ""
 
+#: src/features/account/profile.tsx
 #: src/features/entries/photo-field.tsx
-#: src/features/settings/profile.tsx
 msgid "Choose a photo smaller than 10 MB."
 msgstr "เลือกรูปภาพที่มีขนาดเล็กกว่า 10 MB"
 
@@ -3184,6 +3207,10 @@ msgid "Choose another file"
 msgstr "เลือกไฟล์อื่น"
 
 #: src/features/billing/plan-alert.ts
+msgid "Choose another option to continue."
+msgstr ""
+
+#: src/features/billing/plan-alert.ts
 msgid "Choose any of the fonts in Design instead."
 msgstr ""
 
@@ -3199,8 +3226,8 @@ msgstr ""
 msgid "Choose cover picture"
 msgstr ""
 
+#: src/features/account/profile.tsx
 #: src/features/entries/photo-field.tsx
-#: src/features/settings/profile.tsx
 msgid "Choose from library"
 msgstr "เลือกจากห้องสมุด"
 
@@ -3288,6 +3315,14 @@ msgstr "สะอาด"
 msgid "Clear"
 msgstr "ล้าง"
 
+#: src/features/account/storage-screen.tsx
+msgid "Clear cache"
+msgstr ""
+
+#: src/features/account/storage-screen.tsx
+msgid "Clear cached files?"
+msgstr ""
+
 #: src/features/applications/list/list-states.tsx
 #: src/features/jobs/filters-sheet.tsx
 #: src/features/jobs/jobs-states.tsx
@@ -3337,6 +3372,9 @@ msgstr ""
 msgid "Clients"
 msgstr ""
 
+#: src/features/account/preferences-screen.tsx
+#: src/features/account/profile.tsx
+#: src/features/ai/provider-editor.tsx
 #: src/features/ai/report-content.tsx
 #: src/features/applications/detail/activity.tsx
 #: src/features/applications/detail/contacts.tsx
@@ -3426,7 +3464,7 @@ msgstr "ปิดรับสมัครงาน"
 msgid "Close menu"
 msgstr ""
 
-#: src/components/collection-header.tsx
+#: src/features/search/search-screen.tsx
 msgid "Close search"
 msgstr "ปิดการค้นหา"
 
@@ -3457,6 +3495,7 @@ msgstr "ปิด: {closed}"
 
 #: src/features/assistant/coach.tsx
 #: src/features/billing/credits.ts
+#: src/features/search/search-screen.tsx
 #: src/features/workspace/coach-sheet.tsx
 #: src/shell/tab-chrome.tsx
 msgid "Coach"
@@ -3600,10 +3639,6 @@ msgstr "เชื่อมต่อผู้ให้บริการ AI ใ�
 msgid "Connect an AI provider to read pasted text. Filling in by hand works without AI."
 msgstr ""
 
-#: app/account/ai.tsx
-msgid "Connect the tools you use for writing, job search and working with your resumes."
-msgstr "เชื่อมต่อเครื่องมือที่คุณใช้ในการเขียน การหางาน และการทำงานกับเรซูเม่ของคุณ"
-
 #: src/features/portfolio/layout.tsx
 msgid "Connect to load your portfolio."
 msgstr ""
@@ -3637,7 +3672,7 @@ msgstr ""
 msgid "Contact"
 msgstr "ติดต่อ"
 
-#: app/account/index.tsx
+#: src/features/account/help-screen.tsx
 msgid "Contact & complaints"
 msgstr ""
 
@@ -3727,6 +3762,7 @@ msgstr "ชื่อการสนทนา"
 
 #: src/features/assistant/panel-bar.tsx
 #: src/features/portfolio/editor/assistant.tsx
+#: src/features/search/search-screen.tsx
 #: src/features/workspace/coach-sheet.tsx
 msgid "Conversations"
 msgstr "บทสนทนา"
@@ -3758,6 +3794,10 @@ msgstr "คัดลอก"
 #: src/features/documents/new-document-screen.tsx
 msgid "Copy a resume for a job"
 msgstr "คัดลอกเรซูเม่สำหรับงาน"
+
+#: src/features/account/mcp-screen.tsx
+msgid "Copy address"
+msgstr ""
 
 #: src/features/workspace/apply/share-answers.tsx
 msgid "Copy answers"
@@ -3836,7 +3876,7 @@ msgstr ""
 msgid "Couldn't attach the file. Try again."
 msgstr "แนบไฟล์ไม่ได้ ลองอีกครั้ง"
 
-#: app/account/preferences.tsx
+#: src/features/account/preferences-screen.tsx
 msgid "Couldn't change the language. Try again."
 msgstr "ไม่สามารถเปลี่ยนภาษาได้ ลองอีกครั้ง"
 
@@ -3860,6 +3900,10 @@ msgstr "ไม่สามารถตรวจสอบหรือบันท
 msgid "Couldn't check your AI providers."
 msgstr "ไม่สามารถตรวจสอบผู้ให้บริการ AI ของคุณได้"
 
+#: src/features/account/storage-screen.tsx
+msgid "Couldn't clear the cache. Try again."
+msgstr ""
+
 #: src/features/portfolio/queries.ts
 msgid "Couldn't complete the action. Try again."
 msgstr ""
@@ -3880,6 +3924,10 @@ msgstr "ไม่สามารถดำเนินการนี้ให้
 #: src/features/applications/interview/use-interview-actions.ts
 msgid "Couldn't confirm the save. Check the application before retrying to avoid a duplicate."
 msgstr "ยืนยันการบันทึกไม่ได้ ตรวจสอบใบสมัครก่อนลองอีกครั้งเพื่อหลีกเลี่ยงรายการซ้ำ"
+
+#: src/features/account/mcp-screen.tsx
+msgid "Couldn't copy the address."
+msgstr ""
 
 #: src/features/portfolio/overview.tsx
 msgid "Couldn't copy the link."
@@ -3933,7 +3981,7 @@ msgstr "ลบกำหนดการนี้ไม่ได้ ลองอ�
 msgid "Couldn't draw the first page of this PDF."
 msgstr ""
 
-#: src/features/settings/export.tsx
+#: src/features/account/export.tsx
 #: src/features/share/download.tsx
 msgid "Couldn't export. Try again."
 msgstr "ไม่สามารถส่งออกได้ ลองอีกครั้ง"
@@ -3979,7 +4027,7 @@ msgstr "เชื่อมโยงใบสมัครไม่ได้ ล�
 msgid "Couldn't load AI providers."
 msgstr "ไม่สามารถโหลดผู้ให้บริการ AI"
 
-#: src/features/settings/api-keys.tsx
+#: src/features/account/api-keys.tsx
 msgid "Couldn't load API keys."
 msgstr "ไม่สามารถโหลดคีย์ API"
 
@@ -3989,6 +4037,10 @@ msgstr "ไม่สามารถโหลดคีย์ API"
 msgid "Couldn't load applications."
 msgstr "ไม่สามารถโหลดใบสมัครได้"
 
+#: src/features/account/plan-screen.tsx
+msgid "Couldn't load credit activity."
+msgstr ""
+
 #: src/features/documents/library-states.tsx
 msgid "Couldn't load documents"
 msgstr "ไม่สามารถโหลดเอกสารได้"
@@ -3996,6 +4048,10 @@ msgstr "ไม่สามารถโหลดเอกสารได้"
 #: src/features/documents/new-copy.tsx
 msgid "Couldn't load resumes."
 msgstr "ไม่สามารถโหลด ประวัติย่อ ได้"
+
+#: src/features/account/ai-privacy-screen.tsx
+msgid "Couldn't load scheduled AI approvals."
+msgstr ""
 
 #: src/features/share/link.tsx
 msgid "Couldn't load statistics."
@@ -4082,6 +4138,10 @@ msgstr ""
 msgid "Couldn't load your offers"
 msgstr ""
 
+#: src/features/account/plan-screen.tsx
+msgid "Couldn't load your plan."
+msgstr ""
+
 #: src/features/portfolio/layout.tsx
 msgid "Couldn't load your portfolio"
 msgstr ""
@@ -4094,7 +4154,7 @@ msgstr ""
 msgid "Couldn't load your Profile"
 msgstr ""
 
-#: app/account/account.tsx
+#: src/features/account/account-screen.tsx
 msgid "Couldn't load your profile."
 msgstr "ไม่สามารถโหลดโปรไฟล์ของคุณได้"
 
@@ -4112,7 +4172,7 @@ msgstr "ไม่สามารถโหลดประวัติย่อข
 msgid "Couldn't load your stories"
 msgstr ""
 
-#: app/account/preferences.tsx
+#: src/features/account/preferences-screen.tsx
 msgid "Couldn't load your timezone."
 msgstr "ไม่สามารถโหลดเขตเวลาของคุณได้"
 
@@ -4124,14 +4184,20 @@ msgstr "ทำเครื่องหมายว่าสมัครแล้
 msgid "Couldn't mark this as read. Try again."
 msgstr "ทำเครื่องหมายว่าอ่านแล้วไม่ได้ ลองอีกครั้ง"
 
+#: src/features/account/storage-screen.tsx
+msgid "Couldn't measure the cache."
+msgstr ""
+
 #: src/features/applications/interview/use-reschedule.ts
 msgid "Couldn't move the interview. Try again."
 msgstr ""
 
-#: app/account/account.tsx
-#: app/account/index.tsx
+#: src/features/account/notification-settings.tsx
+msgid "Couldn't open system settings."
+msgstr ""
+
+#: src/features/account/browser.ts
 #: src/features/auth/welcome-screen.tsx
-#: src/features/settings/api-keys.tsx
 msgid "Couldn't open the browser. Try again."
 msgstr "ไม่สามารถเปิดเบราว์เซอร์ได้ ลองอีกครั้ง"
 
@@ -4264,7 +4330,7 @@ msgstr "ไม่สามารถแสดง ประวัติย่อ �
 msgid "Couldn't replace this block."
 msgstr ""
 
-#: src/features/settings/api-keys.tsx
+#: src/features/account/api-keys.tsx
 msgid "Couldn't revoke the key. Try again."
 msgstr "ไม่สามารถเพิกถอนคีย์ได้ ลองอีกครั้ง"
 
@@ -4319,11 +4385,11 @@ msgstr "บันทึกโน้ตไม่ได้ ข้อความ�
 msgid "Couldn't save the posting. Try again."
 msgstr "บันทึกประกาศงานไม่ได้ ลองอีกครั้ง"
 
-#: app/account/preferences.tsx
+#: src/features/account/preferences-screen.tsx
 msgid "Couldn't save the theme. Try again."
 msgstr "ไม่สามารถบันทึกธีมได้ ลองอีกครั้ง"
 
-#: app/account/preferences.tsx
+#: src/features/account/preferences-screen.tsx
 msgid "Couldn't save the timezone. Try again."
 msgstr "บันทึกเขตเวลาไม่ได้ ลองอีกครั้ง"
 
@@ -4369,11 +4435,15 @@ msgstr ""
 msgid "Couldn't save your Profile. Try again."
 msgstr ""
 
+#: src/features/account/ai-privacy-screen.tsx
+msgid "Couldn't save your sharing preference. Try again."
+msgstr ""
+
 #: src/features/portfolio/editor/screen.tsx
 msgid "Couldn't save. Retrying…"
 msgstr ""
 
-#: src/features/settings/profile.tsx
+#: src/features/account/profile.tsx
 msgid "Couldn't save. Try again."
 msgstr "ไม่สามารถบันทึกได้ ลองอีกครั้ง"
 
@@ -4418,7 +4488,11 @@ msgstr ""
 msgid "Couldn't sign in with this account. If you don't have a Rezumi account yet, sign-ups may be turned off."
 msgstr ""
 
-#: src/features/settings/sign-out.tsx
+#: src/features/account/sign-out.tsx
+msgid "Couldn't sign out of all devices. Try again."
+msgstr ""
+
+#: src/features/account/sign-out.tsx
 msgid "Couldn't sign out. Try again."
 msgstr "ไม่สามารถออกจากระบบได้ ลองอีกครั้ง"
 
@@ -4456,6 +4530,10 @@ msgstr "เลิกทำไม่ได้ ลองอีกครั้ง"
 msgid "Couldn't unlock this resume. Try again."
 msgstr "ไม่สามารถปลดล็อค ประวัติย่อ นี้ ลองอีกครั้ง"
 
+#: src/features/account/notification-settings.tsx
+msgid "Couldn't update reminders. Try again."
+msgstr ""
+
 #: src/features/share/custom-domain.tsx
 msgid "Couldn't update sharing. Try again."
 msgstr "อัปเดตการแชร์ไม่ได้ ลองอีกครั้ง"
@@ -4472,7 +4550,7 @@ msgstr "อัปเดตใบสมัครไม่ได้ ไม่ม�
 msgid "Couldn't update the interview. Try again."
 msgstr "อัปเดตการสัมภาษณ์ไม่ได้ ลองอีกครั้ง"
 
-#: src/features/settings/profile.tsx
+#: src/features/account/profile.tsx
 msgid "Couldn't update the photo. Check camera permissions, choose a photo smaller than 10 MB, and try again."
 msgstr "ไม่สามารถอัปเดตรูปภาพได้ ตรวจสอบการอนุญาตของกล้อง เลือกรูปภาพที่มีขนาดเล็กกว่า 10 MB แล้วลองอีกครั้ง"
 
@@ -4484,13 +4562,17 @@ msgstr "ไม่สามารถอัปโหลดไฟล์ได้ �
 msgid "Couldn't upload the font. Try again."
 msgstr ""
 
+#: src/features/account/profile.tsx
 #: src/features/entries/photo-field.tsx
-#: src/features/settings/profile.tsx
 msgid "Couldn't upload the photo."
 msgstr "ไม่สามารถอัปโหลดรูปภาพได้"
 
 #: src/features/portfolio/editor/pictures.tsx
 msgid "Couldn't upload this picture."
+msgstr ""
+
+#: src/features/account/ai-privacy-screen.tsx
+msgid "Couldn't withdraw approval. Try again."
 msgstr ""
 
 #: src/features/applications/insights/insights-cards.tsx
@@ -4557,25 +4639,9 @@ msgstr "จดหมายสมัครงาน"
 msgid "Covered term: {highlightTerm}"
 msgstr "คำที่ครอบคลุม: {highlightTerm}"
 
-#: src/features/search/search-screen.tsx
-msgid "Create"
-msgstr "สร้าง"
-
-#: src/features/search/search-screen.tsx
-msgid "Create a new resume"
-msgstr "สร้างเรซูเม่ใหม่"
-
-#: src/features/search/search-screen.tsx
-msgid "Create a resume first, then ask about it."
-msgstr "สร้างเรซูเม่ก่อนแล้วจึงถามเกี่ยวกับเรซูเม่"
-
 #: src/features/auth/create-account-screen.tsx
 msgid "Create account"
 msgstr "สร้างบัญชี"
-
-#: app/account/ai-mcp.tsx
-msgid "Create an API key from Account settings in your browser. Keys act as you and can read and edit your documents."
-msgstr "สร้างคีย์ API จากการตั้งค่าบัญชีในเบราว์เซอร์ของคุณ คีย์จะทำหน้าที่เป็นคุณและสามารถอ่านและแก้ไขเอกสารของคุณได้"
 
 #: src/features/documents/new-copy.tsx
 msgid "Create copy"
@@ -4616,7 +4682,7 @@ msgstr "สร้าง"
 #. placeholder {0}: date(key.createdAt)
 #. placeholder {1}: date(key.lastRequest)
 #. placeholder {2}: date(key.expiresAt)
-#: src/features/settings/api-keys.tsx
+#: src/features/account/api-keys.tsx
 msgid "Created {0} · Last used {1} · Expires {2}"
 msgstr "สร้าง {0} · ใช้ล่าสุด {1} · หมดอายุ {2}"
 
@@ -4633,8 +4699,12 @@ msgstr ""
 msgid "Creative"
 msgstr ""
 
-#: app/account/membership.tsx
-msgid "Credits are used soonest-expiring first. They can't be moved to another account or exchanged for money. Your own AI connection never uses credits."
+#: src/features/account/plan-screen.tsx
+msgid "Credit history"
+msgstr ""
+
+#: src/features/account/plan-screen.tsx
+msgid "Credits with the nearest expiry are used first. Your own AI connection never uses credits."
 msgstr ""
 
 #: src/features/jobs/filters-sheet.tsx
@@ -4655,6 +4725,7 @@ msgstr "กำหนดเอง"
 msgid "Custom color (hex)"
 msgstr "สีที่กำหนดเอง (ฐานสิบหก)"
 
+#: src/features/account/plan-screen.tsx
 #: src/features/portfolio/publish.tsx
 msgid "Custom domain"
 msgstr ""
@@ -4667,7 +4738,7 @@ msgstr ""
 msgid "Custom section"
 msgstr "ส่วนที่กำหนดเอง"
 
-#: app/account/membership.tsx
+#: src/features/account/plan-screen.tsx
 msgid "Custom styles"
 msgstr "สไตล์ที่กำหนดเอง"
 
@@ -4679,11 +4750,7 @@ msgstr ""
 msgid "Custom styles aren't available, so the imported document leaves the file's styles out."
 msgstr ""
 
-#: src/features/billing/plan-alert.ts
-msgid "Custom styles aren't in your plan"
-msgstr ""
-
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Czech"
 msgstr "เช็ก"
 
@@ -4717,19 +4784,14 @@ msgstr ""
 msgid "Dangerous or illegal advice"
 msgstr "คำแนะนำที่เป็นอันตรายหรือผิดกฎหมาย"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Danish"
 msgstr "เดนมาร์ก"
 
-#: app/account/index.tsx
-#: app/account/preferences.tsx
+#: src/features/account/preferences-screen.tsx
 #: src/features/portfolio/editor/design.tsx
 msgid "Dark"
 msgstr "มืด"
-
-#: src/features/search/search-screen.tsx
-msgid "Dark theme"
-msgstr "ธีมมืด"
 
 #: src/features/onboarding/intro-screen.tsx
 msgid "Data analyst"
@@ -4873,7 +4935,7 @@ msgstr "ลบ “{title}” หรือไม่"
 msgid "Delete {0}"
 msgstr "ลบ {0}"
 
-#: app/account/account.tsx
+#: src/features/account/account-screen.tsx
 #: src/features/search/search-screen.tsx
 msgid "Delete account"
 msgstr "ลบบัญชี"
@@ -4981,10 +5043,6 @@ msgstr ""
 msgid "Delete…"
 msgstr "ลบ…"
 
-#: src/features/search/search-screen.tsx
-msgid "Deleted"
-msgstr "ลบแล้ว"
-
 #. placeholder {0}: document.name
 #. placeholder {0}: getVersionTitle(version)
 #: src/features/documents/document-actions.ts
@@ -5008,7 +5066,7 @@ msgstr "ลบส่วนและรายการ คุณสามาร�
 msgid "Density"
 msgstr "ความหนาแน่น"
 
-#: app/account/licences.tsx
+#: src/features/account/licences-screen.tsx
 msgid "Dependency type"
 msgstr "ประเภทการขึ้นต่อกัน"
 
@@ -5058,12 +5116,20 @@ msgstr ""
 msgid "Detail removed"
 msgstr ""
 
+#: src/features/account/plan-screen.tsx
+msgid "Detailed portfolio statistics"
+msgstr ""
+
 #: src/features/applications/detail/facts.tsx
 #: src/features/documents/document-menu.tsx
 #: src/features/onboarding/messages.ts
 #: src/features/profile/profile-screen.tsx
 msgid "Details"
 msgstr "รายละเอียด"
+
+#: src/features/account/preferences-screen.tsx
+msgid "Device and services"
+msgstr ""
 
 #: src/features/portfolio/statistics.tsx
 msgid "Devices"
@@ -5149,6 +5215,10 @@ msgstr ""
 msgid "DNS points to Rezumi"
 msgstr ""
 
+#: src/features/account/help-screen.tsx
+msgid "Docs"
+msgstr "เอกสาร"
+
 #: src/shell/builder-chrome/top-bar.tsx
 msgid "Document menu"
 msgstr "เมนูเอกสาร"
@@ -5162,7 +5232,7 @@ msgid "Document options"
 msgstr "ตัวเลือกเอกสาร"
 
 #: app/(tabs)/_layout.tsx
-#: app/account/membership.tsx
+#: src/features/account/plan-screen.tsx
 #: src/features/documents/documents-screen.tsx
 #: src/features/search/search-screen.tsx
 #: src/shell/app-tabs.tsx
@@ -5173,7 +5243,7 @@ msgstr "เอกสาร"
 msgid "Documents for this job"
 msgstr "เอกสารสำหรับงานนี้"
 
-#: app/account/membership.tsx
+#: src/features/account/plan-screen.tsx
 msgid "Documents in Trash don't count."
 msgstr ""
 
@@ -5199,7 +5269,7 @@ msgstr "อย่าส่งประกาศรับสมัครงาน
 msgid "Don't share"
 msgstr "อย่าแชร์"
 
-#: app/account/preferences.tsx
+#: src/features/account/preferences-screen.tsx
 #: src/features/applications/interview/when-fields.tsx
 #: src/features/entries/dates-field.tsx
 #: src/features/entries/rich-text-toolbar.tsx
@@ -5405,7 +5475,7 @@ msgstr "ทำสำเนา “{0}” แล้ว"
 msgid "Duration"
 msgstr ""
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Dutch"
 msgstr "ดัตช์"
 
@@ -5560,7 +5630,7 @@ msgstr ""
 msgid "Education"
 msgstr "การศึกษา"
 
-#: app/account/account.tsx
+#: src/features/account/account-screen.tsx
 #: src/features/auth/create-account-screen.tsx
 #: src/features/auth/email-sign-in-screen.tsx
 #: src/features/auth/forgot-password-screen.tsx
@@ -5595,11 +5665,16 @@ msgstr "ฝังฟอนต์ทั้งหมดเมื่อส่งอ
 msgid "End"
 msgstr "จบ"
 
-#: src/features/settings/locale-names.ts
+#. placeholder {0}: formatDate(expiredAt)
+#: src/features/billing/plan-card.tsx
+msgid "Ended on {0}"
+msgstr ""
+
+#: src/features/account/locale-names.ts
 msgid "English"
 msgstr "ภาษาอังกฤษ"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "English (United Kingdom)"
 msgstr "อังกฤษ (สหราชอาณาจักร)"
 
@@ -5627,7 +5702,7 @@ msgstr "ป้อนจำนวนเต็ม เช่น 95000 จำนว�
 msgid "Enter a GitHub username, like octocat."
 msgstr ""
 
-#: src/features/settings/profile.tsx
+#: src/features/account/profile.tsx
 msgid "Enter a name, up to 64 characters."
 msgstr "ป้อนชื่อ สูงสุด 64 อักขระ"
 
@@ -5742,7 +5817,7 @@ msgstr "ทุกบทบาทบ่งบอกสิ่งที่คุณ
 msgid "Every section is in use."
 msgstr ""
 
-#: app/account/membership.tsx
+#: src/features/account/plan-screen.tsx
 msgid "Every template"
 msgstr ""
 
@@ -5795,7 +5870,7 @@ msgstr "ส่งออก PDF ที่เล็กกว่าแล้วต�
 msgid "Export data"
 msgstr "ส่งออกข้อมูล"
 
-#: src/features/settings/export.tsx
+#: src/features/account/export.tsx
 msgid "Export everything"
 msgstr "ส่งออกทุกอย่าง"
 
@@ -5845,10 +5920,6 @@ msgstr ""
 #: src/features/portfolio/editor/work.tsx
 msgid "Featured metric"
 msgstr ""
-
-#: app/account/preferences.tsx
-msgid "Feedback"
-msgstr "คำติชม"
 
 #: src/features/workspace/practice/answer-panel.tsx
 msgid "Feedback needs an AI connection. Nothing is sent until you ask."
@@ -6001,7 +6072,7 @@ msgstr ""
 msgid "Finish in the browser…"
 msgstr ""
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Finnish"
 msgstr "ฟินแลนด์"
 
@@ -6093,6 +6164,10 @@ msgstr "ติดตามผล"
 #: src/features/career/schedule-sheet.tsx
 msgid "Follow-up reminder"
 msgstr "การแจ้งเตือนติดตามผล"
+
+#: src/features/account/notification-settings.tsx
+msgid "Follow-up reminders"
+msgstr ""
 
 #: src/features/design/type-group.tsx
 msgid "Font"
@@ -6237,7 +6312,7 @@ msgstr "รูปแบบอิสระ"
 msgid "Freelance"
 msgstr ""
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "French"
 msgstr "ฝรั่งเศส"
 
@@ -6252,7 +6327,6 @@ msgstr "จาก"
 
 #. placeholder {0}: formatDate(next.startsAt)
 #. placeholder {1}: formatDate(next.endsAt)
-#: app/account/membership.tsx
 #: src/features/billing/plan-card.tsx
 msgid "From {0} until {1}"
 msgstr ""
@@ -6341,7 +6415,7 @@ msgstr ""
 msgid "Gentle fade-in"
 msgstr ""
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "German"
 msgstr "ภาษาเยอรมัน"
 
@@ -6411,11 +6485,15 @@ msgstr ""
 msgid "Grade"
 msgstr "เกรด"
 
+#: src/features/billing/plan-card.tsx
+msgid "Granted access"
+msgstr ""
+
 #: src/features/design/preset-names.ts
 msgid "Graphite"
 msgstr "กราไฟท์"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Greek"
 msgstr "กรีก"
 
@@ -6429,7 +6507,7 @@ msgstr "คำขึ้นต้น"
 msgid "Grid"
 msgstr "ตาราง"
 
-#: app/account/preferences.tsx
+#: src/features/account/preferences-screen.tsx
 msgid "Haptic feedback"
 msgstr "การตอบสนองแบบสั่น"
 
@@ -6491,14 +6569,11 @@ msgstr "ฟัง"
 msgid "Heard back"
 msgstr ""
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Hebrew"
 msgstr "ฮิบรู"
 
-#: app/account/index.tsx
-msgid "Help & docs"
-msgstr "ความช่วยเหลือ & เอกสาร"
-
+#: src/features/account/help-screen.tsx
 #: src/shell/account-menu.tsx
 msgid "Help & legal"
 msgstr ""
@@ -6567,13 +6642,17 @@ msgstr "ซ่อนจากหน้า"
 msgid "Hide key"
 msgstr "ซ่อนปุ่ม"
 
-#: app/account/licences.tsx
+#: src/features/account/licences-screen.tsx
 msgid "Hide license"
 msgstr "ซ่อนสัญญาอนุญาต"
 
 #: src/features/home/needs-you.tsx
 msgid "Hide read"
 msgstr "ซ่อนรายการที่อ่านแล้ว"
+
+#: src/features/account/plan-screen.tsx
+msgid "Hide Rezumi credit"
+msgstr ""
 
 #: src/features/check/messages.ts
 msgid "Hide the photo"
@@ -6599,7 +6678,7 @@ msgstr ""
 msgid "Highlights"
 msgstr ""
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Hindi"
 msgstr "ฮินดี"
 
@@ -6625,6 +6704,7 @@ msgstr ""
 
 #: app/(tabs)/_layout.tsx
 #: src/features/home/home-screen.tsx
+#: src/features/search/search-screen.tsx
 #: src/shell/app-tabs.tsx
 msgid "Home"
 msgstr "หน้าแรก"
@@ -6685,7 +6765,7 @@ msgstr "ฉันเหมาะกับบทบาทนี้ดีแค่
 msgid "HTTPS certificate"
 msgstr ""
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Hungarian"
 msgstr "ฮังการี"
 
@@ -6770,10 +6850,6 @@ msgstr ""
 msgid "Images cover most of the page."
 msgstr "รูปภาพครอบคลุมพื้นที่ส่วนใหญ่ของหน้า"
 
-#: src/features/search/search-screen.tsx
-msgid "Import"
-msgstr "นำเข้า"
-
 #: src/features/documents/new-choices.tsx
 msgid "Import a resume"
 msgstr "นำเข้าเรซูเม่"
@@ -6854,7 +6930,7 @@ msgstr ""
 msgid "Include jobs that don't list pay"
 msgstr ""
 
-#: app/account/membership.tsx
+#: src/features/account/plan-screen.tsx
 msgid "Included"
 msgstr ""
 
@@ -6894,7 +6970,7 @@ msgstr ""
 msgid "Increase vertical spacing"
 msgstr ""
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Indonesian"
 msgstr "อินโดนีเซีย"
 
@@ -6928,10 +7004,6 @@ msgstr ""
 #: src/features/portfolio/editor/content.tsx
 msgid "Interests"
 msgstr "ความสนใจ"
-
-#: app/account/preferences.tsx
-msgid "Interface only. Each resume sets its own language in Design."
-msgstr "อินเทอร์เฟซเท่านั้น แต่ละเรซูเม่จะกำหนดภาษาของตัวเองในการออกแบบ"
 
 #: src/features/portfolio/editor/content.tsx
 msgid "Internship"
@@ -6970,10 +7042,15 @@ msgstr ""
 msgid "Interview practice"
 msgstr ""
 
+#: src/features/account/ai-privacy-screen.tsx
 #: src/features/career/schedule-sheet.tsx
 #: src/features/home/needs-you.tsx
 msgid "Interview preparation"
 msgstr "การเตรียมตัวสัมภาษณ์"
+
+#: src/features/account/notification-settings.tsx
+msgid "Interview reminders"
+msgstr ""
 
 #: src/features/applications/interview/use-interview-actions.ts
 msgid "Interview saved"
@@ -6994,10 +7071,6 @@ msgstr "บันทึกการสัมภาษณ์แล้ว เว�
 #: src/features/applications/interview-sheet.tsx
 msgid "Interview time zone"
 msgstr ""
-
-#: app/account/preferences.tsx
-msgid "Interview times, reminders and schedules in Career use it."
-msgstr "เวลาสัมภาษณ์ การแจ้งเตือน และกำหนดการในอาชีพจะใช้ค่านี้"
 
 #: src/features/applications/detail/contacts.tsx
 msgid "Interviewer"
@@ -7103,7 +7176,7 @@ msgstr ""
 msgid "It's removed from the activity for good."
 msgstr ""
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Italian"
 msgstr "อิตาลี"
 
@@ -7140,17 +7213,13 @@ msgstr ""
 msgid "Its stage, next step, notes and files show here."
 msgstr ""
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Japanese"
 msgstr "ญี่ปุ่น"
 
-#: app/account/licences.tsx
+#: src/features/account/licences-screen.tsx
 msgid "JavaScript"
 msgstr "JavaScript"
-
-#: src/features/search/search-screen.tsx
-msgid "Job"
-msgstr "งาน"
 
 #: src/features/career/schedule-sheet.tsx
 #: src/features/home/needs-you.tsx
@@ -7248,7 +7317,7 @@ msgctxt "Job seniority"
 msgid "Junior"
 msgstr ""
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Kannada"
 msgstr "กันนาดา"
 
@@ -7266,9 +7335,17 @@ msgstr "ใส่ที่อยู่เดียวพอ เพื่อไ�
 msgid "Keep application"
 msgstr ""
 
+#: src/features/account/ai-privacy-screen.tsx
+msgid "Keep approval"
+msgstr ""
+
 #: src/draft/conflict-sheet.tsx
 msgid "Keep both"
 msgstr "เก็บทั้งคู่"
+
+#: src/features/account/storage-screen.tsx
+msgid "Keep cache"
+msgstr ""
 
 #: src/features/assistant/threads.tsx
 msgid "Keep conversation"
@@ -7315,6 +7392,10 @@ msgstr "ซื่อตรงไว้"
 msgid "Keep it under 2.5 MB, usually by removing or shrinking images."
 msgstr "รักษาขนาดไฟล์ให้ต่ำกว่า 2.5 MB โดยปกติทำได้ด้วยการลบหรือลดขนาดรูปภาพ"
 
+#: src/features/account/api-keys.tsx
+msgid "Keep key"
+msgstr ""
+
 #: src/features/portfolio/inbox.tsx
 msgid "Keep message"
 msgstr ""
@@ -7344,6 +7425,10 @@ msgstr ""
 #: src/features/documents/document-menu-panels.tsx
 msgid "Keep private notes about this resume here. Nobody else can see them."
 msgstr "จดบันทึกส่วนตัวเกี่ยวกับเรซูเม่นี้ได้ที่นี่ ไม่มีใครอื่นเห็น"
+
+#: src/features/ai/provider-editor.tsx
+msgid "Keep provider"
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "Keep resume content as real text rather than as pictures of text."
@@ -7399,7 +7484,7 @@ msgstr "เก็บไว้เหมือนเดิม"
 msgid "Kept, but not used."
 msgstr ""
 
-#: src/features/settings/api-keys.tsx
+#: src/features/account/api-keys.tsx
 msgid "Keys act as you and can access your documents. New keys are created in your browser account settings."
 msgstr "คีย์ทำหน้าที่เป็นคุณและสามารถเข้าถึงเอกสารของคุณได้ รหัสใหม่จะถูกสร้างขึ้นในการตั้งค่าบัญชีเบราว์เซอร์ของคุณ"
 
@@ -7412,7 +7497,7 @@ msgstr "เค้าโครงคำหลัก"
 msgid "Keywords"
 msgstr "คีย์เวิร์ด"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Khmer"
 msgstr "เขมร"
 
@@ -7420,7 +7505,7 @@ msgstr "เขมร"
 msgid "Kind regards,"
 msgstr "ขอแสดงความนับถือ"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Korean"
 msgstr "เกาหลี"
 
@@ -7445,13 +7530,17 @@ msgstr ""
 msgid "Landscape"
 msgstr "แนวนอน"
 
-#: app/account/preferences.tsx
+#: src/features/account/preferences-screen.tsx
 #: src/features/design/page-group.tsx
 #: src/features/documents/document-menu-panels.tsx
 #: src/features/entries/fields.ts
 #: src/features/search/search-screen.tsx
 msgid "Language"
 msgstr "ภาษา"
+
+#: src/features/account/preferences-screen.tsx
+msgid "Language and region"
+msgstr ""
 
 #: src/features/entries/fields.ts
 #: src/features/portfolio/editor/content.tsx
@@ -7495,7 +7584,7 @@ msgctxt "Job search filter: posted within"
 msgid "Last week"
 msgstr ""
 
-#: app/account/preferences.tsx
+#: src/features/account/preferences-screen.tsx
 msgid "Later"
 msgstr "ต่อมา"
 
@@ -7503,7 +7592,7 @@ msgstr "ต่อมา"
 msgid "Latest"
 msgstr "ล่าสุด"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Latvian"
 msgstr "ลัตเวีย"
 
@@ -7571,10 +7660,6 @@ msgstr "เว้นว่างไว้เพื่อใช้ชื่อเ
 msgid "Left"
 msgstr "ซ้าย"
 
-#: app/account/index.tsx
-msgid "Legal"
-msgstr "ด้านกฎหมาย"
-
 #: src/features/applications/interview/when-fields.tsx
 #: src/features/letters/write.tsx
 msgid "Length"
@@ -7584,7 +7669,7 @@ msgstr "ความยาว"
 msgid "Length is not a defect, and there is no universal one-page rule. Keep the pages that earn their place."
 msgstr "ความยาวไม่ใช่ข้อบกพร่อง และไม่มีกฎตายตัวว่าต้องมีหน้าเดียว เก็บเฉพาะหน้าที่มีเนื้อหาคุ้มค่า"
 
-#: app/account/ai-mcp.tsx
+#: src/features/account/mcp-screen.tsx
 msgid "Let AI clients like Claude or Cursor read and edit your resumes, using an API key."
 msgstr "ให้ไคลเอ็นต์ AI เช่น Claude หรือ Cursor อ่านและแก้ไข ประวัติย่อ ของคุณ โดยใช้คีย์ API"
 
@@ -7629,7 +7714,6 @@ msgid "Letter sent"
 msgstr ""
 
 #: src/features/documents/segment-header.tsx
-#: src/features/search/search-screen.tsx
 msgid "Letters"
 msgstr "จดหมาย"
 
@@ -7647,7 +7731,7 @@ msgstr ""
 msgid "Levels"
 msgstr ""
 
-#: app/account/licences.tsx
+#: src/features/account/licences-screen.tsx
 msgid "Licenses"
 msgstr "สัญญาอนุญาต"
 
@@ -7655,15 +7739,10 @@ msgstr "สัญญาอนุญาต"
 msgid "Ligatures can drop letters out of words such as \"workflow\"."
 msgstr "ลิเกเจอร์อาจทำให้ตัวอักษรหายไปจากคำ เช่น \"workflow\""
 
-#: app/account/index.tsx
-#: app/account/preferences.tsx
+#: src/features/account/preferences-screen.tsx
 #: src/features/portfolio/editor/design.tsx
 msgid "Light"
 msgstr "สว่าง"
-
-#: src/features/search/search-screen.tsx
-msgid "Light theme"
-msgstr "ธีมสว่าง"
 
 #: src/features/assistant/assistant-screen.tsx
 msgid "Likely questions, from the posting and your resume"
@@ -7741,7 +7820,7 @@ msgstr "อัปเดตลิงก์แล้ว"
 msgid "Linked · not sent yet"
 msgstr "เชื่อมโยงแล้ว · ยังไม่ได้ส่ง"
 
-#: app/account/account.tsx
+#: src/features/account/account-screen.tsx
 msgid "Linked accounts"
 msgstr "บัญชีที่เชื่อมโยง"
 
@@ -7788,7 +7867,7 @@ msgstr "ระบุเครื่องมือและเทคโนโล
 msgid "Listings come from job data providers and may change. The original posting is the one to apply through."
 msgstr ""
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Lithuanian"
 msgstr "ลิทัวเนีย"
 
@@ -7840,16 +7919,7 @@ msgstr "กำลังโหลด"
 msgid "Loading AI connections…"
 msgstr "กำลังโหลดการเชื่อมต่อ AI…"
 
-#: src/features/settings/api-keys.tsx
-msgid "Loading API keys…"
-msgstr "กำลังโหลดคีย์ API…"
-
-#: src/features/search/search-screen.tsx
-msgid "Loading applications…"
-msgstr "กำลังโหลดใบสมัคร…"
-
 #: src/features/assistant/assistant-screen.tsx
-#: src/features/search/search-screen.tsx
 msgid "Loading conversations…"
 msgstr "กำลังโหลดการสนทนา..."
 
@@ -7891,7 +7961,6 @@ msgid "Loading resume…"
 msgstr "กำลังโหลด ประวัติย่อ…"
 
 #: src/features/portfolio/create.tsx
-#: src/features/search/search-screen.tsx
 msgid "Loading resumes…"
 msgstr "กำลังโหลดต่อ…"
 
@@ -7916,10 +7985,14 @@ msgstr ""
 msgid "Loading your public address…"
 msgstr "กำลังโหลดที่อยู่สาธารณะของคุณ…"
 
-#: app/account/preferences.tsx
+#: src/features/account/plan-screen.tsx
 #: src/features/applications/detail/document-choice.tsx
 msgid "Loading…"
 msgstr "กำลังโหลด…"
+
+#: src/features/account/notification-settings.tsx
+msgid "Local reminders"
+msgstr ""
 
 #: src/features/applications/detail/facts.tsx
 #: src/features/applications/interview/interview-fields.tsx
@@ -8025,13 +8098,17 @@ msgstr "ทำให้เห็นชัดขึ้นด้วยขนาด
 msgid "Make this your primary resume?"
 msgstr "ตั้งประวัติย่อนี้เป็นประวัติย่อหลักไหม"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Malay"
 msgstr "มาเลย์"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Malayalam"
 msgstr "มาลายาลัม"
+
+#: src/features/account/ai-screen.tsx
+msgid "Manage connections and choose a default source."
+msgstr ""
 
 #: src/features/portfolio/publish.tsx
 msgid "Manage domain on the web"
@@ -8058,7 +8135,7 @@ msgstr ""
 msgid "Mar 2022"
 msgstr "มี.ค. 2022"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Marathi"
 msgstr "มราฐี"
 
@@ -8136,10 +8213,6 @@ msgstr "ปรับให้ตรงกับ “{resumeName}”"
 msgid "Match against a job"
 msgstr "ตรงกับงาน"
 
-#: src/features/search/search-screen.tsx
-msgid "Match system theme"
-msgstr "ธีมระบบจับคู่"
-
 #: src/features/letters/design.tsx
 msgid "Match the resume"
 msgstr "จับคู่กับประวัติย่อ"
@@ -8164,12 +8237,8 @@ msgstr "การจับคู่ประวัติย่อ"
 msgid "Matching your facts"
 msgstr "กำลังจับคู่ข้อเท็จจริงของคุณ"
 
-#: src/features/search/search-screen.tsx
-msgid "MCP"
-msgstr "MCP"
-
-#: app/account/ai-mcp.tsx
-#: app/account/ai.tsx
+#: src/features/account/ai-screen.tsx
+#: src/features/account/mcp-screen.tsx
 msgid "MCP server"
 msgstr "เซิร์ฟเวอร์ MCP"
 
@@ -8237,7 +8306,7 @@ msgstr ""
 msgid "Missing"
 msgstr ""
 
-#: app/account/index.tsx
+#: src/features/account/help-screen.tsx
 msgid "MIT License"
 msgstr "ใบอนุญาต MIT"
 
@@ -8462,6 +8531,7 @@ msgstr ""
 msgid "Music and video"
 msgstr ""
 
+#: src/features/account/profile.tsx
 #: src/features/ai/provider-editor.tsx
 #: src/features/applications/detail/contacts.tsx
 #: src/features/applications/interview/people-field.tsx
@@ -8477,7 +8547,6 @@ msgstr ""
 #: src/features/portfolio/create.tsx
 #: src/features/portfolio/editor/content.tsx
 #: src/features/portfolio/editor/design.tsx
-#: src/features/settings/profile.tsx
 msgid "Name"
 msgstr "ชื่อ"
 
@@ -8536,7 +8605,7 @@ msgstr "แคบ"
 msgid "Narrower sidebar"
 msgstr ""
 
-#: app/account/licences.tsx
+#: src/features/account/licences-screen.tsx
 msgid "Native & fonts"
 msgstr "ส่วนประกอบเนทีฟและแบบอักษร"
 
@@ -8548,7 +8617,7 @@ msgstr "ต้องการความสนใจ"
 msgid "Needs you"
 msgstr "รอคุณดำเนินการ"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Nepali"
 msgstr "เนปาลี"
 
@@ -8556,8 +8625,8 @@ msgstr "เนปาลี"
 msgid "Network"
 msgstr "ชื่อเว็บไซต์"
 
+#: src/features/account/api-keys.tsx
 #: src/features/profile/preferences.tsx
-#: src/features/settings/api-keys.tsx
 msgid "Never"
 msgstr "ไม่เคย"
 
@@ -8582,13 +8651,9 @@ msgstr ""
 msgid "New account sign-ups are turned off. Sign in with an account you already have."
 msgstr ""
 
-#: src/features/settings/api-keys.tsx
+#: src/features/account/api-keys.tsx
 msgid "New API key"
 msgstr "คีย์ API ใหม่"
-
-#: src/features/search/search-screen.tsx
-msgid "New application"
-msgstr "ใบสมัครใหม่"
 
 #: src/features/assistant/assistant-screen.tsx
 #: src/features/assistant/coach.tsx
@@ -8771,10 +8836,6 @@ msgstr "ไม่พบรายการหัวข้อย่อย"
 msgid "No change needed. It's already at {stage}."
 msgstr "ไม่ต้องเปลี่ยน อยู่ที่ {stage} อยู่แล้ว"
 
-#: src/features/search/search-screen.tsx
-msgid "No commands match that search."
-msgstr "ไม่มีคำสั่งที่ตรงกับการค้นหานั้น"
-
 #: src/features/applications/detail/contacts.tsx
 msgid "No contacts yet"
 msgstr ""
@@ -8796,12 +8857,8 @@ msgstr "ไม่มีการแก้ไข"
 msgid "No country matches."
 msgstr "ไม่พบประเทศ"
 
-#: app/account/membership.tsx
+#: src/features/account/plan-screen.tsx
 msgid "No credit activity yet."
-msgstr ""
-
-#: app/account/membership.tsx
-msgid "No credits to spend right now"
 msgstr ""
 
 #: src/features/share/custom-domain.tsx
@@ -8840,7 +8897,6 @@ msgstr "ไม่มีที่อยู่อีเมล"
 msgid "No email address was found."
 msgstr "ไม่พบที่อยู่อีเมล"
 
-#: app/account/membership.tsx
 #: src/features/billing/plan-card.tsx
 msgid "No end date"
 msgstr ""
@@ -8888,7 +8944,7 @@ msgstr "ยังไม่มีงานทำ"
 msgid "No jobs match yet."
 msgstr ""
 
-#: src/features/settings/api-keys.tsx
+#: src/features/account/api-keys.tsx
 msgid "No keys yet."
 msgstr "ยังไม่มีกุญแจ.."
 
@@ -8896,7 +8952,7 @@ msgstr "ยังไม่มีกุญแจ.."
 msgid "No language matches “{query}”."
 msgstr ""
 
-#: app/account/preferences.tsx
+#: src/features/account/preferences-screen.tsx
 msgid "No language matches."
 msgstr "ไม่มีภาษาที่ตรงกัน"
 
@@ -8911,10 +8967,6 @@ msgstr "ไม่มีบรรทัดใดที่ดูเหมือน
 #: src/features/check/messages.ts
 msgid "No location"
 msgstr "ไม่มีที่ตั้ง"
-
-#: src/ui-legacy/fields.tsx
-msgid "No matches"
-msgstr "ไม่มีการแข่งขัน"
 
 #: src/features/portfolio/publish.tsx
 msgid "No matching sources."
@@ -8964,6 +9016,10 @@ msgstr ""
 msgid "No photo. Most ATS ignore photos; some regions expect one."
 msgstr "ไม่มีรูปถ่าย ATS ส่วนใหญ่ไม่สนใจรูปภาพ บางภูมิภาคคาดหวังอย่างใดอย่างหนึ่ง"
 
+#: src/features/ai/provider-editor.tsx
+msgid "No provider matches."
+msgstr ""
+
 #: src/features/onboarding/messages.ts
 msgid "No public repositories of your own, so no projects came in."
 msgstr ""
@@ -8975,6 +9031,10 @@ msgstr ""
 #: src/features/applications/stages.ts
 msgid "No response"
 msgstr "ไม่มีการตอบสนอง"
+
+#: src/features/search/search-screen.tsx
+msgid "No results match your search."
+msgstr ""
 
 #: src/features/portfolio/create.tsx
 msgid "No resumes found."
@@ -8998,6 +9058,10 @@ msgstr ""
 
 #: src/features/billing/plan-alert.ts
 msgid "No room for another resume"
+msgstr ""
+
+#: src/features/account/ai-privacy-screen.tsx
+msgid "No scheduled AI approvals."
 msgstr ""
 
 #. placeholder {0}: quota.max
@@ -9050,6 +9114,10 @@ msgstr "ไม่มีข้อกำหนดที่โดดเด่นใ
 msgid "No text could be read from this file."
 msgstr "ไม่สามารถอ่านข้อความจากไฟล์นี้ได้"
 
+#: src/features/account/preferences-screen.tsx
+msgid "No theme matches."
+msgstr ""
+
 #: src/features/offers/cells.ts
 msgid "No time given"
 msgstr ""
@@ -9059,7 +9127,7 @@ msgstr ""
 msgid "No time zone matches “{0}”."
 msgstr ""
 
-#: app/account/preferences.tsx
+#: src/features/account/preferences-screen.tsx
 msgid "No timezone matches."
 msgstr "ไม่มีเขตเวลาที่ตรงกัน"
 
@@ -9104,7 +9172,7 @@ msgstr "การเชื่อมต่อ AI ของคุณไม่ส�
 msgid "Normal"
 msgstr "ปกติ"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Norwegian"
 msgstr "นอร์เวย์"
 
@@ -9163,7 +9231,7 @@ msgstr ""
 msgid "Not in your resume · add only if true"
 msgstr "ไม่อยู่ในประวัติย่อของคุณ · เพิ่มเฉพาะในกรณีที่เป็นจริงเท่านั้น"
 
-#: app/account/membership.tsx
+#: src/features/account/plan-screen.tsx
 msgid "Not included"
 msgstr ""
 
@@ -9305,6 +9373,12 @@ msgstr ""
 msgid "Notice period (weeks)"
 msgstr "ระยะเวลาแจ้ง (สัปดาห์)"
 
+#: src/features/account/notification-settings.tsx
+#: src/features/account/preferences-screen.tsx
+#: src/features/search/search-screen.tsx
+msgid "Notifications"
+msgstr ""
+
 #: src/features/applications/detail/reminder-sheet.tsx
 msgid "Notifications are off"
 msgstr "การแจ้งเตือนปิดอยู่"
@@ -9334,10 +9408,11 @@ msgstr "ข้อสังเกต"
 msgid "Ochre"
 msgstr "ดินเหลืองใช้ทำสี"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Odia"
 msgstr "โอเดีย"
 
+#: src/features/account/help-screen.tsx
 #: src/features/ai/provider-list.tsx
 msgid "Off"
 msgstr "ปิด"
@@ -9384,6 +9459,11 @@ msgstr ""
 #: src/shell/builder-chrome/top-bar.tsx
 msgid "Offline · saved on this device"
 msgstr "ออฟไลน์ · บันทึกอยู่ในอุปกรณ์นี้"
+
+#: src/features/account/preferences-screen.tsx
+#: src/features/account/storage-screen.tsx
+msgid "Offline storage"
+msgstr ""
 
 #: src/features/portfolio/editor/screen.tsx
 msgid "Offline. Changes are waiting to save."
@@ -9617,7 +9697,7 @@ msgstr "เปิดหน้าเว็บ"
 msgid "Open workspace"
 msgstr "เปิดพื้นที่ทำงาน"
 
-#: app/account/index.tsx
+#: src/features/account/preferences-screen.tsx
 msgid "Open-source licenses"
 msgstr "สัญญาอนุญาตโอเพนซอร์ส"
 
@@ -9662,6 +9742,10 @@ msgstr ""
 
 #: src/features/applications/list/list-row.tsx
 msgid "Opens the application. Long press to select."
+msgstr ""
+
+#: src/features/account/account-screen.tsx
+msgid "Opens the browser to confirm permanent deletion."
 msgstr ""
 
 #: src/features/documents/document-item.tsx
@@ -9735,8 +9819,8 @@ msgstr ""
 msgid "Other"
 msgstr "อื่นๆ"
 
-#: src/features/settings/api-keys.tsx
-msgid "Other apps can't connect with API keys on this account. This app always works."
+#: src/features/billing/plan-alert.ts
+msgid "Other apps cannot connect to this account with an API key."
 msgstr ""
 
 #: src/features/offers/cells.ts
@@ -9766,6 +9850,10 @@ msgstr "ล้าสมัย: ข้อความมีการเปลี�
 
 #: src/features/design/preset-names.ts
 msgid "Outer space"
+msgstr ""
+
+#: src/features/account/help-screen.tsx
+msgid "Over-the-air update"
 msgstr ""
 
 #: src/features/share/custom-domain.tsx
@@ -9894,12 +9982,12 @@ msgstr ""
 msgid "Passkey"
 msgstr "พาสคีย์"
 
-#: app/account/account.tsx
+#: src/features/account/account-screen.tsx
 #: src/features/search/search-screen.tsx
 msgid "Passkeys"
 msgstr "พาสคีย์"
 
-#: app/account/account.tsx
+#: src/features/account/account-screen.tsx
 #: src/features/auth/create-account-screen.tsx
 #: src/features/auth/email-sign-in-screen.tsx
 #: src/features/search/search-screen.tsx
@@ -10044,11 +10132,7 @@ msgstr "ต่อปี"
 msgid "Percent"
 msgstr ""
 
-#: app/account/account.tsx
-msgid "Permanently removes everything. Opens your browser account settings."
-msgstr "ลบทุกอย่างอย่างถาวร เปิดการตั้งค่าบัญชีเบราว์เซอร์ของคุณ"
-
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Persian"
 msgstr "เปอร์เซีย"
 
@@ -10165,8 +10249,7 @@ msgstr "ข้อความธรรมดา (.txt)"
 msgid "Plain text with headings. Paste into application forms and notes."
 msgstr "ข้อความธรรมดาที่มีส่วนหัว วางลงในแบบฟอร์มการสมัครงานและบันทึกย่อ"
 
-#: app/account/index.tsx
-#: app/account/membership.tsx
+#: src/features/account/plan-screen.tsx
 #: src/shell/account-menu.tsx
 msgid "Plan"
 msgstr ""
@@ -10187,12 +10270,7 @@ msgstr "วางแผนสิ่งที่จะถาม"
 msgid "Planning your week"
 msgstr "กำลังวางแผนสัปดาห์ของคุณ"
 
-#: app/account/membership.tsx
-#: src/features/billing/plan-alert.ts
-msgid "Plans can be bought on the rezumi.app website."
-msgstr ""
-
-#: app/account/membership.tsx
+#: src/features/account/plan-screen.tsx
 msgid "Plans don't apply to your account yet, so everything is open."
 msgstr ""
 
@@ -10208,7 +10286,7 @@ msgstr "สีม่วงพลัม"
 msgid "Plus"
 msgstr ""
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Polish"
 msgstr "โปแลนด์"
 
@@ -10218,12 +10296,14 @@ msgstr "กำลังขัดเกลา"
 
 #: app/(tabs)/_layout.tsx
 #: src/features/portfolio/overview.tsx
+#: src/features/search/search-screen.tsx
 #: src/shell/app-tabs.tsx
 msgid "Portfolio"
 msgstr ""
 
 #: src/features/portfolio/editor/assistant.tsx
 #: src/features/portfolio/editor/screen.tsx
+#: src/features/search/search-screen.tsx
 msgid "Portfolio assistant"
 msgstr ""
 
@@ -10256,11 +10336,11 @@ msgstr ""
 msgid "Portrait"
 msgstr "แนวตั้ง"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Portuguese (Brazil)"
 msgstr "โปรตุเกส (บราซิล)"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Portuguese (Portugal)"
 msgstr "โปรตุเกส (โปรตุเกส)"
 
@@ -10387,10 +10467,7 @@ msgstr "ควรใช้คอลัมน์เดียว หรือใ�
 msgid "Preference"
 msgstr "ความต้องการ"
 
-#: app/account/index.tsx
-#: app/account/preferences.tsx
 #: src/features/profile/profile-screen.tsx
-#: src/features/search/search-screen.tsx
 msgid "Preferences"
 msgstr "การตั้งค่าที่ต้องการ"
 
@@ -10415,7 +10492,7 @@ msgstr "เตรียมฉันให้พร้อมสำหรับก
 msgid "Preparing edits…"
 msgstr "กำลังเตรียมการแก้ไข..."
 
-#: src/features/settings/export.tsx
+#: src/features/account/export.tsx
 msgid "Preparing export…"
 msgstr "กำลังเตรียมการส่งออก…"
 
@@ -10454,6 +10531,14 @@ msgstr "ดูตัวอย่างหน้าเว็บ"
 msgid "Previewing {0} · tap to apply"
 msgstr "กำลังดูตัวอย่าง {0} · แตะเพื่อใช้"
 
+#: src/features/account/storage-screen.tsx
+msgid "Previews and temporary exports will be removed from this device. Your documents and unsynced edits are kept."
+msgstr ""
+
+#: src/features/billing/plan-card.tsx
+msgid "Previous card subscription"
+msgstr ""
+
 #: src/features/applications/calendar/calendar-toolbar.tsx
 msgid "Previous day"
 msgstr ""
@@ -10481,6 +10566,10 @@ msgstr "หน้าก่อนหน้า"
 #: src/features/check/parser-view.tsx
 msgid "Previous PDF result. It may not match your current draft."
 msgstr "ผลลัพธ์ PDF ก่อนหน้า อาจไม่ตรงกับฉบับร่างปัจจุบันของคุณ"
+
+#: src/features/billing/plan-card.tsx
+msgid "Previous QRIS pass"
+msgstr ""
 
 #: src/features/applications/board/stage-pager.tsx
 msgid "Previous stage"
@@ -10512,7 +10601,7 @@ msgstr "พิมพ์หรือส่งออกแบบฟอร์มเ
 msgid "Privacy"
 msgstr "ความเป็นส่วนตัว"
 
-#: app/account/index.tsx
+#: src/features/account/help-screen.tsx
 #: src/features/auth/welcome-screen.tsx
 msgid "Privacy policy"
 msgstr "นโยบายความเป็นส่วนตัว"
@@ -10539,7 +10628,7 @@ msgstr "ความชำนาญ"
 
 #: app/(tabs)/_layout.tsx
 #: app/(tabs)/profile/_layout.tsx
-#: app/account/account.tsx
+#: src/features/account/account-screen.tsx
 #: src/features/assistant/coach.tsx
 #: src/features/portfolio/editor/content.tsx
 #: src/features/profile/profile-screen.tsx
@@ -10565,7 +10654,7 @@ msgstr ""
 msgid "Profile links must be public HTTPS addresses."
 msgstr "ลิงก์โปรไฟล์ต้องเป็นที่อยู่ HTTPS สาธารณะ"
 
-#: src/features/settings/profile.tsx
+#: src/features/account/profile.tsx
 msgid "Profile photo"
 msgstr "รูปโปรไฟล์"
 
@@ -10682,6 +10771,10 @@ msgstr ""
 msgid "QR code for {url}"
 msgstr "รหัส QR สำหรับ {url}"
 
+#: src/features/billing/plan-card.tsx
+msgid "QRIS pass"
+msgstr ""
+
 #: src/features/workspace/practice/question-card.tsx
 msgid "Question {position} of {total}"
 msgstr "คำถาม {position} จาก {total}"
@@ -10755,7 +10848,7 @@ msgstr "อ่านสรุปย่อ"
 msgid "Read it for me"
 msgstr "อ่านให้ฉัน"
 
-#: app/account/licences.tsx
+#: src/features/account/licences-screen.tsx
 msgid "Read license"
 msgstr "อ่านสัญญาอนุญาต"
 
@@ -10881,10 +10974,6 @@ msgstr "เหตุผล"
 msgid "Recalled"
 msgstr "จากความจำ"
 
-#: app/account/membership.tsx
-msgid "Recent activity"
-msgstr ""
-
 #: src/features/home/recent-documents.tsx
 msgid "Recent documents"
 msgstr ""
@@ -10976,7 +11065,7 @@ msgstr "รีเฟรชสรุปย่อ 24 ชั่วโมงก่�
 msgid "Refresh the briefing on the morning of"
 msgstr "รีเฟรชสรุปย่อในเช้าวันสัมภาษณ์"
 
-#: app/account/index.tsx
+#: src/features/account/help-screen.tsx
 msgid "Refund policy"
 msgstr ""
 
@@ -10994,7 +11083,7 @@ msgstr "ปฏิเสธ"
 msgid "Rejected"
 msgstr "ถูกปฏิเสธ"
 
-#: app/account/preferences.tsx
+#: src/features/account/preferences-screen.tsx
 msgid "Reload now"
 msgstr "โหลดใหม่ตอนนี้"
 
@@ -11131,8 +11220,8 @@ msgstr "นำรหัสผ่านออก"
 msgid "Remove person {0}"
 msgstr "นำบุคคลที่ {0} ออก"
 
+#: src/features/account/profile.tsx
 #: src/features/entries/photo-field.tsx
-#: src/features/settings/profile.tsx
 msgid "Remove photo"
 msgstr "ลบรูปภาพ"
 
@@ -11196,6 +11285,11 @@ msgstr ""
 #: src/preview/page.tsx
 msgid "Rendering preview…"
 msgstr "กำลังแสดงตัวอย่าง…"
+
+#. placeholder {0}: formatDate(end)
+#: src/features/billing/plan-card.tsx
+msgid "Renews on {0}"
+msgstr ""
 
 #: src/features/applications/detail/detail-header.tsx
 #: src/features/applications/list/list-row.tsx
@@ -11264,11 +11358,15 @@ msgstr "คัดลอกคำตอบกลับแล้ว"
 msgid "Report"
 msgstr "รายงาน"
 
-#: app/account/ai-report.tsx
-#: app/account/ai.tsx
+#: src/features/account/ai-report-screen.tsx
+#: src/features/account/ai-screen.tsx
 #: src/features/ai/report-content.tsx
 msgid "Report AI content"
 msgstr "รายงานเนื้อหา AI"
+
+#: src/features/account/help-screen.tsx
+msgid "Report an issue"
+msgstr ""
 
 #: src/features/ai/report-content.tsx
 msgid "Report received by your server operator. Thank you."
@@ -11312,7 +11410,7 @@ msgstr "รีเซ็ตรหัสผ่านของคุณ"
 msgid "Respond by"
 msgstr "ตอบกลับภายใน"
 
-#: app/account/preferences.tsx
+#: src/features/account/preferences-screen.tsx
 msgid "Restart to change text direction"
 msgstr "เริ่มต้นใหม่เพื่อเปลี่ยนทิศทางของข้อความ"
 
@@ -11415,10 +11513,6 @@ msgstr ""
 #: src/features/search/search-screen.tsx
 msgid "Resumes"
 msgstr "เรซูเม่"
-
-#: app/account/preferences.tsx
-msgid "Resumes always render on white paper, whatever the theme."
-msgstr "ประวัติย่อจะแสดงผลบนกระดาษขาวเสมอ ไม่ว่าจะเป็นธีมใดก็ตาม"
 
 #: src/features/profile/save-note.tsx
 msgid "Resumes that followed"
@@ -11550,19 +11644,19 @@ msgstr "การเขียนรีวิว"
 msgid "Reviewing needs an AI connection. What you write here stays on this device until then."
 msgstr "การตรวจสอบจำเป็นต้องมีการเชื่อมต่อ AI สิ่งที่คุณเขียนที่นี่จะยังคงอยู่ในอุปกรณ์นี้จนกว่าจะถึงเวลานั้น"
 
-#: src/features/settings/api-keys.tsx
+#: src/features/account/api-keys.tsx
 msgid "Revoke"
 msgstr "ถอน"
 
-#: src/features/settings/api-keys.tsx
+#: src/features/account/api-keys.tsx
 msgid "Revoke API key?"
 msgstr "เพิกถอนคีย์ API หรือไม่"
 
-#: src/features/settings/api-keys.tsx
+#: src/features/account/api-keys.tsx
 msgid "Revoke key"
 msgstr "เพิกถอนคีย์"
 
-#: src/features/settings/api-keys.tsx
+#: src/features/account/api-keys.tsx
 msgid "Revoke this API key"
 msgstr "เพิกถอนคีย์ API นี้"
 
@@ -11580,7 +11674,7 @@ msgstr ""
 msgid "Rezumi AI · {0} credit per reply · {1} left"
 msgstr ""
 
-#: app/account/membership.tsx
+#: src/features/account/plan-screen.tsx
 msgid "Rezumi AI credits"
 msgstr ""
 
@@ -11592,6 +11686,10 @@ msgstr ""
 #. placeholder {1}: creditCount(balance)
 #: src/features/billing/ai-source.ts
 msgid "Rezumi AI: {0}, {1} left. If it fails, the credits come back."
+msgstr ""
+
+#: src/features/account/ai-privacy-screen.tsx
+msgid "Rezumi asks before each AI operation. Individual approvals expire after that operation."
 msgstr ""
 
 #: src/shell/permissions.tsx
@@ -11654,7 +11752,7 @@ msgstr "ตำแหน่งงาน"
 msgid "Roles you're looking for"
 msgstr ""
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Romanian"
 msgstr "โรมาเนีย"
 
@@ -11697,11 +11795,15 @@ msgstr "ทำงานที่ {0}"
 msgid "Runs onto page {0}"
 msgstr "ล้นไปหน้า {0}"
 
+#: src/features/account/help-screen.tsx
+msgid "Runtime version"
+msgstr ""
+
 #: src/features/portfolio/editor/metric.tsx
 msgid "Rupiah"
 msgstr ""
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Russian"
 msgstr "รัสเซีย"
 
@@ -11979,6 +12081,7 @@ msgstr ""
 msgid "Saves as you type. Resumes that still use a part follow your changes."
 msgstr ""
 
+#: src/features/account/profile.tsx
 #: src/features/applications/interview-sheet.tsx
 #: src/features/applications/save-sheet.tsx
 #: src/features/auth/reset-password-screen.tsx
@@ -11988,7 +12091,6 @@ msgstr ""
 #: src/features/profile/preferences.tsx
 #: src/features/profile/save-note.tsx
 #: src/features/profile/stories.tsx
-#: src/features/settings/profile.tsx
 #: src/features/write/profile-marker-sheet.tsx
 #: src/shell/builder-chrome/top-bar.tsx
 msgid "Saving…"
@@ -12021,6 +12123,10 @@ msgstr ""
 msgid "Schedule saved"
 msgstr "บันทึกกำหนดการแล้ว"
 
+#: src/features/account/ai-privacy-screen.tsx
+msgid "Scheduled AI approvals"
+msgstr ""
+
 #: src/features/career/schedule-body.tsx
 msgid "Scheduled work is not available on this server. Ask your server administrator to configure it."
 msgstr "งานที่กำหนดเวลาไว้ไม่พร้อมใช้งานบนเซิร์ฟเวอร์นี้ ขอให้ผู้ดูแลเซิร์ฟเวอร์ตั้งค่า"
@@ -12052,8 +12158,8 @@ msgstr "สัมภาษณ์แบบคัดกรอง"
 #: app/_layout.tsx
 #: app/(tabs)/_layout.tsx
 #: src/features/documents/library-toolbar.tsx
+#: src/features/search/search-screen.tsx
 #: src/shell/tab-chrome.tsx
-#: src/ui-legacy/fields.tsx
 msgid "Search"
 msgstr "ค้นหา"
 
@@ -12073,10 +12179,6 @@ msgstr ""
 msgid "Search applications"
 msgstr "ค้นหาใบสมัครงาน"
 
-#: src/features/search/search-screen.tsx
-msgid "Search commands"
-msgstr "คำสั่งค้นหา"
-
 #: src/features/career/schedule-body.tsx
 msgid "Search connections"
 msgstr ""
@@ -12086,10 +12188,6 @@ msgstr ""
 #: src/features/profile/search-regions-field.tsx
 msgid "Search countries"
 msgstr ""
-
-#: src/features/search/search-screen.tsx
-msgid "Search covers documents, applications, assistant conversations and actions."
-msgstr "การค้นหาครอบคลุมถึงเอกสาร ใบสมัคร การสนทนาของผู้ช่วย และการดำเนินการ"
 
 #: src/features/documents/library-states.tsx
 msgid "Search covers titles, tags and linked applications."
@@ -12102,6 +12200,10 @@ msgstr ""
 #: src/features/documents/library-toolbar.tsx
 msgid "Search documents"
 msgstr "ค้นหาเอกสาร"
+
+#: src/features/search/search-screen.tsx
+msgid "Search documents, applications, and more"
+msgstr ""
 
 #: src/features/share/web-page.tsx
 msgid "Search engines such as Google may list your web page. It can take weeks to appear, or to disappear after you turn this off."
@@ -12119,10 +12221,6 @@ msgstr ""
 msgid "Search for an icon"
 msgstr "ค้นหาไอคอน"
 
-#: src/features/search/search-screen.tsx
-msgid "Search for…"
-msgstr "ค้นหา…"
-
 #: src/features/entries/icon-picker.tsx
 msgid "Search icons"
 msgstr "ค้นหาไอคอน"
@@ -12131,13 +12229,17 @@ msgstr "ค้นหาไอคอน"
 msgid "Search interviews"
 msgstr ""
 
-#: app/account/preferences.tsx
+#: src/features/account/preferences-screen.tsx
 #: src/features/design/page-group.tsx
 msgid "Search languages"
 msgstr "ค้นหาภาษา"
 
 #: src/features/applications/detail/document-choice.tsx
 msgid "Search letters"
+msgstr ""
+
+#: src/features/ai/provider-editor.tsx
+msgid "Search providers"
 msgstr ""
 
 #: src/features/applications/detail/document-choice.tsx
@@ -12160,6 +12262,10 @@ msgstr "คำค้นหาจะถูกส่งไปยังบริก
 msgid "Search the web"
 msgstr ""
 
+#: src/features/account/preferences-screen.tsx
+msgid "Search themes"
+msgstr ""
+
 #: src/features/applications/interview/zone-list.tsx
 msgid "Search time zones"
 msgstr ""
@@ -12168,14 +12274,9 @@ msgstr ""
 msgid "Search times"
 msgstr ""
 
-#: app/account/preferences.tsx
+#: src/features/account/preferences-screen.tsx
 msgid "Search timezones"
 msgstr "ค้นหาเขตเวลา"
-
-#: src/features/search/search-screen.tsx
-#: src/ui-legacy/fields.tsx
-msgid "Search…"
-msgstr "ค้นหา…"
 
 #: src/features/assistant/messages.tsx
 msgid "Searched the web"
@@ -12184,6 +12285,10 @@ msgstr "ค้นหาเว็บแล้ว"
 #: src/features/assistant/messages.tsx
 msgid "Searching the web…"
 msgstr "กำลังค้นหาเว็บ..."
+
+#: src/features/search/search-screen.tsx
+msgid "Searching…"
+msgstr ""
 
 #: src/features/check/messages.ts
 msgid "Section headings"
@@ -12211,6 +12316,10 @@ msgstr "ส่วนต่างๆ ใช้ระบบการจดจำ�
 
 #: src/features/design/preset-names.ts
 msgid "Security"
+msgstr ""
+
+#: src/features/account/account-screen.tsx
+msgid "Security settings open in the browser. You may need to sign in there."
 msgstr ""
 
 #: src/features/onboarding/intro-screen.tsx
@@ -12374,12 +12483,12 @@ msgstr "ส่งไปที่ {0} แล้ว"
 msgid "Sent to Lumen"
 msgstr "ส่งถึง Lumen แล้ว"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Serbian"
 msgstr "เซอร์เบีย"
 
 #: src/api/ai-consent.ts
-#: src/features/settings/sign-out.tsx
+#: src/features/account/sign-out.tsx
 msgid "Server"
 msgstr "เซิร์ฟเวอร์"
 
@@ -12434,13 +12543,11 @@ msgstr ""
 msgid "Setting up HTTPS. This usually takes a few minutes, and this screen updates by itself."
 msgstr ""
 
-#: app/account/index.tsx
 #: src/features/applications/detail/reminder-sheet.tsx
-#: src/features/search/search-screen.tsx
 msgid "Settings"
 msgstr "การตั้งค่า"
 
-#: app/account/ai-mcp.tsx
+#: src/features/account/mcp-screen.tsx
 msgid "Setup guide"
 msgstr "คู่มือการตั้งค่า"
 
@@ -12593,10 +12700,6 @@ msgstr ""
 msgid "Show again"
 msgstr "แสดงอีกครั้ง"
 
-#: src/features/search/search-screen.tsx
-msgid "Show all"
-msgstr "แสดงทั้งหมด"
-
 #: src/features/profile/facts.tsx
 msgid "Show all facts"
 msgstr ""
@@ -12651,7 +12754,7 @@ msgstr ""
 msgid "Show link in title"
 msgstr "แสดงลิงก์ในชื่อ"
 
-#: app/account/preferences.tsx
+#: src/features/account/plan-screen.tsx
 #: src/features/applications/interview/zone-list.tsx
 msgid "Show more"
 msgstr "แสดงเพิ่มเติม"
@@ -12802,18 +12905,26 @@ msgid "Sign in to view this resume."
 msgstr "ลงชื่อเข้าใช้เพื่อดู ประวัติย่อ นี้"
 
 #: src/auth/session-gate.tsx
-#: src/features/settings/sign-out.tsx
+#: src/features/account/sign-out.tsx
 #: src/shell/account-menu.tsx
 #: src/shell/app-drawer.tsx
 msgid "Sign out"
 msgstr "ออกจากระบบ"
 
-#: src/features/settings/sign-out.tsx
+#: src/features/account/sign-out.tsx
+msgid "Sign out of all devices"
+msgstr ""
+
+#: src/features/account/sign-out.tsx
+msgid "Sign out of all devices?"
+msgstr ""
+
+#: src/features/account/sign-out.tsx
 #: src/shell/account-menu.tsx
 msgid "Sign out?"
 msgstr "ออกจากระบบ?"
 
-#: app/account/account.tsx
+#: src/features/account/account-screen.tsx
 msgid "Sign-in & security"
 msgstr "การลงชื่อเข้าใช้และความปลอดภัย"
 
@@ -12831,7 +12942,7 @@ msgid "Signed in with Apple, Google or another provider? You have no password he
 msgstr ""
 
 #: src/auth/session-gate.tsx
-#: src/features/settings/sign-out.tsx
+#: src/features/account/sign-out.tsx
 msgid "Signed out, but some data on this device couldn't be removed."
 msgstr "ออกจากระบบแล้ว แต่ข้อมูลบางส่วนในอุปกรณ์นี้ไม่สามารถลบได้"
 
@@ -12898,11 +13009,11 @@ msgstr "ข้าม"
 msgid "Skipped"
 msgstr ""
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Slovak"
 msgstr "สโลวัก"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Slovenian"
 msgstr "ภาษาสโลวีเนีย"
 
@@ -12951,6 +13062,10 @@ msgstr "อักขระบางตัวไม่มีความหมา
 #: src/features/ats-checker/messages.ts
 msgid "Some lines are stored out of reading order."
 msgstr "บางบรรทัดถูกจัดเก็บนอกลำดับการอ่าน"
+
+#: src/features/search/search-screen.tsx
+msgid "Some results couldn't load."
+msgstr ""
 
 #: src/features/check/messages.ts
 msgid "Some systems mishandle images, and photos are discouraged in some countries."
@@ -13022,7 +13137,7 @@ msgstr "แหล่งที่มา"
 msgid "Sources"
 msgstr "แหล่งที่มา"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Spanish"
 msgstr "สเปน"
 
@@ -13217,6 +13332,7 @@ msgstr ""
 msgid "Stay here"
 msgstr "อยู่ที่นี่"
 
+#: src/features/account/sign-out.tsx
 #: src/shell/account-menu.tsx
 msgid "Stay signed in"
 msgstr ""
@@ -13353,10 +13469,6 @@ msgstr "แนะนำการตัดไม่เคยลบด้วยต
 msgid "Summary"
 msgstr "ประวัติโดยย่อ"
 
-#: app/account/index.tsx
-msgid "Support"
-msgstr "สนับสนุน"
-
 #: src/features/jobs/listing-fit.tsx
 #: src/features/workspace/debrief/review-card.tsx
 #: src/features/workspace/fit/requirement-card.tsx
@@ -13379,7 +13491,7 @@ msgstr ""
 msgid "Swap the start and end dates."
 msgstr "สลับวันที่เริ่มต้นและสิ้นสุด"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Swedish"
 msgstr "สวีเดน"
 
@@ -13391,7 +13503,7 @@ msgstr "สลับรุ่น"
 msgid "Switch server"
 msgstr "สลับเซิร์ฟเวอร์"
 
-#: src/features/settings/sign-out.tsx
+#: src/features/account/sign-out.tsx
 #: src/linking/open.ts
 msgid "Switch server?"
 msgstr "สลับเซิร์ฟเวอร์?"
@@ -13404,10 +13516,17 @@ msgstr "สลับไปที่หนึ่งคอลัมน์"
 msgid "Switched to one column"
 msgstr "เปลี่ยนเป็นคอลัมน์เดียวแล้ว"
 
-#: app/account/index.tsx
-#: app/account/preferences.tsx
+#: src/features/account/preferences-screen.tsx
 msgid "System"
 msgstr "ระบบปฏิบัติการ"
+
+#: src/features/account/notification-settings.tsx
+msgid "System notification settings"
+msgstr ""
+
+#: src/features/account/notification-settings.tsx
+msgid "System permission is off."
+msgstr ""
 
 #: src/features/check/messages.ts
 msgid "Systems file you under the name at the top of the page."
@@ -13470,8 +13589,8 @@ msgstr ""
 msgid "Take a picture"
 msgstr ""
 
+#: src/features/account/profile.tsx
 #: src/features/entries/photo-field.tsx
-#: src/features/settings/profile.tsx
 msgid "Take photo"
 msgstr "ถ่ายภาพ"
 
@@ -13492,7 +13611,7 @@ msgstr ""
 msgid "Takes its sender details and design from your latest resume."
 msgstr ""
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Tamil"
 msgstr "ทมิฬ"
 
@@ -13553,7 +13672,7 @@ msgstr "เล่าถึงผลงานที่คุณภูมิใจ
 msgid "Tell me about a time you disagreed with a colleague. How did you resolve it?"
 msgstr "เล่าถึงครั้งที่คุณเห็นต่างกับเพื่อนร่วมงาน คุณแก้ไขอย่างไร?"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Telugu"
 msgstr "เตลูกู"
 
@@ -13593,7 +13712,7 @@ msgstr ""
 msgid "Terms from the posting"
 msgstr "เงื่อนไขจากการลงประกาศรับสมัครงาน"
 
-#: app/account/index.tsx
+#: src/features/account/help-screen.tsx
 msgid "Terms of service"
 msgstr "ข้อกำหนดในการให้บริการ"
 
@@ -13669,7 +13788,7 @@ msgstr ""
 msgid "Text, e.g. Indonesian"
 msgstr ""
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Thai"
 msgstr "ไทย"
 
@@ -14008,14 +14127,13 @@ msgstr "ด้านบนของหน้าแรกไม่เหมือ
 msgid "The versions you sent are kept in Saved. Edits here don't change what {company} received."
 msgstr "เวอร์ชันที่คุณส่งจะถูกเก็บไว้ในที่บันทึกไว้ การแก้ไขที่นี่จะไม่เปลี่ยนแปลงสิ่งที่ {company} ได้รับ"
 
-#: app/account/preferences.tsx
+#: src/features/account/preferences-screen.tsx
 #: src/features/portfolio/editor/design.tsx
 #: src/features/search/search-screen.tsx
 msgid "Theme"
 msgstr "ธีม"
 
 #. placeholder {0}: getPlanName(next.planId)
-#: app/account/membership.tsx
 #: src/features/billing/plan-card.tsx
 msgid "Then {0}"
 msgstr ""
@@ -14052,10 +14170,6 @@ msgstr "นี่คือคำตอบที่บันทึกไว้ต
 msgid "These open Rezumi's sign-in page in a secure browser sheet. You come back here when you're done."
 msgstr ""
 
-#: app/account/account.tsx
-msgid "These open your server's account settings in a browser tab inside the app. You may need to sign in there."
-msgstr "สิ่งเหล่านี้จะเปิดการตั้งค่าบัญชีเซิร์ฟเวอร์ของคุณในแท็บเบราว์เซอร์ภายในแอป คุณอาจต้องลงชื่อเข้าใช้ที่นั่น"
-
 #: src/features/profile/save-note.tsx
 msgid "These resumes still used the parts you changed, so they changed too. Parts a resume changed itself stay as they are."
 msgstr ""
@@ -14076,16 +14190,8 @@ msgstr "กำลังคิด"
 msgid "Thinking…"
 msgstr "กำลังคิด..."
 
-#: app/account/licences.tsx
-msgid "Third-party software notices. Tap a dependency to read its license."
-msgstr "ประกาศเกี่ยวกับซอฟต์แวร์ของบุคคลที่สาม แตะส่วนประกอบที่ใช้เพื่ออ่านสัญญาอนุญาต"
-
 #: src/features/portfolio/queries.ts
 msgid "This account already has a portfolio."
-msgstr ""
-
-#: src/features/billing/plan-alert.ts
-msgid "This app always works. Other apps and assistants that connect with an API key need more."
 msgstr ""
 
 #: src/features/workspace/screen.tsx
@@ -14111,6 +14217,7 @@ msgstr ""
 #: src/features/assistant/assistant-screen.tsx
 #: src/features/assistant/chat-view.tsx
 #: src/features/assistant/coach.tsx
+#: src/features/portfolio/editor/assistant.tsx
 msgid "This conversation couldn't be opened."
 msgstr "ไม่สามารถเปิดการสนทนานี้ได้"
 
@@ -14124,6 +14231,10 @@ msgstr ""
 
 #: src/features/applications/detail/posting.tsx
 msgid "This description is clipped or incomplete. Check it before preparing documents."
+msgstr ""
+
+#: src/features/account/preferences-screen.tsx
+msgid "This device"
 msgstr ""
 
 #: src/features/assistant/threads.tsx
@@ -14165,6 +14276,10 @@ msgstr ""
 #: src/api/ai-consent.ts
 msgid "This enables recurring processing while the schedule is on, using your server's selected providers. Turn the schedule off to stop future runs."
 msgstr "การดำเนินการนี้จะเปิดใช้งานการประมวลผลที่เกิดซ้ำในขณะที่กำหนดการเปิดอยู่ โดยใช้ผู้ให้บริการที่เลือกของเซิร์ฟเวอร์ของคุณ ปิดกำหนดการเพื่อหยุดการวิ่งในอนาคต"
+
+#: src/features/account/sign-out.tsx
+msgid "This ends your Rezumi sessions on every device. Edits that haven't synced from this device will be lost."
+msgstr ""
 
 #: src/features/check/messages.ts
 msgid "This entry"
@@ -14339,6 +14454,10 @@ msgstr "วิธีนี้จะวัดว่าซอฟต์แวร์
 msgid "This needs {required} and you have {balance}. Switch to your own AI connection to continue."
 msgstr ""
 
+#: src/features/billing/plan-alert.ts
+msgid "This option isn't available"
+msgstr ""
+
 #: src/features/portfolio/queries.ts
 msgid "This option isn't included in your current plan."
 msgstr ""
@@ -14358,6 +14477,10 @@ msgstr "หน้านี้มีเนื้อหาแน่นมาก"
 #: src/features/check/proposal-card.tsx
 msgid "This passage changed. Run the review again."
 msgstr "ข้อความนี้เปลี่ยนไป ดำเนินการตรวจสอบอีกครั้ง"
+
+#: src/features/account/ai-privacy-screen.tsx
+msgid "This pauses the interview preparation schedule. You can enable it again from Home."
+msgstr ""
 
 #: src/features/portfolio/editor/media.ts
 msgid "This PDF has an unsupported number of pages."
@@ -14492,10 +14615,6 @@ msgstr "เรื่องราวนี้ไม่พร้อมใช้ง
 msgid "This template isn't available"
 msgstr ""
 
-#: src/features/billing/plan-alert.ts
-msgid "This template isn't in your plan"
-msgstr ""
-
 #: src/features/portfolio/editor/ai.tsx
 msgid "This text changed while AI was writing. Try again."
 msgstr ""
@@ -14508,7 +14627,7 @@ msgstr "เวลานี้ไม่มีอยู่ในเขตเวล
 msgid "This time doesn't exist in that time zone. Choose another time."
 msgstr ""
 
-#: src/features/settings/profile.tsx
+#: src/features/account/profile.tsx
 msgid "This username is already taken."
 msgstr "ชื่อผู้ใช้นี้ถูกใช้ไปแล้ว"
 
@@ -14557,7 +14676,8 @@ msgstr "เวลา ลิงก์ ผู้ที่จะพบ สิ่ง
 msgid "Times are shown in {timeZone}."
 msgstr "แสดงเวลาตาม {timeZone}"
 
-#: app/account/preferences.tsx
+#: src/features/account/preferences-screen.tsx
+#: src/features/search/search-screen.tsx
 msgid "Timezone"
 msgstr "เขตเวลา"
 
@@ -14662,11 +14782,7 @@ msgstr ""
 msgid "Tool logos aren't available, so the imported document shows skills without them."
 msgstr ""
 
-#: src/features/billing/plan-alert.ts
-msgid "Tool logos aren't in your plan"
-msgstr ""
-
-#: app/account/membership.tsx
+#: src/features/account/plan-screen.tsx
 #: src/features/design/icons-group.tsx
 msgid "Tool logos in skills"
 msgstr ""
@@ -14748,7 +14864,11 @@ msgstr "ถังขยะ"
 msgid "Trash is empty"
 msgstr "ถังขยะว่างเปล่า"
 
-#: app/account/membership.tsx
+#: src/features/account/mcp-screen.tsx
+msgid "Treat API keys like passwords. Revoke a key in Account to stop the app using it."
+msgstr ""
+
+#: src/features/account/plan-screen.tsx
 #: src/features/billing/credits.ts
 msgid "Trial credits"
 msgstr ""
@@ -14771,8 +14891,12 @@ msgstr ""
 
 #: app/_layout.tsx
 #: app/(auth)/server.tsx
-#: app/account/account.tsx
-#: app/account/preferences.tsx
+#: src/features/account/account-screen.tsx
+#: src/features/account/ai-privacy-screen.tsx
+#: src/features/account/api-keys.tsx
+#: src/features/account/plan-screen.tsx
+#: src/features/account/preferences-screen.tsx
+#: src/features/account/storage-screen.tsx
 #: src/features/ai/provider-editor.tsx
 #: src/features/ai/provider-list.tsx
 #: src/features/applications/board/load-states.tsx
@@ -14787,7 +14911,7 @@ msgstr ""
 #: src/features/letters/write.tsx
 #: src/features/onboarding/onboarding-screen.tsx
 #: src/features/profile/states.tsx
-#: src/features/settings/api-keys.tsx
+#: src/features/search/search-screen.tsx
 #: src/features/workspace/ai-notice.tsx
 #: src/features/workspace/part-body.tsx
 #: src/features/workspace/practice/practice-part.tsx
@@ -14835,7 +14959,7 @@ msgstr "ลองกับตัวอย่างเรซูเม่"
 msgid "Trying {0} on the page"
 msgstr ""
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Turkish"
 msgstr "ตุรกี"
 
@@ -14859,6 +14983,10 @@ msgstr "เปิดกำหนดการนี้"
 msgid "Turned off in Settings"
 msgstr ""
 
+#: src/features/account/notification-settings.tsx
+msgid "Turning a type off removes its scheduled reminders from this device. Turn it back on to set new reminders in Applications."
+msgstr ""
+
 #: src/features/design/gallery-filters.tsx
 #: src/features/design/template-card.tsx
 #: src/features/onboarding/template-choice.tsx
@@ -14873,7 +15001,7 @@ msgstr ""
 msgid "Two stories"
 msgstr "สองเรื่องราว"
 
-#: app/account/account.tsx
+#: src/features/account/account-screen.tsx
 #: src/features/auth/two-factor-screen.tsx
 msgid "Two-step verification"
 msgstr "การยืนยันแบบสองขั้นตอน"
@@ -14885,10 +15013,6 @@ msgstr "การยืนยันแบบสองขั้นตอน"
 #: src/features/workspace/practice/answer-panel.tsx
 msgid "Type"
 msgstr "ประเภท"
-
-#: src/features/search/search-screen.tsx
-msgid "Type a command or search…"
-msgstr "พิมพ์คำสั่งหรือค้นหา…"
 
 #: src/features/workspace/practice/answer-panel.tsx
 #: src/features/workspace/practice/recorder-control.tsx
@@ -14909,11 +15033,11 @@ msgstr ""
 msgid "Typography"
 msgstr "แบบอักษร"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Ukrainian"
 msgstr "ยูเครน"
 
-#: app/account/preferences.tsx
+#: src/features/account/help-screen.tsx
 msgid "Unavailable"
 msgstr "ไม่พร้อมใช้งาน"
 
@@ -14990,7 +15114,7 @@ msgstr "ปลดล็อคก่อน จากนั้นลองอี�
 msgid "Unlocking…"
 msgstr "กำลังปลดล็อค…"
 
-#: src/features/settings/api-keys.tsx
+#: src/features/account/api-keys.tsx
 msgid "Unnamed key"
 msgstr "คีย์ที่ไม่มีชื่อ"
 
@@ -15089,7 +15213,7 @@ msgstr ""
 msgid "Upload TTF or OTF files you have the right to use, one file per weight or style. Anyone who opens a shared link to this document can download them."
 msgstr ""
 
-#: src/features/settings/profile.tsx
+#: src/features/account/profile.tsx
 msgid "Uploading photo…"
 msgstr "กำลังอัปโหลดรูปภาพ…"
 
@@ -15135,7 +15259,7 @@ msgstr ""
 msgid "Use {url}"
 msgstr "ใช้ {url}"
 
-#: src/features/settings/profile.tsx
+#: src/features/account/profile.tsx
 msgid "Use 3 to 64 lowercase letters, numbers, dots, hyphens and underscores."
 msgstr "ใช้ตัวอักษรพิมพ์เล็ก ตัวเลข จุด ขีดกลาง และขีดล่างตั้งแต่ 3 ถึง 64 ตัว"
 
@@ -15331,10 +15455,6 @@ msgstr "ใช้ของพวกเขา"
 msgid "Use these answers"
 msgstr "ใช้คำตอบเหล่านี้"
 
-#: app/account/preferences.tsx
-msgid "Use this device's timezone ({deviceTimezone})"
-msgstr "ใช้เขตเวลาของอุปกรณ์นี้ ({deviceTimezone})"
-
 #: src/features/ai/provider-editor.tsx
 msgid "Use this provider"
 msgstr "ใช้ผู้ให้บริการรายนี้"
@@ -15363,8 +15483,8 @@ msgstr ""
 msgid "Used to check roles and offers. Each is a number, so the coach can compare without guessing."
 msgstr "ใช้ตรวจสอบตำแหน่งงานและข้อเสนอ แต่ละค่าเป็นตัวเลข โค้ชจึงเปรียบเทียบได้โดยไม่ต้องเดา"
 
+#: src/features/account/profile.tsx
 #: src/features/entries/fields.ts
-#: src/features/settings/profile.tsx
 msgid "Username"
 msgstr "ชื่อผู้ใช้"
 
@@ -15393,7 +15513,7 @@ msgstr "ใช้เทมเพลตและการออกแบบขอ
 msgid "Using your Profile's version."
 msgstr ""
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Uzbek"
 msgstr "อุซเบก"
 
@@ -15500,7 +15620,7 @@ msgstr ""
 msgid "Video link, office address or phone number"
 msgstr ""
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Vietnamese"
 msgstr "เวียดนาม"
 
@@ -15829,7 +15949,7 @@ msgstr ""
 msgid "What you're looking for"
 msgstr "สิ่งที่คุณกำลังมองหา"
 
-#: app/account/membership.tsx
+#: src/features/account/plan-screen.tsx
 msgid "What's included"
 msgstr ""
 
@@ -15841,7 +15961,7 @@ msgstr "อะไรทำงานอยู่"
 msgid "WhatsApp number with country code"
 msgstr ""
 
-#: app/account/membership.tsx
+#: src/features/billing/plan-card.tsx
 msgid "When a plan ends, nothing is locked or deleted: every document stays open to edit, share and download as a PDF."
 msgstr ""
 
@@ -15923,8 +16043,20 @@ msgstr ""
 msgid "Width"
 msgstr "ความกว้าง"
 
-#: src/features/settings/api-keys.tsx
-msgid "Without it, apps you connect with a key won't work yet. This app always works. Plans can be bought on the rezumi.app website."
+#: src/features/account/ai-privacy-screen.tsx
+msgid "Withdraw"
+msgstr ""
+
+#: src/features/account/ai-privacy-screen.tsx
+msgid "Withdraw AI approval?"
+msgstr ""
+
+#: src/features/account/ai-privacy-screen.tsx
+msgid "Withdraw approval"
+msgstr ""
+
+#: src/features/account/ai-privacy-screen.tsx
+msgid "Withdrawing approval pauses the schedule on all devices."
 msgstr ""
 
 #: src/features/letters/write.tsx
@@ -15940,12 +16072,8 @@ msgstr "Word"
 msgid "Word and ODT aren't available"
 msgstr ""
 
-#: app/account/membership.tsx
+#: src/features/account/plan-screen.tsx
 msgid "Word and ODT downloads"
-msgstr ""
-
-#: src/features/billing/plan-alert.ts
-msgid "Word and ODT downloads aren't in your plan"
 msgstr ""
 
 #: src/features/documents/new-choices.tsx
@@ -16089,7 +16217,7 @@ msgstr ""
 msgid "Writing"
 msgstr "งานเขียน"
 
-#: app/account/ai-providers.tsx
+#: src/features/account/providers-screen.tsx
 msgid "Writing help, tailored suggestions and the assistant. The default provider is used wherever you don't pick one. Your keys stay encrypted."
 msgstr "ความช่วยเหลือในการเขียน คำแนะนำที่ปรับให้เหมาะ และผู้ช่วย จะใช้ผู้ให้บริการเริ่มต้นในทุกที่ที่คุณไม่ได้เลือก คีย์ของคุณถูกเข้ารหัสไว้เสมอ"
 
@@ -16120,6 +16248,10 @@ msgstr "คุณใช้สิ่งนี้กับ “{takenBy}” แล�
 #: src/features/assistant/messages.tsx
 msgid "You answered: {answer}"
 msgstr "คุณตอบ: {answer}"
+
+#: src/features/billing/plan-alert.ts
+msgid "You can keep editing and sharing your portfolio."
+msgstr ""
 
 #: src/shell/builder-chrome/top-bar.tsx
 msgid "You can keep editing. Changes sync when you're back online. PDF sharing works with cached fonts and images."
@@ -16199,7 +16331,7 @@ msgstr "คุณส่งจากอีเมลของคุณเอง"
 msgid "You submit on the employer's site yourself. Marking it applied keeps the exact versions you sent."
 msgstr "คุณส่งใบสมัครบนเว็บไซต์ของนายจ้างเอง การทำเครื่องหมายว่าสมัครแล้วจะเก็บเวอร์ชันที่คุณส่งไว้ตรงตามจริง"
 
-#: src/features/settings/sign-out.tsx
+#: src/features/account/sign-out.tsx
 #: src/shell/account-menu.tsx
 msgid "You will be signed out of {server}. Any edits not yet synced from this device will be lost."
 msgstr "คุณจะออกจากระบบ {server} การแก้ไขใดๆ ที่ยังไม่ได้ซิงค์จากอุปกรณ์นี้จะสูญหาย"
@@ -16354,7 +16486,7 @@ msgstr "การเปลี่ยนแปลงของคุณบนอุ
 msgid "Your contact details are not on the first page."
 msgstr "ข้อมูลการติดต่อของคุณไม่ได้อยู่ในหน้าแรก"
 
-#: app/account/account.tsx
+#: src/features/account/account-screen.tsx
 msgid "Your data"
 msgstr "ข้อมูลของคุณ"
 
@@ -16433,7 +16565,7 @@ msgstr ""
 msgid "Your job search starts here"
 msgstr "การหางานของคุณเริ่มต้นที่นี่"
 
-#: app/account/preferences.tsx
+#: src/features/account/preferences-screen.tsx
 msgid "Your language is saved. Restart Rezumi to apply the new left-to-right or right-to-left layout."
 msgstr "บันทึกภาษาของคุณแล้ว รีสตาร์ท Rezumi เพื่อใช้เค้าโครงซ้ายไปขวาหรือขวาไปซ้ายใหม่"
 
@@ -16491,11 +16623,7 @@ msgstr "การเปิดตัวของคุณ เรื่องร�
 msgid "Your own domain isn't available"
 msgstr ""
 
-#: src/features/billing/plan-alert.ts
-msgid "Your own domain isn't in your plan"
-msgstr ""
-
-#: app/account/membership.tsx
+#: src/features/account/plan-screen.tsx
 msgid "Your own fonts"
 msgstr ""
 
@@ -16507,12 +16635,8 @@ msgstr ""
 msgid "Your own fonts aren't available, so the imported document uses a standard font."
 msgstr ""
 
-#: src/features/billing/plan-alert.ts
-msgid "Your own fonts aren't in your plan"
-msgstr ""
-
 #: src/features/design/uploaded-fonts.tsx
-msgid "Your own fonts aren't in your plan. Fonts already added keep working on the page."
+msgid "Your own fonts aren't available. Fonts already added keep working on the page."
 msgstr ""
 
 #: src/features/billing/plan-alert.ts
@@ -16528,7 +16652,6 @@ msgstr ""
 msgid "Your phone number is written in an unusual shape."
 msgstr "หมายเลขโทรศัพท์ของคุณเขียนในรูปแบบที่ไม่ปกติ"
 
-#: app/account/membership.tsx
 #: src/features/billing/plan-card.tsx
 msgid "Your plan"
 msgstr ""
@@ -16619,7 +16742,7 @@ msgstr ""
 msgid "Your Profile was saved on another device or on the web while you were editing here. Your changes are still on this device. Choose which version to keep."
 msgstr ""
 
-#: src/features/settings/export.tsx
+#: src/features/account/export.tsx
 msgid "Your profile, documents, applications and Career data as JSON. Images and attachments remain references."
 msgstr "โปรไฟล์ เอกสาร ใบสมัคร และข้อมูลอาชีพของคุณเป็น JSON รูปภาพและไฟล์แนบยังคงเป็นข้อมูลอ้างอิง"
 
@@ -16631,7 +16754,7 @@ msgstr ""
 msgid "your provider"
 msgstr "ผู้ให้บริการของคุณ"
 
-#: src/features/settings/profile.tsx
+#: src/features/account/profile.tsx
 msgid "Your public links begin with {server}/"
 msgstr "ลิงก์สาธารณะของคุณขึ้นต้นด้วย {server}/"
 
@@ -16756,6 +16879,6 @@ msgstr ""
 msgid "Zoom: fit to width"
 msgstr ""
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Zulu"
 msgstr "ซูลู"

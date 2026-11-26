@@ -112,3 +112,7 @@ Coach dari tombol kilau memakai lembar dengan tombol **Expand Coach** di ponsel,
 ## Phase 13 — Editor portofolio
 
 Ponsel menampilkan Content, Work, Design, dan Publish di bawah judul. Undo, Redo, dan Preview ada di bar judul. Status simpan memberi pilihan saat versi berubah di perangkat lain. Tablet menampilkan editor dan pratinjau tersimpan berdampingan. Daftar karya menyediakan pegangan seret dan menu pindah. Di Design, galeri menampilkan contoh tema dari server dan gambar diam efek pembuka. Tombol Replay intro memutar efek di pratinjau.
+
+## Phase 14 — Akun dan pencarian
+
+Menu avatar membuka Account, Plan, App settings, dan Help & legal. Plan menampilkan akses aktif, masa berlaku, kredit, dan riwayat di kedua platform. Help & legal menampilkan kartu bantuan dan informasi build. Search mengelompokkan dokumen, lamaran, percakapan dan halaman dalam satu layar. **Ask Coach** memasukkan teks pencarian ke komposer dan pengguna mengirimnya sendiri. Pintasan keyboard fisik tetap ⌘K atau Ctrl+K.

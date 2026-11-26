@@ -284,7 +284,7 @@ msgstr ""
 
 #. placeholder {0}: creditCount(TRIAL_CREDITS.amount)
 #. placeholder {1}: TRIAL_CREDITS.validDays
-#: app/account/membership.tsx
+#: src/features/account/plan-screen.tsx
 msgid "{0} come with your first use of Rezumi AI, valid for {1} days."
 msgstr ""
 
@@ -300,7 +300,7 @@ msgstr ""
 
 #. placeholder {0}: creditCount(credits.nextExpiry.credits)
 #. placeholder {1}: formatDate(credits.nextExpiry.at)
-#: app/account/membership.tsx
+#: src/features/account/plan-screen.tsx
 msgid "{0} expire on {1}"
 msgstr ""
 
@@ -344,6 +344,11 @@ msgstr ""
 #. placeholder {0}: face.weight
 #: src/features/design/uploaded-fonts.tsx
 msgid "{0} italic"
+msgstr ""
+
+#. placeholder {0}: i18n.number(bytes.data / 1024, { maximumFractionDigits: 1 })
+#: src/features/account/storage-screen.tsx
+msgid "{0} KB"
 msgstr ""
 
 #. placeholder {0}: clock.money(terms.currency, difference)
@@ -946,11 +951,11 @@ msgstr ""
 msgid "{unread, plural, one {# unread message} other {# unread messages}}"
 msgstr ""
 
-#: app/account/membership.tsx
+#: src/features/account/plan-screen.tsx
 msgid "{used} in use"
 msgstr ""
 
-#: app/account/membership.tsx
+#: src/features/account/plan-screen.tsx
 msgid "{used} of {max}"
 msgstr ""
 
@@ -1189,6 +1194,10 @@ msgstr "حدود ۹۰ ثانیه هنگام گفتن"
 msgid "About me"
 msgstr ""
 
+#: src/features/account/help-screen.tsx
+msgid "About Rezumi"
+msgstr ""
+
 #: src/features/jobs/listing-detail.tsx
 msgid "About the job"
 msgstr ""
@@ -1232,9 +1241,7 @@ msgstr "پیشنهاد پذیرفته‌شده"
 msgid "Accomplishment"
 msgstr "دستاورد"
 
-#: app/account/account.tsx
-#: app/account/index.tsx
-#: src/features/search/search-screen.tsx
+#: src/features/account/account-screen.tsx
 #: src/shell/account-menu.tsx
 #: src/shell/app-drawer.tsx
 msgid "Account"
@@ -1248,24 +1255,19 @@ msgstr ""
 msgid "Action"
 msgstr "اقدام"
 
-#: src/features/search/search-screen.tsx
-msgid "Actions"
-msgstr "اقدامات"
-
 #: src/features/share/custom-domain.tsx
 msgid "Active"
 msgstr "فعال"
 
-#: app/account/membership.tsx
+#: src/features/account/plan-screen.tsx
 msgid "Active cover letters"
 msgstr ""
 
-#: app/account/membership.tsx
+#: src/features/account/plan-screen.tsx
 msgid "Active resumes"
 msgstr ""
 
-#. placeholder {0}: formatDate(plan.currentPeriodEndsAt)
-#: app/account/membership.tsx
+#. placeholder {0}: formatDate(end)
 #: src/features/billing/plan-card.tsx
 msgid "Active until {0}"
 msgstr ""
@@ -1435,10 +1437,6 @@ msgstr ""
 #: src/features/profile/bring-screen.tsx
 msgid "Add any of these and we'll find what your Profile is missing. You check everything before it's added."
 msgstr ""
-
-#: src/features/search/search-screen.tsx
-msgid "Add application"
-msgstr "افزودن درخواست"
 
 #: src/features/entries/fields.ts
 msgid "Add award"
@@ -1718,6 +1716,10 @@ msgstr ""
 msgid "Address"
 msgstr "آدرس"
 
+#: src/features/account/mcp-screen.tsx
+msgid "Address copied"
+msgstr ""
+
 #: src/features/workspace/messages/describe-change.ts
 msgid "Adds a reminder to Today if you haven't heard back by then."
 msgstr "اگر تا آن زمان پاسخی نگرفتید، یک یادآور به «امروز» اضافه می‌کند."
@@ -1734,7 +1736,7 @@ msgstr ""
 msgid "Advanced"
 msgstr "پیشرفته"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Afrikaans"
 msgstr "آفریکانس"
 
@@ -1775,9 +1777,8 @@ msgstr "در برابر الزامات شما"
 msgid "AI"
 msgstr ""
 
-#: app/account/ai.tsx
-#: app/account/index.tsx
-#: src/features/search/search-screen.tsx
+#: src/features/account/ai-screen.tsx
+#: src/features/account/preferences-screen.tsx
 msgid "AI & developer"
 msgstr "هوش مصنوعی و توسعه دهنده"
 
@@ -1805,6 +1806,15 @@ msgstr "اتصال‌های هوش مصنوعی بارگیری نشدند. پی�
 msgid "AI couldn't read everything. Check the details, or fill them in by hand."
 msgstr ""
 
+#: src/features/account/ai-privacy-screen.tsx
+#: src/features/account/ai-screen.tsx
+msgid "AI data sharing"
+msgstr ""
+
+#: src/api/ai-consent.ts
+msgid "AI data sharing is off on this device. You can change it in App settings."
+msgstr ""
+
 #: src/features/history/format.ts
 msgid "AI edit"
 msgstr "ویرایش هوش مصنوعی"
@@ -1817,9 +1827,8 @@ msgstr ""
 msgid "AI provider"
 msgstr "ارائه دهنده AI"
 
-#: app/account/ai-providers.tsx
-#: app/account/ai.tsx
-#: src/features/search/search-screen.tsx
+#: src/features/account/ai-screen.tsx
+#: src/features/account/providers-screen.tsx
 msgid "AI providers"
 msgstr "ارائه دهندگان هوش مصنوعی"
 
@@ -1851,7 +1860,7 @@ msgstr ""
 msgid "AI settings"
 msgstr ""
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Albanian"
 msgstr "آلبانیایی"
 
@@ -1886,6 +1895,14 @@ msgstr ""
 
 #: src/features/design/gallery-filters.tsx
 msgid "All fields"
+msgstr ""
+
+#: src/features/account/plan-screen.tsx
+msgid "All portfolio intro effects"
+msgstr ""
+
+#: src/features/account/plan-screen.tsx
+msgid "All portfolio themes"
 msgstr ""
 
 #: src/features/applications/list/list-menus.tsx
@@ -1954,7 +1971,7 @@ msgstr ""
 msgid "Alternative text"
 msgstr ""
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Amharic"
 msgstr "امهری"
 
@@ -2060,15 +2077,12 @@ msgstr "هر جا"
 msgid "Anywhere in the country"
 msgstr ""
 
+#: src/features/account/api-keys.tsx
 #: src/features/billing/plan-alert.ts
 msgid "API and MCP access isn't available"
 msgstr ""
 
-#: src/features/billing/plan-alert.ts
-msgid "API and MCP access isn't in your plan"
-msgstr ""
-
-#: app/account/membership.tsx
+#: src/features/account/plan-screen.tsx
 msgid "API and MCP for other apps"
 msgstr ""
 
@@ -2076,24 +2090,24 @@ msgstr ""
 msgid "API key"
 msgstr "کلید API"
 
-#: src/features/settings/api-keys.tsx
+#: src/features/account/api-keys.tsx
 msgid "API key revoked. Apps using it stop working now."
 msgstr "کلید API باطل شد. برنامه هایی که از آن استفاده می کنند اکنون کار نمی کنند."
 
-#: src/features/search/search-screen.tsx
-#: src/features/settings/api-keys.tsx
+#: src/features/account/api-keys.tsx
 msgid "API keys"
 msgstr "کلیدهای API"
 
-#: src/features/settings/api-keys.tsx
-msgid "API keys need the Plus or Pro AI plan"
-msgstr ""
-
+#: src/features/account/preferences-screen.tsx
 #: src/shell/account-menu.tsx
 msgid "App settings"
 msgstr ""
 
-#: app/account/preferences.tsx
+#: src/features/account/help-screen.tsx
+msgid "App version"
+msgstr ""
+
+#: src/features/account/preferences-screen.tsx
 msgid "Appearance"
 msgstr "ظاهر"
 
@@ -2228,10 +2242,6 @@ msgstr "اعمال شد. درخواست به‌روز شد."
 msgid "Applies the template you are trying."
 msgstr ""
 
-#: app/account/preferences.tsx
-msgid "Applies to this device only."
-msgstr "فقط روی این دستگاه اعمال می‌شود."
-
 #: src/features/design/template-gallery.tsx
 #: src/features/workspace/working.ts
 msgid "Apply"
@@ -2245,12 +2255,16 @@ msgstr ""
 msgid "Approach"
 msgstr ""
 
+#: src/features/account/ai-privacy-screen.tsx
+msgid "Approval withdrawn"
+msgstr ""
+
 #. placeholder {0}: selected?.name ?? ""
-#: src/features/settings/api-keys.tsx
+#: src/features/account/api-keys.tsx
 msgid "Apps using “{0}” will stop working. This can't be undone."
 msgstr "برنامه‌هایی که از «{0}» استفاده می‌کنند دیگر کار نخواهند کرد. این کار قابل بازگشت نیست."
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Arabic"
 msgstr "عربی"
 
@@ -2267,7 +2281,6 @@ msgid "Ascending"
 msgstr "صعودی"
 
 #: src/features/entries/improve.tsx
-#: src/features/search/search-screen.tsx
 msgid "Ask"
 msgstr "بپرسید"
 
@@ -2300,6 +2313,10 @@ msgstr "از هر دو بپرسید"
 msgid "Ask coach"
 msgstr ""
 
+#: src/features/search/search-screen.tsx
+msgid "Ask Coach “{term}”"
+msgstr ""
+
 #: src/features/profile/preferences.tsx
 msgid "Ask first"
 msgstr "ابتدا سؤال شود"
@@ -2311,10 +2328,6 @@ msgstr ""
 #: src/features/entries/improve.tsx
 msgid "Ask for something else…"
 msgstr "چیز دیگری بخواه…"
-
-#: src/features/search/search-screen.tsx
-msgid "Ask the assistant “{question}”"
-msgstr "از دستیار \"{question}\" بپرسید"
 
 #: src/features/check/term-sheet.tsx
 msgid "Ask the assistant to work it in"
@@ -2337,10 +2350,6 @@ msgstr "نسبت تصویر"
 #: src/features/assistant/assistant-screen.tsx
 msgid "Assistant"
 msgstr "دستیار"
-
-#: src/features/search/search-screen.tsx
-msgid "Assistant conversations"
-msgstr "مکالمات دستیار"
 
 #: src/features/applications/detail/follow-up-sheet.tsx
 msgid "At 09:00 that day ({timeZone})."
@@ -2430,7 +2439,7 @@ msgstr "جایزه دهنده"
 msgid "Awards"
 msgstr "جوایز"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Azerbaijani"
 msgstr "آذربایجانی"
 
@@ -2443,7 +2452,6 @@ msgstr "آذربایجانی"
 #: src/features/onboarding/onboarding-screen.tsx
 #: src/features/portfolio/layout.tsx
 #: src/features/profile/bring-screen.tsx
-#: src/features/search/search-screen.tsx
 #: src/features/workspace/bar.tsx
 #: src/shell/builder-chrome/top-bar.tsx
 msgid "Back"
@@ -2563,12 +2571,16 @@ msgstr "رفتاری"
 msgid "Behavioral interview"
 msgstr "مصاحبه رفتاری"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Bengali"
 msgstr "بنگالی"
 
 #: src/features/onboarding/intro-screen.tsx
 msgid "BI analyst"
+msgstr ""
+
+#: src/features/account/ai-privacy-screen.tsx
+msgid "Block AI sharing on this device"
 msgstr ""
 
 #: src/features/portfolio/editor/blocks.tsx
@@ -2682,11 +2694,15 @@ msgstr ""
 msgid "Browse templates"
 msgstr ""
 
+#: src/features/account/help-screen.tsx
+msgid "Build number"
+msgstr ""
+
 #: src/features/design/preset-names.ts
 msgid "Buildings"
 msgstr ""
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Bulgarian"
 msgstr "بلغاری"
 
@@ -2699,6 +2715,10 @@ msgstr "ورودی لیست {n}"
 #: src/features/write/section-sheet-pages.tsx
 msgid "Bulleted list"
 msgstr "لیست گلوله شده"
+
+#: src/features/account/help-screen.tsx
+msgid "Bundled with app"
+msgstr ""
 
 #: src/features/design/preset-names.ts
 msgid "Burgundy"
@@ -2721,9 +2741,21 @@ msgstr ""
 msgid "Button URL"
 msgstr ""
 
-#: app/account/index.tsx
-msgid "by <0>Salman Alfariesh</0>"
-msgstr "توسط <0>Salman Alfariesh</0>"
+#: src/features/account/storage-screen.tsx
+msgid "Cache cleared"
+msgstr ""
+
+#: src/features/account/storage-screen.tsx
+msgid "Cached files"
+msgstr ""
+
+#: src/features/account/storage-screen.tsx
+msgid "Cached previews and temporary exports can be created again. Your offline drafts are kept."
+msgstr ""
+
+#: src/features/account/storage-screen.tsx
+msgid "Calculating…"
+msgstr ""
 
 #: src/features/applications/views-row.tsx
 msgid "Calendar"
@@ -2770,7 +2802,6 @@ msgstr ""
 #: src/features/profile/facts-detail.tsx
 #: src/features/profile/facts.tsx
 #: src/features/profile/stories.tsx
-#: src/features/search/search-screen.tsx
 #: src/features/workspace/fit/requirement-card.tsx
 #: src/linking/open.ts
 #: src/ui-legacy/overlays.tsx
@@ -2785,6 +2816,10 @@ msgstr "ضبط را لغو کنید"
 msgid "Caption"
 msgstr ""
 
+#: src/features/billing/plan-card.tsx
+msgid "Card subscription"
+msgstr ""
+
 #: src/features/profile/profile-screen.tsx
 msgid "Career"
 msgstr ""
@@ -2793,7 +2828,7 @@ msgstr ""
 msgid "Carousel"
 msgstr ""
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Catalan"
 msgstr "کاتالان"
 
@@ -2826,10 +2861,6 @@ msgstr ""
 msgid "Change it in Design"
 msgstr ""
 
-#: src/features/search/search-screen.tsx
-msgid "Change language to…"
-msgstr "زبان را به… تغییر دهید"
-
 #. placeholder {0}: companyOf(offer)
 #: src/features/offers/offer-header.tsx
 msgid "Change offer: {0}"
@@ -2839,7 +2870,7 @@ msgstr ""
 msgid "Change password"
 msgstr "تغییر گذرواژه"
 
-#: src/features/settings/profile.tsx
+#: src/features/account/profile.tsx
 msgid "Change photo"
 msgstr "تغییر عکس"
 
@@ -2854,10 +2885,6 @@ msgstr "تغییر طراحی رزومه"
 #: src/features/applications/interview/when-fields.tsx
 msgid "Change the time zone"
 msgstr ""
-
-#: src/features/search/search-screen.tsx
-msgid "Change theme to…"
-msgstr "تغییر تم به…"
 
 #: src/features/profile/preferences.tsx
 msgid "Change timezone"
@@ -2895,10 +2922,6 @@ msgstr ""
 msgctxt "Editor mode"
 msgid "Check"
 msgstr ""
-
-#: src/features/search/search-screen.tsx
-msgid "Check a PDF"
-msgstr "یک PDF را بررسی کنید"
 
 #: src/features/documents/new-choices.tsx
 msgid "Check a PDF with the ATS checker"
@@ -3053,11 +3076,11 @@ msgstr "بررسی بر اساس طبقه بندی"
 msgid "Checks every bullet for action and result"
 msgstr "هر ورودی لیست را برای اقدام و نتیجه بررسی می کند"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Chinese (Simplified)"
 msgstr "چینی (ساده‌شده)"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Chinese (Traditional)"
 msgstr "چینی (سنتی)"
 
@@ -3118,8 +3141,8 @@ msgstr ""
 msgid "Choose a PDF, Word, JSON or LinkedIn export file"
 msgstr ""
 
+#: src/features/account/profile.tsx
 #: src/features/entries/photo-field.tsx
-#: src/features/settings/profile.tsx
 msgid "Choose a photo smaller than 10 MB."
 msgstr "یک عکس کوچکتر از 10 مگابایت انتخاب کنید."
 
@@ -3184,6 +3207,10 @@ msgid "Choose another file"
 msgstr "فایل دیگری را انتخاب کنید"
 
 #: src/features/billing/plan-alert.ts
+msgid "Choose another option to continue."
+msgstr ""
+
+#: src/features/billing/plan-alert.ts
 msgid "Choose any of the fonts in Design instead."
 msgstr ""
 
@@ -3199,8 +3226,8 @@ msgstr ""
 msgid "Choose cover picture"
 msgstr ""
 
+#: src/features/account/profile.tsx
 #: src/features/entries/photo-field.tsx
-#: src/features/settings/profile.tsx
 msgid "Choose from library"
 msgstr "از کتابخانه انتخاب کنید"
 
@@ -3288,6 +3315,14 @@ msgstr "ساده"
 msgid "Clear"
 msgstr "پاک کردن"
 
+#: src/features/account/storage-screen.tsx
+msgid "Clear cache"
+msgstr ""
+
+#: src/features/account/storage-screen.tsx
+msgid "Clear cached files?"
+msgstr ""
+
 #: src/features/applications/list/list-states.tsx
 #: src/features/jobs/filters-sheet.tsx
 #: src/features/jobs/jobs-states.tsx
@@ -3337,6 +3372,9 @@ msgstr ""
 msgid "Clients"
 msgstr ""
 
+#: src/features/account/preferences-screen.tsx
+#: src/features/account/profile.tsx
+#: src/features/ai/provider-editor.tsx
 #: src/features/ai/report-content.tsx
 #: src/features/applications/detail/activity.tsx
 #: src/features/applications/detail/contacts.tsx
@@ -3426,7 +3464,7 @@ msgstr "درخواست کار را ببندید"
 msgid "Close menu"
 msgstr ""
 
-#: src/components/collection-header.tsx
+#: src/features/search/search-screen.tsx
 msgid "Close search"
 msgstr "بستن جستجو"
 
@@ -3457,6 +3495,7 @@ msgstr "بسته شده: {closed}"
 
 #: src/features/assistant/coach.tsx
 #: src/features/billing/credits.ts
+#: src/features/search/search-screen.tsx
 #: src/features/workspace/coach-sheet.tsx
 #: src/shell/tab-chrome.tsx
 msgid "Coach"
@@ -3600,10 +3639,6 @@ msgstr "برای به‌روزرسانی خودکار، یک ارائه‌دهن
 msgid "Connect an AI provider to read pasted text. Filling in by hand works without AI."
 msgstr ""
 
-#: app/account/ai.tsx
-msgid "Connect the tools you use for writing, job search and working with your resumes."
-msgstr "ابزارهایی را که برای نوشتن، جستجوی شغل و کار استفاده می‌کنید با رزومه خود متصل کنید."
-
 #: src/features/portfolio/layout.tsx
 msgid "Connect to load your portfolio."
 msgstr ""
@@ -3637,7 +3672,7 @@ msgstr ""
 msgid "Contact"
 msgstr "تماس بگیرید"
 
-#: app/account/index.tsx
+#: src/features/account/help-screen.tsx
 msgid "Contact & complaints"
 msgstr ""
 
@@ -3727,6 +3762,7 @@ msgstr "نام گفتگو"
 
 #: src/features/assistant/panel-bar.tsx
 #: src/features/portfolio/editor/assistant.tsx
+#: src/features/search/search-screen.tsx
 #: src/features/workspace/coach-sheet.tsx
 msgid "Conversations"
 msgstr "گفتگوها"
@@ -3758,6 +3794,10 @@ msgstr "کپی"
 #: src/features/documents/new-document-screen.tsx
 msgid "Copy a resume for a job"
 msgstr "رزومه کاری را کپی کنید"
+
+#: src/features/account/mcp-screen.tsx
+msgid "Copy address"
+msgstr ""
 
 #: src/features/workspace/apply/share-answers.tsx
 msgid "Copy answers"
@@ -3836,7 +3876,7 @@ msgstr ""
 msgid "Couldn't attach the file. Try again."
 msgstr "فایل پیوست نشد. دوباره امتحان کنید."
 
-#: app/account/preferences.tsx
+#: src/features/account/preferences-screen.tsx
 msgid "Couldn't change the language. Try again."
 msgstr "نمی‌توان زبان را تغییر داد. دوباره امتحان کنید."
 
@@ -3860,6 +3900,10 @@ msgstr "این آدرس بررسی یا ذخیره نشد. دوباره امتح
 msgid "Couldn't check your AI providers."
 msgstr "بررسی ارائه‌دهندگان AI شما ممکن نشد."
 
+#: src/features/account/storage-screen.tsx
+msgid "Couldn't clear the cache. Try again."
+msgstr ""
+
 #: src/features/portfolio/queries.ts
 msgid "Couldn't complete the action. Try again."
 msgstr ""
@@ -3880,6 +3924,10 @@ msgstr "این اقدام تکمیل نشد. دوباره امتحان کنید.
 #: src/features/applications/interview/use-interview-actions.ts
 msgid "Couldn't confirm the save. Check the application before retrying to avoid a duplicate."
 msgstr "تأیید ذخیره ممکن نشد. پیش از امتحان دوباره، درخواست را بررسی کنید تا مورد تکراری ایجاد نشود."
+
+#: src/features/account/mcp-screen.tsx
+msgid "Couldn't copy the address."
+msgstr ""
 
 #: src/features/portfolio/overview.tsx
 msgid "Couldn't copy the link."
@@ -3933,7 +3981,7 @@ msgstr "حذف این زمان‌بندی ممکن نشد. دوباره امتح
 msgid "Couldn't draw the first page of this PDF."
 msgstr ""
 
-#: src/features/settings/export.tsx
+#: src/features/account/export.tsx
 #: src/features/share/download.tsx
 msgid "Couldn't export. Try again."
 msgstr "صادر نشد. دوباره امتحان کنید."
@@ -3979,7 +4027,7 @@ msgstr "درخواست پیوند داده نشد. دوباره امتحان ک�
 msgid "Couldn't load AI providers."
 msgstr "ارائه دهندگان AI بارگیری نشدند."
 
-#: src/features/settings/api-keys.tsx
+#: src/features/account/api-keys.tsx
 msgid "Couldn't load API keys."
 msgstr "کلیدهای API بارگیری نشدند."
 
@@ -3989,6 +4037,10 @@ msgstr "کلیدهای API بارگیری نشدند."
 msgid "Couldn't load applications."
 msgstr "درخواست‌های شغلی بارگیری نشد."
 
+#: src/features/account/plan-screen.tsx
+msgid "Couldn't load credit activity."
+msgstr ""
+
 #: src/features/documents/library-states.tsx
 msgid "Couldn't load documents"
 msgstr "اسناد بارگیری نشد"
@@ -3996,6 +4048,10 @@ msgstr "اسناد بارگیری نشد"
 #: src/features/documents/new-copy.tsx
 msgid "Couldn't load resumes."
 msgstr "رزومه ها بارگیری نشد."
+
+#: src/features/account/ai-privacy-screen.tsx
+msgid "Couldn't load scheduled AI approvals."
+msgstr ""
 
 #: src/features/share/link.tsx
 msgid "Couldn't load statistics."
@@ -4082,6 +4138,10 @@ msgstr ""
 msgid "Couldn't load your offers"
 msgstr ""
 
+#: src/features/account/plan-screen.tsx
+msgid "Couldn't load your plan."
+msgstr ""
+
 #: src/features/portfolio/layout.tsx
 msgid "Couldn't load your portfolio"
 msgstr ""
@@ -4094,7 +4154,7 @@ msgstr ""
 msgid "Couldn't load your Profile"
 msgstr ""
 
-#: app/account/account.tsx
+#: src/features/account/account-screen.tsx
 msgid "Couldn't load your profile."
 msgstr "نمایه شما بارگیری نشد."
 
@@ -4112,7 +4172,7 @@ msgstr "رزومه‌های شما بارگیری نشدند."
 msgid "Couldn't load your stories"
 msgstr ""
 
-#: app/account/preferences.tsx
+#: src/features/account/preferences-screen.tsx
 msgid "Couldn't load your timezone."
 msgstr "منطقه زمانی شما بارگیری نشد."
 
@@ -4124,14 +4184,20 @@ msgstr "علامت‌گذاری به‌عنوان ارسال‌شده ممکن �
 msgid "Couldn't mark this as read. Try again."
 msgstr "علامت‌گذاری به‌عنوان خوانده‌شده ممکن نشد. دوباره امتحان کنید."
 
+#: src/features/account/storage-screen.tsx
+msgid "Couldn't measure the cache."
+msgstr ""
+
 #: src/features/applications/interview/use-reschedule.ts
 msgid "Couldn't move the interview. Try again."
 msgstr ""
 
-#: app/account/account.tsx
-#: app/account/index.tsx
+#: src/features/account/notification-settings.tsx
+msgid "Couldn't open system settings."
+msgstr ""
+
+#: src/features/account/browser.ts
 #: src/features/auth/welcome-screen.tsx
-#: src/features/settings/api-keys.tsx
 msgid "Couldn't open the browser. Try again."
 msgstr "مرورگر باز نشد. دوباره امتحان کنید."
 
@@ -4264,7 +4330,7 @@ msgstr "این رزومه ارائه نشد."
 msgid "Couldn't replace this block."
 msgstr ""
 
-#: src/features/settings/api-keys.tsx
+#: src/features/account/api-keys.tsx
 msgid "Couldn't revoke the key. Try again."
 msgstr "نمی توان کلید را باطل کرد. دوباره امتحان کنید."
 
@@ -4319,11 +4385,11 @@ msgstr "یادداشت ها ذخیره نشد. متن شما هنوز اینجا
 msgid "Couldn't save the posting. Try again."
 msgstr "آگهی شغلی ذخیره نشد. دوباره امتحان کنید."
 
-#: app/account/preferences.tsx
+#: src/features/account/preferences-screen.tsx
 msgid "Couldn't save the theme. Try again."
 msgstr "موضوع ذخیره نشد. دوباره امتحان کنید."
 
-#: app/account/preferences.tsx
+#: src/features/account/preferences-screen.tsx
 msgid "Couldn't save the timezone. Try again."
 msgstr "منطقهٔ زمانی ذخیره نشد. دوباره امتحان کنید."
 
@@ -4369,11 +4435,15 @@ msgstr ""
 msgid "Couldn't save your Profile. Try again."
 msgstr ""
 
+#: src/features/account/ai-privacy-screen.tsx
+msgid "Couldn't save your sharing preference. Try again."
+msgstr ""
+
 #: src/features/portfolio/editor/screen.tsx
 msgid "Couldn't save. Retrying…"
 msgstr ""
 
-#: src/features/settings/profile.tsx
+#: src/features/account/profile.tsx
 msgid "Couldn't save. Try again."
 msgstr "ذخیره نشد. دوباره امتحان کنید."
 
@@ -4418,7 +4488,11 @@ msgstr ""
 msgid "Couldn't sign in with this account. If you don't have a Rezumi account yet, sign-ups may be turned off."
 msgstr ""
 
-#: src/features/settings/sign-out.tsx
+#: src/features/account/sign-out.tsx
+msgid "Couldn't sign out of all devices. Try again."
+msgstr ""
+
+#: src/features/account/sign-out.tsx
 msgid "Couldn't sign out. Try again."
 msgstr "نمی توان از سیستم خارج شد. دوباره امتحان کنید."
 
@@ -4456,6 +4530,10 @@ msgstr "لغو آن ممکن نشد. دوباره امتحان کنید."
 msgid "Couldn't unlock this resume. Try again."
 msgstr "قفل این رزومه باز نشد. دوباره امتحان کنید."
 
+#: src/features/account/notification-settings.tsx
+msgid "Couldn't update reminders. Try again."
+msgstr ""
+
 #: src/features/share/custom-domain.tsx
 msgid "Couldn't update sharing. Try again."
 msgstr "به‌روزرسانی اشتراک‌گذاری ممکن نشد. دوباره امتحان کنید."
@@ -4472,7 +4550,7 @@ msgstr "درخواست به‌روز نشد. هیچ چیزی تغییر نکرد
 msgid "Couldn't update the interview. Try again."
 msgstr "مصاحبه به‌روزرسانی نشد. دوباره امتحان کنید."
 
-#: src/features/settings/profile.tsx
+#: src/features/account/profile.tsx
 msgid "Couldn't update the photo. Check camera permissions, choose a photo smaller than 10 MB, and try again."
 msgstr "عکس به‌روزرسانی نشد. مجوزهای دوربین را بررسی کنید، عکسی کوچکتر از 10 مگابایت انتخاب کنید و دوباره امتحان کنید."
 
@@ -4484,13 +4562,17 @@ msgstr "فایل آپلود نشد. دوباره امتحان کنید."
 msgid "Couldn't upload the font. Try again."
 msgstr ""
 
+#: src/features/account/profile.tsx
 #: src/features/entries/photo-field.tsx
-#: src/features/settings/profile.tsx
 msgid "Couldn't upload the photo."
 msgstr "عکس آپلود نشد"
 
 #: src/features/portfolio/editor/pictures.tsx
 msgid "Couldn't upload this picture."
+msgstr ""
+
+#: src/features/account/ai-privacy-screen.tsx
+msgid "Couldn't withdraw approval. Try again."
 msgstr ""
 
 #: src/features/applications/insights/insights-cards.tsx
@@ -4557,25 +4639,9 @@ msgstr "نامه‌های پوششی"
 msgid "Covered term: {highlightTerm}"
 msgstr "اصطلاح تحت پوشش: {highlightTerm}"
 
-#: src/features/search/search-screen.tsx
-msgid "Create"
-msgstr "ایجاد"
-
-#: src/features/search/search-screen.tsx
-msgid "Create a new resume"
-msgstr "ایجاد رزومهٔ جدید"
-
-#: src/features/search/search-screen.tsx
-msgid "Create a resume first, then ask about it."
-msgstr "ابتدا یک رزومه ایجاد کنید، سپس در مورد آن بپرسید."
-
 #: src/features/auth/create-account-screen.tsx
 msgid "Create account"
 msgstr "ایجاد حساب کاربری"
-
-#: app/account/ai-mcp.tsx
-msgid "Create an API key from Account settings in your browser. Keys act as you and can read and edit your documents."
-msgstr "یک کلید API از تنظیمات حساب در مرورگر خود ایجاد کنید. کلیدها مانند شما عمل می کنند و می توانند اسناد شما را بخوانند و ویرایش کنند."
 
 #: src/features/documents/new-copy.tsx
 msgid "Create copy"
@@ -4616,7 +4682,7 @@ msgstr "ایجاد شده"
 #. placeholder {0}: date(key.createdAt)
 #. placeholder {1}: date(key.lastRequest)
 #. placeholder {2}: date(key.expiresAt)
-#: src/features/settings/api-keys.tsx
+#: src/features/account/api-keys.tsx
 msgid "Created {0} · Last used {1} · Expires {2}"
 msgstr "ایجاد {0} · آخرین استفاده {1} · تاریخ انقضا {2}"
 
@@ -4633,8 +4699,12 @@ msgstr ""
 msgid "Creative"
 msgstr ""
 
-#: app/account/membership.tsx
-msgid "Credits are used soonest-expiring first. They can't be moved to another account or exchanged for money. Your own AI connection never uses credits."
+#: src/features/account/plan-screen.tsx
+msgid "Credit history"
+msgstr ""
+
+#: src/features/account/plan-screen.tsx
+msgid "Credits with the nearest expiry are used first. Your own AI connection never uses credits."
 msgstr ""
 
 #: src/features/jobs/filters-sheet.tsx
@@ -4655,6 +4725,7 @@ msgstr "سفارشی"
 msgid "Custom color (hex)"
 msgstr "رنگ سفارشی (هگز)"
 
+#: src/features/account/plan-screen.tsx
 #: src/features/portfolio/publish.tsx
 msgid "Custom domain"
 msgstr ""
@@ -4667,7 +4738,7 @@ msgstr ""
 msgid "Custom section"
 msgstr "بخش سفارشی"
 
-#: app/account/membership.tsx
+#: src/features/account/plan-screen.tsx
 msgid "Custom styles"
 msgstr "سبک‌های سفارشی"
 
@@ -4679,11 +4750,7 @@ msgstr ""
 msgid "Custom styles aren't available, so the imported document leaves the file's styles out."
 msgstr ""
 
-#: src/features/billing/plan-alert.ts
-msgid "Custom styles aren't in your plan"
-msgstr ""
-
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Czech"
 msgstr "چکی"
 
@@ -4717,19 +4784,14 @@ msgstr ""
 msgid "Dangerous or illegal advice"
 msgstr "توصیه های خطرناک یا غیرقانونی"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Danish"
 msgstr "دانمارکی"
 
-#: app/account/index.tsx
-#: app/account/preferences.tsx
+#: src/features/account/preferences-screen.tsx
 #: src/features/portfolio/editor/design.tsx
 msgid "Dark"
 msgstr "تاریک"
-
-#: src/features/search/search-screen.tsx
-msgid "Dark theme"
-msgstr "تم تیره"
 
 #: src/features/onboarding/intro-screen.tsx
 msgid "Data analyst"
@@ -4873,7 +4935,7 @@ msgstr "\"{title}\" حذف شود؟"
 msgid "Delete {0}"
 msgstr "{0} را حذف کنید"
 
-#: app/account/account.tsx
+#: src/features/account/account-screen.tsx
 #: src/features/search/search-screen.tsx
 msgid "Delete account"
 msgstr "حذف اکانت"
@@ -4981,10 +5043,6 @@ msgstr ""
 msgid "Delete…"
 msgstr "حذف…"
 
-#: src/features/search/search-screen.tsx
-msgid "Deleted"
-msgstr "حذف شد"
-
 #. placeholder {0}: document.name
 #. placeholder {0}: getVersionTitle(version)
 #: src/features/documents/document-actions.ts
@@ -5008,7 +5066,7 @@ msgstr "بخش و ورودی های آن را حذف می کند. می توان�
 msgid "Density"
 msgstr "تراکم"
 
-#: app/account/licences.tsx
+#: src/features/account/licences-screen.tsx
 msgid "Dependency type"
 msgstr "نوع وابستگی"
 
@@ -5058,12 +5116,20 @@ msgstr ""
 msgid "Detail removed"
 msgstr ""
 
+#: src/features/account/plan-screen.tsx
+msgid "Detailed portfolio statistics"
+msgstr ""
+
 #: src/features/applications/detail/facts.tsx
 #: src/features/documents/document-menu.tsx
 #: src/features/onboarding/messages.ts
 #: src/features/profile/profile-screen.tsx
 msgid "Details"
 msgstr "جزئیات"
+
+#: src/features/account/preferences-screen.tsx
+msgid "Device and services"
+msgstr ""
 
 #: src/features/portfolio/statistics.tsx
 msgid "Devices"
@@ -5149,6 +5215,10 @@ msgstr ""
 msgid "DNS points to Rezumi"
 msgstr ""
 
+#: src/features/account/help-screen.tsx
+msgid "Docs"
+msgstr "مستندات"
+
 #: src/shell/builder-chrome/top-bar.tsx
 msgid "Document menu"
 msgstr "منوی سند"
@@ -5162,7 +5232,7 @@ msgid "Document options"
 msgstr "گزینه های سند"
 
 #: app/(tabs)/_layout.tsx
-#: app/account/membership.tsx
+#: src/features/account/plan-screen.tsx
 #: src/features/documents/documents-screen.tsx
 #: src/features/search/search-screen.tsx
 #: src/shell/app-tabs.tsx
@@ -5173,7 +5243,7 @@ msgstr "اسناد"
 msgid "Documents for this job"
 msgstr "مدارک این شغل"
 
-#: app/account/membership.tsx
+#: src/features/account/plan-screen.tsx
 msgid "Documents in Trash don't count."
 msgstr ""
 
@@ -5199,7 +5269,7 @@ msgstr "پست شغلی {0} نفرستید"
 msgid "Don't share"
 msgstr "به اشتراک نگذارید"
 
-#: app/account/preferences.tsx
+#: src/features/account/preferences-screen.tsx
 #: src/features/applications/interview/when-fields.tsx
 #: src/features/entries/dates-field.tsx
 #: src/features/entries/rich-text-toolbar.tsx
@@ -5405,7 +5475,7 @@ msgstr "«{0}» تکثیر شد"
 msgid "Duration"
 msgstr ""
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Dutch"
 msgstr "هلندی"
 
@@ -5560,7 +5630,7 @@ msgstr ""
 msgid "Education"
 msgstr "تحصیلات"
 
-#: app/account/account.tsx
+#: src/features/account/account-screen.tsx
 #: src/features/auth/create-account-screen.tsx
 #: src/features/auth/email-sign-in-screen.tsx
 #: src/features/auth/forgot-password-screen.tsx
@@ -5595,11 +5665,16 @@ msgstr "هنگام خروجی گرفتن همهٔ فونت‌ها را جاسا�
 msgid "End"
 msgstr "پایان"
 
-#: src/features/settings/locale-names.ts
+#. placeholder {0}: formatDate(expiredAt)
+#: src/features/billing/plan-card.tsx
+msgid "Ended on {0}"
+msgstr ""
+
+#: src/features/account/locale-names.ts
 msgid "English"
 msgstr "انگلیسی"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "English (United Kingdom)"
 msgstr "انگلیسی (بریتانیا)"
 
@@ -5627,7 +5702,7 @@ msgstr "مبلغ کامل را وارد کنید، مثلاً 95000. مبلغ ق
 msgid "Enter a GitHub username, like octocat."
 msgstr ""
 
-#: src/features/settings/profile.tsx
+#: src/features/account/profile.tsx
 msgid "Enter a name, up to 64 characters."
 msgstr "یک نام تا 64 کاراکتر وارد کنید."
 
@@ -5742,7 +5817,7 @@ msgstr "هر نقشی می گوید که چه کاری انجام دادی. نظ
 msgid "Every section is in use."
 msgstr ""
 
-#: app/account/membership.tsx
+#: src/features/account/plan-screen.tsx
 msgid "Every template"
 msgstr ""
 
@@ -5795,7 +5870,7 @@ msgstr "یک PDF کوچکتر صادر کنید و دوباره آن را برر
 msgid "Export data"
 msgstr "خروجی گرفتن داده‌ها"
 
-#: src/features/settings/export.tsx
+#: src/features/account/export.tsx
 msgid "Export everything"
 msgstr "همه چیز را صادر کنید"
 
@@ -5845,10 +5920,6 @@ msgstr ""
 #: src/features/portfolio/editor/work.tsx
 msgid "Featured metric"
 msgstr ""
-
-#: app/account/preferences.tsx
-msgid "Feedback"
-msgstr "بازخورد"
 
 #: src/features/workspace/practice/answer-panel.tsx
 msgid "Feedback needs an AI connection. Nothing is sent until you ask."
@@ -6001,7 +6072,7 @@ msgstr ""
 msgid "Finish in the browser…"
 msgstr ""
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Finnish"
 msgstr "فنلاندی"
 
@@ -6093,6 +6164,10 @@ msgstr "پیگیری"
 #: src/features/career/schedule-sheet.tsx
 msgid "Follow-up reminder"
 msgstr "یادآور پیگیری"
+
+#: src/features/account/notification-settings.tsx
+msgid "Follow-up reminders"
+msgstr ""
 
 #: src/features/design/type-group.tsx
 msgid "Font"
@@ -6237,7 +6312,7 @@ msgstr "فرم آزاد"
 msgid "Freelance"
 msgstr ""
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "French"
 msgstr "فرانسوی"
 
@@ -6252,7 +6327,6 @@ msgstr "از"
 
 #. placeholder {0}: formatDate(next.startsAt)
 #. placeholder {1}: formatDate(next.endsAt)
-#: app/account/membership.tsx
 #: src/features/billing/plan-card.tsx
 msgid "From {0} until {1}"
 msgstr ""
@@ -6341,7 +6415,7 @@ msgstr ""
 msgid "Gentle fade-in"
 msgstr ""
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "German"
 msgstr "آلمانی"
 
@@ -6411,11 +6485,15 @@ msgstr ""
 msgid "Grade"
 msgstr "نمره"
 
+#: src/features/billing/plan-card.tsx
+msgid "Granted access"
+msgstr ""
+
 #: src/features/design/preset-names.ts
 msgid "Graphite"
 msgstr "گرافیت"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Greek"
 msgstr "یونانی"
 
@@ -6429,7 +6507,7 @@ msgstr "خطاب"
 msgid "Grid"
 msgstr "جدول"
 
-#: app/account/preferences.tsx
+#: src/features/account/preferences-screen.tsx
 msgid "Haptic feedback"
 msgstr "بازخورد لمسی"
 
@@ -6491,14 +6569,11 @@ msgstr "شنیدن"
 msgid "Heard back"
 msgstr ""
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Hebrew"
 msgstr "عبری"
 
-#: app/account/index.tsx
-msgid "Help & docs"
-msgstr "راهنما و اسناد"
-
+#: src/features/account/help-screen.tsx
 #: src/shell/account-menu.tsx
 msgid "Help & legal"
 msgstr ""
@@ -6567,13 +6642,17 @@ msgstr "پنهان کردن از صفحه"
 msgid "Hide key"
 msgstr "پنهان کردن کلید"
 
-#: app/account/licences.tsx
+#: src/features/account/licences-screen.tsx
 msgid "Hide license"
 msgstr "پنهان کردن مجوز"
 
 #: src/features/home/needs-you.tsx
 msgid "Hide read"
 msgstr "پنهان کردن خوانده‌شده‌ها"
+
+#: src/features/account/plan-screen.tsx
+msgid "Hide Rezumi credit"
+msgstr ""
 
 #: src/features/check/messages.ts
 msgid "Hide the photo"
@@ -6599,7 +6678,7 @@ msgstr ""
 msgid "Highlights"
 msgstr ""
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Hindi"
 msgstr "هندی"
 
@@ -6625,6 +6704,7 @@ msgstr ""
 
 #: app/(tabs)/_layout.tsx
 #: src/features/home/home-screen.tsx
+#: src/features/search/search-screen.tsx
 #: src/shell/app-tabs.tsx
 msgid "Home"
 msgstr "خانه"
@@ -6685,7 +6765,7 @@ msgstr "چقدر این نقش را جا می‌دهم؟"
 msgid "HTTPS certificate"
 msgstr ""
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Hungarian"
 msgstr "مجاری"
 
@@ -6770,10 +6850,6 @@ msgstr ""
 msgid "Images cover most of the page."
 msgstr "تصاویر بیشتر صفحه را پوشانده‌اند."
 
-#: src/features/search/search-screen.tsx
-msgid "Import"
-msgstr "وارد کردن"
-
 #: src/features/documents/new-choices.tsx
 msgid "Import a resume"
 msgstr "وارد کردن رزومه"
@@ -6854,7 +6930,7 @@ msgstr ""
 msgid "Include jobs that don't list pay"
 msgstr ""
 
-#: app/account/membership.tsx
+#: src/features/account/plan-screen.tsx
 msgid "Included"
 msgstr ""
 
@@ -6894,7 +6970,7 @@ msgstr ""
 msgid "Increase vertical spacing"
 msgstr ""
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Indonesian"
 msgstr "اندونزیایی"
 
@@ -6928,10 +7004,6 @@ msgstr ""
 #: src/features/portfolio/editor/content.tsx
 msgid "Interests"
 msgstr "علاقه‌مندی‌ها"
-
-#: app/account/preferences.tsx
-msgid "Interface only. Each resume sets its own language in Design."
-msgstr "فقط رابط هر رزومه زبان خود را در طراحی تنظیم می کند."
 
 #: src/features/portfolio/editor/content.tsx
 msgid "Internship"
@@ -6970,10 +7042,15 @@ msgstr ""
 msgid "Interview practice"
 msgstr ""
 
+#: src/features/account/ai-privacy-screen.tsx
 #: src/features/career/schedule-sheet.tsx
 #: src/features/home/needs-you.tsx
 msgid "Interview preparation"
 msgstr "آماده‌سازی مصاحبه"
+
+#: src/features/account/notification-settings.tsx
+msgid "Interview reminders"
+msgstr ""
 
 #: src/features/applications/interview/use-interview-actions.ts
 msgid "Interview saved"
@@ -6994,10 +7071,6 @@ msgstr "مصاحبه ذخیره شد زمان یادآوری قبلاً گذشت
 #: src/features/applications/interview-sheet.tsx
 msgid "Interview time zone"
 msgstr ""
-
-#: app/account/preferences.tsx
-msgid "Interview times, reminders and schedules in Career use it."
-msgstr "زمان مصاحبه‌ها، یادآورها و زمان‌بندی‌های «مسیر شغلی» از آن استفاده می‌کنند."
 
 #: src/features/applications/detail/contacts.tsx
 msgid "Interviewer"
@@ -7103,7 +7176,7 @@ msgstr ""
 msgid "It's removed from the activity for good."
 msgstr ""
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Italian"
 msgstr "ایتالیایی"
 
@@ -7140,17 +7213,13 @@ msgstr ""
 msgid "Its stage, next step, notes and files show here."
 msgstr ""
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Japanese"
 msgstr "ژاپنی"
 
-#: app/account/licences.tsx
+#: src/features/account/licences-screen.tsx
 msgid "JavaScript"
 msgstr "JavaScript"
-
-#: src/features/search/search-screen.tsx
-msgid "Job"
-msgstr "شغل"
 
 #: src/features/career/schedule-sheet.tsx
 #: src/features/home/needs-you.tsx
@@ -7248,7 +7317,7 @@ msgctxt "Job seniority"
 msgid "Junior"
 msgstr ""
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Kannada"
 msgstr "کانادا"
 
@@ -7266,9 +7335,17 @@ msgstr "فقط یک نشانی نگه دارید تا نرم‌افزار مجب
 msgid "Keep application"
 msgstr ""
 
+#: src/features/account/ai-privacy-screen.tsx
+msgid "Keep approval"
+msgstr ""
+
 #: src/draft/conflict-sheet.tsx
 msgid "Keep both"
 msgstr "هر دو را نگه دارید"
+
+#: src/features/account/storage-screen.tsx
+msgid "Keep cache"
+msgstr ""
 
 #: src/features/assistant/threads.tsx
 msgid "Keep conversation"
@@ -7315,6 +7392,10 @@ msgstr "صادق بمانید"
 msgid "Keep it under 2.5 MB, usually by removing or shrinking images."
 msgstr "آن را زیر ۲.۵ مگابایت نگه دارید، معمولاً با حذف یا کوچک کردن تصاویر."
 
+#: src/features/account/api-keys.tsx
+msgid "Keep key"
+msgstr ""
+
 #: src/features/portfolio/inbox.tsx
 msgid "Keep message"
 msgstr ""
@@ -7344,6 +7425,10 @@ msgstr ""
 #: src/features/documents/document-menu-panels.tsx
 msgid "Keep private notes about this resume here. Nobody else can see them."
 msgstr "یادداشت‌های خصوصی دربارهٔ این رزومه را اینجا نگه دارید. هیچ‌کس دیگری آن‌ها را نمی‌بیند."
+
+#: src/features/ai/provider-editor.tsx
+msgid "Keep provider"
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "Keep resume content as real text rather than as pictures of text."
@@ -7399,7 +7484,7 @@ msgstr "همانطور که هست نگهداری می شود"
 msgid "Kept, but not used."
 msgstr ""
 
-#: src/features/settings/api-keys.tsx
+#: src/features/account/api-keys.tsx
 msgid "Keys act as you and can access your documents. New keys are created in your browser account settings."
 msgstr "کلیدها مانند شما عمل می کنند و می توانند به اسناد شما دسترسی داشته باشند. کلیدهای جدید در تنظیمات حساب مرورگر شما ایجاد می شوند."
 
@@ -7412,7 +7497,7 @@ msgstr "چیدمان کلمات کلیدی"
 msgid "Keywords"
 msgstr "کلیدواژه‌ها"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Khmer"
 msgstr "خمری"
 
@@ -7420,7 +7505,7 @@ msgstr "خمری"
 msgid "Kind regards,"
 msgstr "با احترام"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Korean"
 msgstr "کره‌ای"
 
@@ -7445,13 +7530,17 @@ msgstr ""
 msgid "Landscape"
 msgstr "افقی"
 
-#: app/account/preferences.tsx
+#: src/features/account/preferences-screen.tsx
 #: src/features/design/page-group.tsx
 #: src/features/documents/document-menu-panels.tsx
 #: src/features/entries/fields.ts
 #: src/features/search/search-screen.tsx
 msgid "Language"
 msgstr "زبان"
+
+#: src/features/account/preferences-screen.tsx
+msgid "Language and region"
+msgstr ""
 
 #: src/features/entries/fields.ts
 #: src/features/portfolio/editor/content.tsx
@@ -7495,7 +7584,7 @@ msgctxt "Job search filter: posted within"
 msgid "Last week"
 msgstr ""
 
-#: app/account/preferences.tsx
+#: src/features/account/preferences-screen.tsx
 msgid "Later"
 msgstr "بعدا"
 
@@ -7503,7 +7592,7 @@ msgstr "بعدا"
 msgid "Latest"
 msgstr "جدیدترین"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Latvian"
 msgstr "لتونیایی"
 
@@ -7571,10 +7660,6 @@ msgstr "برای استفاده از عنوان اصلی، آن را خالی ب
 msgid "Left"
 msgstr "سمت چپ"
 
-#: app/account/index.tsx
-msgid "Legal"
-msgstr "حقوقی"
-
 #: src/features/applications/interview/when-fields.tsx
 #: src/features/letters/write.tsx
 msgid "Length"
@@ -7584,7 +7669,7 @@ msgstr "طول"
 msgid "Length is not a defect, and there is no universal one-page rule. Keep the pages that earn their place."
 msgstr "طول رزومه نقص نیست و هیچ قانون همگانی تک‌صفحه‌ای وجود ندارد. صفحاتی را نگه دارید که ارزش جای خود را دارند."
 
-#: app/account/ai-mcp.tsx
+#: src/features/account/mcp-screen.tsx
 msgid "Let AI clients like Claude or Cursor read and edit your resumes, using an API key."
 msgstr "به مشتریان AI مانند Claude یا Cursor اجازه دهید رزومه های شما را با استفاده از کلید API بخوانند و ویرایش کنند."
 
@@ -7629,7 +7714,6 @@ msgid "Letter sent"
 msgstr ""
 
 #: src/features/documents/segment-header.tsx
-#: src/features/search/search-screen.tsx
 msgid "Letters"
 msgstr "نامه ها"
 
@@ -7647,7 +7731,7 @@ msgstr ""
 msgid "Levels"
 msgstr ""
 
-#: app/account/licences.tsx
+#: src/features/account/licences-screen.tsx
 msgid "Licenses"
 msgstr "مجوزها"
 
@@ -7655,15 +7739,10 @@ msgstr "مجوزها"
 msgid "Ligatures can drop letters out of words such as \"workflow\"."
 msgstr "لیگاچرها می‌توانند حروفی را از کلماتی مانند \"workflow\" حذف کنند."
 
-#: app/account/index.tsx
-#: app/account/preferences.tsx
+#: src/features/account/preferences-screen.tsx
 #: src/features/portfolio/editor/design.tsx
 msgid "Light"
 msgstr "روشن"
-
-#: src/features/search/search-screen.tsx
-msgid "Light theme"
-msgstr "تم روشن"
 
 #: src/features/assistant/assistant-screen.tsx
 msgid "Likely questions, from the posting and your resume"
@@ -7741,7 +7820,7 @@ msgstr "لینک به روز شد"
 msgid "Linked · not sent yet"
 msgstr "پیوند داده شده · هنوز ارسال نشده است"
 
-#: app/account/account.tsx
+#: src/features/account/account-screen.tsx
 msgid "Linked accounts"
 msgstr "حساب های مرتبط"
 
@@ -7788,7 +7867,7 @@ msgstr "ابزارها و فناوری‌هایی را که استفاده می�
 msgid "Listings come from job data providers and may change. The original posting is the one to apply through."
 msgstr ""
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Lithuanian"
 msgstr "لیتوانیایی"
 
@@ -7840,16 +7919,7 @@ msgstr "در حال بارگذاری"
 msgid "Loading AI connections…"
 msgstr "در حال بارگیری اتصال‌های هوش مصنوعی…"
 
-#: src/features/settings/api-keys.tsx
-msgid "Loading API keys…"
-msgstr "در حال بارگیری کلیدهای API…"
-
-#: src/features/search/search-screen.tsx
-msgid "Loading applications…"
-msgstr "بارگیری درخواست‌ها…"
-
 #: src/features/assistant/assistant-screen.tsx
-#: src/features/search/search-screen.tsx
 msgid "Loading conversations…"
 msgstr "در حال بارگیری مکالمات…"
 
@@ -7891,7 +7961,6 @@ msgid "Loading resume…"
 msgstr "در حال بارگیری رزومه…"
 
 #: src/features/portfolio/create.tsx
-#: src/features/search/search-screen.tsx
 msgid "Loading resumes…"
 msgstr "در حال بارگذاری رزومه‌ها…"
 
@@ -7916,10 +7985,14 @@ msgstr ""
 msgid "Loading your public address…"
 msgstr "در حال بارگیری آدرس عمومی شما…"
 
-#: app/account/preferences.tsx
+#: src/features/account/plan-screen.tsx
 #: src/features/applications/detail/document-choice.tsx
 msgid "Loading…"
 msgstr "در حال بارگیری…"
+
+#: src/features/account/notification-settings.tsx
+msgid "Local reminders"
+msgstr ""
 
 #: src/features/applications/detail/facts.tsx
 #: src/features/applications/interview/interview-fields.tsx
@@ -8025,13 +8098,17 @@ msgstr "آن‌ها را به‌وضوح بزرگ‌تر، پررنگ‌تر ی�
 msgid "Make this your primary resume?"
 msgstr "این رزومه، رزومه اصلی شما شود؟"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Malay"
 msgstr "مالایی"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Malayalam"
 msgstr "مالایالام"
+
+#: src/features/account/ai-screen.tsx
+msgid "Manage connections and choose a default source."
+msgstr ""
 
 #: src/features/portfolio/publish.tsx
 msgid "Manage domain on the web"
@@ -8058,7 +8135,7 @@ msgstr ""
 msgid "Mar 2022"
 msgstr "مارس 2022"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Marathi"
 msgstr "مراتی"
 
@@ -8136,10 +8213,6 @@ msgstr "هماهنگ کردن با «{resumeName}»"
 msgid "Match against a job"
 msgstr "مسابقه با یک شغل"
 
-#: src/features/search/search-screen.tsx
-msgid "Match system theme"
-msgstr "موضوع سیستم را مطابقت دهید"
-
 #: src/features/letters/design.tsx
 msgid "Match the resume"
 msgstr "تطبیق رزومه"
@@ -8164,12 +8237,8 @@ msgstr "مطابقت با رزومه"
 msgid "Matching your facts"
 msgstr "در حال تطبیق واقعیت‌های شما"
 
-#: src/features/search/search-screen.tsx
-msgid "MCP"
-msgstr "MCP"
-
-#: app/account/ai-mcp.tsx
-#: app/account/ai.tsx
+#: src/features/account/ai-screen.tsx
+#: src/features/account/mcp-screen.tsx
 msgid "MCP server"
 msgstr "سرور MCP"
 
@@ -8237,7 +8306,7 @@ msgstr ""
 msgid "Missing"
 msgstr ""
 
-#: app/account/index.tsx
+#: src/features/account/help-screen.tsx
 msgid "MIT License"
 msgstr "مجوز MIT"
 
@@ -8462,6 +8531,7 @@ msgstr ""
 msgid "Music and video"
 msgstr ""
 
+#: src/features/account/profile.tsx
 #: src/features/ai/provider-editor.tsx
 #: src/features/applications/detail/contacts.tsx
 #: src/features/applications/interview/people-field.tsx
@@ -8477,7 +8547,6 @@ msgstr ""
 #: src/features/portfolio/create.tsx
 #: src/features/portfolio/editor/content.tsx
 #: src/features/portfolio/editor/design.tsx
-#: src/features/settings/profile.tsx
 msgid "Name"
 msgstr "نام"
 
@@ -8536,7 +8605,7 @@ msgstr "باریک"
 msgid "Narrower sidebar"
 msgstr ""
 
-#: app/account/licences.tsx
+#: src/features/account/licences-screen.tsx
 msgid "Native & fonts"
 msgstr "کد بومی و قلم‌ها"
 
@@ -8548,7 +8617,7 @@ msgstr "نیاز به توجه دارد"
 msgid "Needs you"
 msgstr "نیازمند اقدام شما"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Nepali"
 msgstr "نپالی"
 
@@ -8556,8 +8625,8 @@ msgstr "نپالی"
 msgid "Network"
 msgstr "شبکه"
 
+#: src/features/account/api-keys.tsx
 #: src/features/profile/preferences.tsx
-#: src/features/settings/api-keys.tsx
 msgid "Never"
 msgstr "هرگز"
 
@@ -8582,13 +8651,9 @@ msgstr ""
 msgid "New account sign-ups are turned off. Sign in with an account you already have."
 msgstr ""
 
-#: src/features/settings/api-keys.tsx
+#: src/features/account/api-keys.tsx
 msgid "New API key"
 msgstr "کلید جدید API"
-
-#: src/features/search/search-screen.tsx
-msgid "New application"
-msgstr "درخواست جدید"
 
 #: src/features/assistant/assistant-screen.tsx
 #: src/features/assistant/coach.tsx
@@ -8771,10 +8836,6 @@ msgstr "هیچ فهرست نشانه‌داری پیدا نشد."
 msgid "No change needed. It's already at {stage}."
 msgstr "نیازی به تغییر نیست. از قبل در {stage} است."
 
-#: src/features/search/search-screen.tsx
-msgid "No commands match that search."
-msgstr "هیچ دستوری با این جستجو مطابقت ندارد."
-
 #: src/features/applications/detail/contacts.tsx
 msgid "No contacts yet"
 msgstr ""
@@ -8796,12 +8857,8 @@ msgstr "بدون اصلاح"
 msgid "No country matches."
 msgstr "هیچ کشوری پیدا نشد"
 
-#: app/account/membership.tsx
+#: src/features/account/plan-screen.tsx
 msgid "No credit activity yet."
-msgstr ""
-
-#: app/account/membership.tsx
-msgid "No credits to spend right now"
 msgstr ""
 
 #: src/features/share/custom-domain.tsx
@@ -8840,7 +8897,6 @@ msgstr "بدون آدرس ایمیل"
 msgid "No email address was found."
 msgstr "هیچ آدرس ایمیلی پیدا نشد."
 
-#: app/account/membership.tsx
 #: src/features/billing/plan-card.tsx
 msgid "No end date"
 msgstr ""
@@ -8888,7 +8944,7 @@ msgstr "هنوز شغلی وجود ندارد"
 msgid "No jobs match yet."
 msgstr ""
 
-#: src/features/settings/api-keys.tsx
+#: src/features/account/api-keys.tsx
 msgid "No keys yet."
 msgstr "هنوز کلیدی وجود ندارد."
 
@@ -8896,7 +8952,7 @@ msgstr "هنوز کلیدی وجود ندارد."
 msgid "No language matches “{query}”."
 msgstr ""
 
-#: app/account/preferences.tsx
+#: src/features/account/preferences-screen.tsx
 msgid "No language matches."
 msgstr "هیچ منطبق زبانی وجود ندارد."
 
@@ -8911,10 +8967,6 @@ msgstr "هیچ خطی شبیه ترکیب عنوان شغلی با نام کار
 #: src/features/check/messages.ts
 msgid "No location"
 msgstr "بدون مکان"
-
-#: src/ui-legacy/fields.tsx
-msgid "No matches"
-msgstr "مورد منطبقی نیست"
 
 #: src/features/portfolio/publish.tsx
 msgid "No matching sources."
@@ -8964,6 +9016,10 @@ msgstr ""
 msgid "No photo. Most ATS ignore photos; some regions expect one."
 msgstr "بدون عکس اکثر ATS عکس ها را نادیده می گیرند. برخی از مناطق انتظار دارند."
 
+#: src/features/ai/provider-editor.tsx
+msgid "No provider matches."
+msgstr ""
+
 #: src/features/onboarding/messages.ts
 msgid "No public repositories of your own, so no projects came in."
 msgstr ""
@@ -8975,6 +9031,10 @@ msgstr ""
 #: src/features/applications/stages.ts
 msgid "No response"
 msgstr "بدون پاسخ"
+
+#: src/features/search/search-screen.tsx
+msgid "No results match your search."
+msgstr ""
 
 #: src/features/portfolio/create.tsx
 msgid "No resumes found."
@@ -8998,6 +9058,10 @@ msgstr ""
 
 #: src/features/billing/plan-alert.ts
 msgid "No room for another resume"
+msgstr ""
+
+#: src/features/account/ai-privacy-screen.tsx
+msgid "No scheduled AI approvals."
 msgstr ""
 
 #. placeholder {0}: quota.max
@@ -9050,6 +9114,10 @@ msgstr "هیچ اصطلاحی در این آگهی شغلی برجسته نیس�
 msgid "No text could be read from this file."
 msgstr "هیچ متنی از این فایل قابل خواندن نبود."
 
+#: src/features/account/preferences-screen.tsx
+msgid "No theme matches."
+msgstr ""
+
 #: src/features/offers/cells.ts
 msgid "No time given"
 msgstr ""
@@ -9059,7 +9127,7 @@ msgstr ""
 msgid "No time zone matches “{0}”."
 msgstr ""
 
-#: app/account/preferences.tsx
+#: src/features/account/preferences-screen.tsx
 msgid "No timezone matches."
 msgstr "هیچ منطقهٔ زمانی‌ای مطابقت ندارد."
 
@@ -9104,7 +9172,7 @@ msgstr "هیچ یک از اتصالات AI شما نمی‌تواند گفتار
 msgid "Normal"
 msgstr "عادی"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Norwegian"
 msgstr "نروژی"
 
@@ -9163,7 +9231,7 @@ msgstr ""
 msgid "Not in your resume · add only if true"
 msgstr "در رزومه شما نیست · فقط در صورت صحت اضافه کنید"
 
-#: app/account/membership.tsx
+#: src/features/account/plan-screen.tsx
 msgid "Not included"
 msgstr ""
 
@@ -9305,6 +9373,12 @@ msgstr ""
 msgid "Notice period (weeks)"
 msgstr "مهلت اعلام ترک کار (هفته)"
 
+#: src/features/account/notification-settings.tsx
+#: src/features/account/preferences-screen.tsx
+#: src/features/search/search-screen.tsx
+msgid "Notifications"
+msgstr ""
+
 #: src/features/applications/detail/reminder-sheet.tsx
 msgid "Notifications are off"
 msgstr "اعلان ها خاموش است"
@@ -9334,10 +9408,11 @@ msgstr "مشاهده"
 msgid "Ochre"
 msgstr "اخر"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Odia"
 msgstr "اودیایی"
 
+#: src/features/account/help-screen.tsx
 #: src/features/ai/provider-list.tsx
 msgid "Off"
 msgstr "خاموش"
@@ -9384,6 +9459,11 @@ msgstr ""
 #: src/shell/builder-chrome/top-bar.tsx
 msgid "Offline · saved on this device"
 msgstr "آفلاین · در این دستگاه ذخیره شده است"
+
+#: src/features/account/preferences-screen.tsx
+#: src/features/account/storage-screen.tsx
+msgid "Offline storage"
+msgstr ""
 
 #: src/features/portfolio/editor/screen.tsx
 msgid "Offline. Changes are waiting to save."
@@ -9617,7 +9697,7 @@ msgstr "باز کردن صفحه وب"
 msgid "Open workspace"
 msgstr "باز کردن فضای کاری"
 
-#: app/account/index.tsx
+#: src/features/account/preferences-screen.tsx
 msgid "Open-source licenses"
 msgstr "مجوزهای متن‌باز"
 
@@ -9662,6 +9742,10 @@ msgstr ""
 
 #: src/features/applications/list/list-row.tsx
 msgid "Opens the application. Long press to select."
+msgstr ""
+
+#: src/features/account/account-screen.tsx
+msgid "Opens the browser to confirm permanent deletion."
 msgstr ""
 
 #: src/features/documents/document-item.tsx
@@ -9735,8 +9819,8 @@ msgstr ""
 msgid "Other"
 msgstr "سایر"
 
-#: src/features/settings/api-keys.tsx
-msgid "Other apps can't connect with API keys on this account. This app always works."
+#: src/features/billing/plan-alert.ts
+msgid "Other apps cannot connect to this account with an API key."
 msgstr ""
 
 #: src/features/offers/cells.ts
@@ -9766,6 +9850,10 @@ msgstr "تاریخ گذشته: متن تغییر کرده است."
 
 #: src/features/design/preset-names.ts
 msgid "Outer space"
+msgstr ""
+
+#: src/features/account/help-screen.tsx
+msgid "Over-the-air update"
 msgstr ""
 
 #: src/features/share/custom-domain.tsx
@@ -9894,12 +9982,12 @@ msgstr ""
 msgid "Passkey"
 msgstr "کلید عبور"
 
-#: app/account/account.tsx
+#: src/features/account/account-screen.tsx
 #: src/features/search/search-screen.tsx
 msgid "Passkeys"
 msgstr "کلیدهای عبور"
 
-#: app/account/account.tsx
+#: src/features/account/account-screen.tsx
 #: src/features/auth/create-account-screen.tsx
 #: src/features/auth/email-sign-in-screen.tsx
 #: src/features/search/search-screen.tsx
@@ -10044,11 +10132,7 @@ msgstr "در سال"
 msgid "Percent"
 msgstr ""
 
-#: app/account/account.tsx
-msgid "Permanently removes everything. Opens your browser account settings."
-msgstr "به طور دائم همه چیز را حذف می کند. تنظیمات حساب مرورگر شما را باز می کند."
-
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Persian"
 msgstr "فارسی"
 
@@ -10165,8 +10249,7 @@ msgstr "متن ساده (.txt)"
 msgid "Plain text with headings. Paste into application forms and notes."
 msgstr "متن ساده با عنوان در فرم ها و یادداشت های درخواست کار بچسبانید."
 
-#: app/account/index.tsx
-#: app/account/membership.tsx
+#: src/features/account/plan-screen.tsx
 #: src/shell/account-menu.tsx
 msgid "Plan"
 msgstr ""
@@ -10187,12 +10270,7 @@ msgstr "برنامه‌ریزی پرسش‌ها"
 msgid "Planning your week"
 msgstr "در حال برنامه‌ریزی هفتهٔ شما"
 
-#: app/account/membership.tsx
-#: src/features/billing/plan-alert.ts
-msgid "Plans can be bought on the rezumi.app website."
-msgstr ""
-
-#: app/account/membership.tsx
+#: src/features/account/plan-screen.tsx
 msgid "Plans don't apply to your account yet, so everything is open."
 msgstr ""
 
@@ -10208,7 +10286,7 @@ msgstr "بنفش آلو"
 msgid "Plus"
 msgstr ""
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Polish"
 msgstr "لهستانی"
 
@@ -10218,12 +10296,14 @@ msgstr "در حال صیقل دادن"
 
 #: app/(tabs)/_layout.tsx
 #: src/features/portfolio/overview.tsx
+#: src/features/search/search-screen.tsx
 #: src/shell/app-tabs.tsx
 msgid "Portfolio"
 msgstr ""
 
 #: src/features/portfolio/editor/assistant.tsx
 #: src/features/portfolio/editor/screen.tsx
+#: src/features/search/search-screen.tsx
 msgid "Portfolio assistant"
 msgstr ""
 
@@ -10256,11 +10336,11 @@ msgstr ""
 msgid "Portrait"
 msgstr "عمودی"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Portuguese (Brazil)"
 msgstr "پرتغالی (برزیل)"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Portuguese (Portugal)"
 msgstr "پرتغالی (پرتغال)"
 
@@ -10387,10 +10467,7 @@ msgstr "تک‌ستون را ترجیح دهید، یا ستون کناری را
 msgid "Preference"
 msgstr "ترجیح"
 
-#: app/account/index.tsx
-#: app/account/preferences.tsx
 #: src/features/profile/profile-screen.tsx
-#: src/features/search/search-screen.tsx
 msgid "Preferences"
 msgstr "ترجیحات"
 
@@ -10415,7 +10492,7 @@ msgstr "منو برای مصاحبه آماده کن"
 msgid "Preparing edits…"
 msgstr "در حال آماده سازی ویرایش ها…"
 
-#: src/features/settings/export.tsx
+#: src/features/account/export.tsx
 msgid "Preparing export…"
 msgstr "در حال آماده‌سازی خروجی…"
 
@@ -10454,6 +10531,14 @@ msgstr "پیش‌نمایش صفحه وب"
 msgid "Previewing {0} · tap to apply"
 msgstr "در حال پیش‌نمایش {0} · برای اعمال ضربه بزنید"
 
+#: src/features/account/storage-screen.tsx
+msgid "Previews and temporary exports will be removed from this device. Your documents and unsynced edits are kept."
+msgstr ""
+
+#: src/features/billing/plan-card.tsx
+msgid "Previous card subscription"
+msgstr ""
+
 #: src/features/applications/calendar/calendar-toolbar.tsx
 msgid "Previous day"
 msgstr ""
@@ -10481,6 +10566,10 @@ msgstr "صفحه قبلی"
 #: src/features/check/parser-view.tsx
 msgid "Previous PDF result. It may not match your current draft."
 msgstr "نتیجه قبلی PDF. ممکن است با پیش نویس فعلی شما مطابقت نداشته باشد."
+
+#: src/features/billing/plan-card.tsx
+msgid "Previous QRIS pass"
+msgstr ""
 
 #: src/features/applications/board/stage-pager.tsx
 msgid "Previous stage"
@@ -10512,7 +10601,7 @@ msgstr "پیش از ارسال، فرم را چاپ یا به یک PDF مسطح 
 msgid "Privacy"
 msgstr "حریم خصوصی"
 
-#: app/account/index.tsx
+#: src/features/account/help-screen.tsx
 #: src/features/auth/welcome-screen.tsx
 msgid "Privacy policy"
 msgstr "سیاست حفظ حریم خصوصی"
@@ -10539,7 +10628,7 @@ msgstr "مهارت"
 
 #: app/(tabs)/_layout.tsx
 #: app/(tabs)/profile/_layout.tsx
-#: app/account/account.tsx
+#: src/features/account/account-screen.tsx
 #: src/features/assistant/coach.tsx
 #: src/features/portfolio/editor/content.tsx
 #: src/features/profile/profile-screen.tsx
@@ -10565,7 +10654,7 @@ msgstr ""
 msgid "Profile links must be public HTTPS addresses."
 msgstr "لینک‌های پروفایل باید نشانی‌های HTTPS عمومی باشند."
 
-#: src/features/settings/profile.tsx
+#: src/features/account/profile.tsx
 msgid "Profile photo"
 msgstr "عکس پروفایل"
 
@@ -10682,6 +10771,10 @@ msgstr ""
 msgid "QR code for {url}"
 msgstr "کد QR برای {url}"
 
+#: src/features/billing/plan-card.tsx
+msgid "QRIS pass"
+msgstr ""
+
 #: src/features/workspace/practice/question-card.tsx
 msgid "Question {position} of {total}"
 msgstr "پرسش {position} از {total}"
@@ -10755,7 +10848,7 @@ msgstr "خواندن گزارش توجیهی"
 msgid "Read it for me"
 msgstr "برایم بخوانید"
 
-#: app/account/licences.tsx
+#: src/features/account/licences-screen.tsx
 msgid "Read license"
 msgstr "خواندن مجوز"
 
@@ -10881,10 +10974,6 @@ msgstr "دلیل"
 msgid "Recalled"
 msgstr "یادآوری‌شده"
 
-#: app/account/membership.tsx
-msgid "Recent activity"
-msgstr ""
-
 #: src/features/home/recent-documents.tsx
 msgid "Recent documents"
 msgstr ""
@@ -10976,7 +11065,7 @@ msgstr "به‌روزرسانی گزارش توجیهی ۲۴ ساعت قبل"
 msgid "Refresh the briefing on the morning of"
 msgstr "به‌روزرسانی گزارش توجیهی در صبح همان روز"
 
-#: app/account/index.tsx
+#: src/features/account/help-screen.tsx
 msgid "Refund policy"
 msgstr ""
 
@@ -10994,7 +11083,7 @@ msgstr "رد کردن"
 msgid "Rejected"
 msgstr "رد شد"
 
-#: app/account/preferences.tsx
+#: src/features/account/preferences-screen.tsx
 msgid "Reload now"
 msgstr "اکنون بارگیری مجدد"
 
@@ -11131,8 +11220,8 @@ msgstr "حذف گذرواژه"
 msgid "Remove person {0}"
 msgstr "حذف فرد {0}"
 
+#: src/features/account/profile.tsx
 #: src/features/entries/photo-field.tsx
-#: src/features/settings/profile.tsx
 msgid "Remove photo"
 msgstr "حذف عکس"
 
@@ -11196,6 +11285,11 @@ msgstr ""
 #: src/preview/page.tsx
 msgid "Rendering preview…"
 msgstr "در حال ارائه پیش نمایش…"
+
+#. placeholder {0}: formatDate(end)
+#: src/features/billing/plan-card.tsx
+msgid "Renews on {0}"
+msgstr ""
 
 #: src/features/applications/detail/detail-header.tsx
 #: src/features/applications/list/list-row.tsx
@@ -11264,11 +11358,15 @@ msgstr "پاسخ کپی شد"
 msgid "Report"
 msgstr "گزارش"
 
-#: app/account/ai-report.tsx
-#: app/account/ai.tsx
+#: src/features/account/ai-report-screen.tsx
+#: src/features/account/ai-screen.tsx
 #: src/features/ai/report-content.tsx
 msgid "Report AI content"
 msgstr "گزارش محتوای هوش مصنوعی"
+
+#: src/features/account/help-screen.tsx
+msgid "Report an issue"
+msgstr ""
 
 #: src/features/ai/report-content.tsx
 msgid "Report received by your server operator. Thank you."
@@ -11312,7 +11410,7 @@ msgstr "تنظیم مجدد گذرواژهٔ شما"
 msgid "Respond by"
 msgstr "مهلت پاسخ"
 
-#: app/account/preferences.tsx
+#: src/features/account/preferences-screen.tsx
 msgid "Restart to change text direction"
 msgstr "راه اندازی مجدد برای تغییر جهت متن"
 
@@ -11415,10 +11513,6 @@ msgstr ""
 #: src/features/search/search-screen.tsx
 msgid "Resumes"
 msgstr "رزومه‌ها"
-
-#: app/account/preferences.tsx
-msgid "Resumes always render on white paper, whatever the theme."
-msgstr "رزومه ها همیشه روی کاغذ سفید ارائه می شوند، هر موضوعی که باشد."
 
 #: src/features/profile/save-note.tsx
 msgid "Resumes that followed"
@@ -11550,19 +11644,19 @@ msgstr "نقد نوشتن"
 msgid "Reviewing needs an AI connection. What you write here stays on this device until then."
 msgstr "بررسی نیاز به اتصال AI دارد. آنچه در اینجا می نویسید تا آن زمان در این دستگاه باقی می ماند."
 
-#: src/features/settings/api-keys.tsx
+#: src/features/account/api-keys.tsx
 msgid "Revoke"
 msgstr "لغو"
 
-#: src/features/settings/api-keys.tsx
+#: src/features/account/api-keys.tsx
 msgid "Revoke API key?"
 msgstr "کلید API لغو شود؟"
 
-#: src/features/settings/api-keys.tsx
+#: src/features/account/api-keys.tsx
 msgid "Revoke key"
 msgstr "ابطال کلید"
 
-#: src/features/settings/api-keys.tsx
+#: src/features/account/api-keys.tsx
 msgid "Revoke this API key"
 msgstr "این کلید API را لغو کنید"
 
@@ -11580,7 +11674,7 @@ msgstr ""
 msgid "Rezumi AI · {0} credit per reply · {1} left"
 msgstr ""
 
-#: app/account/membership.tsx
+#: src/features/account/plan-screen.tsx
 msgid "Rezumi AI credits"
 msgstr ""
 
@@ -11592,6 +11686,10 @@ msgstr ""
 #. placeholder {1}: creditCount(balance)
 #: src/features/billing/ai-source.ts
 msgid "Rezumi AI: {0}, {1} left. If it fails, the credits come back."
+msgstr ""
+
+#: src/features/account/ai-privacy-screen.tsx
+msgid "Rezumi asks before each AI operation. Individual approvals expire after that operation."
 msgstr ""
 
 #: src/shell/permissions.tsx
@@ -11654,7 +11752,7 @@ msgstr "موقعیت‌های شغلی"
 msgid "Roles you're looking for"
 msgstr ""
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Romanian"
 msgstr "رومانیایی"
 
@@ -11697,11 +11795,15 @@ msgstr "در {0} اجرا می شود."
 msgid "Runs onto page {0}"
 msgstr "به صفحهٔ {0} سرریز می‌شود"
 
+#: src/features/account/help-screen.tsx
+msgid "Runtime version"
+msgstr ""
+
 #: src/features/portfolio/editor/metric.tsx
 msgid "Rupiah"
 msgstr ""
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Russian"
 msgstr "روسی"
 
@@ -11979,6 +12081,7 @@ msgstr ""
 msgid "Saves as you type. Resumes that still use a part follow your changes."
 msgstr ""
 
+#: src/features/account/profile.tsx
 #: src/features/applications/interview-sheet.tsx
 #: src/features/applications/save-sheet.tsx
 #: src/features/auth/reset-password-screen.tsx
@@ -11988,7 +12091,6 @@ msgstr ""
 #: src/features/profile/preferences.tsx
 #: src/features/profile/save-note.tsx
 #: src/features/profile/stories.tsx
-#: src/features/settings/profile.tsx
 #: src/features/write/profile-marker-sheet.tsx
 #: src/shell/builder-chrome/top-bar.tsx
 msgid "Saving…"
@@ -12021,6 +12123,10 @@ msgstr ""
 msgid "Schedule saved"
 msgstr "زمان‌بندی ذخیره شد"
 
+#: src/features/account/ai-privacy-screen.tsx
+msgid "Scheduled AI approvals"
+msgstr ""
+
 #: src/features/career/schedule-body.tsx
 msgid "Scheduled work is not available on this server. Ask your server administrator to configure it."
 msgstr "کارهای زمان‌بندی‌شده در این سرور در دسترس نیست. از مدیر سرور بخواهید آن را پیکربندی کند."
@@ -12052,8 +12158,8 @@ msgstr "مصاحبه غربالگری"
 #: app/_layout.tsx
 #: app/(tabs)/_layout.tsx
 #: src/features/documents/library-toolbar.tsx
+#: src/features/search/search-screen.tsx
 #: src/shell/tab-chrome.tsx
-#: src/ui-legacy/fields.tsx
 msgid "Search"
 msgstr "جستجو"
 
@@ -12073,10 +12179,6 @@ msgstr ""
 msgid "Search applications"
 msgstr "جستجوی درخواست های شغلی"
 
-#: src/features/search/search-screen.tsx
-msgid "Search commands"
-msgstr "دستورهای جستجو"
-
 #: src/features/career/schedule-body.tsx
 msgid "Search connections"
 msgstr ""
@@ -12086,10 +12188,6 @@ msgstr ""
 #: src/features/profile/search-regions-field.tsx
 msgid "Search countries"
 msgstr ""
-
-#: src/features/search/search-screen.tsx
-msgid "Search covers documents, applications, assistant conversations and actions."
-msgstr "جستجو اسناد، درخواست های شغلی، مکالمات دستیار و اقدامات را پوشش می دهد."
 
 #: src/features/documents/library-states.tsx
 msgid "Search covers titles, tags and linked applications."
@@ -12102,6 +12200,10 @@ msgstr ""
 #: src/features/documents/library-toolbar.tsx
 msgid "Search documents"
 msgstr "جستجوی اسناد"
+
+#: src/features/search/search-screen.tsx
+msgid "Search documents, applications, and more"
+msgstr ""
 
 #: src/features/share/web-page.tsx
 msgid "Search engines such as Google may list your web page. It can take weeks to appear, or to disappear after you turn this off."
@@ -12119,10 +12221,6 @@ msgstr ""
 msgid "Search for an icon"
 msgstr "جستجو برای یک آیکون"
 
-#: src/features/search/search-screen.tsx
-msgid "Search for…"
-msgstr "جستجو برای…"
-
 #: src/features/entries/icon-picker.tsx
 msgid "Search icons"
 msgstr "نمادهای جستجو"
@@ -12131,13 +12229,17 @@ msgstr "نمادهای جستجو"
 msgid "Search interviews"
 msgstr ""
 
-#: app/account/preferences.tsx
+#: src/features/account/preferences-screen.tsx
 #: src/features/design/page-group.tsx
 msgid "Search languages"
 msgstr "جستجوی زبان ها"
 
 #: src/features/applications/detail/document-choice.tsx
 msgid "Search letters"
+msgstr ""
+
+#: src/features/ai/provider-editor.tsx
+msgid "Search providers"
 msgstr ""
 
 #: src/features/applications/detail/document-choice.tsx
@@ -12160,6 +12262,10 @@ msgstr "عبارت‌های جستجو به سرویس جستجوی وب شما 
 msgid "Search the web"
 msgstr ""
 
+#: src/features/account/preferences-screen.tsx
+msgid "Search themes"
+msgstr ""
+
 #: src/features/applications/interview/zone-list.tsx
 msgid "Search time zones"
 msgstr ""
@@ -12168,14 +12274,9 @@ msgstr ""
 msgid "Search times"
 msgstr ""
 
-#: app/account/preferences.tsx
+#: src/features/account/preferences-screen.tsx
 msgid "Search timezones"
 msgstr "جستجوی منطقه‌های زمانی"
-
-#: src/features/search/search-screen.tsx
-#: src/ui-legacy/fields.tsx
-msgid "Search…"
-msgstr "جستجو…"
 
 #: src/features/assistant/messages.tsx
 msgid "Searched the web"
@@ -12184,6 +12285,10 @@ msgstr "در وب جستجو کرد"
 #: src/features/assistant/messages.tsx
 msgid "Searching the web…"
 msgstr "جستجو در وب…"
+
+#: src/features/search/search-screen.tsx
+msgid "Searching…"
+msgstr ""
 
 #: src/features/check/messages.ts
 msgid "Section headings"
@@ -12211,6 +12316,10 @@ msgstr "بخش‌ها از عنوان‌هایی استفاده می‌کنند 
 
 #: src/features/design/preset-names.ts
 msgid "Security"
+msgstr ""
+
+#: src/features/account/account-screen.tsx
+msgid "Security settings open in the browser. You may need to sign in there."
 msgstr ""
 
 #: src/features/onboarding/intro-screen.tsx
@@ -12374,12 +12483,12 @@ msgstr "به {0} ارسال شد"
 msgid "Sent to Lumen"
 msgstr "به Lumen ارسال شد"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Serbian"
 msgstr "صربی"
 
 #: src/api/ai-consent.ts
-#: src/features/settings/sign-out.tsx
+#: src/features/account/sign-out.tsx
 msgid "Server"
 msgstr "سرور"
 
@@ -12434,13 +12543,11 @@ msgstr ""
 msgid "Setting up HTTPS. This usually takes a few minutes, and this screen updates by itself."
 msgstr ""
 
-#: app/account/index.tsx
 #: src/features/applications/detail/reminder-sheet.tsx
-#: src/features/search/search-screen.tsx
 msgid "Settings"
 msgstr "تنظیمات"
 
-#: app/account/ai-mcp.tsx
+#: src/features/account/mcp-screen.tsx
 msgid "Setup guide"
 msgstr "راهنمای راه اندازی"
 
@@ -12593,10 +12700,6 @@ msgstr ""
 msgid "Show again"
 msgstr "دوباره نمایش دهید"
 
-#: src/features/search/search-screen.tsx
-msgid "Show all"
-msgstr "نمایش همه"
-
 #: src/features/profile/facts.tsx
 msgid "Show all facts"
 msgstr ""
@@ -12651,7 +12754,7 @@ msgstr ""
 msgid "Show link in title"
 msgstr "نمایش لینک در عنوان"
 
-#: app/account/preferences.tsx
+#: src/features/account/plan-screen.tsx
 #: src/features/applications/interview/zone-list.tsx
 msgid "Show more"
 msgstr "نمایش بیشتر"
@@ -12802,18 +12905,26 @@ msgid "Sign in to view this resume."
 msgstr "برای مشاهده این رزومه وارد شوید."
 
 #: src/auth/session-gate.tsx
-#: src/features/settings/sign-out.tsx
+#: src/features/account/sign-out.tsx
 #: src/shell/account-menu.tsx
 #: src/shell/app-drawer.tsx
 msgid "Sign out"
 msgstr "خروج"
 
-#: src/features/settings/sign-out.tsx
+#: src/features/account/sign-out.tsx
+msgid "Sign out of all devices"
+msgstr ""
+
+#: src/features/account/sign-out.tsx
+msgid "Sign out of all devices?"
+msgstr ""
+
+#: src/features/account/sign-out.tsx
 #: src/shell/account-menu.tsx
 msgid "Sign out?"
 msgstr "از سیستم خارج شوید؟"
 
-#: app/account/account.tsx
+#: src/features/account/account-screen.tsx
 msgid "Sign-in & security"
 msgstr "ورود به سیستم و امنیت"
 
@@ -12831,7 +12942,7 @@ msgid "Signed in with Apple, Google or another provider? You have no password he
 msgstr ""
 
 #: src/auth/session-gate.tsx
-#: src/features/settings/sign-out.tsx
+#: src/features/account/sign-out.tsx
 msgid "Signed out, but some data on this device couldn't be removed."
 msgstr "از سیستم خارج شده‌اید، اما برخی از داده‌های این دستگاه حذف نشدند."
 
@@ -12898,11 +13009,11 @@ msgstr "رد کردن"
 msgid "Skipped"
 msgstr ""
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Slovak"
 msgstr "اسلواکی"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Slovenian"
 msgstr "اسلوونیایی"
 
@@ -12951,6 +13062,10 @@ msgstr "برخی گلیف‌ها خارج از این فایل معنایی ند
 #: src/features/ats-checker/messages.ts
 msgid "Some lines are stored out of reading order."
 msgstr "برخی خطوط خارج از ترتیب خواندن ذخیره شده‌اند."
+
+#: src/features/search/search-screen.tsx
+msgid "Some results couldn't load."
+msgstr ""
 
 #: src/features/check/messages.ts
 msgid "Some systems mishandle images, and photos are discouraged in some countries."
@@ -13022,7 +13137,7 @@ msgstr "منبع"
 msgid "Sources"
 msgstr "منابع"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Spanish"
 msgstr "اسپانیایی"
 
@@ -13217,6 +13332,7 @@ msgstr ""
 msgid "Stay here"
 msgstr "اینجا بمان"
 
+#: src/features/account/sign-out.tsx
 #: src/shell/account-menu.tsx
 msgid "Stay signed in"
 msgstr ""
@@ -13353,10 +13469,6 @@ msgstr "برش ها را پیشنهاد می کند، هرگز به تنهایی
 msgid "Summary"
 msgstr "خلاصه"
 
-#: app/account/index.tsx
-msgid "Support"
-msgstr "پشتیبانی کنید"
-
 #: src/features/jobs/listing-fit.tsx
 #: src/features/workspace/debrief/review-card.tsx
 #: src/features/workspace/fit/requirement-card.tsx
@@ -13379,7 +13491,7 @@ msgstr ""
 msgid "Swap the start and end dates."
 msgstr "تاریخ شروع و پایان را جابه‌جا کنید."
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Swedish"
 msgstr "سوئدی"
 
@@ -13391,7 +13503,7 @@ msgstr "مدل سوئیچ"
 msgid "Switch server"
 msgstr "سوئیچ سرور"
 
-#: src/features/settings/sign-out.tsx
+#: src/features/account/sign-out.tsx
 #: src/linking/open.ts
 msgid "Switch server?"
 msgstr "تغییر سرور؟"
@@ -13404,10 +13516,17 @@ msgstr "به یک ستون تغییر دهید"
 msgid "Switched to one column"
 msgstr "به یک ستون تغییر کرد"
 
-#: app/account/index.tsx
-#: app/account/preferences.tsx
+#: src/features/account/preferences-screen.tsx
 msgid "System"
 msgstr "سیستم عامل"
+
+#: src/features/account/notification-settings.tsx
+msgid "System notification settings"
+msgstr ""
+
+#: src/features/account/notification-settings.tsx
+msgid "System permission is off."
+msgstr ""
 
 #: src/features/check/messages.ts
 msgid "Systems file you under the name at the top of the page."
@@ -13470,8 +13589,8 @@ msgstr ""
 msgid "Take a picture"
 msgstr ""
 
+#: src/features/account/profile.tsx
 #: src/features/entries/photo-field.tsx
-#: src/features/settings/profile.tsx
 msgid "Take photo"
 msgstr "عکس بگیرید"
 
@@ -13492,7 +13611,7 @@ msgstr ""
 msgid "Takes its sender details and design from your latest resume."
 msgstr ""
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Tamil"
 msgstr "تامیلی"
 
@@ -13553,7 +13672,7 @@ msgstr "از کاری بگویید که به آن افتخار می‌کنید. 
 msgid "Tell me about a time you disagreed with a colleague. How did you resolve it?"
 msgstr "از زمانی بگویید که با همکاری اختلاف‌نظر داشتید. چگونه آن را حل کردید؟"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Telugu"
 msgstr "تلوگویی"
 
@@ -13593,7 +13712,7 @@ msgstr ""
 msgid "Terms from the posting"
 msgstr "شرایط از آگهی استخدام"
 
-#: app/account/index.tsx
+#: src/features/account/help-screen.tsx
 msgid "Terms of service"
 msgstr "شرایط خدمات"
 
@@ -13669,7 +13788,7 @@ msgstr ""
 msgid "Text, e.g. Indonesian"
 msgstr ""
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Thai"
 msgstr "تایلندی"
 
@@ -14008,14 +14127,13 @@ msgstr "بالای صفحهٔ اول شبیه یک نام نیست."
 msgid "The versions you sent are kept in Saved. Edits here don't change what {company} received."
 msgstr "نسخه هایی که ارسال کردید در ذخیره شده نگهداری می شوند. ویرایش‌های اینجا چیزی را که {company} دریافت کرده است، تغییر نمی‌دهد."
 
-#: app/account/preferences.tsx
+#: src/features/account/preferences-screen.tsx
 #: src/features/portfolio/editor/design.tsx
 #: src/features/search/search-screen.tsx
 msgid "Theme"
 msgstr "تم"
 
 #. placeholder {0}: getPlanName(next.planId)
-#: app/account/membership.tsx
 #: src/features/billing/plan-card.tsx
 msgid "Then {0}"
 msgstr ""
@@ -14052,10 +14170,6 @@ msgstr "این‌ها پاسخ‌هایی هستند که هنگام ارسال 
 msgid "These open Rezumi's sign-in page in a secure browser sheet. You come back here when you're done."
 msgstr ""
 
-#: app/account/account.tsx
-msgid "These open your server's account settings in a browser tab inside the app. You may need to sign in there."
-msgstr "اینها تنظیمات حساب سرور شما را در یک برگه مرورگر در داخل برنامه باز می کنند. ممکن است لازم باشد در آنجا وارد شوید."
-
 #: src/features/profile/save-note.tsx
 msgid "These resumes still used the parts you changed, so they changed too. Parts a resume changed itself stay as they are."
 msgstr ""
@@ -14076,16 +14190,8 @@ msgstr "در حال فکر کردن"
 msgid "Thinking…"
 msgstr "فکر کردن…"
 
-#: app/account/licences.tsx
-msgid "Third-party software notices. Tap a dependency to read its license."
-msgstr "اطلاعیه‌های نرم‌افزارهای شخص ثالث. برای خواندن مجوز هر وابستگی، روی آن ضربه بزنید."
-
 #: src/features/portfolio/queries.ts
 msgid "This account already has a portfolio."
-msgstr ""
-
-#: src/features/billing/plan-alert.ts
-msgid "This app always works. Other apps and assistants that connect with an API key need more."
 msgstr ""
 
 #: src/features/workspace/screen.tsx
@@ -14111,6 +14217,7 @@ msgstr ""
 #: src/features/assistant/assistant-screen.tsx
 #: src/features/assistant/chat-view.tsx
 #: src/features/assistant/coach.tsx
+#: src/features/portfolio/editor/assistant.tsx
 msgid "This conversation couldn't be opened."
 msgstr "این گفتگو باز نشد."
 
@@ -14124,6 +14231,10 @@ msgstr ""
 
 #: src/features/applications/detail/posting.tsx
 msgid "This description is clipped or incomplete. Check it before preparing documents."
+msgstr ""
+
+#: src/features/account/preferences-screen.tsx
+msgid "This device"
 msgstr ""
 
 #: src/features/assistant/threads.tsx
@@ -14165,6 +14276,10 @@ msgstr ""
 #: src/api/ai-consent.ts
 msgid "This enables recurring processing while the schedule is on, using your server's selected providers. Turn the schedule off to stop future runs."
 msgstr "با استفاده از ارائه دهندگان انتخاب شده سرور شما، پردازش مکرر را در زمانی که زمان‌بندی فعال است، فعال می‌کند. برای توقف اجراهای آینده، برنامه را خاموش کنید."
+
+#: src/features/account/sign-out.tsx
+msgid "This ends your Rezumi sessions on every device. Edits that haven't synced from this device will be lost."
+msgstr ""
 
 #: src/features/check/messages.ts
 msgid "This entry"
@@ -14339,6 +14454,10 @@ msgstr "این نشان می‌دهد که نرم‌افزار چگونه می�
 msgid "This needs {required} and you have {balance}. Switch to your own AI connection to continue."
 msgstr ""
 
+#: src/features/billing/plan-alert.ts
+msgid "This option isn't available"
+msgstr ""
+
 #: src/features/portfolio/queries.ts
 msgid "This option isn't included in your current plan."
 msgstr ""
@@ -14358,6 +14477,10 @@ msgstr "این صفحه بسیار فشرده است."
 #: src/features/check/proposal-card.tsx
 msgid "This passage changed. Run the review again."
 msgstr "این قسمت تغییر کرد. دوباره بررسی را اجرا کنید."
+
+#: src/features/account/ai-privacy-screen.tsx
+msgid "This pauses the interview preparation schedule. You can enable it again from Home."
+msgstr ""
 
 #: src/features/portfolio/editor/media.ts
 msgid "This PDF has an unsupported number of pages."
@@ -14492,10 +14615,6 @@ msgstr "این داستان در دسترس نیست یا از واقعیت‌ه
 msgid "This template isn't available"
 msgstr ""
 
-#: src/features/billing/plan-alert.ts
-msgid "This template isn't in your plan"
-msgstr ""
-
 #: src/features/portfolio/editor/ai.tsx
 msgid "This text changed while AI was writing. Try again."
 msgstr ""
@@ -14508,7 +14627,7 @@ msgstr "این زمان در منطقهٔ زمانی شما وجود ندارد.
 msgid "This time doesn't exist in that time zone. Choose another time."
 msgstr ""
 
-#: src/features/settings/profile.tsx
+#: src/features/account/profile.tsx
 msgid "This username is already taken."
 msgstr "این نام کاربری قبلاً گرفته شده است."
 
@@ -14557,7 +14676,8 @@ msgstr "زمان، لینک، با چه کسی، آنچه فرستادید"
 msgid "Times are shown in {timeZone}."
 msgstr "زمان‌ها به وقت {timeZone} نمایش داده می‌شوند."
 
-#: app/account/preferences.tsx
+#: src/features/account/preferences-screen.tsx
+#: src/features/search/search-screen.tsx
 msgid "Timezone"
 msgstr "منطقهٔ زمانی"
 
@@ -14662,11 +14782,7 @@ msgstr ""
 msgid "Tool logos aren't available, so the imported document shows skills without them."
 msgstr ""
 
-#: src/features/billing/plan-alert.ts
-msgid "Tool logos aren't in your plan"
-msgstr ""
-
-#: app/account/membership.tsx
+#: src/features/account/plan-screen.tsx
 #: src/features/design/icons-group.tsx
 msgid "Tool logos in skills"
 msgstr ""
@@ -14748,7 +14864,11 @@ msgstr "سطل زباله"
 msgid "Trash is empty"
 msgstr "سطل زباله خالی است"
 
-#: app/account/membership.tsx
+#: src/features/account/mcp-screen.tsx
+msgid "Treat API keys like passwords. Revoke a key in Account to stop the app using it."
+msgstr ""
+
+#: src/features/account/plan-screen.tsx
 #: src/features/billing/credits.ts
 msgid "Trial credits"
 msgstr ""
@@ -14771,8 +14891,12 @@ msgstr ""
 
 #: app/_layout.tsx
 #: app/(auth)/server.tsx
-#: app/account/account.tsx
-#: app/account/preferences.tsx
+#: src/features/account/account-screen.tsx
+#: src/features/account/ai-privacy-screen.tsx
+#: src/features/account/api-keys.tsx
+#: src/features/account/plan-screen.tsx
+#: src/features/account/preferences-screen.tsx
+#: src/features/account/storage-screen.tsx
 #: src/features/ai/provider-editor.tsx
 #: src/features/ai/provider-list.tsx
 #: src/features/applications/board/load-states.tsx
@@ -14787,7 +14911,7 @@ msgstr ""
 #: src/features/letters/write.tsx
 #: src/features/onboarding/onboarding-screen.tsx
 #: src/features/profile/states.tsx
-#: src/features/settings/api-keys.tsx
+#: src/features/search/search-screen.tsx
 #: src/features/workspace/ai-notice.tsx
 #: src/features/workspace/part-body.tsx
 #: src/features/workspace/practice/practice-part.tsx
@@ -14835,7 +14959,7 @@ msgstr "با نمونه رزومه امتحان کنید"
 msgid "Trying {0} on the page"
 msgstr ""
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Turkish"
 msgstr "ترکی"
 
@@ -14859,6 +14983,10 @@ msgstr "روشن کردن این زمان‌بندی"
 msgid "Turned off in Settings"
 msgstr ""
 
+#: src/features/account/notification-settings.tsx
+msgid "Turning a type off removes its scheduled reminders from this device. Turn it back on to set new reminders in Applications."
+msgstr ""
+
 #: src/features/design/gallery-filters.tsx
 #: src/features/design/template-card.tsx
 #: src/features/onboarding/template-choice.tsx
@@ -14873,7 +15001,7 @@ msgstr ""
 msgid "Two stories"
 msgstr "دو داستان"
 
-#: app/account/account.tsx
+#: src/features/account/account-screen.tsx
 #: src/features/auth/two-factor-screen.tsx
 msgid "Two-step verification"
 msgstr "تایید دو مرحله ای"
@@ -14885,10 +15013,6 @@ msgstr "تایید دو مرحله ای"
 #: src/features/workspace/practice/answer-panel.tsx
 msgid "Type"
 msgstr "نوع"
-
-#: src/features/search/search-screen.tsx
-msgid "Type a command or search…"
-msgstr "یک دستور تایپ کنید یا… را جستجو کنید"
 
 #: src/features/workspace/practice/answer-panel.tsx
 #: src/features/workspace/practice/recorder-control.tsx
@@ -14909,11 +15033,11 @@ msgstr ""
 msgid "Typography"
 msgstr "تایپوگرافی"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Ukrainian"
 msgstr "اوکراینی"
 
-#: app/account/preferences.tsx
+#: src/features/account/help-screen.tsx
 msgid "Unavailable"
 msgstr "در دسترس نیست"
 
@@ -14990,7 +15114,7 @@ msgstr "ابتدا قفل آن را باز کنید، سپس دوباره امت
 msgid "Unlocking…"
 msgstr "در حال باز کردن قفل…"
 
-#: src/features/settings/api-keys.tsx
+#: src/features/account/api-keys.tsx
 msgid "Unnamed key"
 msgstr "کلید بی نام"
 
@@ -15089,7 +15213,7 @@ msgstr ""
 msgid "Upload TTF or OTF files you have the right to use, one file per weight or style. Anyone who opens a shared link to this document can download them."
 msgstr ""
 
-#: src/features/settings/profile.tsx
+#: src/features/account/profile.tsx
 msgid "Uploading photo…"
 msgstr "در حال آپلود عکس…"
 
@@ -15135,7 +15259,7 @@ msgstr ""
 msgid "Use {url}"
 msgstr "از {url} استفاده کنید"
 
-#: src/features/settings/profile.tsx
+#: src/features/account/profile.tsx
 msgid "Use 3 to 64 lowercase letters, numbers, dots, hyphens and underscores."
 msgstr "از 3 تا 64 حروف کوچک، اعداد، نقطه، خط فاصله و زیرخط استفاده کنید."
 
@@ -15331,10 +15455,6 @@ msgstr "از آنها استفاده کنید"
 msgid "Use these answers"
 msgstr "استفاده از این پاسخ‌ها"
 
-#: app/account/preferences.tsx
-msgid "Use this device's timezone ({deviceTimezone})"
-msgstr "استفاده از منطقه زمانی این دستگاه ({deviceTimezone})"
-
 #: src/features/ai/provider-editor.tsx
 msgid "Use this provider"
 msgstr "از این ارائه دهنده استفاده کنید"
@@ -15363,8 +15483,8 @@ msgstr ""
 msgid "Used to check roles and offers. Each is a number, so the coach can compare without guessing."
 msgstr "برای سنجش موقعیت‌ها و پیشنهادها استفاده می‌شود. هر کدام یک عدد است تا مربی بتواند بدون حدس زدن مقایسه کند."
 
+#: src/features/account/profile.tsx
 #: src/features/entries/fields.ts
-#: src/features/settings/profile.tsx
 msgid "Username"
 msgstr "نام کاربری"
 
@@ -15393,7 +15513,7 @@ msgstr "از قالب و طراحی رزومه شما استفاده می‌کن
 msgid "Using your Profile's version."
 msgstr ""
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Uzbek"
 msgstr "ازبکی"
 
@@ -15500,7 +15620,7 @@ msgstr ""
 msgid "Video link, office address or phone number"
 msgstr ""
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Vietnamese"
 msgstr "ویتنامی"
 
@@ -15829,7 +15949,7 @@ msgstr ""
 msgid "What you're looking for"
 msgstr "آنچه به دنبالش هستید"
 
-#: app/account/membership.tsx
+#: src/features/account/plan-screen.tsx
 msgid "What's included"
 msgstr ""
 
@@ -15841,7 +15961,7 @@ msgstr "چه کار می کند"
 msgid "WhatsApp number with country code"
 msgstr ""
 
-#: app/account/membership.tsx
+#: src/features/billing/plan-card.tsx
 msgid "When a plan ends, nothing is locked or deleted: every document stays open to edit, share and download as a PDF."
 msgstr ""
 
@@ -15923,8 +16043,20 @@ msgstr ""
 msgid "Width"
 msgstr "عرض"
 
-#: src/features/settings/api-keys.tsx
-msgid "Without it, apps you connect with a key won't work yet. This app always works. Plans can be bought on the rezumi.app website."
+#: src/features/account/ai-privacy-screen.tsx
+msgid "Withdraw"
+msgstr ""
+
+#: src/features/account/ai-privacy-screen.tsx
+msgid "Withdraw AI approval?"
+msgstr ""
+
+#: src/features/account/ai-privacy-screen.tsx
+msgid "Withdraw approval"
+msgstr ""
+
+#: src/features/account/ai-privacy-screen.tsx
+msgid "Withdrawing approval pauses the schedule on all devices."
 msgstr ""
 
 #: src/features/letters/write.tsx
@@ -15940,12 +16072,8 @@ msgstr "Word"
 msgid "Word and ODT aren't available"
 msgstr ""
 
-#: app/account/membership.tsx
+#: src/features/account/plan-screen.tsx
 msgid "Word and ODT downloads"
-msgstr ""
-
-#: src/features/billing/plan-alert.ts
-msgid "Word and ODT downloads aren't in your plan"
 msgstr ""
 
 #: src/features/documents/new-choices.tsx
@@ -16089,7 +16217,7 @@ msgstr ""
 msgid "Writing"
 msgstr "نوشتار"
 
-#: app/account/ai-providers.tsx
+#: src/features/account/providers-screen.tsx
 msgid "Writing help, tailored suggestions and the assistant. The default provider is used wherever you don't pick one. Your keys stay encrypted."
 msgstr "کمک در نوشتن، پیشنهادهای متناسب و دستیار. هر جا ارائه‌دهنده‌ای انتخاب نکنید، ارائه‌دهندهٔ پیش‌فرض استفاده می‌شود. کلیدهای شما رمزگذاری‌شده می‌مانند."
 
@@ -16120,6 +16248,10 @@ msgstr "شما قبلاً از این برای «{takenBy}» استفاده می
 #: src/features/assistant/messages.tsx
 msgid "You answered: {answer}"
 msgstr "شما پاسخ دادید: {answer}"
+
+#: src/features/billing/plan-alert.ts
+msgid "You can keep editing and sharing your portfolio."
+msgstr ""
 
 #: src/shell/builder-chrome/top-bar.tsx
 msgid "You can keep editing. Changes sync when you're back online. PDF sharing works with cached fonts and images."
@@ -16199,7 +16331,7 @@ msgstr "آن را از ایمیل خودتان می‌فرستید."
 msgid "You submit on the employer's site yourself. Marking it applied keeps the exact versions you sent."
 msgstr "درخواست را خودتان در سایت کارفرما ارسال می‌کنید. علامت زدن به‌عنوان ارسال‌شده، دقیقاً همان نسخه‌هایی را که فرستادید نگه می‌دارد."
 
-#: src/features/settings/sign-out.tsx
+#: src/features/account/sign-out.tsx
 #: src/shell/account-menu.tsx
 msgid "You will be signed out of {server}. Any edits not yet synced from this device will be lost."
 msgstr "شما از سیستم {server} خارج خواهید شد. هر ویرایشی که هنوز از این دستگاه همگام‌سازی نشده باشد از بین خواهد رفت."
@@ -16354,7 +16486,7 @@ msgstr "تغییرات شما در این دستگاه با نسخه ذخیره 
 msgid "Your contact details are not on the first page."
 msgstr "اطلاعات تماس شما در صفحهٔ اول نیست."
 
-#: app/account/account.tsx
+#: src/features/account/account-screen.tsx
 msgid "Your data"
 msgstr "داده های شما"
 
@@ -16433,7 +16565,7 @@ msgstr ""
 msgid "Your job search starts here"
 msgstr "جستجوی شغل شما از اینجا شروع می شود"
 
-#: app/account/preferences.tsx
+#: src/features/account/preferences-screen.tsx
 msgid "Your language is saved. Restart Rezumi to apply the new left-to-right or right-to-left layout."
 msgstr "زبان شما ذخیره شده است. برای اعمال طرح جدید از چپ به راست یا راست به چپ، Rezumi را مجددا راه اندازی کنید."
 
@@ -16491,11 +16623,7 @@ msgstr "شروع صحبت شما، داستان‌هایی که باید بیا�
 msgid "Your own domain isn't available"
 msgstr ""
 
-#: src/features/billing/plan-alert.ts
-msgid "Your own domain isn't in your plan"
-msgstr ""
-
-#: app/account/membership.tsx
+#: src/features/account/plan-screen.tsx
 msgid "Your own fonts"
 msgstr ""
 
@@ -16507,12 +16635,8 @@ msgstr ""
 msgid "Your own fonts aren't available, so the imported document uses a standard font."
 msgstr ""
 
-#: src/features/billing/plan-alert.ts
-msgid "Your own fonts aren't in your plan"
-msgstr ""
-
 #: src/features/design/uploaded-fonts.tsx
-msgid "Your own fonts aren't in your plan. Fonts already added keep working on the page."
+msgid "Your own fonts aren't available. Fonts already added keep working on the page."
 msgstr ""
 
 #: src/features/billing/plan-alert.ts
@@ -16528,7 +16652,6 @@ msgstr ""
 msgid "Your phone number is written in an unusual shape."
 msgstr "شماره تلفن شما به شکلی غیرمعمول نوشته شده است."
 
-#: app/account/membership.tsx
 #: src/features/billing/plan-card.tsx
 msgid "Your plan"
 msgstr ""
@@ -16619,7 +16742,7 @@ msgstr ""
 msgid "Your Profile was saved on another device or on the web while you were editing here. Your changes are still on this device. Choose which version to keep."
 msgstr ""
 
-#: src/features/settings/export.tsx
+#: src/features/account/export.tsx
 msgid "Your profile, documents, applications and Career data as JSON. Images and attachments remain references."
 msgstr "نمایه، اسناد، درخواست های شغلی و داده های مسیر شغلی شما به عنوان JSON. تصاویر و پیوست ها همچنان مرجع هستند."
 
@@ -16631,7 +16754,7 @@ msgstr ""
 msgid "your provider"
 msgstr "ارائه دهنده شما"
 
-#: src/features/settings/profile.tsx
+#: src/features/account/profile.tsx
 msgid "Your public links begin with {server}/"
 msgstr "پیوندهای عمومی شما با {server}/ شروع می شوند"
 
@@ -16756,6 +16879,6 @@ msgstr ""
 msgid "Zoom: fit to width"
 msgstr ""
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Zulu"
 msgstr "زولو"

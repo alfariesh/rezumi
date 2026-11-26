@@ -284,7 +284,7 @@ msgstr ""
 
 #. placeholder {0}: creditCount(TRIAL_CREDITS.amount)
 #. placeholder {1}: TRIAL_CREDITS.validDays
-#: app/account/membership.tsx
+#: src/features/account/plan-screen.tsx
 msgid "{0} come with your first use of Rezumi AI, valid for {1} days."
 msgstr ""
 
@@ -300,7 +300,7 @@ msgstr ""
 
 #. placeholder {0}: creditCount(credits.nextExpiry.credits)
 #. placeholder {1}: formatDate(credits.nextExpiry.at)
-#: app/account/membership.tsx
+#: src/features/account/plan-screen.tsx
 msgid "{0} expire on {1}"
 msgstr ""
 
@@ -344,6 +344,11 @@ msgstr ""
 #. placeholder {0}: face.weight
 #: src/features/design/uploaded-fonts.tsx
 msgid "{0} italic"
+msgstr ""
+
+#. placeholder {0}: i18n.number(bytes.data / 1024, { maximumFractionDigits: 1 })
+#: src/features/account/storage-screen.tsx
+msgid "{0} KB"
 msgstr ""
 
 #. placeholder {0}: clock.money(terms.currency, difference)
@@ -946,11 +951,11 @@ msgstr ""
 msgid "{unread, plural, one {# unread message} other {# unread messages}}"
 msgstr ""
 
-#: app/account/membership.tsx
+#: src/features/account/plan-screen.tsx
 msgid "{used} in use"
 msgstr ""
 
-#: app/account/membership.tsx
+#: src/features/account/plan-screen.tsx
 msgid "{used} of {max}"
 msgstr ""
 
@@ -1189,6 +1194,10 @@ msgstr "Səsli deyiləndə təxminən 90 saniyə"
 msgid "About me"
 msgstr ""
 
+#: src/features/account/help-screen.tsx
+msgid "About Rezumi"
+msgstr ""
+
 #: src/features/jobs/listing-detail.tsx
 msgid "About the job"
 msgstr ""
@@ -1232,9 +1241,7 @@ msgstr "Təklif qəbul edildi"
 msgid "Accomplishment"
 msgstr "Nailiyyət"
 
-#: app/account/account.tsx
-#: app/account/index.tsx
-#: src/features/search/search-screen.tsx
+#: src/features/account/account-screen.tsx
 #: src/shell/account-menu.tsx
 #: src/shell/app-drawer.tsx
 msgid "Account"
@@ -1248,24 +1255,19 @@ msgstr ""
 msgid "Action"
 msgstr "Hərəkət"
 
-#: src/features/search/search-screen.tsx
-msgid "Actions"
-msgstr "Fəaliyyətlər"
-
 #: src/features/share/custom-domain.tsx
 msgid "Active"
 msgstr "Aktiv"
 
-#: app/account/membership.tsx
+#: src/features/account/plan-screen.tsx
 msgid "Active cover letters"
 msgstr ""
 
-#: app/account/membership.tsx
+#: src/features/account/plan-screen.tsx
 msgid "Active resumes"
 msgstr ""
 
-#. placeholder {0}: formatDate(plan.currentPeriodEndsAt)
-#: app/account/membership.tsx
+#. placeholder {0}: formatDate(end)
 #: src/features/billing/plan-card.tsx
 msgid "Active until {0}"
 msgstr ""
@@ -1435,10 +1437,6 @@ msgstr ""
 #: src/features/profile/bring-screen.tsx
 msgid "Add any of these and we'll find what your Profile is missing. You check everything before it's added."
 msgstr ""
-
-#: src/features/search/search-screen.tsx
-msgid "Add application"
-msgstr "Müraciət əlavə edin"
 
 #: src/features/entries/fields.ts
 msgid "Add award"
@@ -1718,6 +1716,10 @@ msgstr ""
 msgid "Address"
 msgstr "Ünvan"
 
+#: src/features/account/mcp-screen.tsx
+msgid "Address copied"
+msgstr ""
+
 #: src/features/workspace/messages/describe-change.ts
 msgid "Adds a reminder to Today if you haven't heard back by then."
 msgstr "O vaxta qədər cavab almasanız, Bu gün bölməsinə xatırlatma əlavə edir."
@@ -1734,7 +1736,7 @@ msgstr ""
 msgid "Advanced"
 msgstr "Qabaqcıl"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Afrikaans"
 msgstr "Afrikaans"
 
@@ -1775,9 +1777,8 @@ msgstr "Tələblərinizlə müqayisədə"
 msgid "AI"
 msgstr ""
 
-#: app/account/ai.tsx
-#: app/account/index.tsx
-#: src/features/search/search-screen.tsx
+#: src/features/account/ai-screen.tsx
+#: src/features/account/preferences-screen.tsx
 msgid "AI & developer"
 msgstr "AI və inkişaf etdirici"
 
@@ -1805,6 +1806,15 @@ msgstr "AI bağlantıları yüklənməyib. Yaratmazdan əvvəl yenidən cəhd ed
 msgid "AI couldn't read everything. Check the details, or fill them in by hand."
 msgstr ""
 
+#: src/features/account/ai-privacy-screen.tsx
+#: src/features/account/ai-screen.tsx
+msgid "AI data sharing"
+msgstr ""
+
+#: src/api/ai-consent.ts
+msgid "AI data sharing is off on this device. You can change it in App settings."
+msgstr ""
+
 #: src/features/history/format.ts
 msgid "AI edit"
 msgstr "AI redaktəsi"
@@ -1817,9 +1827,8 @@ msgstr ""
 msgid "AI provider"
 msgstr "AI təminatçısı"
 
-#: app/account/ai-providers.tsx
-#: app/account/ai.tsx
-#: src/features/search/search-screen.tsx
+#: src/features/account/ai-screen.tsx
+#: src/features/account/providers-screen.tsx
 msgid "AI providers"
 msgstr "AI təminatçıları"
 
@@ -1851,7 +1860,7 @@ msgstr ""
 msgid "AI settings"
 msgstr ""
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Albanian"
 msgstr "Albanca"
 
@@ -1886,6 +1895,14 @@ msgstr ""
 
 #: src/features/design/gallery-filters.tsx
 msgid "All fields"
+msgstr ""
+
+#: src/features/account/plan-screen.tsx
+msgid "All portfolio intro effects"
+msgstr ""
+
+#: src/features/account/plan-screen.tsx
+msgid "All portfolio themes"
 msgstr ""
 
 #: src/features/applications/list/list-menus.tsx
@@ -1954,7 +1971,7 @@ msgstr ""
 msgid "Alternative text"
 msgstr ""
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Amharic"
 msgstr "Amharca"
 
@@ -2060,15 +2077,12 @@ msgstr "Hər yerdə"
 msgid "Anywhere in the country"
 msgstr ""
 
+#: src/features/account/api-keys.tsx
 #: src/features/billing/plan-alert.ts
 msgid "API and MCP access isn't available"
 msgstr ""
 
-#: src/features/billing/plan-alert.ts
-msgid "API and MCP access isn't in your plan"
-msgstr ""
-
-#: app/account/membership.tsx
+#: src/features/account/plan-screen.tsx
 msgid "API and MCP for other apps"
 msgstr ""
 
@@ -2076,24 +2090,24 @@ msgstr ""
 msgid "API key"
 msgstr "API açarı"
 
-#: src/features/settings/api-keys.tsx
+#: src/features/account/api-keys.tsx
 msgid "API key revoked. Apps using it stop working now."
 msgstr "API açarı ləğv edildi. Ondan istifadə edən proqramlar indi işləməyi dayandırır."
 
-#: src/features/search/search-screen.tsx
-#: src/features/settings/api-keys.tsx
+#: src/features/account/api-keys.tsx
 msgid "API keys"
 msgstr "API açarları"
 
-#: src/features/settings/api-keys.tsx
-msgid "API keys need the Plus or Pro AI plan"
-msgstr ""
-
+#: src/features/account/preferences-screen.tsx
 #: src/shell/account-menu.tsx
 msgid "App settings"
 msgstr ""
 
-#: app/account/preferences.tsx
+#: src/features/account/help-screen.tsx
+msgid "App version"
+msgstr ""
+
+#: src/features/account/preferences-screen.tsx
 msgid "Appearance"
 msgstr "Görünüş"
 
@@ -2228,10 +2242,6 @@ msgstr "Tətbiq edildi. Müraciət yeniləndi."
 msgid "Applies the template you are trying."
 msgstr ""
 
-#: app/account/preferences.tsx
-msgid "Applies to this device only."
-msgstr "Yalnız bu cihaza aiddir."
-
 #: src/features/design/template-gallery.tsx
 #: src/features/workspace/working.ts
 msgid "Apply"
@@ -2245,12 +2255,16 @@ msgstr ""
 msgid "Approach"
 msgstr ""
 
+#: src/features/account/ai-privacy-screen.tsx
+msgid "Approval withdrawn"
+msgstr ""
+
 #. placeholder {0}: selected?.name ?? ""
-#: src/features/settings/api-keys.tsx
+#: src/features/account/api-keys.tsx
 msgid "Apps using “{0}” will stop working. This can't be undone."
 msgstr "“{0}” istifadə edən proqramlar fəaliyyətini dayandıracaq. Bu geri qaytarıla bilməz."
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Arabic"
 msgstr "Ərəb"
 
@@ -2267,7 +2281,6 @@ msgid "Ascending"
 msgstr "Artan"
 
 #: src/features/entries/improve.tsx
-#: src/features/search/search-screen.tsx
 msgid "Ask"
 msgstr "Soruş"
 
@@ -2300,6 +2313,10 @@ msgstr "Hər ikisindən soruş"
 msgid "Ask coach"
 msgstr ""
 
+#: src/features/search/search-screen.tsx
+msgid "Ask Coach “{term}”"
+msgstr ""
+
 #: src/features/profile/preferences.tsx
 msgid "Ask first"
 msgstr "Əvvəlcə soruş"
@@ -2311,10 +2328,6 @@ msgstr ""
 #: src/features/entries/improve.tsx
 msgid "Ask for something else…"
 msgstr "Başqa bir şey soruşun..."
-
-#: src/features/search/search-screen.tsx
-msgid "Ask the assistant “{question}”"
-msgstr "“{question}” köməkçisindən soruşun"
 
 #: src/features/check/term-sheet.tsx
 msgid "Ask the assistant to work it in"
@@ -2337,10 +2350,6 @@ msgstr "Proporsiya"
 #: src/features/assistant/assistant-screen.tsx
 msgid "Assistant"
 msgstr "köməkçi"
-
-#: src/features/search/search-screen.tsx
-msgid "Assistant conversations"
-msgstr "Köməkçi söhbətləri"
 
 #: src/features/applications/detail/follow-up-sheet.tsx
 msgid "At 09:00 that day ({timeZone})."
@@ -2430,7 +2439,7 @@ msgstr "Mükafat verən"
 msgid "Awards"
 msgstr "Mükafatlar"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Azerbaijani"
 msgstr "Azərbaycan"
 
@@ -2443,7 +2452,6 @@ msgstr "Azərbaycan"
 #: src/features/onboarding/onboarding-screen.tsx
 #: src/features/portfolio/layout.tsx
 #: src/features/profile/bring-screen.tsx
-#: src/features/search/search-screen.tsx
 #: src/features/workspace/bar.tsx
 #: src/shell/builder-chrome/top-bar.tsx
 msgid "Back"
@@ -2563,12 +2571,16 @@ msgstr "Davranış"
 msgid "Behavioral interview"
 msgstr "Davranış müsahibəsi"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Bengali"
 msgstr "Benqal"
 
 #: src/features/onboarding/intro-screen.tsx
 msgid "BI analyst"
+msgstr ""
+
+#: src/features/account/ai-privacy-screen.tsx
+msgid "Block AI sharing on this device"
 msgstr ""
 
 #: src/features/portfolio/editor/blocks.tsx
@@ -2682,11 +2694,15 @@ msgstr ""
 msgid "Browse templates"
 msgstr ""
 
+#: src/features/account/help-screen.tsx
+msgid "Build number"
+msgstr ""
+
 #: src/features/design/preset-names.ts
 msgid "Buildings"
 msgstr ""
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Bulgarian"
 msgstr "Bolqar"
 
@@ -2699,6 +2715,10 @@ msgstr "siyahı girişi {n}"
 #: src/features/write/section-sheet-pages.tsx
 msgid "Bulleted list"
 msgstr "Markerli siyahı"
+
+#: src/features/account/help-screen.tsx
+msgid "Bundled with app"
+msgstr ""
 
 #: src/features/design/preset-names.ts
 msgid "Burgundy"
@@ -2721,9 +2741,21 @@ msgstr ""
 msgid "Button URL"
 msgstr ""
 
-#: app/account/index.tsx
-msgid "by <0>Salman Alfariesh</0>"
-msgstr "<0>Salman Alfariesh</0> tərəfindən"
+#: src/features/account/storage-screen.tsx
+msgid "Cache cleared"
+msgstr ""
+
+#: src/features/account/storage-screen.tsx
+msgid "Cached files"
+msgstr ""
+
+#: src/features/account/storage-screen.tsx
+msgid "Cached previews and temporary exports can be created again. Your offline drafts are kept."
+msgstr ""
+
+#: src/features/account/storage-screen.tsx
+msgid "Calculating…"
+msgstr ""
 
 #: src/features/applications/views-row.tsx
 msgid "Calendar"
@@ -2770,7 +2802,6 @@ msgstr ""
 #: src/features/profile/facts-detail.tsx
 #: src/features/profile/facts.tsx
 #: src/features/profile/stories.tsx
-#: src/features/search/search-screen.tsx
 #: src/features/workspace/fit/requirement-card.tsx
 #: src/linking/open.ts
 #: src/ui-legacy/overlays.tsx
@@ -2785,6 +2816,10 @@ msgstr "Qeydi ləğv edin"
 msgid "Caption"
 msgstr ""
 
+#: src/features/billing/plan-card.tsx
+msgid "Card subscription"
+msgstr ""
+
 #: src/features/profile/profile-screen.tsx
 msgid "Career"
 msgstr ""
@@ -2793,7 +2828,7 @@ msgstr ""
 msgid "Carousel"
 msgstr ""
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Catalan"
 msgstr "Katalan"
 
@@ -2826,10 +2861,6 @@ msgstr ""
 msgid "Change it in Design"
 msgstr ""
 
-#: src/features/search/search-screen.tsx
-msgid "Change language to…"
-msgstr "Dili… olaraq dəyişdirin"
-
 #. placeholder {0}: companyOf(offer)
 #: src/features/offers/offer-header.tsx
 msgid "Change offer: {0}"
@@ -2839,7 +2870,7 @@ msgstr ""
 msgid "Change password"
 msgstr "Parolu dəyiş"
 
-#: src/features/settings/profile.tsx
+#: src/features/account/profile.tsx
 msgid "Change photo"
 msgstr "Şəkli dəyişdirin"
 
@@ -2854,10 +2885,6 @@ msgstr "CV-nin dizaynını dəyişdirin"
 #: src/features/applications/interview/when-fields.tsx
 msgid "Change the time zone"
 msgstr ""
-
-#: src/features/search/search-screen.tsx
-msgid "Change theme to…"
-msgstr "Temanı… olaraq dəyişdirin"
 
 #: src/features/profile/preferences.tsx
 msgid "Change timezone"
@@ -2895,10 +2922,6 @@ msgstr ""
 msgctxt "Editor mode"
 msgid "Check"
 msgstr ""
-
-#: src/features/search/search-screen.tsx
-msgid "Check a PDF"
-msgstr "PDF yoxlayın"
 
 #: src/features/documents/new-choices.tsx
 msgid "Check a PDF with the ATS checker"
@@ -3053,11 +3076,11 @@ msgstr "Kateqoriyaya görə yoxlayır"
 msgid "Checks every bullet for action and result"
 msgstr "Hər bir siyahı girişini hərəkət və nəticə üçün yoxlayır"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Chinese (Simplified)"
 msgstr "Çin (Sadələşdirilmiş)"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Chinese (Traditional)"
 msgstr "Çin (Ənənəvi)"
 
@@ -3118,8 +3141,8 @@ msgstr ""
 msgid "Choose a PDF, Word, JSON or LinkedIn export file"
 msgstr ""
 
+#: src/features/account/profile.tsx
 #: src/features/entries/photo-field.tsx
-#: src/features/settings/profile.tsx
 msgid "Choose a photo smaller than 10 MB."
 msgstr "10 MB-dan kiçik bir şəkil seçin."
 
@@ -3184,6 +3207,10 @@ msgid "Choose another file"
 msgstr "Başqa fayl seçin"
 
 #: src/features/billing/plan-alert.ts
+msgid "Choose another option to continue."
+msgstr ""
+
+#: src/features/billing/plan-alert.ts
 msgid "Choose any of the fonts in Design instead."
 msgstr ""
 
@@ -3199,8 +3226,8 @@ msgstr ""
 msgid "Choose cover picture"
 msgstr ""
 
+#: src/features/account/profile.tsx
 #: src/features/entries/photo-field.tsx
-#: src/features/settings/profile.tsx
 msgid "Choose from library"
 msgstr "Kitabxanadan seçin"
 
@@ -3288,6 +3315,14 @@ msgstr "Sadə"
 msgid "Clear"
 msgstr "Təmizlə"
 
+#: src/features/account/storage-screen.tsx
+msgid "Clear cache"
+msgstr ""
+
+#: src/features/account/storage-screen.tsx
+msgid "Clear cached files?"
+msgstr ""
+
 #: src/features/applications/list/list-states.tsx
 #: src/features/jobs/filters-sheet.tsx
 #: src/features/jobs/jobs-states.tsx
@@ -3337,6 +3372,9 @@ msgstr ""
 msgid "Clients"
 msgstr ""
 
+#: src/features/account/preferences-screen.tsx
+#: src/features/account/profile.tsx
+#: src/features/ai/provider-editor.tsx
 #: src/features/ai/report-content.tsx
 #: src/features/applications/detail/activity.tsx
 #: src/features/applications/detail/contacts.tsx
@@ -3426,7 +3464,7 @@ msgstr "İş ərizəsini bağlayın"
 msgid "Close menu"
 msgstr ""
 
-#: src/components/collection-header.tsx
+#: src/features/search/search-screen.tsx
 msgid "Close search"
 msgstr "Axtarışı bağla"
 
@@ -3457,6 +3495,7 @@ msgstr "Bağlanıb: {closed}"
 
 #: src/features/assistant/coach.tsx
 #: src/features/billing/credits.ts
+#: src/features/search/search-screen.tsx
 #: src/features/workspace/coach-sheet.tsx
 #: src/shell/tab-chrome.tsx
 msgid "Coach"
@@ -3600,10 +3639,6 @@ msgstr "Avtomatik yenilənməsi üçün Parametrlərdə AI provayderi qoşun."
 msgid "Connect an AI provider to read pasted text. Filling in by hand works without AI."
 msgstr ""
 
-#: app/account/ai.tsx
-msgid "Connect the tools you use for writing, job search and working with your resumes."
-msgstr "Yazmaq, iş axtarmaq və CV-lərinizlə işləmək üçün istifadə etdiyiniz alətləri birləşdirin."
-
 #: src/features/portfolio/layout.tsx
 msgid "Connect to load your portfolio."
 msgstr ""
@@ -3637,7 +3672,7 @@ msgstr ""
 msgid "Contact"
 msgstr "Əlaqə"
 
-#: app/account/index.tsx
+#: src/features/account/help-screen.tsx
 msgid "Contact & complaints"
 msgstr ""
 
@@ -3727,6 +3762,7 @@ msgstr "Söhbətin adı"
 
 #: src/features/assistant/panel-bar.tsx
 #: src/features/portfolio/editor/assistant.tsx
+#: src/features/search/search-screen.tsx
 #: src/features/workspace/coach-sheet.tsx
 msgid "Conversations"
 msgstr "Söhbətlər"
@@ -3758,6 +3794,10 @@ msgstr "Kopyala"
 #: src/features/documents/new-document-screen.tsx
 msgid "Copy a resume for a job"
 msgstr "Bir iş üçün CV-ni kopyalayın"
+
+#: src/features/account/mcp-screen.tsx
+msgid "Copy address"
+msgstr ""
 
 #: src/features/workspace/apply/share-answers.tsx
 msgid "Copy answers"
@@ -3836,7 +3876,7 @@ msgstr ""
 msgid "Couldn't attach the file. Try again."
 msgstr "Faylı əlavə etmək mümkün olmadı. Yenidən cəhd edin."
 
-#: app/account/preferences.tsx
+#: src/features/account/preferences-screen.tsx
 msgid "Couldn't change the language. Try again."
 msgstr "Dili dəyişmək mümkün olmadı. Yenidən cəhd edin."
 
@@ -3860,6 +3900,10 @@ msgstr "Bu ünvanı yoxlamaq və ya saxlamaq mümkün olmadı. Yenidən cəhd ed
 msgid "Couldn't check your AI providers."
 msgstr "AI provayderlərinizi yoxlamaq mümkün olmadı."
 
+#: src/features/account/storage-screen.tsx
+msgid "Couldn't clear the cache. Try again."
+msgstr ""
+
 #: src/features/portfolio/queries.ts
 msgid "Couldn't complete the action. Try again."
 msgstr ""
@@ -3880,6 +3924,10 @@ msgstr "Bu əməliyyatı tamamlamaq mümkün olmadı. Yenidən cəhd edin."
 #: src/features/applications/interview/use-interview-actions.ts
 msgid "Couldn't confirm the save. Check the application before retrying to avoid a duplicate."
 msgstr "Yadda saxlamanı təsdiqləmək mümkün olmadı. Dublikatın qarşısını almaq üçün yenidən cəhd etməzdən əvvəl müraciəti yoxlayın."
+
+#: src/features/account/mcp-screen.tsx
+msgid "Couldn't copy the address."
+msgstr ""
 
 #: src/features/portfolio/overview.tsx
 msgid "Couldn't copy the link."
@@ -3933,7 +3981,7 @@ msgstr "Bu cədvəli silmək mümkün olmadı. Yenidən cəhd edin."
 msgid "Couldn't draw the first page of this PDF."
 msgstr ""
 
-#: src/features/settings/export.tsx
+#: src/features/account/export.tsx
 #: src/features/share/download.tsx
 msgid "Couldn't export. Try again."
 msgstr "İxrac etmək mümkün olmadı. Yenidən cəhd edin."
@@ -3979,7 +4027,7 @@ msgstr "Müraciəti əlaqələndirmək mümkün olmadı. Yenidən cəhd edin."
 msgid "Couldn't load AI providers."
 msgstr "AI provayderlərini yükləmək mümkün olmadı."
 
-#: src/features/settings/api-keys.tsx
+#: src/features/account/api-keys.tsx
 msgid "Couldn't load API keys."
 msgstr "API açarlarını yükləmək mümkün olmadı."
 
@@ -3989,6 +4037,10 @@ msgstr "API açarlarını yükləmək mümkün olmadı."
 msgid "Couldn't load applications."
 msgstr "Müraciətləri yükləmək mümkün olmadı."
 
+#: src/features/account/plan-screen.tsx
+msgid "Couldn't load credit activity."
+msgstr ""
+
 #: src/features/documents/library-states.tsx
 msgid "Couldn't load documents"
 msgstr "Sənədləri yükləmək mümkün olmadı"
@@ -3996,6 +4048,10 @@ msgstr "Sənədləri yükləmək mümkün olmadı"
 #: src/features/documents/new-copy.tsx
 msgid "Couldn't load resumes."
 msgstr "CV-ləri yükləmək mümkün olmadı."
+
+#: src/features/account/ai-privacy-screen.tsx
+msgid "Couldn't load scheduled AI approvals."
+msgstr ""
 
 #: src/features/share/link.tsx
 msgid "Couldn't load statistics."
@@ -4082,6 +4138,10 @@ msgstr ""
 msgid "Couldn't load your offers"
 msgstr ""
 
+#: src/features/account/plan-screen.tsx
+msgid "Couldn't load your plan."
+msgstr ""
+
 #: src/features/portfolio/layout.tsx
 msgid "Couldn't load your portfolio"
 msgstr ""
@@ -4094,7 +4154,7 @@ msgstr ""
 msgid "Couldn't load your Profile"
 msgstr ""
 
-#: app/account/account.tsx
+#: src/features/account/account-screen.tsx
 msgid "Couldn't load your profile."
 msgstr "Profilinizi yükləmək mümkün olmadı."
 
@@ -4112,7 +4172,7 @@ msgstr "CV-lərinizi yükləmək mümkün olmadı."
 msgid "Couldn't load your stories"
 msgstr ""
 
-#: app/account/preferences.tsx
+#: src/features/account/preferences-screen.tsx
 msgid "Couldn't load your timezone."
 msgstr "Saat qurşağınızı yükləmək mümkün olmadı."
 
@@ -4124,14 +4184,20 @@ msgstr "Müraciət edildi kimi qeyd etmək mümkün olmadı. Yenidən cəhd edin
 msgid "Couldn't mark this as read. Try again."
 msgstr "Bunu oxunmuş kimi qeyd etmək mümkün olmadı. Yenidən cəhd edin."
 
+#: src/features/account/storage-screen.tsx
+msgid "Couldn't measure the cache."
+msgstr ""
+
 #: src/features/applications/interview/use-reschedule.ts
 msgid "Couldn't move the interview. Try again."
 msgstr ""
 
-#: app/account/account.tsx
-#: app/account/index.tsx
+#: src/features/account/notification-settings.tsx
+msgid "Couldn't open system settings."
+msgstr ""
+
+#: src/features/account/browser.ts
 #: src/features/auth/welcome-screen.tsx
-#: src/features/settings/api-keys.tsx
 msgid "Couldn't open the browser. Try again."
 msgstr "Brauzeri açmaq mümkün olmadı. Yenidən cəhd edin."
 
@@ -4264,7 +4330,7 @@ msgstr "Bu CV-ni təqdim etmək mümkün olmadı."
 msgid "Couldn't replace this block."
 msgstr ""
 
-#: src/features/settings/api-keys.tsx
+#: src/features/account/api-keys.tsx
 msgid "Couldn't revoke the key. Try again."
 msgstr "Açarı ləğv etmək mümkün olmadı. Yenidən cəhd edin."
 
@@ -4319,11 +4385,11 @@ msgstr "Qeydləri saxlamaq mümkün olmadı. Mətniniz hələ də buradadır."
 msgid "Couldn't save the posting. Try again."
 msgstr "İş elanını saxlamaq mümkün olmadı. Yenidən cəhd edin."
 
-#: app/account/preferences.tsx
+#: src/features/account/preferences-screen.tsx
 msgid "Couldn't save the theme. Try again."
 msgstr "Mövzunu saxlamaq mümkün olmadı. Yenidən cəhd edin."
 
-#: app/account/preferences.tsx
+#: src/features/account/preferences-screen.tsx
 msgid "Couldn't save the timezone. Try again."
 msgstr "Saat qurşağını saxlamaq mümkün olmadı. Yenidən cəhd edin."
 
@@ -4369,11 +4435,15 @@ msgstr ""
 msgid "Couldn't save your Profile. Try again."
 msgstr ""
 
+#: src/features/account/ai-privacy-screen.tsx
+msgid "Couldn't save your sharing preference. Try again."
+msgstr ""
+
 #: src/features/portfolio/editor/screen.tsx
 msgid "Couldn't save. Retrying…"
 msgstr ""
 
-#: src/features/settings/profile.tsx
+#: src/features/account/profile.tsx
 msgid "Couldn't save. Try again."
 msgstr "Yadda saxlamaq mümkün olmadı. Yenidən cəhd edin."
 
@@ -4418,7 +4488,11 @@ msgstr ""
 msgid "Couldn't sign in with this account. If you don't have a Rezumi account yet, sign-ups may be turned off."
 msgstr ""
 
-#: src/features/settings/sign-out.tsx
+#: src/features/account/sign-out.tsx
+msgid "Couldn't sign out of all devices. Try again."
+msgstr ""
+
+#: src/features/account/sign-out.tsx
 msgid "Couldn't sign out. Try again."
 msgstr "Hesabdan çıxmaq mümkün olmadı. Yenidən cəhd edin."
 
@@ -4456,6 +4530,10 @@ msgstr "Bunu geri qaytarmaq mümkün olmadı. Yenidən cəhd edin."
 msgid "Couldn't unlock this resume. Try again."
 msgstr "Bu CV-ni açmaq mümkün olmadı. Yenidən cəhd edin."
 
+#: src/features/account/notification-settings.tsx
+msgid "Couldn't update reminders. Try again."
+msgstr ""
+
 #: src/features/share/custom-domain.tsx
 msgid "Couldn't update sharing. Try again."
 msgstr "Paylaşımı yeniləmək mümkün olmadı. Yenidən cəhd edin."
@@ -4472,7 +4550,7 @@ msgstr "Müraciəti yeniləmək mümkün olmadı. Heç nə dəyişdirilmədi; ye
 msgid "Couldn't update the interview. Try again."
 msgstr "Müsahibəni yeniləmək mümkün olmadı. Yenidən cəhd edin."
 
-#: src/features/settings/profile.tsx
+#: src/features/account/profile.tsx
 msgid "Couldn't update the photo. Check camera permissions, choose a photo smaller than 10 MB, and try again."
 msgstr "Fotonu yeniləmək mümkün olmadı. Kamera icazələrini yoxlayın, 10 MB-dan kiçik foto seçin və yenidən cəhd edin."
 
@@ -4484,13 +4562,17 @@ msgstr "Faylı yükləmək mümkün olmadı. Yenidən cəhd edin."
 msgid "Couldn't upload the font. Try again."
 msgstr ""
 
+#: src/features/account/profile.tsx
 #: src/features/entries/photo-field.tsx
-#: src/features/settings/profile.tsx
 msgid "Couldn't upload the photo."
 msgstr "Fotonu yükləmək mümkün olmadı."
 
 #: src/features/portfolio/editor/pictures.tsx
 msgid "Couldn't upload this picture."
+msgstr ""
+
+#: src/features/account/ai-privacy-screen.tsx
+msgid "Couldn't withdraw approval. Try again."
 msgstr ""
 
 #: src/features/applications/insights/insights-cards.tsx
@@ -4557,25 +4639,9 @@ msgstr "Müşayiət məktubları"
 msgid "Covered term: {highlightTerm}"
 msgstr "Əhatə olunan termin: {highlightTerm}"
 
-#: src/features/search/search-screen.tsx
-msgid "Create"
-msgstr "Yarat"
-
-#: src/features/search/search-screen.tsx
-msgid "Create a new resume"
-msgstr "Yeni özgeçmiş yaradın"
-
-#: src/features/search/search-screen.tsx
-msgid "Create a resume first, then ask about it."
-msgstr "Əvvəlcə rezyume yaradın, sonra bu barədə soruşun."
-
 #: src/features/auth/create-account-screen.tsx
 msgid "Create account"
 msgstr "Hesab yarat"
-
-#: app/account/ai-mcp.tsx
-msgid "Create an API key from Account settings in your browser. Keys act as you and can read and edit your documents."
-msgstr "Brauzerinizdə Hesab parametrlərindən API açarı yaradın. Açarlar sizin kimi fəaliyyət göstərir və sənədlərinizi oxuya və redaktə edə bilər."
 
 #: src/features/documents/new-copy.tsx
 msgid "Create copy"
@@ -4616,7 +4682,7 @@ msgstr "Yaradılıb"
 #. placeholder {0}: date(key.createdAt)
 #. placeholder {1}: date(key.lastRequest)
 #. placeholder {2}: date(key.expiresAt)
-#: src/features/settings/api-keys.tsx
+#: src/features/account/api-keys.tsx
 msgid "Created {0} · Last used {1} · Expires {2}"
 msgstr "Yaradıldı {0} · Son istifadə {1} · İstifadə müddəti {2}"
 
@@ -4633,8 +4699,12 @@ msgstr ""
 msgid "Creative"
 msgstr ""
 
-#: app/account/membership.tsx
-msgid "Credits are used soonest-expiring first. They can't be moved to another account or exchanged for money. Your own AI connection never uses credits."
+#: src/features/account/plan-screen.tsx
+msgid "Credit history"
+msgstr ""
+
+#: src/features/account/plan-screen.tsx
+msgid "Credits with the nearest expiry are used first. Your own AI connection never uses credits."
 msgstr ""
 
 #: src/features/jobs/filters-sheet.tsx
@@ -4655,6 +4725,7 @@ msgstr "Fərdiləşdirilmiş"
 msgid "Custom color (hex)"
 msgstr "Fərdi rəng (hex)"
 
+#: src/features/account/plan-screen.tsx
 #: src/features/portfolio/publish.tsx
 msgid "Custom domain"
 msgstr ""
@@ -4667,7 +4738,7 @@ msgstr ""
 msgid "Custom section"
 msgstr "Fərdi bölmə"
 
-#: app/account/membership.tsx
+#: src/features/account/plan-screen.tsx
 msgid "Custom styles"
 msgstr "Xüsusi stillər"
 
@@ -4679,11 +4750,7 @@ msgstr ""
 msgid "Custom styles aren't available, so the imported document leaves the file's styles out."
 msgstr ""
 
-#: src/features/billing/plan-alert.ts
-msgid "Custom styles aren't in your plan"
-msgstr ""
-
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Czech"
 msgstr "Çex"
 
@@ -4717,19 +4784,14 @@ msgstr ""
 msgid "Dangerous or illegal advice"
 msgstr "Təhlükəli və ya qeyri-qanuni məsləhət"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Danish"
 msgstr "Danimarka"
 
-#: app/account/index.tsx
-#: app/account/preferences.tsx
+#: src/features/account/preferences-screen.tsx
 #: src/features/portfolio/editor/design.tsx
 msgid "Dark"
 msgstr "Tünd"
-
-#: src/features/search/search-screen.tsx
-msgid "Dark theme"
-msgstr "Tünd mövzu"
 
 #: src/features/onboarding/intro-screen.tsx
 msgid "Data analyst"
@@ -4873,7 +4935,7 @@ msgstr "“{title}” silinsin?"
 msgid "Delete {0}"
 msgstr "{0} silin"
 
-#: app/account/account.tsx
+#: src/features/account/account-screen.tsx
 #: src/features/search/search-screen.tsx
 msgid "Delete account"
 msgstr "Hesabı silin"
@@ -4981,10 +5043,6 @@ msgstr ""
 msgid "Delete…"
 msgstr "Sil..."
 
-#: src/features/search/search-screen.tsx
-msgid "Deleted"
-msgstr "Silindi"
-
 #. placeholder {0}: document.name
 #. placeholder {0}: getVersionTitle(version)
 #: src/features/documents/document-actions.ts
@@ -5008,7 +5066,7 @@ msgstr "Bölməni və onun qeydlərini silir. Geri qaytara bilərsiniz."
 msgid "Density"
 msgstr "Sıxlıq"
 
-#: app/account/licences.tsx
+#: src/features/account/licences-screen.tsx
 msgid "Dependency type"
 msgstr "Asılılıq növü"
 
@@ -5058,12 +5116,20 @@ msgstr ""
 msgid "Detail removed"
 msgstr ""
 
+#: src/features/account/plan-screen.tsx
+msgid "Detailed portfolio statistics"
+msgstr ""
+
 #: src/features/applications/detail/facts.tsx
 #: src/features/documents/document-menu.tsx
 #: src/features/onboarding/messages.ts
 #: src/features/profile/profile-screen.tsx
 msgid "Details"
 msgstr "Təfərrüatlar"
+
+#: src/features/account/preferences-screen.tsx
+msgid "Device and services"
+msgstr ""
 
 #: src/features/portfolio/statistics.tsx
 msgid "Devices"
@@ -5149,6 +5215,10 @@ msgstr ""
 msgid "DNS points to Rezumi"
 msgstr ""
 
+#: src/features/account/help-screen.tsx
+msgid "Docs"
+msgstr "Sənədlər"
+
 #: src/shell/builder-chrome/top-bar.tsx
 msgid "Document menu"
 msgstr "Sənəd menyusu"
@@ -5162,7 +5232,7 @@ msgid "Document options"
 msgstr "Sənəd seçimləri"
 
 #: app/(tabs)/_layout.tsx
-#: app/account/membership.tsx
+#: src/features/account/plan-screen.tsx
 #: src/features/documents/documents-screen.tsx
 #: src/features/search/search-screen.tsx
 #: src/shell/app-tabs.tsx
@@ -5173,7 +5243,7 @@ msgstr "Sənədlər"
 msgid "Documents for this job"
 msgstr "Bu iş üçün sənədlər"
 
-#: app/account/membership.tsx
+#: src/features/account/plan-screen.tsx
 msgid "Documents in Trash don't count."
 msgstr ""
 
@@ -5199,7 +5269,7 @@ msgstr "{0} şirkətinin elanını göndərmə"
 msgid "Don't share"
 msgstr "Paylaşma"
 
-#: app/account/preferences.tsx
+#: src/features/account/preferences-screen.tsx
 #: src/features/applications/interview/when-fields.tsx
 #: src/features/entries/dates-field.tsx
 #: src/features/entries/rich-text-toolbar.tsx
@@ -5405,7 +5475,7 @@ msgstr "“{0}” surəti çıxarıldı"
 msgid "Duration"
 msgstr ""
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Dutch"
 msgstr "Niderland"
 
@@ -5560,7 +5630,7 @@ msgstr ""
 msgid "Education"
 msgstr "Təhsil"
 
-#: app/account/account.tsx
+#: src/features/account/account-screen.tsx
 #: src/features/auth/create-account-screen.tsx
 #: src/features/auth/email-sign-in-screen.tsx
 #: src/features/auth/forgot-password-screen.tsx
@@ -5595,11 +5665,16 @@ msgstr "İxrac edərkən bütün şriftləri daxil edin ki, simvollar nəzərdə
 msgid "End"
 msgstr "Son"
 
-#: src/features/settings/locale-names.ts
+#. placeholder {0}: formatDate(expiredAt)
+#: src/features/billing/plan-card.tsx
+msgid "Ended on {0}"
+msgstr ""
+
+#: src/features/account/locale-names.ts
 msgid "English"
 msgstr "İngilis"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "English (United Kingdom)"
 msgstr "İngilis (Böyük Britaniya)"
 
@@ -5627,7 +5702,7 @@ msgstr "Tam məbləği daxil edin, məsələn, 95000. Əvvəlki məbləğiniz d�
 msgid "Enter a GitHub username, like octocat."
 msgstr ""
 
-#: src/features/settings/profile.tsx
+#: src/features/account/profile.tsx
 msgid "Enter a name, up to 64 characters."
 msgstr "64 simvola qədər ad daxil edin."
 
@@ -5742,7 +5817,7 @@ msgstr "Hər rol sizin nə etdiyinizi deyir. Yazı ilə bağlı rəylər Yazı t
 msgid "Every section is in use."
 msgstr ""
 
-#: app/account/membership.tsx
+#: src/features/account/plan-screen.tsx
 msgid "Every template"
 msgstr ""
 
@@ -5795,7 +5870,7 @@ msgstr "Daha kiçik PDF ixrac edin və yenidən yoxlayın. Və ya boş bir CV ya
 msgid "Export data"
 msgstr "Məlumatları ixrac et"
 
-#: src/features/settings/export.tsx
+#: src/features/account/export.tsx
 msgid "Export everything"
 msgstr "Hər şeyi ixrac edin"
 
@@ -5845,10 +5920,6 @@ msgstr ""
 #: src/features/portfolio/editor/work.tsx
 msgid "Featured metric"
 msgstr ""
-
-#: app/account/preferences.tsx
-msgid "Feedback"
-msgstr "Rəy"
 
 #: src/features/workspace/practice/answer-panel.tsx
 msgid "Feedback needs an AI connection. Nothing is sent until you ask."
@@ -6001,7 +6072,7 @@ msgstr ""
 msgid "Finish in the browser…"
 msgstr ""
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Finnish"
 msgstr "Fin"
 
@@ -6093,6 +6164,10 @@ msgstr "İzləmə"
 #: src/features/career/schedule-sheet.tsx
 msgid "Follow-up reminder"
 msgstr "İzləmə xatırlatması"
+
+#: src/features/account/notification-settings.tsx
+msgid "Follow-up reminders"
+msgstr ""
 
 #: src/features/design/type-group.tsx
 msgid "Font"
@@ -6237,7 +6312,7 @@ msgstr "Sərbəst forma"
 msgid "Freelance"
 msgstr ""
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "French"
 msgstr "Fransız"
 
@@ -6252,7 +6327,6 @@ msgstr "Göndərən"
 
 #. placeholder {0}: formatDate(next.startsAt)
 #. placeholder {1}: formatDate(next.endsAt)
-#: app/account/membership.tsx
 #: src/features/billing/plan-card.tsx
 msgid "From {0} until {1}"
 msgstr ""
@@ -6341,7 +6415,7 @@ msgstr ""
 msgid "Gentle fade-in"
 msgstr ""
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "German"
 msgstr "Alman"
 
@@ -6411,11 +6485,15 @@ msgstr ""
 msgid "Grade"
 msgstr "Qiymət"
 
+#: src/features/billing/plan-card.tsx
+msgid "Granted access"
+msgstr ""
+
 #: src/features/design/preset-names.ts
 msgid "Graphite"
 msgstr "Qrafit"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Greek"
 msgstr "Yunan"
 
@@ -6429,7 +6507,7 @@ msgstr "Müraciət"
 msgid "Grid"
 msgstr "Şəbəkə"
 
-#: app/account/preferences.tsx
+#: src/features/account/preferences-screen.tsx
 msgid "Haptic feedback"
 msgstr "Haptik rəy"
 
@@ -6491,14 +6569,11 @@ msgstr "Dinlə"
 msgid "Heard back"
 msgstr ""
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Hebrew"
 msgstr "İvrit"
 
-#: app/account/index.tsx
-msgid "Help & docs"
-msgstr "Kömək və sənədlər"
-
+#: src/features/account/help-screen.tsx
 #: src/shell/account-menu.tsx
 msgid "Help & legal"
 msgstr ""
@@ -6567,13 +6642,17 @@ msgstr "Səhifədən gizlədin"
 msgid "Hide key"
 msgstr "Açarı gizlədin"
 
-#: app/account/licences.tsx
+#: src/features/account/licences-screen.tsx
 msgid "Hide license"
 msgstr "Lisenziyanı gizlət"
 
 #: src/features/home/needs-you.tsx
 msgid "Hide read"
 msgstr "Oxunmuş elementləri gizlədin"
+
+#: src/features/account/plan-screen.tsx
+msgid "Hide Rezumi credit"
+msgstr ""
 
 #: src/features/check/messages.ts
 msgid "Hide the photo"
@@ -6599,7 +6678,7 @@ msgstr ""
 msgid "Highlights"
 msgstr ""
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Hindi"
 msgstr "Hind"
 
@@ -6625,6 +6704,7 @@ msgstr ""
 
 #: app/(tabs)/_layout.tsx
 #: src/features/home/home-screen.tsx
+#: src/features/search/search-screen.tsx
 #: src/shell/app-tabs.tsx
 msgid "Home"
 msgstr "Əsas səhifə"
@@ -6685,7 +6765,7 @@ msgstr "Mən bu rola nə dərəcədə uyğun gəlirəm?"
 msgid "HTTPS certificate"
 msgstr ""
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Hungarian"
 msgstr "Macar"
 
@@ -6770,10 +6850,6 @@ msgstr ""
 msgid "Images cover most of the page."
 msgstr "Şəkillər səhifənin çox hissəsini əhatə edir."
 
-#: src/features/search/search-screen.tsx
-msgid "Import"
-msgstr "İdxal et"
-
 #: src/features/documents/new-choices.tsx
 msgid "Import a resume"
 msgstr "CV idxal edin"
@@ -6854,7 +6930,7 @@ msgstr ""
 msgid "Include jobs that don't list pay"
 msgstr ""
 
-#: app/account/membership.tsx
+#: src/features/account/plan-screen.tsx
 msgid "Included"
 msgstr ""
 
@@ -6894,7 +6970,7 @@ msgstr ""
 msgid "Increase vertical spacing"
 msgstr ""
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Indonesian"
 msgstr "İndoneziya"
 
@@ -6928,10 +7004,6 @@ msgstr ""
 #: src/features/portfolio/editor/content.tsx
 msgid "Interests"
 msgstr "Maraqlar"
-
-#: app/account/preferences.tsx
-msgid "Interface only. Each resume sets its own language in Design."
-msgstr "Yalnız interfeys. Hər bir rezyume Dizaynda öz dilini təyin edir."
 
 #: src/features/portfolio/editor/content.tsx
 msgid "Internship"
@@ -6970,10 +7042,15 @@ msgstr ""
 msgid "Interview practice"
 msgstr ""
 
+#: src/features/account/ai-privacy-screen.tsx
 #: src/features/career/schedule-sheet.tsx
 #: src/features/home/needs-you.tsx
 msgid "Interview preparation"
 msgstr "Müsahibəyə hazırlıq"
+
+#: src/features/account/notification-settings.tsx
+msgid "Interview reminders"
+msgstr ""
 
 #: src/features/applications/interview/use-interview-actions.ts
 msgid "Interview saved"
@@ -6994,10 +7071,6 @@ msgstr "Müsahibə saxlanıldı. Xatırlatma vaxtı artıq keçib."
 #: src/features/applications/interview-sheet.tsx
 msgid "Interview time zone"
 msgstr ""
-
-#: app/account/preferences.tsx
-msgid "Interview times, reminders and schedules in Career use it."
-msgstr "Karyeradakı müsahibə vaxtları, xatırlatmalar və cədvəllər bundan istifadə edir."
 
 #: src/features/applications/detail/contacts.tsx
 msgid "Interviewer"
@@ -7103,7 +7176,7 @@ msgstr ""
 msgid "It's removed from the activity for good."
 msgstr ""
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Italian"
 msgstr "İtalyan"
 
@@ -7140,17 +7213,13 @@ msgstr ""
 msgid "Its stage, next step, notes and files show here."
 msgstr ""
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Japanese"
 msgstr "Yapon"
 
-#: app/account/licences.tsx
+#: src/features/account/licences-screen.tsx
 msgid "JavaScript"
 msgstr "JavaScript"
-
-#: src/features/search/search-screen.tsx
-msgid "Job"
-msgstr "İş"
 
 #: src/features/career/schedule-sheet.tsx
 #: src/features/home/needs-you.tsx
@@ -7248,7 +7317,7 @@ msgctxt "Job seniority"
 msgid "Junior"
 msgstr ""
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Kannada"
 msgstr "Kannada"
 
@@ -7266,9 +7335,17 @@ msgstr "Yalnız bir ünvan saxlayın ki, proqram hansından istifadə edəcəyin
 msgid "Keep application"
 msgstr ""
 
+#: src/features/account/ai-privacy-screen.tsx
+msgid "Keep approval"
+msgstr ""
+
 #: src/draft/conflict-sheet.tsx
 msgid "Keep both"
 msgstr "İkisini də saxla"
+
+#: src/features/account/storage-screen.tsx
+msgid "Keep cache"
+msgstr ""
 
 #: src/features/assistant/threads.tsx
 msgid "Keep conversation"
@@ -7315,6 +7392,10 @@ msgstr "Dürüst olun"
 msgid "Keep it under 2.5 MB, usually by removing or shrinking images."
 msgstr "Adətən şəkilləri silərək və ya kiçildərək 2,5 MB-dan aşağı saxlayın."
 
+#: src/features/account/api-keys.tsx
+msgid "Keep key"
+msgstr ""
+
 #: src/features/portfolio/inbox.tsx
 msgid "Keep message"
 msgstr ""
@@ -7344,6 +7425,10 @@ msgstr ""
 #: src/features/documents/document-menu-panels.tsx
 msgid "Keep private notes about this resume here. Nobody else can see them."
 msgstr "Bu CV haqqında şəxsi qeydlərinizi burada saxlayın. Onları başqa heç kim görə bilməz."
+
+#: src/features/ai/provider-editor.tsx
+msgid "Keep provider"
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "Keep resume content as real text rather than as pictures of text."
@@ -7399,7 +7484,7 @@ msgstr "Olduğu kimi saxlanılır"
 msgid "Kept, but not used."
 msgstr ""
 
-#: src/features/settings/api-keys.tsx
+#: src/features/account/api-keys.tsx
 msgid "Keys act as you and can access your documents. New keys are created in your browser account settings."
 msgstr "Açarlar sizin kimi fəaliyyət göstərir və sənədlərinizə daxil ola bilər. Brauzer hesabınızın parametrlərində yeni açarlar yaradılır."
 
@@ -7412,7 +7497,7 @@ msgstr "Açar söz düzümü"
 msgid "Keywords"
 msgstr "Açar sözlər"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Khmer"
 msgstr "Kxmer"
 
@@ -7420,7 +7505,7 @@ msgstr "Kxmer"
 msgid "Kind regards,"
 msgstr "Hörmətlə,"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Korean"
 msgstr "Koreya"
 
@@ -7445,13 +7530,17 @@ msgstr ""
 msgid "Landscape"
 msgstr "Landşaft"
 
-#: app/account/preferences.tsx
+#: src/features/account/preferences-screen.tsx
 #: src/features/design/page-group.tsx
 #: src/features/documents/document-menu-panels.tsx
 #: src/features/entries/fields.ts
 #: src/features/search/search-screen.tsx
 msgid "Language"
 msgstr "Dil"
+
+#: src/features/account/preferences-screen.tsx
+msgid "Language and region"
+msgstr ""
 
 #: src/features/entries/fields.ts
 #: src/features/portfolio/editor/content.tsx
@@ -7495,7 +7584,7 @@ msgctxt "Job search filter: posted within"
 msgid "Last week"
 msgstr ""
 
-#: app/account/preferences.tsx
+#: src/features/account/preferences-screen.tsx
 msgid "Later"
 msgstr "Daha sonra"
 
@@ -7503,7 +7592,7 @@ msgstr "Daha sonra"
 msgid "Latest"
 msgstr "Ən son"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Latvian"
 msgstr "Latış"
 
@@ -7571,10 +7660,6 @@ msgstr "Orijinal başlıqdan istifadə etmək üçün boş saxlayın."
 msgid "Left"
 msgstr "Sol"
 
-#: app/account/index.tsx
-msgid "Legal"
-msgstr "Hüquqi"
-
 #: src/features/applications/interview/when-fields.tsx
 #: src/features/letters/write.tsx
 msgid "Length"
@@ -7584,7 +7669,7 @@ msgstr "Uzunluq"
 msgid "Length is not a defect, and there is no universal one-page rule. Keep the pages that earn their place."
 msgstr "Uzunluq qüsur deyil və hamılıqla qəbul edilmiş bir səhifə qaydası yoxdur. Yerini haqq edən səhifələri saxlayın."
 
-#: app/account/ai-mcp.tsx
+#: src/features/account/mcp-screen.tsx
 msgid "Let AI clients like Claude or Cursor read and edit your resumes, using an API key."
 msgstr "Claude və ya Cursor kimi AI müştərilərinə API açarından istifadə edərək CV-lərinizi oxumağa və redaktə etməyə icazə verin."
 
@@ -7629,7 +7714,6 @@ msgid "Letter sent"
 msgstr ""
 
 #: src/features/documents/segment-header.tsx
-#: src/features/search/search-screen.tsx
 msgid "Letters"
 msgstr "Məktublar"
 
@@ -7647,7 +7731,7 @@ msgstr ""
 msgid "Levels"
 msgstr ""
 
-#: app/account/licences.tsx
+#: src/features/account/licences-screen.tsx
 msgid "Licenses"
 msgstr "Lisenziyalar"
 
@@ -7655,15 +7739,10 @@ msgstr "Lisenziyalar"
 msgid "Ligatures can drop letters out of words such as \"workflow\"."
 msgstr "Liqaturalar \"workflow\" kimi sözlərdən hərfləri itirə bilər."
 
-#: app/account/index.tsx
-#: app/account/preferences.tsx
+#: src/features/account/preferences-screen.tsx
 #: src/features/portfolio/editor/design.tsx
 msgid "Light"
 msgstr "Açıq"
-
-#: src/features/search/search-screen.tsx
-msgid "Light theme"
-msgstr "Açıq mövzu"
 
 #: src/features/assistant/assistant-screen.tsx
 msgid "Likely questions, from the posting and your resume"
@@ -7741,7 +7820,7 @@ msgstr "Link yeniləndi"
 msgid "Linked · not sent yet"
 msgstr "Əlaqələndirilmiş · hələ göndərilməyib"
 
-#: app/account/account.tsx
+#: src/features/account/account-screen.tsx
 msgid "Linked accounts"
 msgstr "Əlaqədar hesablar"
 
@@ -7788,7 +7867,7 @@ msgstr "İstifadə etdiyiniz alət və texnologiyaları sadalayın. İşə göt�
 msgid "Listings come from job data providers and may change. The original posting is the one to apply through."
 msgstr ""
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Lithuanian"
 msgstr "Litva"
 
@@ -7840,16 +7919,7 @@ msgstr "Yüklənir"
 msgid "Loading AI connections…"
 msgstr "AI bağlantıları yüklənir…"
 
-#: src/features/settings/api-keys.tsx
-msgid "Loading API keys…"
-msgstr "API açarları yüklənir..."
-
-#: src/features/search/search-screen.tsx
-msgid "Loading applications…"
-msgstr "Müraciətlər yüklənir…"
-
 #: src/features/assistant/assistant-screen.tsx
-#: src/features/search/search-screen.tsx
 msgid "Loading conversations…"
 msgstr "Söhbətlər yüklənir..."
 
@@ -7891,7 +7961,6 @@ msgid "Loading resume…"
 msgstr "CV yüklənir..."
 
 #: src/features/portfolio/create.tsx
-#: src/features/search/search-screen.tsx
 msgid "Loading resumes…"
 msgstr "CV-lər yüklənir…"
 
@@ -7916,10 +7985,14 @@ msgstr ""
 msgid "Loading your public address…"
 msgstr "Ümumi ünvanınız yüklənir..."
 
-#: app/account/preferences.tsx
+#: src/features/account/plan-screen.tsx
 #: src/features/applications/detail/document-choice.tsx
 msgid "Loading…"
 msgstr "Yüklənir..."
+
+#: src/features/account/notification-settings.tsx
+msgid "Local reminders"
+msgstr ""
 
 #: src/features/applications/detail/facts.tsx
 #: src/features/applications/interview/interview-fields.tsx
@@ -8025,13 +8098,17 @@ msgstr "Onları görünəcək dərəcədə böyük, qalın və ya böyük hərfl
 msgid "Make this your primary resume?"
 msgstr "Bu CV əsas CV-niz olsun?"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Malay"
 msgstr "Malay"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Malayalam"
 msgstr "Malayalam"
+
+#: src/features/account/ai-screen.tsx
+msgid "Manage connections and choose a default source."
+msgstr ""
 
 #: src/features/portfolio/publish.tsx
 msgid "Manage domain on the web"
@@ -8058,7 +8135,7 @@ msgstr ""
 msgid "Mar 2022"
 msgstr "Mart 2022"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Marathi"
 msgstr "Marathi"
 
@@ -8136,10 +8213,6 @@ msgstr "“{resumeName}” ilə uyğunlaşdır"
 msgid "Match against a job"
 msgstr "Bir işə qarşı uyğunlaşma"
 
-#: src/features/search/search-screen.tsx
-msgid "Match system theme"
-msgstr "Sistem mövzusunu uyğunlaşdırın"
-
 #: src/features/letters/design.tsx
 msgid "Match the resume"
 msgstr "CV-yə uyğunlaşdır"
@@ -8164,12 +8237,8 @@ msgstr "Resume uyğunluğu"
 msgid "Matching your facts"
 msgstr "Faktlarınız uyğunlaşdırılır"
 
-#: src/features/search/search-screen.tsx
-msgid "MCP"
-msgstr "MCP"
-
-#: app/account/ai-mcp.tsx
-#: app/account/ai.tsx
+#: src/features/account/ai-screen.tsx
+#: src/features/account/mcp-screen.tsx
 msgid "MCP server"
 msgstr "MCP serveri"
 
@@ -8237,7 +8306,7 @@ msgstr ""
 msgid "Missing"
 msgstr ""
 
-#: app/account/index.tsx
+#: src/features/account/help-screen.tsx
 msgid "MIT License"
 msgstr "MIT lisenziyası"
 
@@ -8462,6 +8531,7 @@ msgstr ""
 msgid "Music and video"
 msgstr ""
 
+#: src/features/account/profile.tsx
 #: src/features/ai/provider-editor.tsx
 #: src/features/applications/detail/contacts.tsx
 #: src/features/applications/interview/people-field.tsx
@@ -8477,7 +8547,6 @@ msgstr ""
 #: src/features/portfolio/create.tsx
 #: src/features/portfolio/editor/content.tsx
 #: src/features/portfolio/editor/design.tsx
-#: src/features/settings/profile.tsx
 msgid "Name"
 msgstr "Ad"
 
@@ -8536,7 +8605,7 @@ msgstr "Dar"
 msgid "Narrower sidebar"
 msgstr ""
 
-#: app/account/licences.tsx
+#: src/features/account/licences-screen.tsx
 msgid "Native & fonts"
 msgstr "Yerli kod və şriftlər"
 
@@ -8548,7 +8617,7 @@ msgstr "Diqqət lazımdır"
 msgid "Needs you"
 msgstr "Sizi gözləyir"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Nepali"
 msgstr "Nepal"
 
@@ -8556,8 +8625,8 @@ msgstr "Nepal"
 msgid "Network"
 msgstr "Şəbəkə"
 
+#: src/features/account/api-keys.tsx
 #: src/features/profile/preferences.tsx
-#: src/features/settings/api-keys.tsx
 msgid "Never"
 msgstr "Heç vaxt"
 
@@ -8582,13 +8651,9 @@ msgstr ""
 msgid "New account sign-ups are turned off. Sign in with an account you already have."
 msgstr ""
 
-#: src/features/settings/api-keys.tsx
+#: src/features/account/api-keys.tsx
 msgid "New API key"
 msgstr "Yeni API açarı"
-
-#: src/features/search/search-screen.tsx
-msgid "New application"
-msgstr "Yeni müraciət"
 
 #: src/features/assistant/assistant-screen.tsx
 #: src/features/assistant/coach.tsx
@@ -8771,10 +8836,6 @@ msgstr "Heç bir siyahı tapılmadı."
 msgid "No change needed. It's already at {stage}."
 msgstr "Dəyişiklik lazım deyil. Artıq {stage} mərhələsindədir."
 
-#: src/features/search/search-screen.tsx
-msgid "No commands match that search."
-msgstr "Bu axtarışa uyğun əmr yoxdur."
-
 #: src/features/applications/detail/contacts.tsx
 msgid "No contacts yet"
 msgstr ""
@@ -8796,12 +8857,8 @@ msgstr "Düzəliş yoxdur"
 msgid "No country matches."
 msgstr "Heç bir ölkə tapılmadı."
 
-#: app/account/membership.tsx
+#: src/features/account/plan-screen.tsx
 msgid "No credit activity yet."
-msgstr ""
-
-#: app/account/membership.tsx
-msgid "No credits to spend right now"
 msgstr ""
 
 #: src/features/share/custom-domain.tsx
@@ -8840,7 +8897,6 @@ msgstr "E-poçt ünvanı yoxdur"
 msgid "No email address was found."
 msgstr "E-poçt ünvanı tapılmadı."
 
-#: app/account/membership.tsx
 #: src/features/billing/plan-card.tsx
 msgid "No end date"
 msgstr ""
@@ -8888,7 +8944,7 @@ msgstr "Hələ iş yoxdur"
 msgid "No jobs match yet."
 msgstr ""
 
-#: src/features/settings/api-keys.tsx
+#: src/features/account/api-keys.tsx
 msgid "No keys yet."
 msgstr "Hələ açar yoxdur."
 
@@ -8896,7 +8952,7 @@ msgstr "Hələ açar yoxdur."
 msgid "No language matches “{query}”."
 msgstr ""
 
-#: app/account/preferences.tsx
+#: src/features/account/preferences-screen.tsx
 msgid "No language matches."
 msgstr "Heç bir dil uyğun gəlmir."
 
@@ -8911,10 +8967,6 @@ msgstr "Heç bir sətir vəzifə adı ilə işəgötürənin birləşməsinə ox
 #: src/features/check/messages.ts
 msgid "No location"
 msgstr "Yer yoxdur"
-
-#: src/ui-legacy/fields.tsx
-msgid "No matches"
-msgstr "Uyğunluq yoxdur"
 
 #: src/features/portfolio/publish.tsx
 msgid "No matching sources."
@@ -8964,6 +9016,10 @@ msgstr ""
 msgid "No photo. Most ATS ignore photos; some regions expect one."
 msgstr "Foto yoxdur. Əksər ATS fotoşəkillərə məhəl qoymur; bəzi bölgələr bunu gözləyir."
 
+#: src/features/ai/provider-editor.tsx
+msgid "No provider matches."
+msgstr ""
+
 #: src/features/onboarding/messages.ts
 msgid "No public repositories of your own, so no projects came in."
 msgstr ""
@@ -8975,6 +9031,10 @@ msgstr ""
 #: src/features/applications/stages.ts
 msgid "No response"
 msgstr "Cavab yoxdur"
+
+#: src/features/search/search-screen.tsx
+msgid "No results match your search."
+msgstr ""
 
 #: src/features/portfolio/create.tsx
 msgid "No resumes found."
@@ -8998,6 +9058,10 @@ msgstr ""
 
 #: src/features/billing/plan-alert.ts
 msgid "No room for another resume"
+msgstr ""
+
+#: src/features/account/ai-privacy-screen.tsx
+msgid "No scheduled AI approvals."
 msgstr ""
 
 #. placeholder {0}: quota.max
@@ -9050,6 +9114,10 @@ msgstr "Bu iş elanında heç bir termin seçilmir."
 msgid "No text could be read from this file."
 msgstr "Bu fayldan heç bir mətn oxuna bilmədi."
 
+#: src/features/account/preferences-screen.tsx
+msgid "No theme matches."
+msgstr ""
+
 #: src/features/offers/cells.ts
 msgid "No time given"
 msgstr ""
@@ -9059,7 +9127,7 @@ msgstr ""
 msgid "No time zone matches “{0}”."
 msgstr ""
 
-#: app/account/preferences.tsx
+#: src/features/account/preferences-screen.tsx
 msgid "No timezone matches."
 msgstr "Uyğun saat qurşağı yoxdur."
 
@@ -9104,7 +9172,7 @@ msgstr "AI bağlantılarınızdan heç biri nitqi transkripsiya edə bilməz. Op
 msgid "Normal"
 msgstr "Normal"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Norwegian"
 msgstr "Norveç"
 
@@ -9163,7 +9231,7 @@ msgstr ""
 msgid "Not in your resume · add only if true"
 msgstr "CV-nizdə yoxdur · yalnız doğru olduqda əlavə edin"
 
-#: app/account/membership.tsx
+#: src/features/account/plan-screen.tsx
 msgid "Not included"
 msgstr ""
 
@@ -9305,6 +9373,12 @@ msgstr ""
 msgid "Notice period (weeks)"
 msgstr "Xəbərdarlıq müddəti (həftə)"
 
+#: src/features/account/notification-settings.tsx
+#: src/features/account/preferences-screen.tsx
+#: src/features/search/search-screen.tsx
+msgid "Notifications"
+msgstr ""
+
 #: src/features/applications/detail/reminder-sheet.tsx
 msgid "Notifications are off"
 msgstr "Bildirişlər deaktivdir"
@@ -9334,10 +9408,11 @@ msgstr "Müşahidə"
 msgid "Ochre"
 msgstr "Ocher"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Odia"
 msgstr "Odiya"
 
+#: src/features/account/help-screen.tsx
 #: src/features/ai/provider-list.tsx
 msgid "Off"
 msgstr "Söndür"
@@ -9384,6 +9459,11 @@ msgstr ""
 #: src/shell/builder-chrome/top-bar.tsx
 msgid "Offline · saved on this device"
 msgstr "Oflayn · bu cihazda yadda saxlanılıb"
+
+#: src/features/account/preferences-screen.tsx
+#: src/features/account/storage-screen.tsx
+msgid "Offline storage"
+msgstr ""
 
 #: src/features/portfolio/editor/screen.tsx
 msgid "Offline. Changes are waiting to save."
@@ -9617,7 +9697,7 @@ msgstr "Veb səhifəni aç"
 msgid "Open workspace"
 msgstr "İş sahəsini aç"
 
-#: app/account/index.tsx
+#: src/features/account/preferences-screen.tsx
 msgid "Open-source licenses"
 msgstr "Açıq mənbə lisenziyaları"
 
@@ -9662,6 +9742,10 @@ msgstr ""
 
 #: src/features/applications/list/list-row.tsx
 msgid "Opens the application. Long press to select."
+msgstr ""
+
+#: src/features/account/account-screen.tsx
+msgid "Opens the browser to confirm permanent deletion."
 msgstr ""
 
 #: src/features/documents/document-item.tsx
@@ -9735,8 +9819,8 @@ msgstr ""
 msgid "Other"
 msgstr "Digər"
 
-#: src/features/settings/api-keys.tsx
-msgid "Other apps can't connect with API keys on this account. This app always works."
+#: src/features/billing/plan-alert.ts
+msgid "Other apps cannot connect to this account with an API key."
 msgstr ""
 
 #: src/features/offers/cells.ts
@@ -9766,6 +9850,10 @@ msgstr "Köhnəlmiş: mətn o vaxtdan dəyişdi."
 
 #: src/features/design/preset-names.ts
 msgid "Outer space"
+msgstr ""
+
+#: src/features/account/help-screen.tsx
+msgid "Over-the-air update"
 msgstr ""
 
 #: src/features/share/custom-domain.tsx
@@ -9894,12 +9982,12 @@ msgstr ""
 msgid "Passkey"
 msgstr "Keçid açarı"
 
-#: app/account/account.tsx
+#: src/features/account/account-screen.tsx
 #: src/features/search/search-screen.tsx
 msgid "Passkeys"
 msgstr "Keçid açarları"
 
-#: app/account/account.tsx
+#: src/features/account/account-screen.tsx
 #: src/features/auth/create-account-screen.tsx
 #: src/features/auth/email-sign-in-screen.tsx
 #: src/features/search/search-screen.tsx
@@ -10044,11 +10132,7 @@ msgstr "İldə"
 msgid "Percent"
 msgstr ""
 
-#: app/account/account.tsx
-msgid "Permanently removes everything. Opens your browser account settings."
-msgstr "Daimi olaraq hər şeyi silir. Brauzer hesabı parametrlərinizi açır."
-
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Persian"
 msgstr "Fars"
 
@@ -10165,8 +10249,7 @@ msgstr "Sadə mətn (.txt)"
 msgid "Plain text with headings. Paste into application forms and notes."
 msgstr "Başlıqlarla düz mətn. İş ərizəsi formalarına və qeydlərə yapışdırın."
 
-#: app/account/index.tsx
-#: app/account/membership.tsx
+#: src/features/account/plan-screen.tsx
 #: src/shell/account-menu.tsx
 msgid "Plan"
 msgstr ""
@@ -10187,12 +10270,7 @@ msgstr "Nə soruşacağını planlaşdır"
 msgid "Planning your week"
 msgstr "Həftəniz planlaşdırılır"
 
-#: app/account/membership.tsx
-#: src/features/billing/plan-alert.ts
-msgid "Plans can be bought on the rezumi.app website."
-msgstr ""
-
-#: app/account/membership.tsx
+#: src/features/account/plan-screen.tsx
 msgid "Plans don't apply to your account yet, so everything is open."
 msgstr ""
 
@@ -10208,7 +10286,7 @@ msgstr "Gavalı bənövşəyi"
 msgid "Plus"
 msgstr ""
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Polish"
 msgstr "Polyak"
 
@@ -10218,12 +10296,14 @@ msgstr "Cilalanır"
 
 #: app/(tabs)/_layout.tsx
 #: src/features/portfolio/overview.tsx
+#: src/features/search/search-screen.tsx
 #: src/shell/app-tabs.tsx
 msgid "Portfolio"
 msgstr ""
 
 #: src/features/portfolio/editor/assistant.tsx
 #: src/features/portfolio/editor/screen.tsx
+#: src/features/search/search-screen.tsx
 msgid "Portfolio assistant"
 msgstr ""
 
@@ -10256,11 +10336,11 @@ msgstr ""
 msgid "Portrait"
 msgstr "Portret"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Portuguese (Brazil)"
 msgstr "Portuqal (Braziliya)"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Portuguese (Portugal)"
 msgstr "Portuqal (Portuqaliya)"
 
@@ -10387,10 +10467,7 @@ msgstr "Tək sütunu üstün tutun, ya da yan sütunu qısa, müstəqil siyahıl
 msgid "Preference"
 msgstr "Tərcih"
 
-#: app/account/index.tsx
-#: app/account/preferences.tsx
 #: src/features/profile/profile-screen.tsx
-#: src/features/search/search-screen.tsx
 msgid "Preferences"
 msgstr "Tərcihlər"
 
@@ -10415,7 +10492,7 @@ msgstr "Məni müsahibəyə hazırla"
 msgid "Preparing edits…"
 msgstr "Redaktələr hazırlanır..."
 
-#: src/features/settings/export.tsx
+#: src/features/account/export.tsx
 msgid "Preparing export…"
 msgstr "İxrac hazırlanır..."
 
@@ -10454,6 +10531,14 @@ msgstr "Veb səhifəni önizlə"
 msgid "Previewing {0} · tap to apply"
 msgstr "{0} önizlənir · tətbiq etmək üçün toxunun"
 
+#: src/features/account/storage-screen.tsx
+msgid "Previews and temporary exports will be removed from this device. Your documents and unsynced edits are kept."
+msgstr ""
+
+#: src/features/billing/plan-card.tsx
+msgid "Previous card subscription"
+msgstr ""
+
 #: src/features/applications/calendar/calendar-toolbar.tsx
 msgid "Previous day"
 msgstr ""
@@ -10481,6 +10566,10 @@ msgstr "Əvvəlki səhifə"
 #: src/features/check/parser-view.tsx
 msgid "Previous PDF result. It may not match your current draft."
 msgstr "Əvvəlki PDF nəticə. O, cari qaralamanıza uyğun gəlməyə bilər."
+
+#: src/features/billing/plan-card.tsx
+msgid "Previous QRIS pass"
+msgstr ""
 
 #: src/features/applications/board/stage-pager.tsx
 msgid "Previous stage"
@@ -10512,7 +10601,7 @@ msgstr "Göndərməzdən əvvəl formu düz (flat) PDF-ə çap edin və ya ixrac
 msgid "Privacy"
 msgstr "Məxfilik"
 
-#: app/account/index.tsx
+#: src/features/account/help-screen.tsx
 #: src/features/auth/welcome-screen.tsx
 msgid "Privacy policy"
 msgstr "Məxfilik siyasəti"
@@ -10539,7 +10628,7 @@ msgstr "Bacarıq Səviyyəsi"
 
 #: app/(tabs)/_layout.tsx
 #: app/(tabs)/profile/_layout.tsx
-#: app/account/account.tsx
+#: src/features/account/account-screen.tsx
 #: src/features/assistant/coach.tsx
 #: src/features/portfolio/editor/content.tsx
 #: src/features/profile/profile-screen.tsx
@@ -10565,7 +10654,7 @@ msgstr ""
 msgid "Profile links must be public HTTPS addresses."
 msgstr "Profil linkləri ictimai HTTPS ünvanları olmalıdır."
 
-#: src/features/settings/profile.tsx
+#: src/features/account/profile.tsx
 msgid "Profile photo"
 msgstr "Profil şəkli"
 
@@ -10682,6 +10771,10 @@ msgstr ""
 msgid "QR code for {url}"
 msgstr "{url} üçün QR kodu"
 
+#: src/features/billing/plan-card.tsx
+msgid "QRIS pass"
+msgstr ""
+
 #: src/features/workspace/practice/question-card.tsx
 msgid "Question {position} of {total}"
 msgstr "Sual {position} / {total}"
@@ -10755,7 +10848,7 @@ msgstr "Brifinqi oxu"
 msgid "Read it for me"
 msgstr "Mənim üçün oxu"
 
-#: app/account/licences.tsx
+#: src/features/account/licences-screen.tsx
 msgid "Read license"
 msgstr "Lisenziyanı oxu"
 
@@ -10881,10 +10974,6 @@ msgstr "Səbəb"
 msgid "Recalled"
 msgstr "Yaddaşdan"
 
-#: app/account/membership.tsx
-msgid "Recent activity"
-msgstr ""
-
 #: src/features/home/recent-documents.tsx
 msgid "Recent documents"
 msgstr ""
@@ -10976,7 +11065,7 @@ msgstr "Brifinqi 24 saat əvvəl yenilə"
 msgid "Refresh the briefing on the morning of"
 msgstr "Brifinqi həmin günün səhəri yenilə"
 
-#: app/account/index.tsx
+#: src/features/account/help-screen.tsx
 msgid "Refund policy"
 msgstr ""
 
@@ -10994,7 +11083,7 @@ msgstr "Rədd edin"
 msgid "Rejected"
 msgstr "Rədd edildi"
 
-#: app/account/preferences.tsx
+#: src/features/account/preferences-screen.tsx
 msgid "Reload now"
 msgstr "İndi yenidən yükləyin"
 
@@ -11131,8 +11220,8 @@ msgstr "Parolu sil"
 msgid "Remove person {0}"
 msgstr "{0} nömrəli şəxsi sil"
 
+#: src/features/account/profile.tsx
 #: src/features/entries/photo-field.tsx
-#: src/features/settings/profile.tsx
 msgid "Remove photo"
 msgstr "Fotonu silin"
 
@@ -11196,6 +11285,11 @@ msgstr ""
 #: src/preview/page.tsx
 msgid "Rendering preview…"
 msgstr "Önizləmə göstərilir..."
+
+#. placeholder {0}: formatDate(end)
+#: src/features/billing/plan-card.tsx
+msgid "Renews on {0}"
+msgstr ""
 
 #: src/features/applications/detail/detail-header.tsx
 #: src/features/applications/list/list-row.tsx
@@ -11264,11 +11358,15 @@ msgstr "Cavab kopyalandı"
 msgid "Report"
 msgstr "Hesabat"
 
-#: app/account/ai-report.tsx
-#: app/account/ai.tsx
+#: src/features/account/ai-report-screen.tsx
+#: src/features/account/ai-screen.tsx
 #: src/features/ai/report-content.tsx
 msgid "Report AI content"
 msgstr "AI məzmununu bildirin"
+
+#: src/features/account/help-screen.tsx
+msgid "Report an issue"
+msgstr ""
 
 #: src/features/ai/report-content.tsx
 msgid "Report received by your server operator. Thank you."
@@ -11312,7 +11410,7 @@ msgstr "Parolunuzu sıfırlayın"
 msgid "Respond by"
 msgstr "Cavab müddəti"
 
-#: app/account/preferences.tsx
+#: src/features/account/preferences-screen.tsx
 msgid "Restart to change text direction"
 msgstr "Mətn istiqamətini dəyişdirmək üçün yenidən başladın"
 
@@ -11415,10 +11513,6 @@ msgstr ""
 #: src/features/search/search-screen.tsx
 msgid "Resumes"
 msgstr "CV-lər"
-
-#: app/account/preferences.tsx
-msgid "Resumes always render on white paper, whatever the theme."
-msgstr "Mövzu nə olursa olsun, rezyumelər həmişə ağ kağızda göstərilir."
 
 #: src/features/profile/save-note.tsx
 msgid "Resumes that followed"
@@ -11550,19 +11644,19 @@ msgstr "Rəy yazısı"
 msgid "Reviewing needs an AI connection. What you write here stays on this device until then."
 msgstr "Nəzərdən keçirmək üçün AI bağlantısı lazımdır. Buraya yazdıqlarınız o vaxta qədər bu cihazda qalır."
 
-#: src/features/settings/api-keys.tsx
+#: src/features/account/api-keys.tsx
 msgid "Revoke"
 msgstr "Ləğv et"
 
-#: src/features/settings/api-keys.tsx
+#: src/features/account/api-keys.tsx
 msgid "Revoke API key?"
 msgstr "API açarı ləğv edilsin?"
 
-#: src/features/settings/api-keys.tsx
+#: src/features/account/api-keys.tsx
 msgid "Revoke key"
 msgstr "Açarı ləğv et"
 
-#: src/features/settings/api-keys.tsx
+#: src/features/account/api-keys.tsx
 msgid "Revoke this API key"
 msgstr "Bu API açarını ləğv edin"
 
@@ -11580,7 +11674,7 @@ msgstr ""
 msgid "Rezumi AI · {0} credit per reply · {1} left"
 msgstr ""
 
-#: app/account/membership.tsx
+#: src/features/account/plan-screen.tsx
 msgid "Rezumi AI credits"
 msgstr ""
 
@@ -11592,6 +11686,10 @@ msgstr ""
 #. placeholder {1}: creditCount(balance)
 #: src/features/billing/ai-source.ts
 msgid "Rezumi AI: {0}, {1} left. If it fails, the credits come back."
+msgstr ""
+
+#: src/features/account/ai-privacy-screen.tsx
+msgid "Rezumi asks before each AI operation. Individual approvals expire after that operation."
 msgstr ""
 
 #: src/shell/permissions.tsx
@@ -11654,7 +11752,7 @@ msgstr "Vəzifələr"
 msgid "Roles you're looking for"
 msgstr ""
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Romanian"
 msgstr "Rumın"
 
@@ -11697,11 +11795,15 @@ msgstr "{0}-da işləməsi planlaşdırılıb."
 msgid "Runs onto page {0}"
 msgstr "Məzmun {0} səhifəsinə axır"
 
+#: src/features/account/help-screen.tsx
+msgid "Runtime version"
+msgstr ""
+
 #: src/features/portfolio/editor/metric.tsx
 msgid "Rupiah"
 msgstr ""
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Russian"
 msgstr "Rus"
 
@@ -11979,6 +12081,7 @@ msgstr ""
 msgid "Saves as you type. Resumes that still use a part follow your changes."
 msgstr ""
 
+#: src/features/account/profile.tsx
 #: src/features/applications/interview-sheet.tsx
 #: src/features/applications/save-sheet.tsx
 #: src/features/auth/reset-password-screen.tsx
@@ -11988,7 +12091,6 @@ msgstr ""
 #: src/features/profile/preferences.tsx
 #: src/features/profile/save-note.tsx
 #: src/features/profile/stories.tsx
-#: src/features/settings/profile.tsx
 #: src/features/write/profile-marker-sheet.tsx
 #: src/shell/builder-chrome/top-bar.tsx
 msgid "Saving…"
@@ -12021,6 +12123,10 @@ msgstr ""
 msgid "Schedule saved"
 msgstr "Cədvəl saxlanıldı"
 
+#: src/features/account/ai-privacy-screen.tsx
+msgid "Scheduled AI approvals"
+msgstr ""
+
 #: src/features/career/schedule-body.tsx
 msgid "Scheduled work is not available on this server. Ask your server administrator to configure it."
 msgstr "Planlaşdırılmış iş bu serverdə mövcud deyil. Server administratorunuzdan onu qurmasını xahiş edin."
@@ -12052,8 +12158,8 @@ msgstr "Skrininq müsahibəsi"
 #: app/_layout.tsx
 #: app/(tabs)/_layout.tsx
 #: src/features/documents/library-toolbar.tsx
+#: src/features/search/search-screen.tsx
 #: src/shell/tab-chrome.tsx
-#: src/ui-legacy/fields.tsx
 msgid "Search"
 msgstr "Axtarış"
 
@@ -12073,10 +12179,6 @@ msgstr ""
 msgid "Search applications"
 msgstr "İş ərizələrini axtarın"
 
-#: src/features/search/search-screen.tsx
-msgid "Search commands"
-msgstr "Axtarış əmrləri"
-
 #: src/features/career/schedule-body.tsx
 msgid "Search connections"
 msgstr ""
@@ -12086,10 +12188,6 @@ msgstr ""
 #: src/features/profile/search-regions-field.tsx
 msgid "Search countries"
 msgstr ""
-
-#: src/features/search/search-screen.tsx
-msgid "Search covers documents, applications, assistant conversations and actions."
-msgstr "Axtarış sənədləri, iş müraciətlərini, köməkçi söhbətlərini və hərəkətləri əhatə edir."
 
 #: src/features/documents/library-states.tsx
 msgid "Search covers titles, tags and linked applications."
@@ -12102,6 +12200,10 @@ msgstr ""
 #: src/features/documents/library-toolbar.tsx
 msgid "Search documents"
 msgstr "Sənədləri axtarın"
+
+#: src/features/search/search-screen.tsx
+msgid "Search documents, applications, and more"
+msgstr ""
 
 #: src/features/share/web-page.tsx
 msgid "Search engines such as Google may list your web page. It can take weeks to appear, or to disappear after you turn this off."
@@ -12119,10 +12221,6 @@ msgstr ""
 msgid "Search for an icon"
 msgstr "İkon axtarın"
 
-#: src/features/search/search-screen.tsx
-msgid "Search for…"
-msgstr "… üçün axtarış"
-
 #: src/features/entries/icon-picker.tsx
 msgid "Search icons"
 msgstr "Nişanları axtarın"
@@ -12131,13 +12229,17 @@ msgstr "Nişanları axtarın"
 msgid "Search interviews"
 msgstr ""
 
-#: app/account/preferences.tsx
+#: src/features/account/preferences-screen.tsx
 #: src/features/design/page-group.tsx
 msgid "Search languages"
 msgstr "Dilləri axtarın"
 
 #: src/features/applications/detail/document-choice.tsx
 msgid "Search letters"
+msgstr ""
+
+#: src/features/ai/provider-editor.tsx
+msgid "Search providers"
 msgstr ""
 
 #: src/features/applications/detail/document-choice.tsx
@@ -12160,6 +12262,10 @@ msgstr "Axtarış sözləri veb axtarış xidmətinizə göndərilir."
 msgid "Search the web"
 msgstr ""
 
+#: src/features/account/preferences-screen.tsx
+msgid "Search themes"
+msgstr ""
+
 #: src/features/applications/interview/zone-list.tsx
 msgid "Search time zones"
 msgstr ""
@@ -12168,14 +12274,9 @@ msgstr ""
 msgid "Search times"
 msgstr ""
 
-#: app/account/preferences.tsx
+#: src/features/account/preferences-screen.tsx
 msgid "Search timezones"
 msgstr "Saat qurşaqlarında axtar"
-
-#: src/features/search/search-screen.tsx
-#: src/ui-legacy/fields.tsx
-msgid "Search…"
-msgstr "… axtarın"
 
 #: src/features/assistant/messages.tsx
 msgid "Searched the web"
@@ -12184,6 +12285,10 @@ msgstr "İnternetdə axtarış etdi"
 #: src/features/assistant/messages.tsx
 msgid "Searching the web…"
 msgstr "Vebdə axtarış edilir..."
+
+#: src/features/search/search-screen.tsx
+msgid "Searching…"
+msgstr ""
 
 #: src/features/check/messages.ts
 msgid "Section headings"
@@ -12211,6 +12316,10 @@ msgstr "Bölmələr sistemlərin tanıdığı başlıqlardan istifadə edir və 
 
 #: src/features/design/preset-names.ts
 msgid "Security"
+msgstr ""
+
+#: src/features/account/account-screen.tsx
+msgid "Security settings open in the browser. You may need to sign in there."
 msgstr ""
 
 #: src/features/onboarding/intro-screen.tsx
@@ -12374,12 +12483,12 @@ msgstr "{0} ünvanına göndərildi"
 msgid "Sent to Lumen"
 msgstr "Lumen-ə göndərildi"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Serbian"
 msgstr "Serb"
 
 #: src/api/ai-consent.ts
-#: src/features/settings/sign-out.tsx
+#: src/features/account/sign-out.tsx
 msgid "Server"
 msgstr "Server"
 
@@ -12434,13 +12543,11 @@ msgstr ""
 msgid "Setting up HTTPS. This usually takes a few minutes, and this screen updates by itself."
 msgstr ""
 
-#: app/account/index.tsx
 #: src/features/applications/detail/reminder-sheet.tsx
-#: src/features/search/search-screen.tsx
 msgid "Settings"
 msgstr "Parametrlər"
 
-#: app/account/ai-mcp.tsx
+#: src/features/account/mcp-screen.tsx
 msgid "Setup guide"
 msgstr "Quraşdırma təlimatı"
 
@@ -12593,10 +12700,6 @@ msgstr ""
 msgid "Show again"
 msgstr "Yenidən göstər"
 
-#: src/features/search/search-screen.tsx
-msgid "Show all"
-msgstr "Hamısını göstər"
-
 #: src/features/profile/facts.tsx
 msgid "Show all facts"
 msgstr ""
@@ -12651,7 +12754,7 @@ msgstr ""
 msgid "Show link in title"
 msgstr "Başlıqda keçid göstər"
 
-#: app/account/preferences.tsx
+#: src/features/account/plan-screen.tsx
 #: src/features/applications/interview/zone-list.tsx
 msgid "Show more"
 msgstr "Daha çox göstər"
@@ -12802,18 +12905,26 @@ msgid "Sign in to view this resume."
 msgstr "Bu CV-yə baxmaq üçün daxil olun."
 
 #: src/auth/session-gate.tsx
-#: src/features/settings/sign-out.tsx
+#: src/features/account/sign-out.tsx
 #: src/shell/account-menu.tsx
 #: src/shell/app-drawer.tsx
 msgid "Sign out"
 msgstr "Çıxış"
 
-#: src/features/settings/sign-out.tsx
+#: src/features/account/sign-out.tsx
+msgid "Sign out of all devices"
+msgstr ""
+
+#: src/features/account/sign-out.tsx
+msgid "Sign out of all devices?"
+msgstr ""
+
+#: src/features/account/sign-out.tsx
 #: src/shell/account-menu.tsx
 msgid "Sign out?"
 msgstr "Çıxılsın?"
 
-#: app/account/account.tsx
+#: src/features/account/account-screen.tsx
 msgid "Sign-in & security"
 msgstr "Giriş və təhlükəsizlik"
 
@@ -12831,7 +12942,7 @@ msgid "Signed in with Apple, Google or another provider? You have no password he
 msgstr ""
 
 #: src/auth/session-gate.tsx
-#: src/features/settings/sign-out.tsx
+#: src/features/account/sign-out.tsx
 msgid "Signed out, but some data on this device couldn't be removed."
 msgstr "Hesabdan çıxdınız, lakin bu cihazdakı bəzi data silinə bilmədi."
 
@@ -12898,11 +13009,11 @@ msgstr "Ötür"
 msgid "Skipped"
 msgstr ""
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Slovak"
 msgstr "Slovak"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Slovenian"
 msgstr "Sloven"
 
@@ -12951,6 +13062,10 @@ msgstr "Bəzi qliflərin bu faylın xaricində heç bir mənası yoxdur."
 #: src/features/ats-checker/messages.ts
 msgid "Some lines are stored out of reading order."
 msgstr "Bəzi sətirlər oxunma ardıcıllığından kənar saxlanılıb."
+
+#: src/features/search/search-screen.tsx
+msgid "Some results couldn't load."
+msgstr ""
 
 #: src/features/check/messages.ts
 msgid "Some systems mishandle images, and photos are discouraged in some countries."
@@ -13022,7 +13137,7 @@ msgstr "Mənbə"
 msgid "Sources"
 msgstr "Mənbələr"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Spanish"
 msgstr "İspan"
 
@@ -13217,6 +13332,7 @@ msgstr ""
 msgid "Stay here"
 msgstr "Burada qalın"
 
+#: src/features/account/sign-out.tsx
 #: src/shell/account-menu.tsx
 msgid "Stay signed in"
 msgstr ""
@@ -13353,10 +13469,6 @@ msgstr "Kəsmə təklif edir, heç vaxt öz-özünə silmir"
 msgid "Summary"
 msgstr "Xülasə"
 
-#: app/account/index.tsx
-msgid "Support"
-msgstr "Dəstək"
-
 #: src/features/jobs/listing-fit.tsx
 #: src/features/workspace/debrief/review-card.tsx
 #: src/features/workspace/fit/requirement-card.tsx
@@ -13379,7 +13491,7 @@ msgstr ""
 msgid "Swap the start and end dates."
 msgstr "Başlanğıc və bitmə tarixlərini dəyişdirin."
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Swedish"
 msgstr "İsveç"
 
@@ -13391,7 +13503,7 @@ msgstr "Modeli dəyişdirin"
 msgid "Switch server"
 msgstr "Server dəyişdirin"
 
-#: src/features/settings/sign-out.tsx
+#: src/features/account/sign-out.tsx
 #: src/linking/open.ts
 msgid "Switch server?"
 msgstr "Server dəyişdirilsin?"
@@ -13404,10 +13516,17 @@ msgstr "Bir sütuna keçin"
 msgid "Switched to one column"
 msgstr "Bir sütuna keçdi"
 
-#: app/account/index.tsx
-#: app/account/preferences.tsx
+#: src/features/account/preferences-screen.tsx
 msgid "System"
 msgstr "Əməliyyat sistemi"
+
+#: src/features/account/notification-settings.tsx
+msgid "System notification settings"
+msgstr ""
+
+#: src/features/account/notification-settings.tsx
+msgid "System permission is off."
+msgstr ""
 
 #: src/features/check/messages.ts
 msgid "Systems file you under the name at the top of the page."
@@ -13470,8 +13589,8 @@ msgstr ""
 msgid "Take a picture"
 msgstr ""
 
+#: src/features/account/profile.tsx
 #: src/features/entries/photo-field.tsx
-#: src/features/settings/profile.tsx
 msgid "Take photo"
 msgstr "Şəkil çəkin"
 
@@ -13492,7 +13611,7 @@ msgstr ""
 msgid "Takes its sender details and design from your latest resume."
 msgstr ""
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Tamil"
 msgstr "Tamil"
 
@@ -13553,7 +13672,7 @@ msgstr "Fəxr etdiyiniz bir iş haqqında danışın. Bunda sizin payınız nə 
 msgid "Tell me about a time you disagreed with a colleague. How did you resolve it?"
 msgstr "Həmkarınızla razılaşmadığınız bir hal haqqında danışın. Bunu necə həll etdiniz?"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Telugu"
 msgstr "Teluqu"
 
@@ -13593,7 +13712,7 @@ msgstr ""
 msgid "Terms from the posting"
 msgstr "İş elanından terminlər"
 
-#: app/account/index.tsx
+#: src/features/account/help-screen.tsx
 msgid "Terms of service"
 msgstr "Xidmət şərtləri"
 
@@ -13669,7 +13788,7 @@ msgstr ""
 msgid "Text, e.g. Indonesian"
 msgstr ""
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Thai"
 msgstr "Tay"
 
@@ -14008,14 +14127,13 @@ msgstr "Birinci səhifənin yuxarı hissəsi ad kimi görünmür."
 msgid "The versions you sent are kept in Saved. Edits here don't change what {company} received."
 msgstr "Göndərdiyiniz versiyalar Saxlanılanlar daxilində saxlanılır. Buradakı redaktələr {company} tərəfindən qəbul edilənləri dəyişmir."
 
-#: app/account/preferences.tsx
+#: src/features/account/preferences-screen.tsx
 #: src/features/portfolio/editor/design.tsx
 #: src/features/search/search-screen.tsx
 msgid "Theme"
 msgstr "Mövzu"
 
 #. placeholder {0}: getPlanName(next.planId)
-#: app/account/membership.tsx
 #: src/features/billing/plan-card.tsx
 msgid "Then {0}"
 msgstr ""
@@ -14052,10 +14170,6 @@ msgstr "Bunlar müraciət edərkən saxlanılmış cavablardır."
 msgid "These open Rezumi's sign-in page in a secure browser sheet. You come back here when you're done."
 msgstr ""
 
-#: app/account/account.tsx
-msgid "These open your server's account settings in a browser tab inside the app. You may need to sign in there."
-msgstr "Bunlar serverinizin hesab parametrlərini proqram daxilindəki brauzer nişanında açır. Orada daxil olmağınız lazım ola bilər."
-
 #: src/features/profile/save-note.tsx
 msgid "These resumes still used the parts you changed, so they changed too. Parts a resume changed itself stay as they are."
 msgstr ""
@@ -14076,16 +14190,8 @@ msgstr "Düşünülür"
 msgid "Thinking…"
 msgstr "Düşünür..."
 
-#: app/account/licences.tsx
-msgid "Third-party software notices. Tap a dependency to read its license."
-msgstr "Üçüncü tərəf proqram təminatı bildirişləri. Lisenziyasını oxumaq üçün asılılığa toxunun."
-
 #: src/features/portfolio/queries.ts
 msgid "This account already has a portfolio."
-msgstr ""
-
-#: src/features/billing/plan-alert.ts
-msgid "This app always works. Other apps and assistants that connect with an API key need more."
 msgstr ""
 
 #: src/features/workspace/screen.tsx
@@ -14111,6 +14217,7 @@ msgstr ""
 #: src/features/assistant/assistant-screen.tsx
 #: src/features/assistant/chat-view.tsx
 #: src/features/assistant/coach.tsx
+#: src/features/portfolio/editor/assistant.tsx
 msgid "This conversation couldn't be opened."
 msgstr "Bu söhbəti açmaq mümkün olmadı."
 
@@ -14124,6 +14231,10 @@ msgstr ""
 
 #: src/features/applications/detail/posting.tsx
 msgid "This description is clipped or incomplete. Check it before preparing documents."
+msgstr ""
+
+#: src/features/account/preferences-screen.tsx
+msgid "This device"
 msgstr ""
 
 #: src/features/assistant/threads.tsx
@@ -14165,6 +14276,10 @@ msgstr ""
 #: src/api/ai-consent.ts
 msgid "This enables recurring processing while the schedule is on, using your server's selected providers. Turn the schedule off to stop future runs."
 msgstr "Bu, serverinizin seçilmiş provayderlərindən istifadə edərək, cədvəl aktiv olduqda təkrarlanan emal etməyə imkan verir. Gələcək qaçışları dayandırmaq üçün cədvəli söndürün."
+
+#: src/features/account/sign-out.tsx
+msgid "This ends your Rezumi sessions on every device. Edits that haven't synced from this device will be lost."
+msgstr ""
 
 #: src/features/check/messages.ts
 msgid "This entry"
@@ -14339,6 +14454,10 @@ msgstr "Bu, proqram təminatının bu faylın mətnini nə qədər etibarlı ş�
 msgid "This needs {required} and you have {balance}. Switch to your own AI connection to continue."
 msgstr ""
 
+#: src/features/billing/plan-alert.ts
+msgid "This option isn't available"
+msgstr ""
+
 #: src/features/portfolio/queries.ts
 msgid "This option isn't included in your current plan."
 msgstr ""
@@ -14358,6 +14477,10 @@ msgstr "Bu səhifə çox sıx doldurulub."
 #: src/features/check/proposal-card.tsx
 msgid "This passage changed. Run the review again."
 msgstr "Bu keçid dəyişdi. Yenidən nəzərdən keçirin."
+
+#: src/features/account/ai-privacy-screen.tsx
+msgid "This pauses the interview preparation schedule. You can enable it again from Home."
+msgstr ""
 
 #: src/features/portfolio/editor/media.ts
 msgid "This PDF has an unsupported number of pages."
@@ -14492,10 +14615,6 @@ msgstr "Bu hekayə əlçatan deyil və ya söndürülmüş faktlardan istifadə 
 msgid "This template isn't available"
 msgstr ""
 
-#: src/features/billing/plan-alert.ts
-msgid "This template isn't in your plan"
-msgstr ""
-
 #: src/features/portfolio/editor/ai.tsx
 msgid "This text changed while AI was writing. Try again."
 msgstr ""
@@ -14508,7 +14627,7 @@ msgstr "Bu vaxt sizin saat qurşağınızda mövcud deyil. Başqa vaxt seçin."
 msgid "This time doesn't exist in that time zone. Choose another time."
 msgstr ""
 
-#: src/features/settings/profile.tsx
+#: src/features/account/profile.tsx
 msgid "This username is already taken."
 msgstr "Bu istifadəçi adı artıq götürülüb."
 
@@ -14557,7 +14676,8 @@ msgstr "Vaxt, link, kim, nə göndərdiniz"
 msgid "Times are shown in {timeZone}."
 msgstr "Vaxtlar {timeZone} üzrə göstərilir."
 
-#: app/account/preferences.tsx
+#: src/features/account/preferences-screen.tsx
+#: src/features/search/search-screen.tsx
 msgid "Timezone"
 msgstr "Saat qurşağı"
 
@@ -14662,11 +14782,7 @@ msgstr ""
 msgid "Tool logos aren't available, so the imported document shows skills without them."
 msgstr ""
 
-#: src/features/billing/plan-alert.ts
-msgid "Tool logos aren't in your plan"
-msgstr ""
-
-#: app/account/membership.tsx
+#: src/features/account/plan-screen.tsx
 #: src/features/design/icons-group.tsx
 msgid "Tool logos in skills"
 msgstr ""
@@ -14748,7 +14864,11 @@ msgstr "Zibil qutusu"
 msgid "Trash is empty"
 msgstr "Zibil qutusu boşdur"
 
-#: app/account/membership.tsx
+#: src/features/account/mcp-screen.tsx
+msgid "Treat API keys like passwords. Revoke a key in Account to stop the app using it."
+msgstr ""
+
+#: src/features/account/plan-screen.tsx
 #: src/features/billing/credits.ts
 msgid "Trial credits"
 msgstr ""
@@ -14771,8 +14891,12 @@ msgstr ""
 
 #: app/_layout.tsx
 #: app/(auth)/server.tsx
-#: app/account/account.tsx
-#: app/account/preferences.tsx
+#: src/features/account/account-screen.tsx
+#: src/features/account/ai-privacy-screen.tsx
+#: src/features/account/api-keys.tsx
+#: src/features/account/plan-screen.tsx
+#: src/features/account/preferences-screen.tsx
+#: src/features/account/storage-screen.tsx
 #: src/features/ai/provider-editor.tsx
 #: src/features/ai/provider-list.tsx
 #: src/features/applications/board/load-states.tsx
@@ -14787,7 +14911,7 @@ msgstr ""
 #: src/features/letters/write.tsx
 #: src/features/onboarding/onboarding-screen.tsx
 #: src/features/profile/states.tsx
-#: src/features/settings/api-keys.tsx
+#: src/features/search/search-screen.tsx
 #: src/features/workspace/ai-notice.tsx
 #: src/features/workspace/part-body.tsx
 #: src/features/workspace/practice/practice-part.tsx
@@ -14835,7 +14959,7 @@ msgstr "Nümunə CV ilə cəhd edin"
 msgid "Trying {0} on the page"
 msgstr ""
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Turkish"
 msgstr "Türk"
 
@@ -14859,6 +14983,10 @@ msgstr "Bu cədvəli aktivləşdir"
 msgid "Turned off in Settings"
 msgstr ""
 
+#: src/features/account/notification-settings.tsx
+msgid "Turning a type off removes its scheduled reminders from this device. Turn it back on to set new reminders in Applications."
+msgstr ""
+
 #: src/features/design/gallery-filters.tsx
 #: src/features/design/template-card.tsx
 #: src/features/onboarding/template-choice.tsx
@@ -14873,7 +15001,7 @@ msgstr ""
 msgid "Two stories"
 msgstr "İki hekayə"
 
-#: app/account/account.tsx
+#: src/features/account/account-screen.tsx
 #: src/features/auth/two-factor-screen.tsx
 msgid "Two-step verification"
 msgstr "İki addımlı doğrulama"
@@ -14885,10 +15013,6 @@ msgstr "İki addımlı doğrulama"
 #: src/features/workspace/practice/answer-panel.tsx
 msgid "Type"
 msgstr "Növ"
-
-#: src/features/search/search-screen.tsx
-msgid "Type a command or search…"
-msgstr "Əmr yazın və ya… axtarışını edin"
 
 #: src/features/workspace/practice/answer-panel.tsx
 #: src/features/workspace/practice/recorder-control.tsx
@@ -14909,11 +15033,11 @@ msgstr ""
 msgid "Typography"
 msgstr "Tipoqrafiya"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Ukrainian"
 msgstr "Ukrayn"
 
-#: app/account/preferences.tsx
+#: src/features/account/help-screen.tsx
 msgid "Unavailable"
 msgstr "Əlçatan deyil"
 
@@ -14990,7 +15114,7 @@ msgstr "Əvvəlcə kilidini açın, sonra yenidən cəhd edin."
 msgid "Unlocking…"
 msgstr "Kilid açılır..."
 
-#: src/features/settings/api-keys.tsx
+#: src/features/account/api-keys.tsx
 msgid "Unnamed key"
 msgstr "Adsız açar"
 
@@ -15089,7 +15213,7 @@ msgstr ""
 msgid "Upload TTF or OTF files you have the right to use, one file per weight or style. Anyone who opens a shared link to this document can download them."
 msgstr ""
 
-#: src/features/settings/profile.tsx
+#: src/features/account/profile.tsx
 msgid "Uploading photo…"
 msgstr "Foto yüklənir..."
 
@@ -15135,7 +15259,7 @@ msgstr ""
 msgid "Use {url}"
 msgstr "{url} istifadə edin"
 
-#: src/features/settings/profile.tsx
+#: src/features/account/profile.tsx
 msgid "Use 3 to 64 lowercase letters, numbers, dots, hyphens and underscores."
 msgstr "3-dən 64-ə qədər kiçik hərf, rəqəm, nöqtə, defis və alt xəttdən istifadə edin."
 
@@ -15331,10 +15455,6 @@ msgstr "Onlarınkini istifadə edin"
 msgid "Use these answers"
 msgstr "Bu cavablardan istifadə et"
 
-#: app/account/preferences.tsx
-msgid "Use this device's timezone ({deviceTimezone})"
-msgstr "Bu cihazın saat qurşağından istifadə edin ({deviceTimezone})"
-
 #: src/features/ai/provider-editor.tsx
 msgid "Use this provider"
 msgstr "Bu provayderdən istifadə edin"
@@ -15363,8 +15483,8 @@ msgstr ""
 msgid "Used to check roles and offers. Each is a number, so the coach can compare without guessing."
 msgstr "Vəzifələri və təklifləri yoxlamaq üçün istifadə olunur. Hər biri rəqəmdir ki, kouç təxmin etmədən müqayisə edə bilsin."
 
+#: src/features/account/profile.tsx
 #: src/features/entries/fields.ts
-#: src/features/settings/profile.tsx
 msgid "Username"
 msgstr "İstifadəçi adı"
 
@@ -15393,7 +15513,7 @@ msgstr "CV-nizin şablonundan və Dizaynından istifadə edir, istənilən ekran
 msgid "Using your Profile's version."
 msgstr ""
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Uzbek"
 msgstr "Özbək"
 
@@ -15500,7 +15620,7 @@ msgstr ""
 msgid "Video link, office address or phone number"
 msgstr ""
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Vietnamese"
 msgstr "Vyetnam"
 
@@ -15829,7 +15949,7 @@ msgstr ""
 msgid "What you're looking for"
 msgstr "Nə axtarırsınız"
 
-#: app/account/membership.tsx
+#: src/features/account/plan-screen.tsx
 msgid "What's included"
 msgstr ""
 
@@ -15841,7 +15961,7 @@ msgstr "Nə işləyir"
 msgid "WhatsApp number with country code"
 msgstr ""
 
-#: app/account/membership.tsx
+#: src/features/billing/plan-card.tsx
 msgid "When a plan ends, nothing is locked or deleted: every document stays open to edit, share and download as a PDF."
 msgstr ""
 
@@ -15923,8 +16043,20 @@ msgstr ""
 msgid "Width"
 msgstr "Genişlik"
 
-#: src/features/settings/api-keys.tsx
-msgid "Without it, apps you connect with a key won't work yet. This app always works. Plans can be bought on the rezumi.app website."
+#: src/features/account/ai-privacy-screen.tsx
+msgid "Withdraw"
+msgstr ""
+
+#: src/features/account/ai-privacy-screen.tsx
+msgid "Withdraw AI approval?"
+msgstr ""
+
+#: src/features/account/ai-privacy-screen.tsx
+msgid "Withdraw approval"
+msgstr ""
+
+#: src/features/account/ai-privacy-screen.tsx
+msgid "Withdrawing approval pauses the schedule on all devices."
 msgstr ""
 
 #: src/features/letters/write.tsx
@@ -15940,12 +16072,8 @@ msgstr "Word"
 msgid "Word and ODT aren't available"
 msgstr ""
 
-#: app/account/membership.tsx
+#: src/features/account/plan-screen.tsx
 msgid "Word and ODT downloads"
-msgstr ""
-
-#: src/features/billing/plan-alert.ts
-msgid "Word and ODT downloads aren't in your plan"
 msgstr ""
 
 #: src/features/documents/new-choices.tsx
@@ -16089,7 +16217,7 @@ msgstr ""
 msgid "Writing"
 msgstr "Yazı"
 
-#: app/account/ai-providers.tsx
+#: src/features/account/providers-screen.tsx
 msgid "Writing help, tailored suggestions and the assistant. The default provider is used wherever you don't pick one. Your keys stay encrypted."
 msgstr "Yazı köməyi, fərdiləşdirilmiş təkliflər və köməkçi. Seçim etmədiyiniz hər yerdə defolt provayder istifadə olunur. Açarlarınız şifrələnmiş qalır."
 
@@ -16120,6 +16248,10 @@ msgstr "Bunu artıq “{takenBy}” üçün istifadə edirsiniz."
 #: src/features/assistant/messages.tsx
 msgid "You answered: {answer}"
 msgstr "Cavab verdiniz: {answer}"
+
+#: src/features/billing/plan-alert.ts
+msgid "You can keep editing and sharing your portfolio."
+msgstr ""
 
 #: src/shell/builder-chrome/top-bar.tsx
 msgid "You can keep editing. Changes sync when you're back online. PDF sharing works with cached fonts and images."
@@ -16199,7 +16331,7 @@ msgstr "Onu öz e-poçtunuzdan göndərirsiniz."
 msgid "You submit on the employer's site yourself. Marking it applied keeps the exact versions you sent."
 msgstr "İşəgötürənin saytında özünüz göndərirsiniz. Müraciət edildi kimi qeyd etmək göndərdiyiniz dəqiq versiyaları saxlayır."
 
-#: src/features/settings/sign-out.tsx
+#: src/features/account/sign-out.tsx
 #: src/shell/account-menu.tsx
 msgid "You will be signed out of {server}. Any edits not yet synced from this device will be lost."
 msgstr "Siz {server} hesabından çıxacaqsınız. Bu cihazdan hələ sinxronlaşdırılmamış redaktələr silinəcək."
@@ -16354,7 +16486,7 @@ msgstr "Bu cihazda etdiyiniz dəyişikliklər yadda saxlanmış versiya ilə əv
 msgid "Your contact details are not on the first page."
 msgstr "Əlaqə məlumatlarınız birinci səhifədə deyil."
 
-#: app/account/account.tsx
+#: src/features/account/account-screen.tsx
 msgid "Your data"
 msgstr "Məlumatlarınız"
 
@@ -16433,7 +16565,7 @@ msgstr ""
 msgid "Your job search starts here"
 msgstr "İş axtarışınız buradan başlayır"
 
-#: app/account/preferences.tsx
+#: src/features/account/preferences-screen.tsx
 msgid "Your language is saved. Restart Rezumi to apply the new left-to-right or right-to-left layout."
 msgstr "Diliniz saxlandı. Yeni soldan sağa və ya sağdan sola düzümü tətbiq etmək üçün Rezumi-ni yenidən başladın."
 
@@ -16491,11 +16623,7 @@ msgstr "Girişiniz, gətirəcəyiniz hekayələr və verəcəyiniz suallar. Zən
 msgid "Your own domain isn't available"
 msgstr ""
 
-#: src/features/billing/plan-alert.ts
-msgid "Your own domain isn't in your plan"
-msgstr ""
-
-#: app/account/membership.tsx
+#: src/features/account/plan-screen.tsx
 msgid "Your own fonts"
 msgstr ""
 
@@ -16507,12 +16635,8 @@ msgstr ""
 msgid "Your own fonts aren't available, so the imported document uses a standard font."
 msgstr ""
 
-#: src/features/billing/plan-alert.ts
-msgid "Your own fonts aren't in your plan"
-msgstr ""
-
 #: src/features/design/uploaded-fonts.tsx
-msgid "Your own fonts aren't in your plan. Fonts already added keep working on the page."
+msgid "Your own fonts aren't available. Fonts already added keep working on the page."
 msgstr ""
 
 #: src/features/billing/plan-alert.ts
@@ -16528,7 +16652,6 @@ msgstr ""
 msgid "Your phone number is written in an unusual shape."
 msgstr "Telefon nömrəniz qeyri-adi formada yazılıb."
 
-#: app/account/membership.tsx
 #: src/features/billing/plan-card.tsx
 msgid "Your plan"
 msgstr ""
@@ -16619,7 +16742,7 @@ msgstr ""
 msgid "Your Profile was saved on another device or on the web while you were editing here. Your changes are still on this device. Choose which version to keep."
 msgstr ""
 
-#: src/features/settings/export.tsx
+#: src/features/account/export.tsx
 msgid "Your profile, documents, applications and Career data as JSON. Images and attachments remain references."
 msgstr "Profiliniz, sənədləriniz, iş müraciətləriniz və Karyera datanız JSON olaraq. Şəkillər və əlavələr istinad olaraq qalır."
 
@@ -16631,7 +16754,7 @@ msgstr ""
 msgid "your provider"
 msgstr "provayderiniz"
 
-#: src/features/settings/profile.tsx
+#: src/features/account/profile.tsx
 msgid "Your public links begin with {server}/"
 msgstr "İctimai keçidləriniz {server}/ ilə başlayır"
 
@@ -16756,6 +16879,6 @@ msgstr ""
 msgid "Zoom: fit to width"
 msgstr ""
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Zulu"
 msgstr "Zulu"

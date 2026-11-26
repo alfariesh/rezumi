@@ -1,11 +1,12 @@
 import type { AuthProvider } from "@rezumi/auth/types";
 import { ORPCError } from "@orpc/client";
 import { symmetricDecrypt } from "better-auth/crypto";
-import { and, eq } from "drizzle-orm";
+import { and, arrayContained, eq, inArray, sql } from "drizzle-orm";
 import { auth, isCustomOAuthProviderEnabled } from "@rezumi/auth/config";
 import { db } from "@rezumi/db/client";
 import * as schema from "@rezumi/db/schema";
 import { env } from "@rezumi/env/server";
+import { firstPartyRedirectUris } from "../billing/automation";
 import { endBillingForDeletedUser } from "../billing/deletion";
 import { exportBillingData } from "../billing/export";
 import { careerService } from "../career/service";
@@ -62,6 +63,29 @@ export const authService = {
 			.where(eq(schema.user.id, userId));
 		if (!user) throw new ORPCError("NOT_FOUND");
 		return user;
+	},
+
+	/** Ends Rezumi sessions and device grants together. Connected third-party apps and API keys are separate. */
+	signOutAllDevices: async (userId: string) => {
+		await db.transaction(async (tx) => {
+			const clients = tx
+				.select({ id: schema.oauthClient.clientId })
+				.from(schema.oauthClient)
+				.where(
+					and(
+						sql`cardinality(${schema.oauthClient.redirectUris}) > 0`,
+						arrayContained(schema.oauthClient.redirectUris, [...firstPartyRedirectUris()]),
+					),
+				);
+			const ownGrants = (
+				table: typeof schema.oauthConsent | typeof schema.oauthAccessToken | typeof schema.oauthRefreshToken,
+			) => and(eq(table.userId, userId), inArray(table.clientId, clients));
+			await tx.delete(schema.session).where(eq(schema.session.userId, userId));
+			await tx.delete(schema.oauthConsent).where(ownGrants(schema.oauthConsent));
+			await tx.delete(schema.oauthAccessToken).where(ownGrants(schema.oauthAccessToken));
+			await tx.delete(schema.oauthRefreshToken).where(ownGrants(schema.oauthRefreshToken));
+		});
+		return { success: true as const };
 	},
 
 	// GDPR-style export of everything the user owns. Selects explicit columns so

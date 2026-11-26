@@ -284,7 +284,7 @@ msgstr "{0} tersedia, dan dokumen yang sudah memakai template lain tetap memakai
 
 #. placeholder {0}: creditCount(TRIAL_CREDITS.amount)
 #. placeholder {1}: TRIAL_CREDITS.validDays
-#: app/account/membership.tsx
+#: src/features/account/plan-screen.tsx
 msgid "{0} come with your first use of Rezumi AI, valid for {1} days."
 msgstr "{0} kamu dapatkan saat pertama kali memakai Rezumi AI, berlaku {1} hari."
 
@@ -300,7 +300,7 @@ msgstr "{0} karyawan"
 
 #. placeholder {0}: creditCount(credits.nextExpiry.credits)
 #. placeholder {1}: formatDate(credits.nextExpiry.at)
-#: app/account/membership.tsx
+#: src/features/account/plan-screen.tsx
 msgid "{0} expire on {1}"
 msgstr "{0} kedaluwarsa pada {1}"
 
@@ -345,6 +345,11 @@ msgstr "{0} siap dipakai. Pilih di Keluarga font."
 #: src/features/design/uploaded-fonts.tsx
 msgid "{0} italic"
 msgstr "{0} miring"
+
+#. placeholder {0}: i18n.number(bytes.data / 1024, { maximumFractionDigits: 1 })
+#: src/features/account/storage-screen.tsx
+msgid "{0} KB"
+msgstr "{0} KB"
 
 #. placeholder {0}: clock.money(terms.currency, difference)
 #: src/features/offers/cells.ts
@@ -946,11 +951,11 @@ msgstr "{TRASH_DAYS, plural, other {Dokumen yang Anda pindahkan ke sini disimpan
 msgid "{unread, plural, one {# unread message} other {# unread messages}}"
 msgstr "{unread, plural, other {# pesan belum dibaca}}"
 
-#: app/account/membership.tsx
+#: src/features/account/plan-screen.tsx
 msgid "{used} in use"
 msgstr "{used} terpakai"
 
-#: app/account/membership.tsx
+#: src/features/account/plan-screen.tsx
 msgid "{used} of {max}"
 msgstr "{used} dari {max}"
 
@@ -1189,6 +1194,10 @@ msgstr "Sekitar 90 detik jika diucapkan"
 msgid "About me"
 msgstr "Tentang saya"
 
+#: src/features/account/help-screen.tsx
+msgid "About Rezumi"
+msgstr "Tentang Rezumi"
+
 #: src/features/jobs/listing-detail.tsx
 msgid "About the job"
 msgstr "Tentang pekerjaan ini"
@@ -1232,9 +1241,7 @@ msgstr "Penawaran diterima"
 msgid "Accomplishment"
 msgstr "Pencapaian"
 
-#: app/account/account.tsx
-#: app/account/index.tsx
-#: src/features/search/search-screen.tsx
+#: src/features/account/account-screen.tsx
 #: src/shell/account-menu.tsx
 #: src/shell/app-drawer.tsx
 msgid "Account"
@@ -1248,24 +1255,19 @@ msgstr "Menu akun"
 msgid "Action"
 msgstr "Tindakan"
 
-#: src/features/search/search-screen.tsx
-msgid "Actions"
-msgstr "Tindakan"
-
 #: src/features/share/custom-domain.tsx
 msgid "Active"
 msgstr "Aktif"
 
-#: app/account/membership.tsx
+#: src/features/account/plan-screen.tsx
 msgid "Active cover letters"
 msgstr "Surat lamaran aktif"
 
-#: app/account/membership.tsx
+#: src/features/account/plan-screen.tsx
 msgid "Active resumes"
 msgstr "CV aktif"
 
-#. placeholder {0}: formatDate(plan.currentPeriodEndsAt)
-#: app/account/membership.tsx
+#. placeholder {0}: formatDate(end)
 #: src/features/billing/plan-card.tsx
 msgid "Active until {0}"
 msgstr "Berlaku sampai {0}"
@@ -1435,10 +1437,6 @@ msgstr "Tambahkan salah satunya, kami isikan ke Profil Anda. Anda memeriksa semu
 #: src/features/profile/bring-screen.tsx
 msgid "Add any of these and we'll find what your Profile is missing. You check everything before it's added."
 msgstr "Tambahkan salah satunya dan kami carikan yang belum ada di Profilmu. Kamu memeriksa semuanya sebelum ditambahkan."
-
-#: src/features/search/search-screen.tsx
-msgid "Add application"
-msgstr "Tambah lamaran"
 
 #: src/features/entries/fields.ts
 msgid "Add award"
@@ -1718,6 +1716,10 @@ msgstr "Peran tambahan untuk efek"
 msgid "Address"
 msgstr "Alamat"
 
+#: src/features/account/mcp-screen.tsx
+msgid "Address copied"
+msgstr "Alamat disalin"
+
 #: src/features/workspace/messages/describe-change.ts
 msgid "Adds a reminder to Today if you haven't heard back by then."
 msgstr "Menambahkan pengingat ke Hari ini jika Anda belum mendapat balasan saat itu."
@@ -1734,7 +1736,7 @@ msgstr "Menambahkan proyek publik milik Anda."
 msgid "Advanced"
 msgstr "Canggih"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Afrikaans"
 msgstr "Afrikaans"
 
@@ -1775,9 +1777,8 @@ msgstr "Dibandingkan dengan persyaratan Anda"
 msgid "AI"
 msgstr "AI"
 
-#: app/account/ai.tsx
-#: app/account/index.tsx
-#: src/features/search/search-screen.tsx
+#: src/features/account/ai-screen.tsx
+#: src/features/account/preferences-screen.tsx
 msgid "AI & developer"
 msgstr "AI & pengembang"
 
@@ -1805,6 +1806,15 @@ msgstr "Koneksi AI belum dimuat. Coba lagi sebelum membuat."
 msgid "AI couldn't read everything. Check the details, or fill them in by hand."
 msgstr "AI tidak dapat membaca semuanya. Periksa detailnya, atau isi secara manual."
 
+#: src/features/account/ai-privacy-screen.tsx
+#: src/features/account/ai-screen.tsx
+msgid "AI data sharing"
+msgstr "Berbagi data dengan AI"
+
+#: src/api/ai-consent.ts
+msgid "AI data sharing is off on this device. You can change it in App settings."
+msgstr "Berbagi data dengan AI dinonaktifkan di perangkat ini. Ubah di Pengaturan aplikasi."
+
 #: src/features/history/format.ts
 msgid "AI edit"
 msgstr "Sunting AI"
@@ -1817,9 +1827,8 @@ msgstr "AI tidak tersedia"
 msgid "AI provider"
 msgstr "penyedia AI"
 
-#: app/account/ai-providers.tsx
-#: app/account/ai.tsx
-#: src/features/search/search-screen.tsx
+#: src/features/account/ai-screen.tsx
+#: src/features/account/providers-screen.tsx
 msgid "AI providers"
 msgstr "Penyedia AI"
 
@@ -1851,7 +1860,7 @@ msgstr "Tinjauan AI"
 msgid "AI settings"
 msgstr "Pengaturan AI"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Albanian"
 msgstr "Albania"
 
@@ -1887,6 +1896,14 @@ msgstr "Semua dokumen"
 #: src/features/design/gallery-filters.tsx
 msgid "All fields"
 msgstr "Semua bidang"
+
+#: src/features/account/plan-screen.tsx
+msgid "All portfolio intro effects"
+msgstr "Semua efek pembuka portofolio"
+
+#: src/features/account/plan-screen.tsx
+msgid "All portfolio themes"
+msgstr "Semua tema portofolio"
 
 #: src/features/applications/list/list-menus.tsx
 msgid "All tags"
@@ -1954,7 +1971,7 @@ msgstr "Juga disaring: {list}"
 msgid "Alternative text"
 msgstr "Teks alternatif"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Amharic"
 msgstr "Amharik"
 
@@ -2060,15 +2077,12 @@ msgstr "Dimanapun"
 msgid "Anywhere in the country"
 msgstr "Di mana saja di negara ini"
 
+#: src/features/account/api-keys.tsx
 #: src/features/billing/plan-alert.ts
 msgid "API and MCP access isn't available"
 msgstr "Akses API dan MCP tidak tersedia"
 
-#: src/features/billing/plan-alert.ts
-msgid "API and MCP access isn't in your plan"
-msgstr "Akses API dan MCP tidak termasuk dalam paketmu"
-
-#: app/account/membership.tsx
+#: src/features/account/plan-screen.tsx
 msgid "API and MCP for other apps"
 msgstr "API dan MCP untuk aplikasi lain"
 
@@ -2076,24 +2090,24 @@ msgstr "API dan MCP untuk aplikasi lain"
 msgid "API key"
 msgstr "Kunci API"
 
-#: src/features/settings/api-keys.tsx
+#: src/features/account/api-keys.tsx
 msgid "API key revoked. Apps using it stop working now."
 msgstr "Kunci API dicabut. Aplikasi yang menggunakannya berhenti berfungsi sekarang."
 
-#: src/features/search/search-screen.tsx
-#: src/features/settings/api-keys.tsx
+#: src/features/account/api-keys.tsx
 msgid "API keys"
 msgstr "Kunci API"
 
-#: src/features/settings/api-keys.tsx
-msgid "API keys need the Plus or Pro AI plan"
-msgstr "API key membutuhkan paket Plus atau Pro AI"
-
+#: src/features/account/preferences-screen.tsx
 #: src/shell/account-menu.tsx
 msgid "App settings"
 msgstr "Pengaturan aplikasi"
 
-#: app/account/preferences.tsx
+#: src/features/account/help-screen.tsx
+msgid "App version"
+msgstr "Versi aplikasi"
+
+#: src/features/account/preferences-screen.tsx
 msgid "Appearance"
 msgstr "Penampilan"
 
@@ -2228,10 +2242,6 @@ msgstr "Diterapkan. Lamaran telah diperbarui."
 msgid "Applies the template you are trying."
 msgstr "Memakai template yang sedang kamu coba."
 
-#: app/account/preferences.tsx
-msgid "Applies to this device only."
-msgstr "Hanya berlaku untuk perangkat ini."
-
 #: src/features/design/template-gallery.tsx
 #: src/features/workspace/working.ts
 msgid "Apply"
@@ -2245,12 +2255,16 @@ msgstr "Terapkan perubahan"
 msgid "Approach"
 msgstr "Pendekatan"
 
+#: src/features/account/ai-privacy-screen.tsx
+msgid "Approval withdrawn"
+msgstr "Persetujuan dicabut"
+
 #. placeholder {0}: selected?.name ?? ""
-#: src/features/settings/api-keys.tsx
+#: src/features/account/api-keys.tsx
 msgid "Apps using “{0}” will stop working. This can't be undone."
 msgstr "Aplikasi yang menggunakan “{0}” akan berhenti berfungsi. Tindakan ini tidak dapat dibatalkan."
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Arabic"
 msgstr "Arab"
 
@@ -2267,7 +2281,6 @@ msgid "Ascending"
 msgstr "Naik"
 
 #: src/features/entries/improve.tsx
-#: src/features/search/search-screen.tsx
 msgid "Ask"
 msgstr "Bertanya"
 
@@ -2300,6 +2313,10 @@ msgstr "Tanyakan keduanya"
 msgid "Ask coach"
 msgstr "Tanya coach"
 
+#: src/features/search/search-screen.tsx
+msgid "Ask Coach “{term}”"
+msgstr "Tanya Coach “{term}”"
+
 #: src/features/profile/preferences.tsx
 msgid "Ask first"
 msgstr "Tanya dulu"
@@ -2311,10 +2328,6 @@ msgstr "Minta perubahan portofolio…"
 #: src/features/entries/improve.tsx
 msgid "Ask for something else…"
 msgstr "Minta sesuatu yang lain…"
-
-#: src/features/search/search-screen.tsx
-msgid "Ask the assistant “{question}”"
-msgstr "Tanyakan kepada asisten “{question}”"
 
 #: src/features/check/term-sheet.tsx
 msgid "Ask the assistant to work it in"
@@ -2337,10 +2350,6 @@ msgstr "Rasio aspek"
 #: src/features/assistant/assistant-screen.tsx
 msgid "Assistant"
 msgstr "Asisten"
-
-#: src/features/search/search-screen.tsx
-msgid "Assistant conversations"
-msgstr "Percakapan asisten"
 
 #: src/features/applications/detail/follow-up-sheet.tsx
 msgid "At 09:00 that day ({timeZone})."
@@ -2430,7 +2439,7 @@ msgstr "Pemenang"
 msgid "Awards"
 msgstr "Penghargaan"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Azerbaijani"
 msgstr "Azerbaijani"
 
@@ -2443,7 +2452,6 @@ msgstr "Azerbaijani"
 #: src/features/onboarding/onboarding-screen.tsx
 #: src/features/portfolio/layout.tsx
 #: src/features/profile/bring-screen.tsx
-#: src/features/search/search-screen.tsx
 #: src/features/workspace/bar.tsx
 #: src/shell/builder-chrome/top-bar.tsx
 msgid "Back"
@@ -2563,13 +2571,17 @@ msgstr "Perilaku"
 msgid "Behavioral interview"
 msgstr "Wawancara perilaku"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Bengali"
 msgstr "Bengali"
 
 #: src/features/onboarding/intro-screen.tsx
 msgid "BI analyst"
 msgstr "BI analyst"
+
+#: src/features/account/ai-privacy-screen.tsx
+msgid "Block AI sharing on this device"
+msgstr "Blokir berbagi data dengan AI di perangkat ini"
 
 #: src/features/portfolio/editor/blocks.tsx
 msgid "Block text"
@@ -2682,11 +2694,15 @@ msgstr "Bawa LinkedIn atau CV lamamu, pilih template, lalu unduh PDF yang rapi."
 msgid "Browse templates"
 msgstr "Lihat template"
 
+#: src/features/account/help-screen.tsx
+msgid "Build number"
+msgstr "Nomor build"
+
 #: src/features/design/preset-names.ts
 msgid "Buildings"
 msgstr "Bangunan"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Bulgarian"
 msgstr "Bulgaria"
 
@@ -2699,6 +2715,10 @@ msgstr "entri daftar {n}"
 #: src/features/write/section-sheet-pages.tsx
 msgid "Bulleted list"
 msgstr "Daftar berpoin"
+
+#: src/features/account/help-screen.tsx
+msgid "Bundled with app"
+msgstr "Bawaan aplikasi"
 
 #: src/features/design/preset-names.ts
 msgid "Burgundy"
@@ -2721,9 +2741,21 @@ msgstr "Label tombol"
 msgid "Button URL"
 msgstr "URL tombol"
 
-#: app/account/index.tsx
-msgid "by <0>Salman Alfariesh</0>"
-msgstr "oleh <0>Salman Alfariesh</0>"
+#: src/features/account/storage-screen.tsx
+msgid "Cache cleared"
+msgstr "Cache dibersihkan"
+
+#: src/features/account/storage-screen.tsx
+msgid "Cached files"
+msgstr "Berkas dalam cache"
+
+#: src/features/account/storage-screen.tsx
+msgid "Cached previews and temporary exports can be created again. Your offline drafts are kept."
+msgstr "Pratinjau dan ekspor sementara dapat dibuat ulang. Draf luring tetap tersimpan."
+
+#: src/features/account/storage-screen.tsx
+msgid "Calculating…"
+msgstr "Menghitung…"
 
 #: src/features/applications/views-row.tsx
 msgid "Calendar"
@@ -2770,7 +2802,6 @@ msgstr "Belum bisa dipastikan: {0}"
 #: src/features/profile/facts-detail.tsx
 #: src/features/profile/facts.tsx
 #: src/features/profile/stories.tsx
-#: src/features/search/search-screen.tsx
 #: src/features/workspace/fit/requirement-card.tsx
 #: src/linking/open.ts
 #: src/ui-legacy/overlays.tsx
@@ -2785,6 +2816,10 @@ msgstr "Batalkan perekaman"
 msgid "Caption"
 msgstr "Keterangan gambar"
 
+#: src/features/billing/plan-card.tsx
+msgid "Card subscription"
+msgstr "Langganan dengan kartu"
+
 #: src/features/profile/profile-screen.tsx
 msgid "Career"
 msgstr "Karier"
@@ -2793,7 +2828,7 @@ msgstr "Karier"
 msgid "Carousel"
 msgstr "Karusel"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Catalan"
 msgstr "Katala"
 
@@ -2826,10 +2861,6 @@ msgstr "Ganti ikon"
 msgid "Change it in Design"
 msgstr "Ubah di Desain"
 
-#: src/features/search/search-screen.tsx
-msgid "Change language to…"
-msgstr "Ubah bahasa menjadi…"
-
 #. placeholder {0}: companyOf(offer)
 #: src/features/offers/offer-header.tsx
 msgid "Change offer: {0}"
@@ -2839,7 +2870,7 @@ msgstr "Ganti penawaran: {0}"
 msgid "Change password"
 msgstr "Ubah kata sandi"
 
-#: src/features/settings/profile.tsx
+#: src/features/account/profile.tsx
 msgid "Change photo"
 msgstr "Ganti foto"
 
@@ -2854,10 +2885,6 @@ msgstr "Ubah desain resume"
 #: src/features/applications/interview/when-fields.tsx
 msgid "Change the time zone"
 msgstr "Ubah zona waktu"
-
-#: src/features/search/search-screen.tsx
-msgid "Change theme to…"
-msgstr "Ubah tema menjadi…"
 
 #: src/features/profile/preferences.tsx
 msgid "Change timezone"
@@ -2895,10 +2922,6 @@ msgstr "Grafik & dasbor"
 msgctxt "Editor mode"
 msgid "Check"
 msgstr "Cek"
-
-#: src/features/search/search-screen.tsx
-msgid "Check a PDF"
-msgstr "Periksa PDF"
 
 #: src/features/documents/new-choices.tsx
 msgid "Check a PDF with the ATS checker"
@@ -3053,11 +3076,11 @@ msgstr "Cek berdasarkan kategori"
 msgid "Checks every bullet for action and result"
 msgstr "Memeriksa setiap entri daftar untuk tindakan dan hasil"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Chinese (Simplified)"
 msgstr "Cina (Sederhana)"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Chinese (Traditional)"
 msgstr "Cina (Tradisional)"
 
@@ -3118,8 +3141,8 @@ msgstr "Pilih PDF yang bisa dibuka tanpa kata sandi."
 msgid "Choose a PDF, Word, JSON or LinkedIn export file"
 msgstr "Pilih file PDF, Word, JSON, atau ekspor LinkedIn"
 
+#: src/features/account/profile.tsx
 #: src/features/entries/photo-field.tsx
-#: src/features/settings/profile.tsx
 msgid "Choose a photo smaller than 10 MB."
 msgstr "Pilih foto yang lebih kecil dari 10 MB."
 
@@ -3184,6 +3207,10 @@ msgid "Choose another file"
 msgstr "Pilih file lain"
 
 #: src/features/billing/plan-alert.ts
+msgid "Choose another option to continue."
+msgstr "Pilih opsi lain untuk melanjutkan."
+
+#: src/features/billing/plan-alert.ts
 msgid "Choose any of the fonts in Design instead."
 msgstr "Pilih salah satu font di Desain sebagai gantinya."
 
@@ -3199,8 +3226,8 @@ msgstr "Pilih logo klien"
 msgid "Choose cover picture"
 msgstr "Pilih gambar sampul"
 
+#: src/features/account/profile.tsx
 #: src/features/entries/photo-field.tsx
-#: src/features/settings/profile.tsx
 msgid "Choose from library"
 msgstr "Pilih dari perpustakaan"
 
@@ -3288,6 +3315,14 @@ msgstr "Bersih"
 msgid "Clear"
 msgstr "Bersihkan"
 
+#: src/features/account/storage-screen.tsx
+msgid "Clear cache"
+msgstr "Bersihkan cache"
+
+#: src/features/account/storage-screen.tsx
+msgid "Clear cached files?"
+msgstr "Bersihkan berkas dalam cache?"
+
 #: src/features/applications/list/list-states.tsx
 #: src/features/jobs/filters-sheet.tsx
 #: src/features/jobs/jobs-states.tsx
@@ -3337,6 +3372,9 @@ msgstr "Nama klien"
 msgid "Clients"
 msgstr "Klien"
 
+#: src/features/account/preferences-screen.tsx
+#: src/features/account/profile.tsx
+#: src/features/ai/provider-editor.tsx
 #: src/features/ai/report-content.tsx
 #: src/features/applications/detail/activity.tsx
 #: src/features/applications/detail/contacts.tsx
@@ -3426,7 +3464,7 @@ msgstr "Tutup lamaran pekerjaan"
 msgid "Close menu"
 msgstr "Tutup menu"
 
-#: src/components/collection-header.tsx
+#: src/features/search/search-screen.tsx
 msgid "Close search"
 msgstr "Tutup pencarian"
 
@@ -3457,6 +3495,7 @@ msgstr "Tutup: {closed}"
 
 #: src/features/assistant/coach.tsx
 #: src/features/billing/credits.ts
+#: src/features/search/search-screen.tsx
 #: src/features/workspace/coach-sheet.tsx
 #: src/shell/tab-chrome.tsx
 msgid "Coach"
@@ -3600,10 +3639,6 @@ msgstr "Hubungkan penyedia AI di Pengaturan untuk menyegarkannya secara otomatis
 msgid "Connect an AI provider to read pasted text. Filling in by hand works without AI."
 msgstr "Hubungkan penyedia AI untuk membaca teks tempelan. Mengisi manual tetap bisa tanpa AI."
 
-#: app/account/ai.tsx
-msgid "Connect the tools you use for writing, job search and working with your resumes."
-msgstr "Hubungkan alat yang Anda gunakan untuk menulis, mencari pekerjaan, dan mengerjakan resume Anda."
-
 #: src/features/portfolio/layout.tsx
 msgid "Connect to load your portfolio."
 msgstr "Sambungkan ke internet untuk memuat portofolio."
@@ -3637,7 +3672,7 @@ msgstr "Kemajuan penghubungan"
 msgid "Contact"
 msgstr "Kontak"
 
-#: app/account/index.tsx
+#: src/features/account/help-screen.tsx
 msgid "Contact & complaints"
 msgstr "Kontak & Pengaduan"
 
@@ -3727,6 +3762,7 @@ msgstr "Nama percakapan"
 
 #: src/features/assistant/panel-bar.tsx
 #: src/features/portfolio/editor/assistant.tsx
+#: src/features/search/search-screen.tsx
 #: src/features/workspace/coach-sheet.tsx
 msgid "Conversations"
 msgstr "Percakapan"
@@ -3758,6 +3794,10 @@ msgstr "Salin"
 #: src/features/documents/new-document-screen.tsx
 msgid "Copy a resume for a job"
 msgstr "Salin resume untuk suatu pekerjaan"
+
+#: src/features/account/mcp-screen.tsx
+msgid "Copy address"
+msgstr "Salin alamat"
 
 #: src/features/workspace/apply/share-answers.tsx
 msgid "Copy answers"
@@ -3836,7 +3876,7 @@ msgstr "Gambar gagal ditambahkan. Gunakan tautan JPEG, PNG, atau WebP yang dapat
 msgid "Couldn't attach the file. Try again."
 msgstr "Tidak dapat melampirkan file. Coba lagi."
 
-#: app/account/preferences.tsx
+#: src/features/account/preferences-screen.tsx
 msgid "Couldn't change the language. Try again."
 msgstr "Tidak dapat mengubah bahasa. Coba lagi."
 
@@ -3860,6 +3900,10 @@ msgstr "Tidak dapat memeriksa atau menyimpan alamat ini. Coba lagi."
 msgid "Couldn't check your AI providers."
 msgstr "Tidak dapat memeriksa penyedia AI Anda."
 
+#: src/features/account/storage-screen.tsx
+msgid "Couldn't clear the cache. Try again."
+msgstr "Cache gagal dibersihkan. Coba lagi."
+
 #: src/features/portfolio/queries.ts
 msgid "Couldn't complete the action. Try again."
 msgstr "Tindakan gagal. Coba lagi."
@@ -3880,6 +3924,10 @@ msgstr "Tidak dapat menyelesaikan tindakan ini. Coba lagi."
 #: src/features/applications/interview/use-interview-actions.ts
 msgid "Couldn't confirm the save. Check the application before retrying to avoid a duplicate."
 msgstr "Tidak dapat mengonfirmasi penyimpanan. Periksa lamaran sebelum mencoba lagi untuk menghindari duplikat."
+
+#: src/features/account/mcp-screen.tsx
+msgid "Couldn't copy the address."
+msgstr "Alamat gagal disalin."
 
 #: src/features/portfolio/overview.tsx
 msgid "Couldn't copy the link."
@@ -3933,7 +3981,7 @@ msgstr "Tidak dapat menghapus jadwal ini. Coba lagi."
 msgid "Couldn't draw the first page of this PDF."
 msgstr "Halaman pertama PDF gagal ditampilkan."
 
-#: src/features/settings/export.tsx
+#: src/features/account/export.tsx
 #: src/features/share/download.tsx
 msgid "Couldn't export. Try again."
 msgstr "Tidak dapat mengekspor. Coba lagi."
@@ -3979,7 +4027,7 @@ msgstr "Tidak dapat menautkan lamaran. Coba lagi."
 msgid "Couldn't load AI providers."
 msgstr "Tidak dapat memuat penyedia AI."
 
-#: src/features/settings/api-keys.tsx
+#: src/features/account/api-keys.tsx
 msgid "Couldn't load API keys."
 msgstr "Tidak dapat memuat kunci API."
 
@@ -3989,6 +4037,10 @@ msgstr "Tidak dapat memuat kunci API."
 msgid "Couldn't load applications."
 msgstr "Tidak dapat memuat lamaran kerja."
 
+#: src/features/account/plan-screen.tsx
+msgid "Couldn't load credit activity."
+msgstr "Riwayat kredit gagal dimuat."
+
 #: src/features/documents/library-states.tsx
 msgid "Couldn't load documents"
 msgstr "Tidak dapat memuat dokumen"
@@ -3996,6 +4048,10 @@ msgstr "Tidak dapat memuat dokumen"
 #: src/features/documents/new-copy.tsx
 msgid "Couldn't load resumes."
 msgstr "Tidak dapat memuat CV."
+
+#: src/features/account/ai-privacy-screen.tsx
+msgid "Couldn't load scheduled AI approvals."
+msgstr "Persetujuan untuk AI terjadwal gagal dimuat."
 
 #: src/features/share/link.tsx
 msgid "Couldn't load statistics."
@@ -4082,6 +4138,10 @@ msgstr "Fakta tidak bisa dimuat"
 msgid "Couldn't load your offers"
 msgstr "Tidak dapat memuat penawaran Anda"
 
+#: src/features/account/plan-screen.tsx
+msgid "Couldn't load your plan."
+msgstr "Paket Anda gagal dimuat."
+
 #: src/features/portfolio/layout.tsx
 msgid "Couldn't load your portfolio"
 msgstr "Portofolio gagal dimuat"
@@ -4094,7 +4154,7 @@ msgstr "Preferensi tidak bisa dimuat"
 msgid "Couldn't load your Profile"
 msgstr "Profilmu tidak bisa dimuat"
 
-#: app/account/account.tsx
+#: src/features/account/account-screen.tsx
 msgid "Couldn't load your profile."
 msgstr "Tidak dapat memuat profil Anda."
 
@@ -4112,7 +4172,7 @@ msgstr "Tidak dapat memuat CV Anda."
 msgid "Couldn't load your stories"
 msgstr "Cerita tidak bisa dimuat"
 
-#: app/account/preferences.tsx
+#: src/features/account/preferences-screen.tsx
 msgid "Couldn't load your timezone."
 msgstr "Tidak dapat memuat zona waktu Anda."
 
@@ -4124,14 +4184,20 @@ msgstr "Tidak dapat menandainya sudah melamar. Coba lagi."
 msgid "Couldn't mark this as read. Try again."
 msgstr "Tidak dapat menandai ini sudah dibaca. Coba lagi."
 
+#: src/features/account/storage-screen.tsx
+msgid "Couldn't measure the cache."
+msgstr "Ukuran cache gagal dihitung."
+
 #: src/features/applications/interview/use-reschedule.ts
 msgid "Couldn't move the interview. Try again."
 msgstr "Gagal memindahkan wawancara. Coba lagi."
 
-#: app/account/account.tsx
-#: app/account/index.tsx
+#: src/features/account/notification-settings.tsx
+msgid "Couldn't open system settings."
+msgstr "Pengaturan sistem gagal dibuka."
+
+#: src/features/account/browser.ts
 #: src/features/auth/welcome-screen.tsx
-#: src/features/settings/api-keys.tsx
 msgid "Couldn't open the browser. Try again."
 msgstr "Tidak dapat membuka browser. Coba lagi."
 
@@ -4264,7 +4330,7 @@ msgstr "Tidak dapat merender CV ini."
 msgid "Couldn't replace this block."
 msgstr "Blok ini gagal diganti."
 
-#: src/features/settings/api-keys.tsx
+#: src/features/account/api-keys.tsx
 msgid "Couldn't revoke the key. Try again."
 msgstr "Tidak dapat mencabut kuncinya. Coba lagi."
 
@@ -4319,11 +4385,11 @@ msgstr "Tidak dapat menyimpan catatan. Teks Anda masih di sini."
 msgid "Couldn't save the posting. Try again."
 msgstr "Tidak dapat menyimpan postingan pekerjaan. Coba lagi."
 
-#: app/account/preferences.tsx
+#: src/features/account/preferences-screen.tsx
 msgid "Couldn't save the theme. Try again."
 msgstr "Tidak dapat menyimpan tema. Coba lagi."
 
-#: app/account/preferences.tsx
+#: src/features/account/preferences-screen.tsx
 msgid "Couldn't save the timezone. Try again."
 msgstr "Tidak dapat menyimpan zona waktu. Coba lagi."
 
@@ -4369,11 +4435,15 @@ msgstr "Profil Anda tidak bisa disimpan, jadi halaman ini akan muncul lagi. Coba
 msgid "Couldn't save your Profile. Try again."
 msgstr "Profil Anda tidak bisa disimpan. Coba lagi."
 
+#: src/features/account/ai-privacy-screen.tsx
+msgid "Couldn't save your sharing preference. Try again."
+msgstr "Pengaturan berbagi data gagal disimpan. Coba lagi."
+
 #: src/features/portfolio/editor/screen.tsx
 msgid "Couldn't save. Retrying…"
 msgstr "Gagal menyimpan. Mencoba lagi…"
 
-#: src/features/settings/profile.tsx
+#: src/features/account/profile.tsx
 msgid "Couldn't save. Try again."
 msgstr "Tidak dapat menyimpan. Coba lagi."
 
@@ -4418,7 +4488,11 @@ msgstr "Berkas statistik gagal dibagikan."
 msgid "Couldn't sign in with this account. If you don't have a Rezumi account yet, sign-ups may be turned off."
 msgstr "Tidak bisa masuk dengan akun ini. Bila kamu belum punya akun Rezumi, pendaftaran mungkin sedang ditutup."
 
-#: src/features/settings/sign-out.tsx
+#: src/features/account/sign-out.tsx
+msgid "Couldn't sign out of all devices. Try again."
+msgstr "Gagal keluar dari semua perangkat. Coba lagi."
+
+#: src/features/account/sign-out.tsx
 msgid "Couldn't sign out. Try again."
 msgstr "Tidak dapat keluar. Coba lagi."
 
@@ -4456,6 +4530,10 @@ msgstr "Tidak dapat membatalkannya. Coba lagi."
 msgid "Couldn't unlock this resume. Try again."
 msgstr "Tidak dapat membuka kunci CV ini. Coba lagi."
 
+#: src/features/account/notification-settings.tsx
+msgid "Couldn't update reminders. Try again."
+msgstr "Pengingat gagal diperbarui. Coba lagi."
+
 #: src/features/share/custom-domain.tsx
 msgid "Couldn't update sharing. Try again."
 msgstr "Tidak dapat memperbarui pengaturan berbagi. Coba lagi."
@@ -4472,7 +4550,7 @@ msgstr "Tidak dapat memperbarui lamaran. Tidak ada yang diubah; coba lagi."
 msgid "Couldn't update the interview. Try again."
 msgstr "Tidak dapat memperbarui wawancara. Coba lagi."
 
-#: src/features/settings/profile.tsx
+#: src/features/account/profile.tsx
 msgid "Couldn't update the photo. Check camera permissions, choose a photo smaller than 10 MB, and try again."
 msgstr "Tidak dapat memperbarui foto. Periksa izin kamera, pilih foto yang lebih kecil dari 10 MB, dan coba lagi."
 
@@ -4484,14 +4562,18 @@ msgstr "Tidak dapat mengunggah file. Coba lagi."
 msgid "Couldn't upload the font. Try again."
 msgstr "Font gagal diunggah. Coba lagi."
 
+#: src/features/account/profile.tsx
 #: src/features/entries/photo-field.tsx
-#: src/features/settings/profile.tsx
 msgid "Couldn't upload the photo."
 msgstr "Tidak dapat mengunggah foto."
 
 #: src/features/portfolio/editor/pictures.tsx
 msgid "Couldn't upload this picture."
 msgstr "Gambar ini gagal diunggah."
+
+#: src/features/account/ai-privacy-screen.tsx
+msgid "Couldn't withdraw approval. Try again."
+msgstr "Persetujuan gagal dicabut. Coba lagi."
 
 #: src/features/applications/insights/insights-cards.tsx
 msgid "Count by source"
@@ -4557,25 +4639,9 @@ msgstr "Surat lamaran"
 msgid "Covered term: {highlightTerm}"
 msgstr "Istilah yang dicakup: {highlightTerm}"
 
-#: src/features/search/search-screen.tsx
-msgid "Create"
-msgstr "Buat"
-
-#: src/features/search/search-screen.tsx
-msgid "Create a new resume"
-msgstr "Buat resume baru"
-
-#: src/features/search/search-screen.tsx
-msgid "Create a resume first, then ask about it."
-msgstr "Buat resume terlebih dahulu, lalu tanyakan tentangnya."
-
 #: src/features/auth/create-account-screen.tsx
 msgid "Create account"
 msgstr "Buat akun"
-
-#: app/account/ai-mcp.tsx
-msgid "Create an API key from Account settings in your browser. Keys act as you and can read and edit your documents."
-msgstr "Buat kunci API dari pengaturan Akun di browser Anda. Kunci bertindak sebagai Anda dan dapat membaca serta mengedit dokumen Anda."
 
 #: src/features/documents/new-copy.tsx
 msgid "Create copy"
@@ -4616,7 +4682,7 @@ msgstr "Dibuat"
 #. placeholder {0}: date(key.createdAt)
 #. placeholder {1}: date(key.lastRequest)
 #. placeholder {2}: date(key.expiresAt)
-#: src/features/settings/api-keys.tsx
+#: src/features/account/api-keys.tsx
 msgid "Created {0} · Last used {1} · Expires {2}"
 msgstr "Dibuat {0} · Terakhir digunakan {1} · Kedaluwarsa {2}"
 
@@ -4633,9 +4699,13 @@ msgstr "Membuat…"
 msgid "Creative"
 msgstr "Kreatif"
 
-#: app/account/membership.tsx
-msgid "Credits are used soonest-expiring first. They can't be moved to another account or exchanged for money. Your own AI connection never uses credits."
-msgstr "Kredit yang paling cepat kedaluwarsa dipakai lebih dulu. Kredit tidak bisa dipindah ke akun lain atau diuangkan. Koneksi AI milikmu sendiri tidak pernah memakai kredit."
+#: src/features/account/plan-screen.tsx
+msgid "Credit history"
+msgstr "Riwayat kredit"
+
+#: src/features/account/plan-screen.tsx
+msgid "Credits with the nearest expiry are used first. Your own AI connection never uses credits."
+msgstr "Kredit yang paling cepat kedaluwarsa digunakan lebih dulu. Koneksi AI Anda sendiri tidak memakai kredit."
 
 #: src/features/jobs/filters-sheet.tsx
 #: src/features/profile/preferences.tsx
@@ -4655,6 +4725,7 @@ msgstr "Kustom"
 msgid "Custom color (hex)"
 msgstr "Warna khusus (hex)"
 
+#: src/features/account/plan-screen.tsx
 #: src/features/portfolio/publish.tsx
 msgid "Custom domain"
 msgstr "Domain sendiri"
@@ -4667,7 +4738,7 @@ msgstr "Domain sendiri belum tersedia di sini."
 msgid "Custom section"
 msgstr "Bagian khusus"
 
-#: app/account/membership.tsx
+#: src/features/account/plan-screen.tsx
 msgid "Custom styles"
 msgstr "Gaya kustom"
 
@@ -4679,11 +4750,7 @@ msgstr "Gaya kustom tidak tersedia"
 msgid "Custom styles aren't available, so the imported document leaves the file's styles out."
 msgstr "Gaya kustom tidak tersedia, jadi dokumen hasil impor tidak memakai gaya dari file."
 
-#: src/features/billing/plan-alert.ts
-msgid "Custom styles aren't in your plan"
-msgstr "Gaya kustom tidak termasuk dalam paketmu"
-
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Czech"
 msgstr "Ceko"
 
@@ -4717,19 +4784,14 @@ msgstr "Pembukaan karya per hari"
 msgid "Dangerous or illegal advice"
 msgstr "Nasihat yang berbahaya atau ilegal"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Danish"
 msgstr "Denmark"
 
-#: app/account/index.tsx
-#: app/account/preferences.tsx
+#: src/features/account/preferences-screen.tsx
 #: src/features/portfolio/editor/design.tsx
 msgid "Dark"
 msgstr "Gelap"
-
-#: src/features/search/search-screen.tsx
-msgid "Dark theme"
-msgstr "Tema gelap"
 
 #: src/features/onboarding/intro-screen.tsx
 msgid "Data analyst"
@@ -4873,7 +4935,7 @@ msgstr "Hapus “{title}”?"
 msgid "Delete {0}"
 msgstr "Hapus {0}"
 
-#: app/account/account.tsx
+#: src/features/account/account-screen.tsx
 #: src/features/search/search-screen.tsx
 msgid "Delete account"
 msgstr "Hapus akun"
@@ -4981,10 +5043,6 @@ msgstr "Hapus portofolio Anda?"
 msgid "Delete…"
 msgstr "Menghapus…"
 
-#: src/features/search/search-screen.tsx
-msgid "Deleted"
-msgstr "Dihapus"
-
 #. placeholder {0}: document.name
 #. placeholder {0}: getVersionTitle(version)
 #: src/features/documents/document-actions.ts
@@ -5008,7 +5066,7 @@ msgstr "Menghapus bagian dan entrinya. Anda dapat membatalkan."
 msgid "Density"
 msgstr "Kepadatan"
 
-#: app/account/licences.tsx
+#: src/features/account/licences-screen.tsx
 msgid "Dependency type"
 msgstr "Jenis dependensi"
 
@@ -5058,12 +5116,20 @@ msgstr "Detail {0}"
 msgid "Detail removed"
 msgstr "Detail dihapus"
 
+#: src/features/account/plan-screen.tsx
+msgid "Detailed portfolio statistics"
+msgstr "Statistik portofolio terperinci"
+
 #: src/features/applications/detail/facts.tsx
 #: src/features/documents/document-menu.tsx
 #: src/features/onboarding/messages.ts
 #: src/features/profile/profile-screen.tsx
 msgid "Details"
 msgstr "Detail"
+
+#: src/features/account/preferences-screen.tsx
+msgid "Device and services"
+msgstr "Perangkat dan layanan"
 
 #: src/features/portfolio/statistics.tsx
 msgid "Devices"
@@ -5149,6 +5215,10 @@ msgstr "DNS sudah benar. HTTPS sedang disiapkan, biasanya butuh beberapa menit."
 msgid "DNS points to Rezumi"
 msgstr "DNS mengarah ke Rezumi"
 
+#: src/features/account/help-screen.tsx
+msgid "Docs"
+msgstr "Dokumentasi"
+
 #: src/shell/builder-chrome/top-bar.tsx
 msgid "Document menu"
 msgstr "Menu dokumen"
@@ -5162,7 +5232,7 @@ msgid "Document options"
 msgstr "Opsi dokumen"
 
 #: app/(tabs)/_layout.tsx
-#: app/account/membership.tsx
+#: src/features/account/plan-screen.tsx
 #: src/features/documents/documents-screen.tsx
 #: src/features/search/search-screen.tsx
 #: src/shell/app-tabs.tsx
@@ -5173,7 +5243,7 @@ msgstr "Dokumen"
 msgid "Documents for this job"
 msgstr "Dokumen untuk pekerjaan ini"
 
-#: app/account/membership.tsx
+#: src/features/account/plan-screen.tsx
 msgid "Documents in Trash don't count."
 msgstr "Dokumen di Sampah tidak dihitung."
 
@@ -5199,7 +5269,7 @@ msgstr "Jangan kirim lowongan {0}"
 msgid "Don't share"
 msgstr "Jangan berbagi"
 
-#: app/account/preferences.tsx
+#: src/features/account/preferences-screen.tsx
 #: src/features/applications/interview/when-fields.tsx
 #: src/features/entries/dates-field.tsx
 #: src/features/entries/rich-text-toolbar.tsx
@@ -5405,7 +5475,7 @@ msgstr "“{0}” diduplikasi"
 msgid "Duration"
 msgstr "Durasi"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Dutch"
 msgstr "Belanda"
 
@@ -5560,7 +5630,7 @@ msgstr "Menyunting wawancara. Tindakan memindahkannya."
 msgid "Education"
 msgstr "Pendidikan"
 
-#: app/account/account.tsx
+#: src/features/account/account-screen.tsx
 #: src/features/auth/create-account-screen.tsx
 #: src/features/auth/email-sign-in-screen.tsx
 #: src/features/auth/forgot-password-screen.tsx
@@ -5595,11 +5665,16 @@ msgstr "Sematkan semua font saat mengekspor, agar karakter dipetakan sesuai maks
 msgid "End"
 msgstr "Akhir"
 
-#: src/features/settings/locale-names.ts
+#. placeholder {0}: formatDate(expiredAt)
+#: src/features/billing/plan-card.tsx
+msgid "Ended on {0}"
+msgstr "Berakhir pada {0}"
+
+#: src/features/account/locale-names.ts
 msgid "English"
 msgstr "Inggris"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "English (United Kingdom)"
 msgstr "Inggris (Britania Raya)"
 
@@ -5627,7 +5702,7 @@ msgstr "Masukkan jumlah lengkap, misalnya 95000. Jumlah sebelumnya tidak berubah
 msgid "Enter a GitHub username, like octocat."
 msgstr "Isi username GitHub, misalnya octocat."
 
-#: src/features/settings/profile.tsx
+#: src/features/account/profile.tsx
 msgid "Enter a name, up to 64 characters."
 msgstr "Masukkan nama, maksimal 64 karakter."
 
@@ -5742,7 +5817,7 @@ msgstr "Setiap peran menunjukkan apa yang Anda lakukan. Pendapat tentang susunan
 msgid "Every section is in use."
 msgstr "Semua bagian sudah dipakai."
 
-#: app/account/membership.tsx
+#: src/features/account/plan-screen.tsx
 msgid "Every template"
 msgstr "Semua template"
 
@@ -5795,7 +5870,7 @@ msgstr "Ekspor PDF yang lebih kecil dan periksa lagi, atau buat CV kosong dan pe
 msgid "Export data"
 msgstr "Ekspor data"
 
-#: src/features/settings/export.tsx
+#: src/features/account/export.tsx
 msgid "Export everything"
 msgstr "Ekspor semuanya"
 
@@ -5845,10 +5920,6 @@ msgstr "Unggulkan karya ini"
 #: src/features/portfolio/editor/work.tsx
 msgid "Featured metric"
 msgstr "Metrik unggulan"
-
-#: app/account/preferences.tsx
-msgid "Feedback"
-msgstr "Masukan"
 
 #: src/features/workspace/practice/answer-panel.tsx
 msgid "Feedback needs an AI connection. Nothing is sent until you ask."
@@ -6001,7 +6072,7 @@ msgstr "Selesai"
 msgid "Finish in the browser…"
 msgstr "Selesaikan di browser…"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Finnish"
 msgstr "Finlandia"
 
@@ -6092,6 +6163,10 @@ msgstr "Tindak lanjut"
 
 #: src/features/career/schedule-sheet.tsx
 msgid "Follow-up reminder"
+msgstr "Pengingat tindak lanjut"
+
+#: src/features/account/notification-settings.tsx
+msgid "Follow-up reminders"
 msgstr "Pengingat tindak lanjut"
 
 #: src/features/design/type-group.tsx
@@ -6237,7 +6312,7 @@ msgstr "Bentuk bebas"
 msgid "Freelance"
 msgstr "Lepas"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "French"
 msgstr "Prancis"
 
@@ -6252,7 +6327,6 @@ msgstr "Dari"
 
 #. placeholder {0}: formatDate(next.startsAt)
 #. placeholder {1}: formatDate(next.endsAt)
-#: app/account/membership.tsx
 #: src/features/billing/plan-card.tsx
 msgid "From {0} until {1}"
 msgstr "Dari {0} sampai {1}"
@@ -6341,7 +6415,7 @@ msgstr "Buat draf AI"
 msgid "Gentle fade-in"
 msgstr "Muncul halus"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "German"
 msgstr "Jerman"
 
@@ -6411,11 +6485,15 @@ msgstr "Pemerintahan & BUMN"
 msgid "Grade"
 msgstr "Nilai"
 
+#: src/features/billing/plan-card.tsx
+msgid "Granted access"
+msgstr "Akses yang diberikan"
+
 #: src/features/design/preset-names.ts
 msgid "Graphite"
 msgstr "Grafit"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Greek"
 msgstr "Yunani"
 
@@ -6429,7 +6507,7 @@ msgstr "Salam pembuka"
 msgid "Grid"
 msgstr "Grid"
 
-#: app/account/preferences.tsx
+#: src/features/account/preferences-screen.tsx
 msgid "Haptic feedback"
 msgstr "Umpan balik haptik"
 
@@ -6491,14 +6569,11 @@ msgstr "Dengarkan"
 msgid "Heard back"
 msgstr "Dapat balasan"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Hebrew"
 msgstr "Ibrani"
 
-#: app/account/index.tsx
-msgid "Help & docs"
-msgstr "Bantuan & dokumen"
-
+#: src/features/account/help-screen.tsx
 #: src/shell/account-menu.tsx
 msgid "Help & legal"
 msgstr "Bantuan & legal"
@@ -6567,13 +6642,17 @@ msgstr "Sembunyikan dari halaman"
 msgid "Hide key"
 msgstr "Sembunyikan kunci"
 
-#: app/account/licences.tsx
+#: src/features/account/licences-screen.tsx
 msgid "Hide license"
 msgstr "Sembunyikan lisensi"
 
 #: src/features/home/needs-you.tsx
 msgid "Hide read"
 msgstr "Sembunyikan yang dibaca"
+
+#: src/features/account/plan-screen.tsx
+msgid "Hide Rezumi credit"
+msgstr "Sembunyikan atribusi Rezumi"
 
 #: src/features/check/messages.ts
 msgid "Hide the photo"
@@ -6599,7 +6678,7 @@ msgstr "Sorotan ditambahkan"
 msgid "Highlights"
 msgstr "Sorotan"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Hindi"
 msgstr "Hindi"
 
@@ -6625,6 +6704,7 @@ msgstr "Tahan ⋮⋮ untuk memindahkan"
 
 #: app/(tabs)/_layout.tsx
 #: src/features/home/home-screen.tsx
+#: src/features/search/search-screen.tsx
 #: src/shell/app-tabs.tsx
 msgid "Home"
 msgstr "Beranda"
@@ -6685,7 +6765,7 @@ msgstr "Seberapa cocok saya dengan peran ini?"
 msgid "HTTPS certificate"
 msgstr "Sertifikat HTTPS"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Hungarian"
 msgstr "Hungaria"
 
@@ -6770,10 +6850,6 @@ msgstr "Gambar"
 msgid "Images cover most of the page."
 msgstr "Gambar menutupi sebagian besar halaman."
 
-#: src/features/search/search-screen.tsx
-msgid "Import"
-msgstr "Impor"
-
 #: src/features/documents/new-choices.tsx
 msgid "Import a resume"
 msgstr "Impor resume"
@@ -6854,7 +6930,7 @@ msgstr "Kotak masuk"
 msgid "Include jobs that don't list pay"
 msgstr "Sertakan lowongan tanpa info gaji"
 
-#: app/account/membership.tsx
+#: src/features/account/plan-screen.tsx
 msgid "Included"
 msgstr "Termasuk"
 
@@ -6894,7 +6970,7 @@ msgstr "Besarkan margin vertikal"
 msgid "Increase vertical spacing"
 msgstr "Besarkan jarak vertikal"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Indonesian"
 msgstr "Indonesia"
 
@@ -6928,10 +7004,6 @@ msgstr "Instruksi (opsional)"
 #: src/features/portfolio/editor/content.tsx
 msgid "Interests"
 msgstr "Minat"
-
-#: app/account/preferences.tsx
-msgid "Interface only. Each resume sets its own language in Design."
-msgstr "Hanya antarmuka. Setiap resume menetapkan bahasanya sendiri dalam Desain."
 
 #: src/features/portfolio/editor/content.tsx
 msgid "Internship"
@@ -6970,10 +7042,15 @@ msgstr "Wawancara kini selesai pukul {endTime}"
 msgid "Interview practice"
 msgstr "Latihan interview"
 
+#: src/features/account/ai-privacy-screen.tsx
 #: src/features/career/schedule-sheet.tsx
 #: src/features/home/needs-you.tsx
 msgid "Interview preparation"
 msgstr "Persiapan wawancara"
+
+#: src/features/account/notification-settings.tsx
+msgid "Interview reminders"
+msgstr "Pengingat wawancara"
 
 #: src/features/applications/interview/use-interview-actions.ts
 msgid "Interview saved"
@@ -6994,10 +7071,6 @@ msgstr "Wawancara disimpan. Waktu pengingat telah berlalu."
 #: src/features/applications/interview-sheet.tsx
 msgid "Interview time zone"
 msgstr "Zona waktu wawancara"
-
-#: app/account/preferences.tsx
-msgid "Interview times, reminders and schedules in Career use it."
-msgstr "Waktu wawancara, pengingat, dan jadwal di Karier memakai ini."
 
 #: src/features/applications/detail/contacts.tsx
 msgid "Interviewer"
@@ -7103,7 +7176,7 @@ msgstr "Pesan akan dihapus permanen dari kotak masuk."
 msgid "It's removed from the activity for good."
 msgstr "Ini dihapus dari aktivitas untuk selamanya."
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Italian"
 msgstr "Italia"
 
@@ -7140,17 +7213,13 @@ msgstr "Sumbernya, yang memakainya, dan koreksinya tampil di sini."
 msgid "Its stage, next step, notes and files show here."
 msgstr "Tahap, langkah selanjutnya, catatan, dan filenya muncul di sini."
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Japanese"
 msgstr "Jepang"
 
-#: app/account/licences.tsx
+#: src/features/account/licences-screen.tsx
 msgid "JavaScript"
 msgstr "JavaScript"
-
-#: src/features/search/search-screen.tsx
-msgid "Job"
-msgstr "Pekerjaan"
 
 #: src/features/career/schedule-sheet.tsx
 #: src/features/home/needs-you.tsx
@@ -7248,7 +7317,7 @@ msgctxt "Job seniority"
 msgid "Junior"
 msgstr "Junior"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Kannada"
 msgstr "Kannada"
 
@@ -7266,9 +7335,17 @@ msgstr "Cukup satu alamat, agar perangkat lunak tidak perlu menebak mana yang ha
 msgid "Keep application"
 msgstr "Pertahankan lamaran"
 
+#: src/features/account/ai-privacy-screen.tsx
+msgid "Keep approval"
+msgstr "Pertahankan persetujuan"
+
 #: src/draft/conflict-sheet.tsx
 msgid "Keep both"
 msgstr "Pertahankan keduanya"
+
+#: src/features/account/storage-screen.tsx
+msgid "Keep cache"
+msgstr "Pertahankan cache"
 
 #: src/features/assistant/threads.tsx
 msgid "Keep conversation"
@@ -7315,6 +7392,10 @@ msgstr "Tetap jujur"
 msgid "Keep it under 2.5 MB, usually by removing or shrinking images."
 msgstr "Jaga agar tetap di bawah 2,5 MB, biasanya dengan menghapus atau memperkecil gambar."
 
+#: src/features/account/api-keys.tsx
+msgid "Keep key"
+msgstr "Pertahankan kunci"
+
 #: src/features/portfolio/inbox.tsx
 msgid "Keep message"
 msgstr "Simpan pesan"
@@ -7344,6 +7425,10 @@ msgstr "Tetap pakai foto"
 #: src/features/documents/document-menu-panels.tsx
 msgid "Keep private notes about this resume here. Nobody else can see them."
 msgstr "Simpan catatan pribadi tentang resume ini di sini. Tidak ada orang lain yang bisa melihatnya."
+
+#: src/features/ai/provider-editor.tsx
+msgid "Keep provider"
+msgstr "Pertahankan penyedia"
 
 #: src/features/ats-checker/messages.ts
 msgid "Keep resume content as real text rather than as pictures of text."
@@ -7399,7 +7484,7 @@ msgstr "Tetap apa adanya"
 msgid "Kept, but not used."
 msgstr "Disimpan, tapi tidak dipakai."
 
-#: src/features/settings/api-keys.tsx
+#: src/features/account/api-keys.tsx
 msgid "Keys act as you and can access your documents. New keys are created in your browser account settings."
 msgstr "Kunci bertindak sebagai Anda dan dapat mengakses dokumen Anda. Kunci baru dibuat di pengaturan akun browser Anda."
 
@@ -7412,7 +7497,7 @@ msgstr "Tata letak kata kunci"
 msgid "Keywords"
 msgstr "Kata Kunci"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Khmer"
 msgstr "Khmer"
 
@@ -7420,7 +7505,7 @@ msgstr "Khmer"
 msgid "Kind regards,"
 msgstr "Salam hormat,"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Korean"
 msgstr "Korea"
 
@@ -7445,13 +7530,17 @@ msgstr "Label, mis. Bahasa"
 msgid "Landscape"
 msgstr "Lanskap"
 
-#: app/account/preferences.tsx
+#: src/features/account/preferences-screen.tsx
 #: src/features/design/page-group.tsx
 #: src/features/documents/document-menu-panels.tsx
 #: src/features/entries/fields.ts
 #: src/features/search/search-screen.tsx
 msgid "Language"
 msgstr "Bahasa"
+
+#: src/features/account/preferences-screen.tsx
+msgid "Language and region"
+msgstr "Bahasa dan wilayah"
 
 #: src/features/entries/fields.ts
 #: src/features/portfolio/editor/content.tsx
@@ -7495,7 +7584,7 @@ msgctxt "Job search filter: posted within"
 msgid "Last week"
 msgstr "1 minggu terakhir"
 
-#: app/account/preferences.tsx
+#: src/features/account/preferences-screen.tsx
 msgid "Later"
 msgstr "Nanti"
 
@@ -7503,7 +7592,7 @@ msgstr "Nanti"
 msgid "Latest"
 msgstr "Terbaru"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Latvian"
 msgstr "Latvia"
 
@@ -7571,10 +7660,6 @@ msgstr "Biarkan kosong untuk menggunakan judul asli."
 msgid "Left"
 msgstr "Kiri"
 
-#: app/account/index.tsx
-msgid "Legal"
-msgstr "Hukum"
-
 #: src/features/applications/interview/when-fields.tsx
 #: src/features/letters/write.tsx
 msgid "Length"
@@ -7584,7 +7669,7 @@ msgstr "Panjang"
 msgid "Length is not a defect, and there is no universal one-page rule. Keep the pages that earn their place."
 msgstr "Panjang bukan cacat, dan tidak ada aturan satu halaman yang berlaku universal. Pertahankan halaman yang memang pantas ada."
 
-#: app/account/ai-mcp.tsx
+#: src/features/account/mcp-screen.tsx
 msgid "Let AI clients like Claude or Cursor read and edit your resumes, using an API key."
 msgstr "Izinkan klien AI seperti Claude atau Cursor membaca dan mengedit CV Anda, menggunakan kunci API."
 
@@ -7629,7 +7714,6 @@ msgid "Letter sent"
 msgstr "Surat terkirim"
 
 #: src/features/documents/segment-header.tsx
-#: src/features/search/search-screen.tsx
 msgid "Letters"
 msgstr "Surat"
 
@@ -7647,7 +7731,7 @@ msgstr "Jenis level"
 msgid "Levels"
 msgstr "Level"
 
-#: app/account/licences.tsx
+#: src/features/account/licences-screen.tsx
 msgid "Licenses"
 msgstr "Lisensi"
 
@@ -7655,15 +7739,10 @@ msgstr "Lisensi"
 msgid "Ligatures can drop letters out of words such as \"workflow\"."
 msgstr "Ligatur dapat menghilangkan huruf dari kata seperti \"workflow\"."
 
-#: app/account/index.tsx
-#: app/account/preferences.tsx
+#: src/features/account/preferences-screen.tsx
 #: src/features/portfolio/editor/design.tsx
 msgid "Light"
 msgstr "Terang"
-
-#: src/features/search/search-screen.tsx
-msgid "Light theme"
-msgstr "Tema terang"
 
 #: src/features/assistant/assistant-screen.tsx
 msgid "Likely questions, from the posting and your resume"
@@ -7741,7 +7820,7 @@ msgstr "Tautan diperbarui"
 msgid "Linked · not sent yet"
 msgstr "Tertaut · belum terkirim"
 
-#: app/account/account.tsx
+#: src/features/account/account-screen.tsx
 msgid "Linked accounts"
 msgstr "Akun tertaut"
 
@@ -7788,7 +7867,7 @@ msgstr "Cantumkan alat dan teknologi yang Anda gunakan. Perekrut mencari kolom k
 msgid "Listings come from job data providers and may change. The original posting is the one to apply through."
 msgstr "Lowongan berasal dari penyedia data lowongan dan bisa berubah. Lamar lewat posting aslinya."
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Lithuanian"
 msgstr "Lituania"
 
@@ -7840,16 +7919,7 @@ msgstr "Memuat"
 msgid "Loading AI connections…"
 msgstr "Memuat koneksi AI…"
 
-#: src/features/settings/api-keys.tsx
-msgid "Loading API keys…"
-msgstr "Memuat kunci API…"
-
-#: src/features/search/search-screen.tsx
-msgid "Loading applications…"
-msgstr "Memuat lamaran…"
-
 #: src/features/assistant/assistant-screen.tsx
-#: src/features/search/search-screen.tsx
 msgid "Loading conversations…"
 msgstr "Memuat percakapan…"
 
@@ -7891,7 +7961,6 @@ msgid "Loading resume…"
 msgstr "Memuat CV…"
 
 #: src/features/portfolio/create.tsx
-#: src/features/search/search-screen.tsx
 msgid "Loading resumes…"
 msgstr "Memuat resume…"
 
@@ -7916,10 +7985,14 @@ msgstr "Memuat Profilmu sebelum dikirim…"
 msgid "Loading your public address…"
 msgstr "Memuat alamat publik Anda…"
 
-#: app/account/preferences.tsx
+#: src/features/account/plan-screen.tsx
 #: src/features/applications/detail/document-choice.tsx
 msgid "Loading…"
 msgstr "Memuat…"
+
+#: src/features/account/notification-settings.tsx
+msgid "Local reminders"
+msgstr "Pengingat lokal"
 
 #: src/features/applications/detail/facts.tsx
 #: src/features/applications/interview/interview-fields.tsx
@@ -8025,13 +8098,17 @@ msgstr "Buat lebih besar, tebal, atau berhuruf kapital secara jelas."
 msgid "Make this your primary resume?"
 msgstr "Jadikan ini CV utama Anda?"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Malay"
 msgstr "Melayu"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Malayalam"
 msgstr "Malayalam"
+
+#: src/features/account/ai-screen.tsx
+msgid "Manage connections and choose a default source."
+msgstr "Kelola koneksi dan pilih sumber AI bawaan."
 
 #: src/features/portfolio/publish.tsx
 msgid "Manage domain on the web"
@@ -8058,7 +8135,7 @@ msgstr "Peta & tempat"
 msgid "Mar 2022"
 msgstr "Maret 2022"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Marathi"
 msgstr "Marathi"
 
@@ -8136,10 +8213,6 @@ msgstr "Sesuaikan dengan “{resumeName}”"
 msgid "Match against a job"
 msgstr "Cocokkan dengan pekerjaan"
 
-#: src/features/search/search-screen.tsx
-msgid "Match system theme"
-msgstr "Tema sistem pertandingan"
-
 #: src/features/letters/design.tsx
 msgid "Match the resume"
 msgstr "Cocokkan CV"
@@ -8164,12 +8237,8 @@ msgstr "Cocok dengan resume"
 msgid "Matching your facts"
 msgstr "Mencocokkan fakta Anda"
 
-#: src/features/search/search-screen.tsx
-msgid "MCP"
-msgstr "MCP"
-
-#: app/account/ai-mcp.tsx
-#: app/account/ai.tsx
+#: src/features/account/ai-screen.tsx
+#: src/features/account/mcp-screen.tsx
 msgid "MCP server"
 msgstr "Server MCP"
 
@@ -8237,7 +8306,7 @@ msgstr "Belum memenuhi: {0}"
 msgid "Missing"
 msgstr "Belum ada"
 
-#: app/account/index.tsx
+#: src/features/account/help-screen.tsx
 msgid "MIT License"
 msgstr "Lisensi MIT"
 
@@ -8462,6 +8531,7 @@ msgstr "Pengali"
 msgid "Music and video"
 msgstr "Musik & video"
 
+#: src/features/account/profile.tsx
 #: src/features/ai/provider-editor.tsx
 #: src/features/applications/detail/contacts.tsx
 #: src/features/applications/interview/people-field.tsx
@@ -8477,7 +8547,6 @@ msgstr "Musik & video"
 #: src/features/portfolio/create.tsx
 #: src/features/portfolio/editor/content.tsx
 #: src/features/portfolio/editor/design.tsx
-#: src/features/settings/profile.tsx
 msgid "Name"
 msgstr "Nama"
 
@@ -8536,7 +8605,7 @@ msgstr "Sempit"
 msgid "Narrower sidebar"
 msgstr "Sidebar lebih sempit"
 
-#: app/account/licences.tsx
+#: src/features/account/licences-screen.tsx
 msgid "Native & fonts"
 msgstr "Kode native & font"
 
@@ -8548,7 +8617,7 @@ msgstr "Perlu perhatian"
 msgid "Needs you"
 msgstr "Perlu tindakan Anda"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Nepali"
 msgstr "Nepali"
 
@@ -8556,8 +8625,8 @@ msgstr "Nepali"
 msgid "Network"
 msgstr "Jaringan"
 
+#: src/features/account/api-keys.tsx
 #: src/features/profile/preferences.tsx
-#: src/features/settings/api-keys.tsx
 msgid "Never"
 msgstr "Tidak pernah"
 
@@ -8582,13 +8651,9 @@ msgstr "Pendaftaran akun baru dimatikan di server ini. Masuk dengan akun yang su
 msgid "New account sign-ups are turned off. Sign in with an account you already have."
 msgstr "Pendaftaran akun baru dimatikan. Masuk dengan akun yang sudah kamu punya."
 
-#: src/features/settings/api-keys.tsx
+#: src/features/account/api-keys.tsx
 msgid "New API key"
 msgstr "Kunci API baru"
-
-#: src/features/search/search-screen.tsx
-msgid "New application"
-msgstr "Lamaran baru"
 
 #: src/features/assistant/assistant-screen.tsx
 #: src/features/assistant/coach.tsx
@@ -8771,10 +8836,6 @@ msgstr "Tidak ditemukan daftar berpoin."
 msgid "No change needed. It's already at {stage}."
 msgstr "Tidak perlu perubahan. Lamaran sudah di tahap {stage}."
 
-#: src/features/search/search-screen.tsx
-msgid "No commands match that search."
-msgstr "Tidak ada perintah yang cocok dengan pencarian itu."
-
 #: src/features/applications/detail/contacts.tsx
 msgid "No contacts yet"
 msgstr "Belum ada kontak"
@@ -8796,13 +8857,9 @@ msgstr "Tidak ada koreksi"
 msgid "No country matches."
 msgstr "Tidak ada negara yang ditemukan."
 
-#: app/account/membership.tsx
+#: src/features/account/plan-screen.tsx
 msgid "No credit activity yet."
 msgstr "Belum ada aktivitas kredit."
-
-#: app/account/membership.tsx
-msgid "No credits to spend right now"
-msgstr "Belum ada kredit yang bisa dipakai"
 
 #: src/features/share/custom-domain.tsx
 msgid "No custom domain connected."
@@ -8840,7 +8897,6 @@ msgstr "Tidak ada alamat email"
 msgid "No email address was found."
 msgstr "Tidak ditemukan alamat email."
 
-#: app/account/membership.tsx
 #: src/features/billing/plan-card.tsx
 msgid "No end date"
 msgstr "Tanpa tanggal berakhir"
@@ -8888,7 +8944,7 @@ msgstr "Belum ada pekerjaan"
 msgid "No jobs match yet."
 msgstr "Belum ada lowongan yang cocok."
 
-#: src/features/settings/api-keys.tsx
+#: src/features/account/api-keys.tsx
 msgid "No keys yet."
 msgstr "Belum ada kunci."
 
@@ -8896,7 +8952,7 @@ msgstr "Belum ada kunci."
 msgid "No language matches “{query}”."
 msgstr "Tidak ada bahasa yang cocok dengan “{query}”."
 
-#: app/account/preferences.tsx
+#: src/features/account/preferences-screen.tsx
 msgid "No language matches."
 msgstr "Tidak ada bahasa yang cocok."
 
@@ -8911,10 +8967,6 @@ msgstr "Tidak ada baris yang tampak seperti jabatan yang dipasangkan dengan nama
 #: src/features/check/messages.ts
 msgid "No location"
 msgstr "Tidak ada lokasi"
-
-#: src/ui-legacy/fields.tsx
-msgid "No matches"
-msgstr "Tidak ada kecocokan"
 
 #: src/features/portfolio/publish.tsx
 msgid "No matching sources."
@@ -8964,6 +9016,10 @@ msgstr "Tanpa foto"
 msgid "No photo. Most ATS ignore photos; some regions expect one."
 msgstr "Tidak ada foto. Kebanyakan ATS mengabaikan foto; beberapa daerah mengharapkannya."
 
+#: src/features/ai/provider-editor.tsx
+msgid "No provider matches."
+msgstr "Tidak ada penyedia yang cocok."
+
 #: src/features/onboarding/messages.ts
 msgid "No public repositories of your own, so no projects came in."
 msgstr "Tidak ada repositori publik milik Anda, jadi tidak ada proyek yang masuk."
@@ -8975,6 +9031,10 @@ msgstr "Belum ada balasan"
 #: src/features/applications/stages.ts
 msgid "No response"
 msgstr "Tidak ada tanggapan"
+
+#: src/features/search/search-screen.tsx
+msgid "No results match your search."
+msgstr "Tidak ada hasil yang cocok dengan pencarian Anda."
 
 #: src/features/portfolio/create.tsx
 msgid "No resumes found."
@@ -8999,6 +9059,10 @@ msgstr "Tidak bisa menambah notifikasi lowongan lagi"
 #: src/features/billing/plan-alert.ts
 msgid "No room for another resume"
 msgstr "Tidak ada ruang untuk CV baru"
+
+#: src/features/account/ai-privacy-screen.tsx
+msgid "No scheduled AI approvals."
+msgstr "Belum ada persetujuan untuk AI terjadwal."
 
 #. placeholder {0}: quota.max
 #: src/features/jobs/jobs-header.tsx
@@ -9050,6 +9114,10 @@ msgstr "Tidak ada istilah yang menonjol dalam postingan pekerjaan ini."
 msgid "No text could be read from this file."
 msgstr "Tidak ada teks yang dapat dibaca dari file ini."
 
+#: src/features/account/preferences-screen.tsx
+msgid "No theme matches."
+msgstr "Tidak ada tema yang cocok."
+
 #: src/features/offers/cells.ts
 msgid "No time given"
 msgstr "Jam tidak disebutkan"
@@ -9059,7 +9127,7 @@ msgstr "Jam tidak disebutkan"
 msgid "No time zone matches “{0}”."
 msgstr "Tidak ada zona waktu yang cocok dengan “{0}”."
 
-#: app/account/preferences.tsx
+#: src/features/account/preferences-screen.tsx
 msgid "No timezone matches."
 msgstr "Tidak ada zona waktu yang cocok."
 
@@ -9104,7 +9172,7 @@ msgstr "Tak satu pun koneksi AI Anda yang bisa mentranskripsikan ucapan (OpenAI,
 msgid "Normal"
 msgstr "Normal"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Norwegian"
 msgstr "Norwegia"
 
@@ -9163,7 +9231,7 @@ msgstr "Belum ada di Profil Anda"
 msgid "Not in your resume · add only if true"
 msgstr "Tidak ada dalam resume Anda · tambahkan hanya jika benar"
 
-#: app/account/membership.tsx
+#: src/features/account/plan-screen.tsx
 msgid "Not included"
 msgstr "Tidak termasuk"
 
@@ -9305,6 +9373,12 @@ msgstr "Tidak ada yang ditemukan di alamat itu. Periksa lalu coba lagi."
 msgid "Notice period (weeks)"
 msgstr "Periode pemberitahuan (minggu)"
 
+#: src/features/account/notification-settings.tsx
+#: src/features/account/preferences-screen.tsx
+#: src/features/search/search-screen.tsx
+msgid "Notifications"
+msgstr "Notifikasi"
+
 #: src/features/applications/detail/reminder-sheet.tsx
 msgid "Notifications are off"
 msgstr "Notifikasi tidak aktif"
@@ -9334,10 +9408,11 @@ msgstr "Pengamatan"
 msgid "Ochre"
 msgstr "Oker"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Odia"
 msgstr "Odia"
 
+#: src/features/account/help-screen.tsx
 #: src/features/ai/provider-list.tsx
 msgid "Off"
 msgstr "Mati"
@@ -9384,6 +9459,11 @@ msgstr "Luring"
 #: src/shell/builder-chrome/top-bar.tsx
 msgid "Offline · saved on this device"
 msgstr "Offline · disimpan di perangkat ini"
+
+#: src/features/account/preferences-screen.tsx
+#: src/features/account/storage-screen.tsx
+msgid "Offline storage"
+msgstr "Penyimpanan luring"
 
 #: src/features/portfolio/editor/screen.tsx
 msgid "Offline. Changes are waiting to save."
@@ -9617,7 +9697,7 @@ msgstr "Buka halaman web"
 msgid "Open workspace"
 msgstr "Buka ruang kerja"
 
-#: app/account/index.tsx
+#: src/features/account/preferences-screen.tsx
 msgid "Open-source licenses"
 msgstr "Lisensi sumber terbuka"
 
@@ -9663,6 +9743,10 @@ msgstr "Membuka lamaran. Tindakan memindahkannya ke tahap lain."
 #: src/features/applications/list/list-row.tsx
 msgid "Opens the application. Long press to select."
 msgstr "Membuka lamaran. Tekan lama untuk memilih."
+
+#: src/features/account/account-screen.tsx
+msgid "Opens the browser to confirm permanent deletion."
+msgstr "Buka browser untuk mengonfirmasi penghapusan permanen."
 
 #: src/features/documents/document-item.tsx
 msgid "Opens the document. Long press for options."
@@ -9735,9 +9819,9 @@ msgstr "Format tabel asli dipertahankan. Teks ini hanya-baca karena tidak bisa d
 msgid "Other"
 msgstr "Lainnya"
 
-#: src/features/settings/api-keys.tsx
-msgid "Other apps can't connect with API keys on this account. This app always works."
-msgstr "Aplikasi lain tidak bisa terhubung dengan API key di akun ini. Aplikasi ini selalu bisa dipakai."
+#: src/features/billing/plan-alert.ts
+msgid "Other apps cannot connect to this account with an API key."
+msgstr "Aplikasi lain tidak dapat terhubung ke akun ini dengan kunci API."
 
 #: src/features/offers/cells.ts
 msgid "Other benefits"
@@ -9767,6 +9851,10 @@ msgstr "Kedaluwarsa: teks telah berubah sejak saat itu."
 #: src/features/design/preset-names.ts
 msgid "Outer space"
 msgstr "Antariksa"
+
+#: src/features/account/help-screen.tsx
+msgid "Over-the-air update"
+msgstr "Pembaruan OTA"
 
 #: src/features/share/custom-domain.tsx
 msgid "Ownership proven"
@@ -9894,12 +9982,12 @@ msgstr "Lolos"
 msgid "Passkey"
 msgstr "Kunci sandi"
 
-#: app/account/account.tsx
+#: src/features/account/account-screen.tsx
 #: src/features/search/search-screen.tsx
 msgid "Passkeys"
 msgstr "Passkeys"
 
-#: app/account/account.tsx
+#: src/features/account/account-screen.tsx
 #: src/features/auth/create-account-screen.tsx
 #: src/features/auth/email-sign-in-screen.tsx
 #: src/features/search/search-screen.tsx
@@ -10044,11 +10132,7 @@ msgstr "Per tahun"
 msgid "Percent"
 msgstr "Persen"
 
-#: app/account/account.tsx
-msgid "Permanently removes everything. Opens your browser account settings."
-msgstr "Menghapus semuanya secara permanen. Membuka pengaturan akun browser Anda."
-
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Persian"
 msgstr "Persia"
 
@@ -10165,8 +10249,7 @@ msgstr "Teks biasa (.txt)"
 msgid "Plain text with headings. Paste into application forms and notes."
 msgstr "Teks biasa dengan judul. Tempelkan ke formulir dan catatan lamaran pekerjaan."
 
-#: app/account/index.tsx
-#: app/account/membership.tsx
+#: src/features/account/plan-screen.tsx
 #: src/shell/account-menu.tsx
 msgid "Plan"
 msgstr "Paket"
@@ -10187,12 +10270,7 @@ msgstr "Rencanakan yang perlu ditanyakan"
 msgid "Planning your week"
 msgstr "Merencanakan minggu Anda"
 
-#: app/account/membership.tsx
-#: src/features/billing/plan-alert.ts
-msgid "Plans can be bought on the rezumi.app website."
-msgstr "Paket bisa dibeli di situs rezumi.app."
-
-#: app/account/membership.tsx
+#: src/features/account/plan-screen.tsx
 msgid "Plans don't apply to your account yet, so everything is open."
 msgstr "Paket belum berlaku untuk akunmu, jadi semua fitur terbuka."
 
@@ -10208,7 +10286,7 @@ msgstr "Plum ungu"
 msgid "Plus"
 msgstr "Plus"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Polish"
 msgstr "Polandia"
 
@@ -10218,12 +10296,14 @@ msgstr "Memoles"
 
 #: app/(tabs)/_layout.tsx
 #: src/features/portfolio/overview.tsx
+#: src/features/search/search-screen.tsx
 #: src/shell/app-tabs.tsx
 msgid "Portfolio"
 msgstr "Portofolio"
 
 #: src/features/portfolio/editor/assistant.tsx
 #: src/features/portfolio/editor/screen.tsx
+#: src/features/search/search-screen.tsx
 msgid "Portfolio assistant"
 msgstr "Asisten portofolio"
 
@@ -10256,11 +10336,11 @@ msgstr "Portofolio belum tersedia untuk akun ini."
 msgid "Portrait"
 msgstr "Potret"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Portuguese (Brazil)"
 msgstr "Portugis (Brasil)"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Portuguese (Portugal)"
 msgstr "Portugis (Portugal)"
 
@@ -10387,10 +10467,7 @@ msgstr "Utamakan satu kolom, atau batasi kolom samping untuk daftar pendek yang 
 msgid "Preference"
 msgstr "Preferensi"
 
-#: app/account/index.tsx
-#: app/account/preferences.tsx
 #: src/features/profile/profile-screen.tsx
-#: src/features/search/search-screen.tsx
 msgid "Preferences"
 msgstr "Preferensi"
 
@@ -10415,7 +10492,7 @@ msgstr "Persiapkan saya untuk wawancara"
 msgid "Preparing edits…"
 msgstr "Mempersiapkan pengeditan…"
 
-#: src/features/settings/export.tsx
+#: src/features/account/export.tsx
 msgid "Preparing export…"
 msgstr "Mempersiapkan ekspor…"
 
@@ -10454,6 +10531,14 @@ msgstr "Pratinjau halaman web"
 msgid "Previewing {0} · tap to apply"
 msgstr "Pratinjau {0} · ketuk untuk mendaftar"
 
+#: src/features/account/storage-screen.tsx
+msgid "Previews and temporary exports will be removed from this device. Your documents and unsynced edits are kept."
+msgstr "Pratinjau dan ekspor sementara akan dihapus dari perangkat ini. Dokumen dan perubahan yang belum tersinkron tetap tersimpan."
+
+#: src/features/billing/plan-card.tsx
+msgid "Previous card subscription"
+msgstr "Langganan kartu sebelumnya"
+
 #: src/features/applications/calendar/calendar-toolbar.tsx
 msgid "Previous day"
 msgstr "Hari sebelumnya"
@@ -10481,6 +10566,10 @@ msgstr "Halaman sebelumnya"
 #: src/features/check/parser-view.tsx
 msgid "Previous PDF result. It may not match your current draft."
 msgstr "Hasil PDF sebelumnya. Ini mungkin tidak cocok dengan draf Anda saat ini."
+
+#: src/features/billing/plan-card.tsx
+msgid "Previous QRIS pass"
+msgstr "Pas QRIS sebelumnya"
 
 #: src/features/applications/board/stage-pager.tsx
 msgid "Previous stage"
@@ -10512,7 +10601,7 @@ msgstr "Cetak atau ekspor formulir menjadi PDF datar sebelum mengirimkannya."
 msgid "Privacy"
 msgstr "Privasi"
 
-#: app/account/index.tsx
+#: src/features/account/help-screen.tsx
 #: src/features/auth/welcome-screen.tsx
 msgid "Privacy policy"
 msgstr "Kebijakan privasi"
@@ -10539,7 +10628,7 @@ msgstr "Kemahiran"
 
 #: app/(tabs)/_layout.tsx
 #: app/(tabs)/profile/_layout.tsx
-#: app/account/account.tsx
+#: src/features/account/account-screen.tsx
 #: src/features/assistant/coach.tsx
 #: src/features/portfolio/editor/content.tsx
 #: src/features/profile/profile-screen.tsx
@@ -10565,7 +10654,7 @@ msgstr "Tautan profil opsional dan hanya dipakai saat Riset web aktif."
 msgid "Profile links must be public HTTPS addresses."
 msgstr "Tautan profil harus berupa alamat HTTPS publik."
 
-#: src/features/settings/profile.tsx
+#: src/features/account/profile.tsx
 msgid "Profile photo"
 msgstr "Foto profil"
 
@@ -10682,6 +10771,10 @@ msgstr "Kode QR untuk {0}"
 msgid "QR code for {url}"
 msgstr "Kode QR untuk {url}"
 
+#: src/features/billing/plan-card.tsx
+msgid "QRIS pass"
+msgstr "Pas QRIS"
+
 #: src/features/workspace/practice/question-card.tsx
 msgid "Question {position} of {total}"
 msgstr "Pertanyaan {position} dari {total}"
@@ -10755,7 +10848,7 @@ msgstr "Baca briefing"
 msgid "Read it for me"
 msgstr "Baca untuk saya"
 
-#: app/account/licences.tsx
+#: src/features/account/licences-screen.tsx
 msgid "Read license"
 msgstr "Baca lisensi"
 
@@ -10881,10 +10974,6 @@ msgstr "Alasan"
 msgid "Recalled"
 msgstr "Diingat kembali"
 
-#: app/account/membership.tsx
-msgid "Recent activity"
-msgstr "Aktivitas terbaru"
-
 #: src/features/home/recent-documents.tsx
 msgid "Recent documents"
 msgstr "Dokumen terbaru"
@@ -10976,7 +11065,7 @@ msgstr "Segarkan briefing 24 jam sebelumnya"
 msgid "Refresh the briefing on the morning of"
 msgstr "Segarkan briefing pada pagi harinya"
 
-#: app/account/index.tsx
+#: src/features/account/help-screen.tsx
 msgid "Refund policy"
 msgstr "Kebijakan Pengembalian Dana"
 
@@ -10994,7 +11083,7 @@ msgstr "Tolak"
 msgid "Rejected"
 msgstr "Ditolak"
 
-#: app/account/preferences.tsx
+#: src/features/account/preferences-screen.tsx
 msgid "Reload now"
 msgstr "Muat ulang sekarang"
 
@@ -11131,8 +11220,8 @@ msgstr "Hapus kata sandi"
 msgid "Remove person {0}"
 msgstr "Hapus orang {0}"
 
+#: src/features/account/profile.tsx
 #: src/features/entries/photo-field.tsx
-#: src/features/settings/profile.tsx
 msgid "Remove photo"
 msgstr "Hapus foto"
 
@@ -11196,6 +11285,11 @@ msgstr "Mengganti nama dokumen"
 #: src/preview/page.tsx
 msgid "Rendering preview…"
 msgstr "Pratinjau rendering…"
+
+#. placeholder {0}: formatDate(end)
+#: src/features/billing/plan-card.tsx
+msgid "Renews on {0}"
+msgstr "Diperpanjang pada {0}"
 
 #: src/features/applications/detail/detail-header.tsx
 #: src/features/applications/list/list-row.tsx
@@ -11264,11 +11358,15 @@ msgstr "Balasan disalin"
 msgid "Report"
 msgstr "Laporan"
 
-#: app/account/ai-report.tsx
-#: app/account/ai.tsx
+#: src/features/account/ai-report-screen.tsx
+#: src/features/account/ai-screen.tsx
 #: src/features/ai/report-content.tsx
 msgid "Report AI content"
 msgstr "Laporkan konten AI"
+
+#: src/features/account/help-screen.tsx
+msgid "Report an issue"
+msgstr "Laporkan masalah"
 
 #: src/features/ai/report-content.tsx
 msgid "Report received by your server operator. Thank you."
@@ -11312,7 +11410,7 @@ msgstr "Atur ulang kata sandi Anda"
 msgid "Respond by"
 msgstr "Tanggapi paling lambat"
 
-#: app/account/preferences.tsx
+#: src/features/account/preferences-screen.tsx
 msgid "Restart to change text direction"
 msgstr "Mulai ulang untuk mengubah arah teks"
 
@@ -11415,10 +11513,6 @@ msgstr "CV tidak tersedia"
 #: src/features/search/search-screen.tsx
 msgid "Resumes"
 msgstr "CV"
-
-#: app/account/preferences.tsx
-msgid "Resumes always render on white paper, whatever the theme."
-msgstr "Resume selalu ditampilkan di kertas putih, apa pun temanya."
 
 #: src/features/profile/save-note.tsx
 msgid "Resumes that followed"
@@ -11550,19 +11644,19 @@ msgstr "Penulisan ulasan"
 msgid "Reviewing needs an AI connection. What you write here stays on this device until then."
 msgstr "Peninjauan memerlukan koneksi AI. Apa yang Anda tulis di sini akan tetap ada di perangkat ini sampai saat itu tiba."
 
-#: src/features/settings/api-keys.tsx
+#: src/features/account/api-keys.tsx
 msgid "Revoke"
 msgstr "Menarik kembali"
 
-#: src/features/settings/api-keys.tsx
+#: src/features/account/api-keys.tsx
 msgid "Revoke API key?"
 msgstr "Cabut kunci API?"
 
-#: src/features/settings/api-keys.tsx
+#: src/features/account/api-keys.tsx
 msgid "Revoke key"
 msgstr "Cabut kunci"
 
-#: src/features/settings/api-keys.tsx
+#: src/features/account/api-keys.tsx
 msgid "Revoke this API key"
 msgstr "Cabut kunci API ini"
 
@@ -11580,7 +11674,7 @@ msgstr "Tulis ulang dengan AI"
 msgid "Rezumi AI · {0} credit per reply · {1} left"
 msgstr "Rezumi AI · {0} kredit per balasan · sisa {1}"
 
-#: app/account/membership.tsx
+#: src/features/account/plan-screen.tsx
 msgid "Rezumi AI credits"
 msgstr "Kredit Rezumi AI"
 
@@ -11593,6 +11687,10 @@ msgstr "Rezumi AI sedang tidak tersedia. Pakai koneksi AI Anda sendiri, atau tam
 #: src/features/billing/ai-source.ts
 msgid "Rezumi AI: {0}, {1} left. If it fails, the credits come back."
 msgstr "Rezumi AI: {0}, sisa {1}. Bila gagal, kredit dikembalikan."
+
+#: src/features/account/ai-privacy-screen.tsx
+msgid "Rezumi asks before each AI operation. Individual approvals expire after that operation."
+msgstr "Rezumi meminta persetujuan sebelum setiap operasi AI. Persetujuan berlaku hingga operasi itu selesai."
 
 #: src/shell/permissions.tsx
 msgid "Rezumi can't ask again. Turn it on for Rezumi in your device's Settings, then try again."
@@ -11654,7 +11752,7 @@ msgstr "Posisi"
 msgid "Roles you're looking for"
 msgstr "Posisi yang Anda cari"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Romanian"
 msgstr "Rumania"
 
@@ -11697,11 +11795,15 @@ msgstr "Berjalan pada {0}."
 msgid "Runs onto page {0}"
 msgstr "Meluap ke halaman {0}"
 
+#: src/features/account/help-screen.tsx
+msgid "Runtime version"
+msgstr "Versi runtime"
+
 #: src/features/portfolio/editor/metric.tsx
 msgid "Rupiah"
 msgstr "Rupiah"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Russian"
 msgstr "Rusia"
 
@@ -11979,6 +12081,7 @@ msgstr "Disimpan ke Profil Anda."
 msgid "Saves as you type. Resumes that still use a part follow your changes."
 msgstr "Tersimpan saat kamu mengetik. CV yang masih memakai bagian yang sama ikut berubah."
 
+#: src/features/account/profile.tsx
 #: src/features/applications/interview-sheet.tsx
 #: src/features/applications/save-sheet.tsx
 #: src/features/auth/reset-password-screen.tsx
@@ -11988,7 +12091,6 @@ msgstr "Tersimpan saat kamu mengetik. CV yang masih memakai bagian yang sama iku
 #: src/features/profile/preferences.tsx
 #: src/features/profile/save-note.tsx
 #: src/features/profile/stories.tsx
-#: src/features/settings/profile.tsx
 #: src/features/write/profile-marker-sheet.tsx
 #: src/shell/builder-chrome/top-bar.tsx
 msgid "Saving…"
@@ -12021,6 +12123,10 @@ msgstr "Jadwalkan saat mereka mengundang Anda."
 msgid "Schedule saved"
 msgstr "Jadwal disimpan"
 
+#: src/features/account/ai-privacy-screen.tsx
+msgid "Scheduled AI approvals"
+msgstr "Persetujuan untuk AI terjadwal"
+
 #: src/features/career/schedule-body.tsx
 msgid "Scheduled work is not available on this server. Ask your server administrator to configure it."
 msgstr "Pekerjaan terjadwal tidak tersedia di server ini. Minta administrator server Anda untuk mengonfigurasinya."
@@ -12052,8 +12158,8 @@ msgstr "Wawancara penyaringan"
 #: app/_layout.tsx
 #: app/(tabs)/_layout.tsx
 #: src/features/documents/library-toolbar.tsx
+#: src/features/search/search-screen.tsx
 #: src/shell/tab-chrome.tsx
-#: src/ui-legacy/fields.tsx
 msgid "Search"
 msgstr "Cari"
 
@@ -12073,10 +12179,6 @@ msgstr "Cari lagi"
 msgid "Search applications"
 msgstr "Cari lamaran kerja"
 
-#: src/features/search/search-screen.tsx
-msgid "Search commands"
-msgstr "Perintah pencarian"
-
 #: src/features/career/schedule-body.tsx
 msgid "Search connections"
 msgstr "Cari koneksi"
@@ -12086,10 +12188,6 @@ msgstr "Cari koneksi"
 #: src/features/profile/search-regions-field.tsx
 msgid "Search countries"
 msgstr "Cari negara"
-
-#: src/features/search/search-screen.tsx
-msgid "Search covers documents, applications, assistant conversations and actions."
-msgstr "Pencarian mencakup dokumen, lamaran pekerjaan, percakapan dan tindakan asisten."
 
 #: src/features/documents/library-states.tsx
 msgid "Search covers titles, tags and linked applications."
@@ -12102,6 +12200,10 @@ msgstr "Cari lowongan terbaru dari situs karier perusahaan dan papan lowongan, l
 #: src/features/documents/library-toolbar.tsx
 msgid "Search documents"
 msgstr "Cari dokumen"
+
+#: src/features/search/search-screen.tsx
+msgid "Search documents, applications, and more"
+msgstr "Cari dokumen, lamaran, dan lainnya"
 
 #: src/features/share/web-page.tsx
 msgid "Search engines such as Google may list your web page. It can take weeks to appear, or to disappear after you turn this off."
@@ -12119,10 +12221,6 @@ msgstr "Cari font"
 msgid "Search for an icon"
 msgstr "Cari ikon"
 
-#: src/features/search/search-screen.tsx
-msgid "Search for…"
-msgstr "Cari…"
-
 #: src/features/entries/icon-picker.tsx
 msgid "Search icons"
 msgstr "Ikon pencarian"
@@ -12131,7 +12229,7 @@ msgstr "Ikon pencarian"
 msgid "Search interviews"
 msgstr "Cari wawancara"
 
-#: app/account/preferences.tsx
+#: src/features/account/preferences-screen.tsx
 #: src/features/design/page-group.tsx
 msgid "Search languages"
 msgstr "Cari bahasa"
@@ -12139,6 +12237,10 @@ msgstr "Cari bahasa"
 #: src/features/applications/detail/document-choice.tsx
 msgid "Search letters"
 msgstr "Cari surat"
+
+#: src/features/ai/provider-editor.tsx
+msgid "Search providers"
+msgstr "Cari penyedia"
 
 #: src/features/applications/detail/document-choice.tsx
 msgid "Search resumes"
@@ -12160,6 +12262,10 @@ msgstr "Kata pencarian dikirim ke layanan pencarian web Anda."
 msgid "Search the web"
 msgstr "Cari di web"
 
+#: src/features/account/preferences-screen.tsx
+msgid "Search themes"
+msgstr "Cari tema"
+
 #: src/features/applications/interview/zone-list.tsx
 msgid "Search time zones"
 msgstr "Cari zona waktu"
@@ -12168,14 +12274,9 @@ msgstr "Cari zona waktu"
 msgid "Search times"
 msgstr "Cari waktu"
 
-#: app/account/preferences.tsx
+#: src/features/account/preferences-screen.tsx
 msgid "Search timezones"
 msgstr "Cari zona waktu"
-
-#: src/features/search/search-screen.tsx
-#: src/ui-legacy/fields.tsx
-msgid "Search…"
-msgstr "Cari…"
 
 #: src/features/assistant/messages.tsx
 msgid "Searched the web"
@@ -12184,6 +12285,10 @@ msgstr "Mencari di web"
 #: src/features/assistant/messages.tsx
 msgid "Searching the web…"
 msgstr "Menelusuri web…"
+
+#: src/features/search/search-screen.tsx
+msgid "Searching…"
+msgstr "Mencari…"
 
 #: src/features/check/messages.ts
 msgid "Section headings"
@@ -12212,6 +12317,10 @@ msgstr "Bagian menggunakan judul yang dikenali sistem, dan pengalaman kerja dita
 #: src/features/design/preset-names.ts
 msgid "Security"
 msgstr "Keamanan"
+
+#: src/features/account/account-screen.tsx
+msgid "Security settings open in the browser. You may need to sign in there."
+msgstr "Pengaturan keamanan terbuka di browser. Anda mungkin perlu masuk di sana."
 
 #: src/features/onboarding/intro-screen.tsx
 msgid "See where each one stands, get new roles that fit you, and never miss an interview."
@@ -12374,12 +12483,12 @@ msgstr "Dikirim ke {0}"
 msgid "Sent to Lumen"
 msgstr "Dikirim ke Lumen"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Serbian"
 msgstr "Serbia"
 
 #: src/api/ai-consent.ts
-#: src/features/settings/sign-out.tsx
+#: src/features/account/sign-out.tsx
 msgid "Server"
 msgstr "Server"
 
@@ -12434,13 +12543,11 @@ msgstr "Atur alamat karya"
 msgid "Setting up HTTPS. This usually takes a few minutes, and this screen updates by itself."
 msgstr "Menyiapkan HTTPS. Biasanya butuh beberapa menit, dan layar ini diperbarui sendiri."
 
-#: app/account/index.tsx
 #: src/features/applications/detail/reminder-sheet.tsx
-#: src/features/search/search-screen.tsx
 msgid "Settings"
 msgstr "Pengaturan"
 
-#: app/account/ai-mcp.tsx
+#: src/features/account/mcp-screen.tsx
 msgid "Setup guide"
 msgstr "Panduan pengaturan"
 
@@ -12593,10 +12700,6 @@ msgstr "Tampilkan aksi"
 msgid "Show again"
 msgstr "Tunjukkan lagi"
 
-#: src/features/search/search-screen.tsx
-msgid "Show all"
-msgstr "Tunjukkan semuanya"
-
 #: src/features/profile/facts.tsx
 msgid "Show all facts"
 msgstr "Tampilkan semua fakta"
@@ -12651,7 +12754,7 @@ msgstr "Tampilkan lebih sedikit"
 msgid "Show link in title"
 msgstr "Tampilkan tautan di judul"
 
-#: app/account/preferences.tsx
+#: src/features/account/plan-screen.tsx
 #: src/features/applications/interview/zone-list.tsx
 msgid "Show more"
 msgstr "Tampilkan lebih banyak"
@@ -12802,18 +12905,26 @@ msgid "Sign in to view this resume."
 msgstr "Masuk untuk melihat CV ini."
 
 #: src/auth/session-gate.tsx
-#: src/features/settings/sign-out.tsx
+#: src/features/account/sign-out.tsx
 #: src/shell/account-menu.tsx
 #: src/shell/app-drawer.tsx
 msgid "Sign out"
 msgstr "Keluar"
 
-#: src/features/settings/sign-out.tsx
+#: src/features/account/sign-out.tsx
+msgid "Sign out of all devices"
+msgstr "Keluar dari semua perangkat"
+
+#: src/features/account/sign-out.tsx
+msgid "Sign out of all devices?"
+msgstr "Keluar dari semua perangkat?"
+
+#: src/features/account/sign-out.tsx
 #: src/shell/account-menu.tsx
 msgid "Sign out?"
 msgstr "Keluar?"
 
-#: app/account/account.tsx
+#: src/features/account/account-screen.tsx
 msgid "Sign-in & security"
 msgstr "Masuk & keamanan"
 
@@ -12831,7 +12942,7 @@ msgid "Signed in with Apple, Google or another provider? You have no password he
 msgstr "Masuk lewat Apple, Google, atau penyedia lain? Kamu tidak punya kata sandi di sini: masuk saja lewat penyedia itu."
 
 #: src/auth/session-gate.tsx
-#: src/features/settings/sign-out.tsx
+#: src/features/account/sign-out.tsx
 msgid "Signed out, but some data on this device couldn't be removed."
 msgstr "Keluar, namun beberapa data di perangkat ini tidak dapat dihapus."
 
@@ -12898,11 +13009,11 @@ msgstr "Lewati"
 msgid "Skipped"
 msgstr "Dilewati"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Slovak"
 msgstr "Slovak"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Slovenian"
 msgstr "Slovenia"
 
@@ -12951,6 +13062,10 @@ msgstr "Beberapa glif tidak memiliki arti di luar file ini."
 #: src/features/ats-checker/messages.ts
 msgid "Some lines are stored out of reading order."
 msgstr "Beberapa baris disimpan tidak sesuai urutan baca."
+
+#: src/features/search/search-screen.tsx
+msgid "Some results couldn't load."
+msgstr "Sebagian hasil gagal dimuat."
 
 #: src/features/check/messages.ts
 msgid "Some systems mishandle images, and photos are discouraged in some countries."
@@ -13022,7 +13137,7 @@ msgstr "Sumber"
 msgid "Sources"
 msgstr "Sumber"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Spanish"
 msgstr "Spanyol"
 
@@ -13217,6 +13332,7 @@ msgstr "Statistik butuh koneksi."
 msgid "Stay here"
 msgstr "Tetap di sini"
 
+#: src/features/account/sign-out.tsx
 #: src/shell/account-menu.tsx
 msgid "Stay signed in"
 msgstr "Tetap masuk"
@@ -13353,10 +13469,6 @@ msgstr "Menyarankan pemotongan, tidak pernah menghapus sendiri"
 msgid "Summary"
 msgstr "Ringkasan"
 
-#: app/account/index.tsx
-msgid "Support"
-msgstr "Mendukung"
-
 #: src/features/jobs/listing-fit.tsx
 #: src/features/workspace/debrief/review-card.tsx
 #: src/features/workspace/fit/requirement-card.tsx
@@ -13379,7 +13491,7 @@ msgstr "Tukar baris: posisi di atas"
 msgid "Swap the start and end dates."
 msgstr "Tukar tanggal mulai dan berakhir."
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Swedish"
 msgstr "Swedia"
 
@@ -13391,7 +13503,7 @@ msgstr "Ganti model"
 msgid "Switch server"
 msgstr "Ganti server"
 
-#: src/features/settings/sign-out.tsx
+#: src/features/account/sign-out.tsx
 #: src/linking/open.ts
 msgid "Switch server?"
 msgstr "Ganti server?"
@@ -13404,10 +13516,17 @@ msgstr "Beralih ke satu kolom"
 msgid "Switched to one column"
 msgstr "Beralih ke satu kolom"
 
-#: app/account/index.tsx
-#: app/account/preferences.tsx
+#: src/features/account/preferences-screen.tsx
 msgid "System"
 msgstr "Sistem operasi"
+
+#: src/features/account/notification-settings.tsx
+msgid "System notification settings"
+msgstr "Pengaturan notifikasi sistem"
+
+#: src/features/account/notification-settings.tsx
+msgid "System permission is off."
+msgstr "Izin notifikasi sistem dinonaktifkan."
 
 #: src/features/check/messages.ts
 msgid "Systems file you under the name at the top of the page."
@@ -13470,8 +13589,8 @@ msgstr "Ambil foto"
 msgid "Take a picture"
 msgstr "Ambil foto"
 
+#: src/features/account/profile.tsx
 #: src/features/entries/photo-field.tsx
-#: src/features/settings/profile.tsx
 msgid "Take photo"
 msgstr "Ambil foto"
 
@@ -13492,7 +13611,7 @@ msgstr "Diturunkan"
 msgid "Takes its sender details and design from your latest resume."
 msgstr "Mengambil detail pengirim dan desain dari CV terbarumu."
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Tamil"
 msgstr "Tamil"
 
@@ -13553,7 +13672,7 @@ msgstr "Ceritakan tentang pekerjaan yang Anda banggakan. Apa peran Anda di dalam
 msgid "Tell me about a time you disagreed with a colleague. How did you resolve it?"
 msgstr "Ceritakan saat Anda tidak sependapat dengan rekan kerja. Bagaimana Anda menyelesaikannya?"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Telugu"
 msgstr "Telugu"
 
@@ -13593,7 +13712,7 @@ msgstr "Ketentuan"
 msgid "Terms from the posting"
 msgstr "Persyaratan dari postingan pekerjaan"
 
-#: app/account/index.tsx
+#: src/features/account/help-screen.tsx
 msgid "Terms of service"
 msgstr "Syarat dan Ketentuan"
 
@@ -13669,7 +13788,7 @@ msgstr "Teks, latar, dan cara level keahlian tampil"
 msgid "Text, e.g. Indonesian"
 msgstr "Isi, mis. Indonesia"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Thai"
 msgstr "Thai"
 
@@ -14008,14 +14127,13 @@ msgstr "Bagian atas halaman pertama tidak tampak seperti sebuah nama."
 msgid "The versions you sent are kept in Saved. Edits here don't change what {company} received."
 msgstr "Versi yang Anda kirim disimpan di Tersimpan. Pengeditan di sini tidak mengubah apa yang diterima {company}."
 
-#: app/account/preferences.tsx
+#: src/features/account/preferences-screen.tsx
 #: src/features/portfolio/editor/design.tsx
 #: src/features/search/search-screen.tsx
 msgid "Theme"
 msgstr "Tema"
 
 #. placeholder {0}: getPlanName(next.planId)
-#: app/account/membership.tsx
 #: src/features/billing/plan-card.tsx
 msgid "Then {0}"
 msgstr "Lalu {0}"
@@ -14052,10 +14170,6 @@ msgstr "Ini adalah jawaban yang disimpan saat Anda melamar."
 msgid "These open Rezumi's sign-in page in a secure browser sheet. You come back here when you're done."
 msgstr "Pilihan ini membuka halaman masuk Rezumi di lembar browser yang aman. Kamu kembali ke sini setelah selesai."
 
-#: app/account/account.tsx
-msgid "These open your server's account settings in a browser tab inside the app. You may need to sign in there."
-msgstr "Ini membuka pengaturan akun server Anda di tab browser di dalam aplikasi. Anda mungkin perlu masuk ke sana."
-
 #: src/features/profile/save-note.tsx
 msgid "These resumes still used the parts you changed, so they changed too. Parts a resume changed itself stay as they are."
 msgstr "CV ini masih memakai bagian yang kamu ubah, jadi ikut berubah. Bagian yang diubah sendiri oleh CV tetap seperti itu."
@@ -14076,17 +14190,9 @@ msgstr "Berpikir"
 msgid "Thinking…"
 msgstr "Sedang berpikir…"
 
-#: app/account/licences.tsx
-msgid "Third-party software notices. Tap a dependency to read its license."
-msgstr "Pemberitahuan perangkat lunak pihak ketiga. Ketuk dependensi untuk membaca lisensinya."
-
 #: src/features/portfolio/queries.ts
 msgid "This account already has a portfolio."
 msgstr "Akun ini sudah memiliki portofolio."
-
-#: src/features/billing/plan-alert.ts
-msgid "This app always works. Other apps and assistants that connect with an API key need more."
-msgstr "Aplikasi ini selalu bisa dipakai. Aplikasi dan asisten lain yang terhubung dengan API key membutuhkan akses tambahan."
 
 #: src/features/workspace/screen.tsx
 msgid "This application couldn't be opened"
@@ -14111,6 +14217,7 @@ msgstr "Percakapan ini tidak bisa dilanjutkan di aplikasi ini. Mulai percakapan 
 #: src/features/assistant/assistant-screen.tsx
 #: src/features/assistant/chat-view.tsx
 #: src/features/assistant/coach.tsx
+#: src/features/portfolio/editor/assistant.tsx
 msgid "This conversation couldn't be opened."
 msgstr "Percakapan ini tidak dapat dibuka."
 
@@ -14125,6 +14232,10 @@ msgstr "Tanggal ini belum tersimpan. Pakai bulan dan tahun, seperti Mar 2022, at
 #: src/features/applications/detail/posting.tsx
 msgid "This description is clipped or incomplete. Check it before preparing documents."
 msgstr "Deskripsi ini terpotong atau tidak lengkap. Periksa sebelum menyiapkan dokumen."
+
+#: src/features/account/preferences-screen.tsx
+msgid "This device"
+msgstr "Perangkat ini"
 
 #: src/features/assistant/threads.tsx
 msgid "This document"
@@ -14165,6 +14276,10 @@ msgstr "Domain ini tidak lagi mengarah ke Rezumi. Pasang kembali record CNAME-ny
 #: src/api/ai-consent.ts
 msgid "This enables recurring processing while the schedule is on, using your server's selected providers. Turn the schedule off to stop future runs."
 msgstr "Hal ini memungkinkan pemrosesan berulang saat jadwal aktif, menggunakan penyedia server Anda yang dipilih. Matikan jadwal untuk menghentikan penayangan di masa mendatang."
+
+#: src/features/account/sign-out.tsx
+msgid "This ends your Rezumi sessions on every device. Edits that haven't synced from this device will be lost."
+msgstr "Anda akan keluar dari Rezumi di semua perangkat. Perubahan yang belum tersinkron dari perangkat ini akan hilang."
 
 #: src/features/check/messages.ts
 msgid "This entry"
@@ -14339,6 +14454,10 @@ msgstr "Ini mengukur seberapa setia perangkat lunak dapat mengekstrak teks file 
 msgid "This needs {required} and you have {balance}. Switch to your own AI connection to continue."
 msgstr "Diperlukan {required} dan Anda memiliki {balance}. Beralih ke koneksi AI sendiri untuk melanjutkan."
 
+#: src/features/billing/plan-alert.ts
+msgid "This option isn't available"
+msgstr "Opsi ini tidak tersedia"
+
 #: src/features/portfolio/queries.ts
 msgid "This option isn't included in your current plan."
 msgstr "Opsi ini belum tersedia di paket Anda."
@@ -14358,6 +14477,10 @@ msgstr "Halaman ini sangat padat."
 #: src/features/check/proposal-card.tsx
 msgid "This passage changed. Run the review again."
 msgstr "Bagian ini berubah. Jalankan peninjauan lagi."
+
+#: src/features/account/ai-privacy-screen.tsx
+msgid "This pauses the interview preparation schedule. You can enable it again from Home."
+msgstr "Jadwal persiapan wawancara akan dijeda. Anda dapat mengaktifkannya lagi dari Beranda."
 
 #: src/features/portfolio/editor/media.ts
 msgid "This PDF has an unsupported number of pages."
@@ -14492,10 +14615,6 @@ msgstr "Cerita ini tidak tersedia atau memakai fakta yang dinonaktifkan."
 msgid "This template isn't available"
 msgstr "Template ini tidak tersedia"
 
-#: src/features/billing/plan-alert.ts
-msgid "This template isn't in your plan"
-msgstr "Template ini tidak termasuk dalam paketmu"
-
 #: src/features/portfolio/editor/ai.tsx
 msgid "This text changed while AI was writing. Try again."
 msgstr "Teks ini berubah saat AI menulis. Coba lagi."
@@ -14508,7 +14627,7 @@ msgstr "Waktu ini tidak ada di zona waktu Anda. Pilih waktu lain."
 msgid "This time doesn't exist in that time zone. Choose another time."
 msgstr "Waktu ini tidak ada di zona waktu tersebut. Pilih waktu lain."
 
-#: src/features/settings/profile.tsx
+#: src/features/account/profile.tsx
 msgid "This username is already taken."
 msgstr "Nama pengguna ini sudah dipakai."
 
@@ -14557,7 +14676,8 @@ msgstr "Waktu, tautan, siapa, apa yang Anda kirim"
 msgid "Times are shown in {timeZone}."
 msgstr "Waktu ditampilkan dalam {timeZone}."
 
-#: app/account/preferences.tsx
+#: src/features/account/preferences-screen.tsx
+#: src/features/search/search-screen.tsx
 msgid "Timezone"
 msgstr "Zona waktu"
 
@@ -14662,11 +14782,7 @@ msgstr "Logo tools tidak tersedia"
 msgid "Tool logos aren't available, so the imported document shows skills without them."
 msgstr "Logo tools tidak tersedia, jadi dokumen hasil impor menampilkan keahlian tanpa logo."
 
-#: src/features/billing/plan-alert.ts
-msgid "Tool logos aren't in your plan"
-msgstr "Logo tools tidak termasuk dalam paketmu"
-
-#: app/account/membership.tsx
+#: src/features/account/plan-screen.tsx
 #: src/features/design/icons-group.tsx
 msgid "Tool logos in skills"
 msgstr "Logo tools di keahlian"
@@ -14748,7 +14864,11 @@ msgstr "Sampah"
 msgid "Trash is empty"
 msgstr "Sampah kosong"
 
-#: app/account/membership.tsx
+#: src/features/account/mcp-screen.tsx
+msgid "Treat API keys like passwords. Revoke a key in Account to stop the app using it."
+msgstr "Perlakukan kunci API seperti kata sandi. Cabut kunci di Akun untuk menghentikan akses aplikasi yang memakainya."
+
+#: src/features/account/plan-screen.tsx
 #: src/features/billing/credits.ts
 msgid "Trial credits"
 msgstr "Kredit coba"
@@ -14771,8 +14891,12 @@ msgstr "Coba rentang tanggal posting yang lebih panjang, kurangi filter, atau pa
 
 #: app/_layout.tsx
 #: app/(auth)/server.tsx
-#: app/account/account.tsx
-#: app/account/preferences.tsx
+#: src/features/account/account-screen.tsx
+#: src/features/account/ai-privacy-screen.tsx
+#: src/features/account/api-keys.tsx
+#: src/features/account/plan-screen.tsx
+#: src/features/account/preferences-screen.tsx
+#: src/features/account/storage-screen.tsx
 #: src/features/ai/provider-editor.tsx
 #: src/features/ai/provider-list.tsx
 #: src/features/applications/board/load-states.tsx
@@ -14787,7 +14911,7 @@ msgstr "Coba rentang tanggal posting yang lebih panjang, kurangi filter, atau pa
 #: src/features/letters/write.tsx
 #: src/features/onboarding/onboarding-screen.tsx
 #: src/features/profile/states.tsx
-#: src/features/settings/api-keys.tsx
+#: src/features/search/search-screen.tsx
 #: src/features/workspace/ai-notice.tsx
 #: src/features/workspace/part-body.tsx
 #: src/features/workspace/practice/practice-part.tsx
@@ -14835,7 +14959,7 @@ msgstr "Coba dengan contoh resume"
 msgid "Trying {0} on the page"
 msgstr "Mencoba {0} di halaman"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Turkish"
 msgstr "Turki"
 
@@ -14859,6 +14983,10 @@ msgstr "Aktifkan jadwal ini"
 msgid "Turned off in Settings"
 msgstr "Dimatikan di Pengaturan"
 
+#: src/features/account/notification-settings.tsx
+msgid "Turning a type off removes its scheduled reminders from this device. Turn it back on to set new reminders in Applications."
+msgstr "Menonaktifkan satu jenis akan menghapus pengingat jenis itu dari perangkat ini. Aktifkan kembali untuk membuat pengingat baru di Lamaran."
+
 #: src/features/design/gallery-filters.tsx
 #: src/features/design/template-card.tsx
 #: src/features/onboarding/template-choice.tsx
@@ -14873,7 +15001,7 @@ msgstr "Dua pertanyaan singkat"
 msgid "Two stories"
 msgstr "Dua cerita"
 
-#: app/account/account.tsx
+#: src/features/account/account-screen.tsx
 #: src/features/auth/two-factor-screen.tsx
 msgid "Two-step verification"
 msgstr "Verifikasi dua langkah"
@@ -14885,10 +15013,6 @@ msgstr "Verifikasi dua langkah"
 #: src/features/workspace/practice/answer-panel.tsx
 msgid "Type"
 msgstr "Tipe"
-
-#: src/features/search/search-screen.tsx
-msgid "Type a command or search…"
-msgstr "Ketik perintah atau cari…"
 
 #: src/features/workspace/practice/answer-panel.tsx
 #: src/features/workspace/practice/recorder-control.tsx
@@ -14909,11 +15033,11 @@ msgstr "Mesin tik"
 msgid "Typography"
 msgstr "Tipografi"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Ukrainian"
 msgstr "Ukraina"
 
-#: app/account/preferences.tsx
+#: src/features/account/help-screen.tsx
 msgid "Unavailable"
 msgstr "Tidak tersedia"
 
@@ -14990,7 +15114,7 @@ msgstr "Buka kuncinya terlebih dahulu, lalu coba lagi."
 msgid "Unlocking…"
 msgstr "Membuka kunci…"
 
-#: src/features/settings/api-keys.tsx
+#: src/features/account/api-keys.tsx
 msgid "Unnamed key"
 msgstr "Kunci tanpa nama"
 
@@ -15089,7 +15213,7 @@ msgstr "Unggah font"
 msgid "Upload TTF or OTF files you have the right to use, one file per weight or style. Anyone who opens a shared link to this document can download them."
 msgstr "Unggah file TTF atau OTF yang boleh kamu pakai, satu file untuk setiap ketebalan atau gaya. Siapa pun yang membuka tautan bagikan dokumen ini bisa mengunduhnya."
 
-#: src/features/settings/profile.tsx
+#: src/features/account/profile.tsx
 msgid "Uploading photo…"
 msgstr "Mengunggah foto…"
 
@@ -15135,7 +15259,7 @@ msgstr "Pakai gaya bawaan {name}"
 msgid "Use {url}"
 msgstr "Gunakan {url}"
 
-#: src/features/settings/profile.tsx
+#: src/features/account/profile.tsx
 msgid "Use 3 to 64 lowercase letters, numbers, dots, hyphens and underscores."
 msgstr "Gunakan 3 hingga 64 huruf kecil, angka, titik, tanda hubung, dan garis bawah."
 
@@ -15331,10 +15455,6 @@ msgstr "Gunakan milik mereka"
 msgid "Use these answers"
 msgstr "Gunakan jawaban ini"
 
-#: app/account/preferences.tsx
-msgid "Use this device's timezone ({deviceTimezone})"
-msgstr "Gunakan zona waktu perangkat ini ({deviceTimezone})"
-
 #: src/features/ai/provider-editor.tsx
 msgid "Use this provider"
 msgstr "Gunakan penyedia ini"
@@ -15363,8 +15483,8 @@ msgstr "Dipakai pada {at}"
 msgid "Used to check roles and offers. Each is a number, so the coach can compare without guessing."
 msgstr "Dipakai untuk memeriksa posisi dan penawaran. Masing-masing berupa angka, jadi coach bisa membandingkan tanpa menebak."
 
+#: src/features/account/profile.tsx
 #: src/features/entries/fields.ts
-#: src/features/settings/profile.tsx
 msgid "Username"
 msgstr "Nama Pengguna"
 
@@ -15393,7 +15513,7 @@ msgstr "Menggunakan template dan Desain CV Anda, serta pas di layar apa pun. Uba
 msgid "Using your Profile's version."
 msgstr "Memakai versi Profil Anda."
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Uzbek"
 msgstr "Uzbek"
 
@@ -15500,7 +15620,7 @@ msgstr "Video"
 msgid "Video link, office address or phone number"
 msgstr "Tautan video, alamat kantor, atau nomor telepon"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Vietnamese"
 msgstr "Vietnam"
 
@@ -15829,7 +15949,7 @@ msgstr "Yang kamu cari berikutnya. Pencarian kerja, cek kecocokan, tawaran, dan 
 msgid "What you're looking for"
 msgstr "Yang Anda cari"
 
-#: app/account/membership.tsx
+#: src/features/account/plan-screen.tsx
 msgid "What's included"
 msgstr "Yang termasuk"
 
@@ -15841,7 +15961,7 @@ msgstr "Apa yang berhasil"
 msgid "WhatsApp number with country code"
 msgstr "Nomor WhatsApp dengan kode negara"
 
-#: app/account/membership.tsx
+#: src/features/billing/plan-card.tsx
 msgid "When a plan ends, nothing is locked or deleted: every document stays open to edit, share and download as a PDF."
 msgstr "Saat paket berakhir, tidak ada yang dikunci atau dihapus: semua dokumen tetap bisa diedit, dibagikan, dan diunduh sebagai PDF."
 
@@ -15923,9 +16043,21 @@ msgstr "Sidebar lebih lebar"
 msgid "Width"
 msgstr "Lebar"
 
-#: src/features/settings/api-keys.tsx
-msgid "Without it, apps you connect with a key won't work yet. This app always works. Plans can be bought on the rezumi.app website."
-msgstr "Tanpa paket itu, aplikasi yang kamu hubungkan dengan key belum bisa bekerja. Aplikasi ini selalu bisa dipakai. Paket bisa dibeli di situs rezumi.app."
+#: src/features/account/ai-privacy-screen.tsx
+msgid "Withdraw"
+msgstr "Cabut"
+
+#: src/features/account/ai-privacy-screen.tsx
+msgid "Withdraw AI approval?"
+msgstr "Cabut persetujuan AI?"
+
+#: src/features/account/ai-privacy-screen.tsx
+msgid "Withdraw approval"
+msgstr "Cabut persetujuan"
+
+#: src/features/account/ai-privacy-screen.tsx
+msgid "Withdrawing approval pauses the schedule on all devices."
+msgstr "Pencabutan persetujuan menjeda jadwal di semua perangkat."
 
 #: src/features/letters/write.tsx
 msgid "Without one, you fill in the recipient yourself and drafting uses only your resume."
@@ -15940,13 +16072,9 @@ msgstr "Word"
 msgid "Word and ODT aren't available"
 msgstr "Word dan ODT tidak tersedia"
 
-#: app/account/membership.tsx
+#: src/features/account/plan-screen.tsx
 msgid "Word and ODT downloads"
 msgstr "Unduh Word dan ODT"
-
-#: src/features/billing/plan-alert.ts
-msgid "Word and ODT downloads aren't in your plan"
-msgstr "Unduhan Word dan ODT tidak termasuk dalam paketmu"
 
 #: src/features/documents/new-choices.tsx
 msgid "Word files need an AI provider. PDFs are read from their text layer."
@@ -16089,7 +16217,7 @@ msgstr "Tulis jawaban Anda, atau buat draf dari Profil Anda."
 msgid "Writing"
 msgstr "Tulisan"
 
-#: app/account/ai-providers.tsx
+#: src/features/account/providers-screen.tsx
 msgid "Writing help, tailored suggestions and the assistant. The default provider is used wherever you don't pick one. Your keys stay encrypted."
 msgstr "Bantuan menulis, saran yang disesuaikan, dan asisten. Penyedia default dipakai di mana pun Anda tidak memilihnya. Kunci Anda tetap terenkripsi."
 
@@ -16120,6 +16248,10 @@ msgstr "Anda sudah menggunakan ini untuk “{takenBy}”."
 #: src/features/assistant/messages.tsx
 msgid "You answered: {answer}"
 msgstr "Anda menjawab: {answer}"
+
+#: src/features/billing/plan-alert.ts
+msgid "You can keep editing and sharing your portfolio."
+msgstr "Anda tetap dapat mengedit dan membagikan portofolio."
 
 #: src/shell/builder-chrome/top-bar.tsx
 msgid "You can keep editing. Changes sync when you're back online. PDF sharing works with cached fonts and images."
@@ -16199,7 +16331,7 @@ msgstr "Anda mengirimnya dari email Anda sendiri."
 msgid "You submit on the employer's site yourself. Marking it applied keeps the exact versions you sent."
 msgstr "Anda sendiri yang mengirim di situs pemberi kerja. Menandainya sudah melamar akan menyimpan versi persis yang Anda kirim."
 
-#: src/features/settings/sign-out.tsx
+#: src/features/account/sign-out.tsx
 #: src/shell/account-menu.tsx
 msgid "You will be signed out of {server}. Any edits not yet synced from this device will be lost."
 msgstr "Anda akan keluar dari {server}. Pengeditan apa pun yang belum disinkronkan dari perangkat ini akan hilang."
@@ -16354,7 +16486,7 @@ msgstr "Perubahan yang Anda lakukan pada perangkat ini akan digantikan oleh vers
 msgid "Your contact details are not on the first page."
 msgstr "Detail kontak Anda tidak ada di halaman pertama."
 
-#: app/account/account.tsx
+#: src/features/account/account-screen.tsx
 msgid "Your data"
 msgstr "Data Anda"
 
@@ -16433,7 +16565,7 @@ msgstr "Pembuka hanya bisa memuat empat sorotan."
 msgid "Your job search starts here"
 msgstr "Pencarian pekerjaan Anda dimulai di sini"
 
-#: app/account/preferences.tsx
+#: src/features/account/preferences-screen.tsx
 msgid "Your language is saved. Restart Rezumi to apply the new left-to-right or right-to-left layout."
 msgstr "Bahasa Anda disimpan. Mulai ulang Rezumi untuk menerapkan tata letak kiri-ke-kanan atau kanan-ke-kiri yang baru."
 
@@ -16491,11 +16623,7 @@ msgstr "Pembuka Anda, cerita yang perlu dibawa, dan pertanyaan yang perlu diajuk
 msgid "Your own domain isn't available"
 msgstr "Domain sendiri tidak tersedia"
 
-#: src/features/billing/plan-alert.ts
-msgid "Your own domain isn't in your plan"
-msgstr "Domain sendiri tidak termasuk dalam paketmu"
-
-#: app/account/membership.tsx
+#: src/features/account/plan-screen.tsx
 msgid "Your own fonts"
 msgstr "Font sendiri"
 
@@ -16507,13 +16635,9 @@ msgstr "Font sendiri tidak tersedia"
 msgid "Your own fonts aren't available, so the imported document uses a standard font."
 msgstr "Font sendiri tidak tersedia, jadi dokumen hasil impor memakai font standar."
 
-#: src/features/billing/plan-alert.ts
-msgid "Your own fonts aren't in your plan"
-msgstr "Font sendiri tidak termasuk dalam paketmu"
-
 #: src/features/design/uploaded-fonts.tsx
-msgid "Your own fonts aren't in your plan. Fonts already added keep working on the page."
-msgstr "Font sendiri tidak termasuk dalam paketmu. Font yang sudah ditambahkan tetap tampil di halaman."
+msgid "Your own fonts aren't available. Fonts already added keep working on the page."
+msgstr "Font unggahan tidak tersedia. Font yang sudah ditambahkan tetap tampil di halaman."
 
 #: src/features/billing/plan-alert.ts
 #: src/features/share/custom-domain.tsx
@@ -16528,7 +16652,6 @@ msgstr "Halaman, unggahan, dan pesan akan dihapus permanen."
 msgid "Your phone number is written in an unusual shape."
 msgstr "Nomor telepon Anda ditulis dalam bentuk yang tidak biasa."
 
-#: app/account/membership.tsx
 #: src/features/billing/plan-card.tsx
 msgid "Your plan"
 msgstr "Paketmu"
@@ -16619,7 +16742,7 @@ msgstr "Profil Anda diubah di tempat lain. Periksa yang baru, lalu simpan lagi."
 msgid "Your Profile was saved on another device or on the web while you were editing here. Your changes are still on this device. Choose which version to keep."
 msgstr "Profilmu disimpan di perangkat lain atau di web saat kamu mengedit di sini. Perubahanmu masih ada di perangkat ini. Pilih versi yang mau disimpan."
 
-#: src/features/settings/export.tsx
+#: src/features/account/export.tsx
 msgid "Your profile, documents, applications and Career data as JSON. Images and attachments remain references."
 msgstr "Profil, dokumen, lamaran kerja, dan data Karier Anda sebagai JSON. Gambar dan lampiran tetap menjadi referensi."
 
@@ -16631,7 +16754,7 @@ msgstr "Foto Profilmu"
 msgid "your provider"
 msgstr "penyedia Anda"
 
-#: src/features/settings/profile.tsx
+#: src/features/account/profile.tsx
 msgid "Your public links begin with {server}/"
 msgstr "Tautan publik Anda dimulai dengan {server}/"
 
@@ -16756,6 +16879,6 @@ msgstr "Zoom: {0}%"
 msgid "Zoom: fit to width"
 msgstr "Zoom: pas selebar layar"
 
-#: src/features/settings/locale-names.ts
+#: src/features/account/locale-names.ts
 msgid "Zulu"
 msgstr "Zulu"

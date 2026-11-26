@@ -1,6 +1,5 @@
 // Typography's uploaded fonts: the document's families with Remove, and Upload font (TTF or OTF, the paid plan's
-// `customFonts`). Android shows Upload locked without the feature and explains; iOS leaves it out then. Fonts already
-// added always show and draw.
+// `customFonts`). Fonts already added always show and draw.
 import type { DesignProps } from "./types";
 import type { UploadContext } from "@/features/entries/upload";
 import type { CustomFontFace } from "@rezumi/schema/resume/data";
@@ -14,7 +13,7 @@ import { changeWithUndoToast } from "./draft";
 import { rest } from "@/api/client";
 import { useResumeStore } from "@/draft";
 import { nativeEnvironment } from "@/draft/native";
-import { canShowPlans, hasPlanFeature, showPlanAlert, usePlan } from "@/features/billing/plan";
+import { hasPlanFeature, showPlanAlert, usePlan } from "@/features/billing/plan";
 import { claimUpload, commitUpload } from "@/features/entries/upload";
 import { Button, ListRow, ListSection, Spinner, showToast } from "@/ui";
 
@@ -57,7 +56,6 @@ export function UploadedFonts({ data, write, disabled }: DesignProps) {
 	const faces = data.metadata.typography.customFonts ?? [];
 	const families = uploadedFontFamilies(faces);
 	const full = faces.length >= MAX_DOCUMENT_FONT_FACES;
-	const hideUpload = planLocked && !canShowPlans();
 
 	const describe = (error: unknown) => {
 		const problem = error instanceof FontUploadError ? error.problem : undefined;
@@ -101,18 +99,14 @@ export function UploadedFonts({ data, write, disabled }: DesignProps) {
 			() => t`${family} removed. Text set in it moves to the default font.`,
 		);
 
-	if (hideUpload && families.length === 0) return null;
-
 	return (
 		<>
 			<ListSection
 				title={t`Your fonts`}
 				footer={
-					hideUpload
-						? undefined
-						: planLocked
-							? t`Your own fonts aren't in your plan. Fonts already added keep working on the page.`
-							: t`Upload TTF or OTF files you have the right to use, one file per weight or style. Anyone who opens a shared link to this document can download them.`
+					planLocked
+						? t`Your own fonts aren't available. Fonts already added keep working on the page.`
+						: t`Upload TTF or OTF files you have the right to use, one file per weight or style. Anyone who opens a shared link to this document can download them.`
 				}
 			>
 				{families.map((family) => (
@@ -132,17 +126,15 @@ export function UploadedFonts({ data, write, disabled }: DesignProps) {
 						}
 					/>
 				))}
-				{hideUpload ? null : (
-					<ListRow
-						key="upload"
-						icon={planLocked ? "lock" : "upload-simple"}
-						title={full ? t`Font limit reached` : t`Upload font`}
-						isDisabled={disabled || full || upload.isPending}
-						chevron={false}
-						trailing={upload.isPending ? <Spinner size="sm" /> : undefined}
-						onPress={() => (planLocked ? showPlanAlert({ kind: "feature", feature: "customFonts" }) : upload.mutate())}
-					/>
-				)}
+				<ListRow
+					key="upload"
+					icon={planLocked ? "lock" : "upload-simple"}
+					title={full ? t`Font limit reached` : t`Upload font`}
+					isDisabled={disabled || full || upload.isPending}
+					chevron={false}
+					trailing={upload.isPending ? <Spinner size="sm" /> : undefined}
+					onPress={() => (planLocked ? showPlanAlert({ kind: "feature", feature: "customFonts" }) : upload.mutate())}
+				/>
 			</ListSection>
 		</>
 	);

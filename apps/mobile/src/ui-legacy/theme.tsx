@@ -3,8 +3,6 @@ import type { ColorScheme } from "./tokens";
 import { colors, fonts, motion, radius, shadows, size, space, type } from "./tokens";
 import { useColorSchemeValue } from "@/ui/theme";
 
-export { setThemePreference, useThemePreference, type ThemePreference } from "@/ui/theme";
-
 const themes = {
 	light: { scheme: "light", colors: colors.light, shadows: shadows.light, fonts, type, space, size, radius, motion },
 	dark: { scheme: "dark", colors: colors.dark, shadows: shadows.dark, fonts, type, space, size, radius, motion },

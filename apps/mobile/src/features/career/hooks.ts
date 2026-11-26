@@ -6,7 +6,7 @@ import { AppState } from "react-native";
 import { withUndo } from "./undo";
 import { client, orpc } from "@/api/client";
 import { getServer, useSession } from "@/auth/session";
-import { useProfile } from "@/features/settings/queries";
+import { useProfile } from "@/features/account/queries";
 import { showToast } from "@/ui";
 
 export type Career = RouterOutput["career"];

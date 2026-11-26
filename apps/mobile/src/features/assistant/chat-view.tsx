@@ -30,6 +30,8 @@ export type ChatViewProps = {
 	/** Says what a send shares, under the composer. */
 	privacy: string;
 	placeholder: string;
+	/** Prefills the composer without sending an operation. */
+	initialDraft?: string | undefined;
 	/** How a copied transcript names the other side: "Assistant" or "Coach". */
 	assistantName: string;
 	/** Context chips, before the attachments. */

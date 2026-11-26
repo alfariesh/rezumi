@@ -32,7 +32,7 @@ jest.mock("@/features/applications/queries", () => ({
 	...jest.requireActual("@/features/applications/queries"),
 	useInvalidateApplications: () => () => Promise.resolve(),
 }));
-jest.mock("@/features/settings/queries", () => ({ useProfile: () => ({ data: { timezone: "America/Los_Angeles" } }) }));
+jest.mock("@/features/account/queries", () => ({ useProfile: () => ({ data: { timezone: "America/Los_Angeles" } }) }));
 jest.mock("expo-notifications", () => ({
 	getPermissionsAsync: jest.fn(() => Promise.resolve({ granted: true, canAskAgain: true, status: "granted" })),
 	requestPermissionsAsync: jest.fn(),

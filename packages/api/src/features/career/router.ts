@@ -55,6 +55,12 @@ export const careerRouter = {
 		.input(careerScheduleInputSchema.extend({ id: z.string().optional() }))
 		.output(careerScheduleSchema)
 		.handler(({ context, input }) => careerJobs.save(context.user.id, input)),
+	revokeScheduleAi: protectedProcedure
+		.route({ method: "POST", tags: ["Internal"] })
+		.input(id)
+		.output(z.void())
+		.handler(({ context, input }) => careerJobs.revokeScheduleAi(context.user.id, input.id)),
+
 	deleteSchedule: protectedProcedure
 		.route({
 			method: "DELETE",

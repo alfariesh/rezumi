@@ -2,6 +2,7 @@ import type { client } from "./client";
 import type { AiSource } from "@rezumi/schema/billing";
 import { t } from "@lingui/core/macro";
 import { generateId } from "@rezumi/utils/string";
+import { isAiSharingBlocked } from "./ai-privacy";
 import { getAccountScope, getServer } from "@/auth/session";
 import { canUseRezumiAi, creditActionOf, describeCreditCost } from "@/features/billing/ai-source";
 import { confirmOperation } from "@/ui/operation-consent";
@@ -15,8 +16,8 @@ export type AiSourceFields = { aiSource: AiSource; idempotencyKey?: string };
 export class AiConsentDeclined extends Error {
 	override name = "AbortError";
 
-	constructor() {
-		super(t`Data sharing canceled. Nothing was sent to the AI provider.`);
+	constructor(message = t`Data sharing canceled. Nothing was sent to the AI provider.`) {
+		super(message);
 	}
 }
 
@@ -59,6 +60,8 @@ export async function authorizeAiRequest(
 
 	const current = () => {
 		signal?.throwIfAborted();
+		if ((!scheduled || fields.kind === "prepare") && isAiSharingBlocked())
+			throw new AiConsentDeclined(t`AI data sharing is off on this device. You can change it in App settings.`);
 		if (!scope || getAccountScope() !== scope) throw new Error(t`The account changed. Try again.`);
 	};
 	current();

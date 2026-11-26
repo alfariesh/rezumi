@@ -3,7 +3,7 @@ import { useMutation } from "@tanstack/react-query";
 import { File, Paths } from "expo-file-system";
 import * as Sharing from "expo-sharing";
 import { client } from "@/api/client";
-import { ListRow, showToast } from "@/ui-legacy";
+import { ListRow, showToast } from "@/ui";
 
 export function ExportDataRow() {
 	const { t } = useLingui();
@@ -24,14 +24,15 @@ export function ExportDataRow() {
 				dialogTitle: t`Export everything`,
 			});
 		},
-		onError: () => showToast({ message: t`Couldn't export. Try again.` }),
+		onError: () => showToast({ title: t`Couldn't export. Try again.` }),
 	});
 	return (
 		<ListRow
 			title={exportData.isPending ? t`Preparing export…` : t`Export everything`}
-			subtitle={t`Your profile, documents, applications and Career data as JSON. Images and attachments remain references.`}
-			leading="download-simple"
-			disabled={exportData.isPending}
+			description={t`Your profile, documents, applications and Career data as JSON. Images and attachments remain references.`}
+			icon="download-simple"
+			chevron={false}
+			isDisabled={exportData.isPending}
 			onPress={() => exportData.mutate()}
 		/>
 	);

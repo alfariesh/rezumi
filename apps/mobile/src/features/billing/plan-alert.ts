@@ -1,20 +1,13 @@
 import type { PlanFeatures } from "@rezumi/schema/billing";
 import { t } from "@lingui/core/macro";
 import { ORPCError } from "@orpc/client";
-import { Alert, Platform } from "react-native";
+import { Alert } from "react-native";
 import { templateName } from "@rezumi/resume/design-presets";
 import { FREE_TEMPLATES } from "@rezumi/schema/billing";
 
 // Kept apart from plan.ts, which reads the API: the API client shows these alerts and must not import itself.
 
 export type PlanFeature = keyof PlanFeatures;
-
-/**
- * Store rules (.agents/docs/plans/membership/00-keputusan-produk.md §6): Android shows plans and their limits without
- * selling them; iOS shows nothing about plans until In-App Purchase exists, only what the account can use. This is the
- * one switch the screens read.
- */
-export const canShowPlans = () => Platform.OS === "android";
 
 /** What a plan refusal was about: a document limit, or a feature. */
 export type PlanProblem =
@@ -57,12 +50,8 @@ export function getPlanProblem(error: unknown): PlanProblem | null {
 
 const freeTemplateList = () => FREE_TEMPLATES.map(templateName).join(", ");
 
-/**
- * A plan problem in neutral words: what happened and the free way on. Never a price, a link or a way to buy; iOS
- * doesn't mention plans at all.
- */
+/** Explains the feature or limit and what the person can still use. */
 export function describePlanProblem(problem: PlanProblem): { title: string; message: string } {
-	const ios = !canShowPlans();
 	if (problem.kind === "limit") {
 		const { max } = problem;
 		const several = problem.requested.resumes > 0 && problem.requested.coverLetters > 0;
@@ -80,55 +69,53 @@ export function describePlanProblem(problem: PlanProblem): { title: string; mess
 	switch (problem.feature) {
 		case "premiumTemplates":
 			return {
-				title: ios ? t`This template isn't available` : t`This template isn't in your plan`,
+				title: t`This template isn't available`,
 				message: t`${freeTemplateList()} are available, and documents that already use another template keep it.`,
 			};
 		case "brandLogos":
 			return {
-				title: ios ? t`Tool logos aren't available` : t`Tool logos aren't in your plan`,
+				title: t`Tool logos aren't available`,
 				message: t`Every other icon is available: contact, section titles, skills, interests and profile logos. Documents that already show tool logos keep them.`,
 			};
 		case "wordOdtExport":
 			return {
-				title: ios ? t`Word and ODT aren't available` : t`Word and ODT downloads aren't in your plan`,
+				title: t`Word and ODT aren't available`,
 				message: t`Download a PDF instead: it keeps your design exactly. Markdown and JSON are available too.`,
 			};
 		case "customStyles":
 			return {
-				title: ios ? t`Custom styles aren't available` : t`Custom styles aren't in your plan`,
+				title: t`Custom styles aren't available`,
 				message: t`Styles you already saved keep working. Design covers templates, fonts, colors and spacing.`,
 			};
 		case "customFonts":
 			return {
-				title: ios ? t`Your own fonts aren't available` : t`Your own fonts aren't in your plan`,
+				title: t`Your own fonts aren't available`,
 				message: t`Choose any of the fonts in Design instead.`,
 			};
 		case "automationApi":
 			return {
-				title: ios ? t`API and MCP access isn't available` : t`API and MCP access isn't in your plan`,
-				message: t`This app always works. Other apps and assistants that connect with an API key need more.`,
+				title: t`API and MCP access isn't available`,
+				message: t`Other apps cannot connect to this account with an API key.`,
 			};
 		// The web's portfolio features; the app only meets one when connecting a domain on the Share screen.
 		case "customDomain":
+			return { title: t`Your own domain isn't available`, message: t`Your page keeps its address on Rezumi.` };
 		case "premiumPortfolioThemes":
 		case "premiumHeroEffects":
 		case "hidePortfolioCredit":
 		case "detailedPortfolioStats":
 			return {
-				title: ios ? t`Your own domain isn't available` : t`Your own domain isn't in your plan`,
-				message: t`Your page keeps its address on Rezumi.`,
+				title: t`This option isn't available`,
+				message: t`You can keep editing and sharing your portfolio.`,
 			};
+		default:
+			return { title: t`This option isn't available`, message: t`Choose another option to continue.` };
 	}
 }
 
-/**
- * Explains a plan problem in the platform's alert. Android adds one informative sentence about where plans are sold,
- * with no link or button (Google Play allows that; Apple doesn't, so iOS says nothing about it).
- */
 export function showPlanAlert(problem: PlanProblem) {
 	const { title, message } = describePlanProblem(problem);
-	const where = canShowPlans() ? `\n\n${t`Plans can be bought on the rezumi.app website.`}` : "";
-	Alert.alert(title, `${message}${where}`, [{ text: t`OK` }]);
+	Alert.alert(title, message, [{ text: t`OK` }]);
 }
 
 /** Shows the plan alert when `error` is a plan refusal from the server; returns whether it did. */

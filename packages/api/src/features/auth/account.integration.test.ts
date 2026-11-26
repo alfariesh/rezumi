@@ -7,6 +7,7 @@ import { auth, linkAnonymousAccount, setAccountLinkHook } from "@rezumi/auth/con
 import { db, withDatabasePool } from "@rezumi/db/client";
 import * as schema from "@rezumi/db/schema";
 import { env } from "@rezumi/env/server";
+import { firstPartyRedirectUris } from "../billing/automation";
 import { authRouter } from "./router";
 
 // Like the OAuth CI checks, this uses a disposable, migrated database, with isolated fixture tables.
@@ -23,6 +24,10 @@ describe.skipIf(!process.env.OAUTH_TEST_DATABASE_URL)("account wrapper ownership
 			"session",
 			"apikey",
 			"oauth_resource",
+			"oauth_client",
+			"oauth_consent",
+			"oauth_access_token",
+			"oauth_refresh_token",
 			"jwks",
 			"resume",
 			"resume_version",
@@ -370,6 +375,57 @@ describe.skipIf(!process.env.OAUTH_TEST_DATABASE_URL)("account wrapper ownership
 				}),
 			);
 			expect(response.status).toBe(401);
+		});
+	});
+	it("signs out every Rezumi session and device belonging to the authenticated account", async () => {
+		await withDatabasePool(pool, async () => {
+			const [owner] = await db
+				.insert(schema.user)
+				.values({
+					id: "device-owner",
+					name: "Device owner",
+					email: "device-owner@example.test",
+					username: "device-owner",
+					displayUsername: "DeviceOwner",
+				})
+				.returning();
+			if (!owner) throw new Error("Missing device owner");
+			await db.insert(schema.session).values([
+				{ id: "web-a", userId: owner.id, token: "session-a", expiresAt: new Date("2099-01-01") },
+				{ id: "web-b", userId: owner.id, token: "session-b", expiresAt: new Date("2099-01-01") },
+				{ id: "web-c", userId: "another", token: "session-c", expiresAt: new Date("2099-01-01") },
+			]);
+			await db.insert(schema.oauthClient).values([
+				{ clientId: "rezumi-device", redirectUris: [...firstPartyRedirectUris()] },
+				{ clientId: "other-client", redirectUris: ["https://integration.example.test/callback"] },
+			]);
+			const grants = [
+				{ id: "owner-rezumi", clientId: "rezumi-device", userId: owner.id, scopes: ["offline_access"] },
+				{ id: "owner-integration", clientId: "other-client", userId: owner.id, scopes: ["offline_access"] },
+				{ id: "another-rezumi", clientId: "rezumi-device", userId: "another", scopes: ["offline_access"] },
+			];
+			await db.insert(schema.oauthConsent).values(grants);
+			await db.insert(schema.oauthRefreshToken).values(grants.map((grant) => ({ ...grant, token: grant.id })));
+			await db.insert(schema.oauthAccessToken).values(grants.map((grant) => ({ ...grant, token: grant.id })));
+			const as = (clientId: string) =>
+				createRouterClient(authRouter, {
+					context: {
+						locale: "en-US",
+						reqHeaders: new Headers(),
+						authentication: { user: owner, method: "bearer", permissions: ["write"], clientId },
+					},
+				});
+
+			await expect(as("other-client").signOutAllDevices()).rejects.toMatchObject({ code: "FORBIDDEN" });
+			await expect(as("rezumi-device").signOutAllDevices()).resolves.toEqual({ success: true });
+			expect((await db.select({ id: schema.session.id }).from(schema.session)).map((row) => row.id)).toEqual(
+				expect.arrayContaining(["web-c"]),
+			);
+			expect(await db.select().from(schema.session).where(eq(schema.session.userId, owner.id))).toHaveLength(0);
+			for (const table of [schema.oauthConsent, schema.oauthRefreshToken, schema.oauthAccessToken]) {
+				const rows = await db.select({ id: table.id }).from(table);
+				expect(rows.map(({ id }) => id).sort()).toEqual(["another-rezumi", "owner-integration"]);
+			}
 		});
 	});
 });

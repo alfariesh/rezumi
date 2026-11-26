@@ -51,7 +51,6 @@ jest.mock("@/api/client", () => ({
 jest.mock("@/features/billing/plan", () => ({
 	usePlan: () => mockPlan,
 	hasPlanFeature: (plan: typeof mockPlan, feature: string) => plan.features[feature] === true,
-	canShowPlans: () => true,
 	showPlanAlert: (...args: unknown[]) => mockPlanAlert(...args),
 }));
 jest.mock("@/features/billing/plan-alert", () => ({ showPlanAlertForError: () => false }));

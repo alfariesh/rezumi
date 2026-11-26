@@ -28,7 +28,6 @@ jest.mock("@/features/applications/queries", () => ({ useApplications: () => ({ 
 jest.mock("@/features/billing/plan", () => ({
 	usePlan: () => null,
 	hasPlanFeature: () => true,
-	canShowPlans: () => true,
 	showPlanAlert: jest.fn(),
 }));
 jest.mock("@/draft", () => {

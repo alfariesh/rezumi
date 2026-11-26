@@ -21,7 +21,7 @@ jest.mock("@/features/applications/queries", () => ({
 	useApplications: jest.fn(),
 	useApplicationMutations: jest.fn(),
 }));
-jest.mock("@/features/settings/queries", () => ({ useProfile: () => ({ data: { timezone: "America/Los_Angeles" } }) }));
+jest.mock("@/features/account/queries", () => ({ useProfile: () => ({ data: { timezone: "America/Los_Angeles" } }) }));
 jest.mock("@/features/applications/frame", () => ({ useOpenApplication: () => mockOpen }));
 jest.mock("@/shell/use-is-tablet", () => ({ useIsTablet: jest.fn(() => false) }));
 

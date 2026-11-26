@@ -6,7 +6,7 @@ import { useHomeTime } from "./time";
 import { renderScreen } from "@/test/render-screen";
 
 let mockTimezone = "Asia/Jakarta";
-jest.mock("@/features/settings/queries", () => ({ useProfile: () => ({ data: { timezone: mockTimezone } }) }));
+jest.mock("@/features/account/queries", () => ({ useProfile: () => ({ data: { timezone: mockTimezone } }) }));
 
 type ProbeProps = { onTime: (time: HomeTime) => void };
 

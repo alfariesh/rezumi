@@ -25,10 +25,10 @@ export function initTheme() {
 }
 
 export function setThemePreference(value: ThemePreference) {
-	preference = value;
 	if (value === "system") Storage.removeItemSync(storageKey);
 	else Storage.setItemSync(storageKey, value);
 	Uniwind.setTheme(value);
+	preference = value;
 	for (const listener of listeners) listener();
 }
 

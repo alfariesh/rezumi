@@ -1,6 +1,6 @@
 import type { Portfolio } from "../queries";
 import { useLingui } from "@lingui/react/macro";
-import { useRouter } from "expo-router";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import { useEffect, useState } from "react";
 import { View } from "react-native";
 import { PortfolioLoadState, PortfolioPage } from "../layout";
@@ -24,6 +24,7 @@ type Pane = "content" | "work" | "design" | "publish";
 
 export function PortfolioEditorScreen() {
 	const { t } = useLingui();
+	const { thread } = useLocalSearchParams<{ thread?: string }>();
 	useSession();
 	const scope = getAccountScope();
 	const query = usePortfolio();
@@ -33,6 +34,8 @@ export function PortfolioEditorScreen() {
 		return (
 			<EditorProvider key={`${scope}:${portfolio.id}`} scope={scope} portfolio={portfolio}>
 				<Editor
+					key={thread}
+					initialThread={thread}
 					portfolio={portfolio}
 					contactAvailable={query.data?.contactFormAvailable === true}
 					limit={query.data?.limits.works ?? 0}
@@ -53,9 +56,15 @@ export function PortfolioEditorScreen() {
 	);
 }
 
-type EditorProps = { portfolio: Portfolio; contactAvailable: boolean; limit: number; refresh: () => Promise<unknown> };
+type EditorProps = {
+	initialThread?: string | undefined;
+	portfolio: Portfolio;
+	contactAvailable: boolean;
+	limit: number;
+	refresh: () => Promise<unknown>;
+};
 
-function Editor({ portfolio: remote, contactAvailable, limit, refresh }: EditorProps) {
+function Editor({ portfolio: remote, contactAvailable, limit, refresh, initialThread }: EditorProps) {
 	const { t } = useLingui();
 	const router = useRouter();
 	const online = useOnline();
@@ -63,7 +72,7 @@ function Editor({ portfolio: remote, contactAvailable, limit, refresh }: EditorP
 	const { store, scope } = useEditor();
 	const [pane, setPane] = useState<Pane>("content");
 	const [workId, setWorkId] = useState<string | null>(null);
-	const [assistantOpen, setAssistantOpen] = useState(false);
+	const [assistantOpen, setAssistantOpen] = useState(!!initialThread);
 	const [opening, setOpening] = useState(false);
 	const current = store();
 	const portfolio = current.portfolio;
@@ -214,9 +223,13 @@ function Editor({ portfolio: remote, contactAvailable, limit, refresh }: EditorP
 						<View className="flex-1">
 							{assistantOpen ? (
 								<PortfolioAssistant
+									initialThread={initialThread}
 									portfolio={portfolio}
 									workId={pane === "work" ? workId : null}
-									onBack={() => setAssistantOpen(false)}
+									onBack={() => {
+										setAssistantOpen(false);
+										if (initialThread) router.setParams({ thread: undefined });
+									}}
 								/>
 							) : null}
 							{!assistantOpen && pane === "content" ? (
