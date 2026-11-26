@@ -35,14 +35,19 @@ export async function assertPublicTarget(input: string, signal: AbortSignal) {
 	return url;
 }
 
+/** Content types a page may have; a sitemap read asks for XML instead. */
+const PAGE_TYPES = /text\/html|application\/xhtml\+xml|text\/plain/i;
+export const XML_TYPES = /(?:application|text)\/xml|application\/rss\+xml/i;
+
 export function readBuiltinPage(
 	input: string,
 	signal: AbortSignal,
 	redirects = 0,
+	types: RegExp = PAGE_TYPES,
 ): Promise<{ html: string; resolvedUrl: string }> {
 	signal.throwIfAborted();
 	const url = assertPublicPageUrl(input);
-	if (process.env.CLOUDFLARE === "1") return readWorkerPage(url, signal);
+	if (process.env.CLOUDFLARE === "1") return readWorkerPage(url, signal, types);
 	return new Promise((resolve, reject) => {
 		const req = request(
 			url,
@@ -63,7 +68,7 @@ export function readBuiltinPage(
 					res.resume();
 					if (redirects >= 3) return reject(new WebError("unreachable"));
 					try {
-						resolve(readBuiltinPage(new URL(location, url).toString(), signal, redirects + 1));
+						resolve(readBuiltinPage(new URL(location, url).toString(), signal, redirects + 1, types));
 					} catch (error) {
 						reject(error);
 					}
@@ -74,7 +79,7 @@ export function readBuiltinPage(
 					// A page that is gone is gone for a browser too; other refusals may be bot checks it can pass.
 					return reject(new WebError(status === 404 || status === 410 ? "not-found" : "unreachable"));
 				}
-				if (!/text\/html|application\/xhtml\+xml|text\/plain/i.test(String(res.headers["content-type"] ?? ""))) {
+				if (!types.test(String(res.headers["content-type"] ?? ""))) {
 					res.resume();
 					return reject(new WebError("not-a-page"));
 				}
@@ -124,7 +129,11 @@ export async function readCapped(body: ReadableStream<Uint8Array>, signal: Abort
 	}
 }
 
-async function readWorkerPage(url: URL, signal: AbortSignal): Promise<{ html: string; resolvedUrl: string }> {
+async function readWorkerPage(
+	url: URL,
+	signal: AbortSignal,
+	types: RegExp,
+): Promise<{ html: string; resolvedUrl: string }> {
 	try {
 		const response = await fetchWorkerPublicUrl(url, {
 			signal,
@@ -134,7 +143,7 @@ async function readWorkerPage(url: URL, signal: AbortSignal): Promise<{ html: st
 			await response.body?.cancel();
 			throw new WebError("unreachable");
 		}
-		if (!/text\/html|application\/xhtml\+xml|text\/plain/i.test(response.headers.get("content-type") ?? "")) {
+		if (!types.test(response.headers.get("content-type") ?? "")) {
 			await response.body?.cancel();
 			throw new WebError("not-a-page");
 		}

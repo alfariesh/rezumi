@@ -2,6 +2,7 @@ import type { SourcesStatus } from "@rezumi/schema/profile/sources";
 import { readSourceAccount } from "./account";
 import { linkedGitHubLogin } from "./github";
 import { linkedInAvailable } from "./linkedin";
+import { websiteImportIsFree } from "./website-import/run";
 
 /** Which sources this account can use, and what its sign-ins already tell (name, email, photo, GitHub login). */
 export async function sourcesStatus(userId: string): Promise<SourcesStatus> {
@@ -12,6 +13,7 @@ export async function sourcesStatus(userId: string): Promise<SourcesStatus> {
 		linkedin: linkedInAvailable() && !guest,
 		github: true,
 		website: !guest,
+		websiteImportFree: !guest && (await websiteImportIsFree(userId)),
 		account: {
 			// A guest's name and address are generated, not theirs.
 			name: guest ? "" : account.name.trim(),

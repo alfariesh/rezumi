@@ -9,6 +9,11 @@ export type WebContext = {
 	signal?: AbortSignal | undefined;
 	/** ISO 3166-1 alpha-2 countries to search, first primary. Absent or empty searches anywhere. */
 	regions?: string[] | undefined;
+	/**
+	 * `import`: a read that is part of a website import, which has its own daily limit (`WEBSITE_IMPORT_DAILY_LIMIT`):
+	 * it skips the per-minute request throttle and doesn't count toward the person's daily Browser Run reads.
+	 */
+	allowance?: "daily" | "import" | undefined;
 };
 
 export type ReadPageResult = {

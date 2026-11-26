@@ -243,6 +243,11 @@ export const CREDIT_COSTS = {
 	"draft-answer": 2,
 	/** Read a personal website into Profile details to review. */
 	"profile-website": 2,
+	/**
+	 * Import a personal website: its home page into the Profile and up to ten of its pages into portfolio works to review.
+	 * An account's first import is free (`.agents/docs/plans/impor-website/00-keputusan.md` W2, W3).
+	 */
+	"profile-website-import": 5,
 	/** Draft one cover letter for one job. */
 	"cover-letter": 3,
 	/** Draft a portfolio from its resume: the greeting, About me and each work's story. */

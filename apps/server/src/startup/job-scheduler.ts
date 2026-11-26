@@ -4,11 +4,12 @@ import { runCareerJobs } from "@rezumi/api/features/career/jobs";
 import { runCustomDomainJobs } from "@rezumi/api/features/custom-domain/jobs";
 import { runJobListingJobs } from "@rezumi/api/features/jobs/maintenance";
 import { runPortfolioJobs } from "@rezumi/api/features/portfolio/jobs";
+import { runWebsiteImportJobs } from "@rezumi/api/features/profile/website-import-jobs";
 
 /**
  * The long-running Node server owns ticks; PostgreSQL coordinates work across server instances. Each tick runs billing
- * first (its work is short), then career, portfolio file cleanup, custom domains, page reports and the daily job
- * listing upkeep, and a failure in one never skips the others.
+ * first (its work is short), then career, portfolio file cleanup, custom domains, page reports, the daily job
+ * listing upkeep and website import upkeep, and a failure in one never skips the others.
  */
 export function startJobScheduler() {
 	let stopped = false;
@@ -32,6 +33,9 @@ export function startJobScheduler() {
 		});
 		await runJobListingJobs().catch(() => {
 			console.error("[jobs] Daily listing upkeep failed. It retries on a later tick.");
+		});
+		await runWebsiteImportJobs().catch(() => {
+			console.error("[website-import] Upkeep failed. It retries on a later tick.");
 		});
 	};
 

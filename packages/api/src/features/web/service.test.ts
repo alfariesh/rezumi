@@ -195,6 +195,30 @@ describe("reading a page", () => {
 		expect(await readPage(PAGE, { userId: "someone-else" })).toMatchObject({ method: "browser" });
 	});
 
+	it("reads a website import's pages on the import's own allowance, without using the day's browser reads", async () => {
+		fixtures.directHtml = SPA_SHELL;
+		for (let index = 0; index < BROWSER_READS_PER_DAY + 3; index++)
+			expect(await readPage(PAGE, { userId: "user", allowance: "import" })).toMatchObject({ method: "browser" });
+		// The day's own allowance is untouched.
+		for (let index = 0; index < BROWSER_READS_PER_DAY; index++)
+			expect(await readPage(PAGE, { userId: "user" })).toMatchObject({ method: "browser" });
+		await expect(readPage(PAGE, { userId: "user" })).rejects.toMatchObject({ reason: "empty" });
+	});
+
+	it("doesn't throttle a website import's reads per request", async () => {
+		vi.stubEnv("NODE_ENV", "production");
+		const allow = fixtures.limit.getMockImplementation();
+		fixtures.limit.mockImplementation(async () => ({ success: false }));
+		try {
+			await expect(readPage(PAGE, { userId: "user", allowance: "import" })).resolves.toMatchObject({
+				method: "builtin",
+			});
+			expect(fixtures.limit).not.toHaveBeenCalled();
+		} finally {
+			if (allow) fixtures.limit.mockImplementation(allow);
+		}
+	});
+
 	it.each([
 		"http://jobs.example.com/role",
 		"https://user:pass@jobs.example.com/role",

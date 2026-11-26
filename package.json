@@ -43,6 +43,7 @@
 		"seed:demo": "dotenvx run -f .env.local -- pnpm --filter @rezumi/tooling seed:demo",
 		"benchmark:ai": "dotenvx run -f .env.local -- pnpm --filter @rezumi/tooling benchmark:ai",
 		"jobs:probe": "dotenvx run -f .env.local -- pnpm --filter @rezumi/tooling jobs:probe",
+		"website:probe": "dotenvx run -f .env.local -- pnpm --filter @rezumi/tooling website:probe",
 		"benchmark:ai:report": "dotenvx run -f .env.local -- pnpm --filter @rezumi/tooling benchmark:ai:report",
 		"dev:web": "dotenvx run --ignore=MISSING_ENV_FILE -f .env.local -- turbo run dev --filter=web",
 		"dev:mobile": "pnpm --filter mobile start",
