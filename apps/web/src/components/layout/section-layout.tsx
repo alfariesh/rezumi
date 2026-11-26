@@ -108,7 +108,7 @@ type SectionLinkProps = { item: SectionNavItem; current: boolean };
  */
 const ACTIVE_OPTIONS = { exact: true, includeSearch: true } as const;
 
-/** One row of the wide-screen menu. */
+/** One row of the wide-screen menu. Its focus ring is drawn inside: the menu scrolls, which would clip one outside. */
 function SectionLink({ item, current }: SectionLinkProps) {
 	return (
 		<Link
@@ -116,7 +116,7 @@ function SectionLink({ item, current }: SectionLinkProps) {
 			activeOptions={ACTIVE_OPTIONS}
 			aria-current={current ? "page" : undefined}
 			className={cn(
-				"flex h-9 items-center gap-2.5 rounded-xl px-2.5 text-sm font-medium transition-colors duration-quick ease-enter outline-none focus-visible:ring-2 focus-visible:ring-focus",
+				"flex h-9 items-center gap-2.5 rounded-xl px-2.5 text-sm font-medium transition-colors duration-quick ease-enter outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-inset",
 				current ? "bg-default text-foreground" : "text-muted hover:bg-default/60 hover:text-foreground",
 			)}
 		>
@@ -136,7 +136,7 @@ function SectionChip({ item, current }: SectionLinkProps) {
 			activeOptions={ACTIVE_OPTIONS}
 			aria-current={current ? "page" : undefined}
 			className={cn(
-				"flex h-9 items-center gap-1.5 rounded-full px-3.5 text-sm font-medium whitespace-nowrap transition-colors duration-quick ease-enter outline-none focus-visible:ring-2 focus-visible:ring-focus",
+				"flex h-9 items-center gap-1.5 rounded-full px-3.5 text-sm font-medium whitespace-nowrap transition-colors duration-quick ease-enter outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-inset",
 				current ? "bg-default text-foreground" : "text-muted hover:text-foreground",
 			)}
 		>

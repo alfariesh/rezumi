@@ -1,6 +1,7 @@
 import type { ProfileDto } from "./queries";
 import type { PageSettings } from "@/features/resume/editor/write/entries";
 import { Button, Skeleton, Tooltip } from "@heroui/react";
+import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Plural, Trans } from "@lingui/react/macro";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
@@ -91,7 +92,6 @@ export function ProfileDetailsPage({ part }: ProfileDetailsPageProps) {
 function ProfileDetails() {
 	return (
 		<div className="grid max-w-[720px] gap-8">
-			<SaveNote />
 			<BasicsCard locked={false} />
 		</div>
 	);
@@ -109,7 +109,6 @@ function ProfileCareer() {
 
 	return (
 		<div className="grid max-w-[720px] gap-8">
-			<SaveNote />
 			{careerEmpty && <FillProfile />}
 			<CareerSections page={page} />
 			<AddSectionMenu />
@@ -144,16 +143,19 @@ function CareerSections({ page }: CareerSectionsProps) {
 	);
 }
 
-/** Where saving is, and which resumes followed this visit's changes. Quiet unless something needs a look. */
-function SaveNote() {
+/**
+ * Where saving is, as one cloud icon beside the page's title; its tooltip says that changes save as you type and which
+ * resumes followed this visit's changes. A failed save shows its reason and Retry instead.
+ */
+export function ProfileSaveStatus() {
 	const status = useProfileDraftStore((state) => state.status);
 	const followed = useProfileDraftStore((state) => state.followed);
 	const retry = useProfileDraftStore((state) => state.retry);
 
 	if (status === "error")
 		return (
-			<p role="status" className="flex items-center gap-2 text-sm text-danger">
-				<Icon name="cloud-warning" size={18} />
+			<p role="status" className="flex items-center gap-1 text-sm text-danger">
+				<Icon name="cloud-warning" size={20} />
 				<Trans>Not saved.</Trans>
 				<Button size="sm" variant="ghost" onPress={retry}>
 					<Trans>Retry</Trans>
@@ -161,24 +163,35 @@ function SaveNote() {
 			</p>
 		);
 
+	const label = status === "saving" ? t`Saving…` : status === "saved" ? t`Saved` : t`Saves as you type`;
 	return (
-		<p role="status" className="flex min-h-6 flex-wrap items-center gap-x-2 text-sm text-muted">
-			<Icon name={status === "saving" ? "circle-notch" : "cloud-check"} size={18} />
-			{status === "saving" ? (
-				<Trans>Saving…</Trans>
-			) : status === "saved" ? (
-				<Trans>Saved</Trans>
-			) : (
-				<Trans>Saves as you type. Resumes that still use a part follow your changes.</Trans>
-			)}
-			{followed.length > 0 && status !== "idle" && (
-				<Tooltip>
-					<Button size="sm" variant="ghost" className="h-6 px-1.5 text-muted">
-						<Plural value={followed.length} one="Updated in # resume" other="Updated in # resumes" />
-					</Button>
-					<Tooltip.Content>{followed.map((resume) => resume.name).join(", ")}</Tooltip.Content>
-				</Tooltip>
-			)}
-		</p>
+		<>
+			<Tooltip>
+				<Tooltip.Trigger aria-label={label} className="flex text-muted">
+					<Icon
+						name={status === "saving" ? "circle-notch" : "cloud-check"}
+						size={20}
+						className={status === "saving" ? "animate-spin" : undefined}
+					/>
+				</Tooltip.Trigger>
+				<Tooltip.Content className="grid max-w-64 gap-1">
+					<span>{label}</span>
+					<span className="text-muted">
+						{followed.length > 0 ? (
+							<>
+								<Plural value={followed.length} one="Updated in # resume" other="Updated in # resumes" />:{" "}
+								{followed.map((resume) => resume.name).join(", ")}
+							</>
+						) : (
+							<Trans>Resumes that still use a part follow your changes.</Trans>
+						)}
+					</span>
+				</Tooltip.Content>
+			</Tooltip>
+			{/* Outside the tooltip, so screen readers hear saving and saved while it's closed. */}
+			<span role="status" className="sr-only">
+				{status === "idle" ? "" : label}
+			</span>
+		</>
 	);
 }

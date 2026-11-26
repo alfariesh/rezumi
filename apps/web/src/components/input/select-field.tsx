@@ -107,6 +107,8 @@ type CellSelectFieldProps = {
 	isDisabled?: boolean;
 	/** Classes for the list, e.g. a minimum width when the cell is narrow. */
 	popoverClassName?: string;
+	/** `secondary` fills the cell gray, like a secondary input, for cells on a white surface (a sheet). */
+	variant?: "default" | "secondary";
 };
 
 /**
@@ -121,6 +123,7 @@ export function CellSelectField({
 	icon,
 	isDisabled,
 	popoverClassName,
+	variant,
 }: CellSelectFieldProps) {
 	const hasEmpty = options.some((option) => option.value === "");
 
@@ -133,6 +136,7 @@ export function CellSelectField({
 			}}
 			disabledKeys={options.filter((option) => option.isDisabled).map((option) => toKey(option.value))}
 			{...(isDisabled !== undefined && { isDisabled })}
+			{...(variant && { variant })}
 		>
 			<CellSelect.Trigger>
 				<CellSelect.Label>

@@ -238,6 +238,7 @@ function FiltersSheet({ isOpen, onOpenChange, value, onChange, onReset, canSearc
 							</div>
 							<div className="grid gap-2">
 								<CellSelectField
+									variant="secondary"
 									icon="calendar-blank"
 									label={t`Posted`}
 									value={String(value.posted)}
@@ -250,6 +251,7 @@ function FiltersSheet({ isOpen, onOpenChange, value, onChange, onReset, canSearc
 									]}
 								/>
 								<CellSelectField
+									variant="secondary"
 									icon="briefcase"
 									label={t`Work arrangement`}
 									value={value.arrangement}
@@ -267,6 +269,7 @@ function FiltersSheet({ isOpen, onOpenChange, value, onChange, onReset, canSearc
 									]}
 								/>
 								<CellSelectField
+									variant="secondary"
 									icon="chart-line-up"
 									label={t`Level`}
 									value={value.level}
@@ -299,6 +302,7 @@ function FiltersSheet({ isOpen, onOpenChange, value, onChange, onReset, canSearc
 							</div>
 							<div className="grid gap-2">
 								<CellSelectField
+									variant="secondary"
 									icon="scales"
 									label={t`Currency`}
 									value={currency}
@@ -306,12 +310,14 @@ function FiltersSheet({ isOpen, onOpenChange, value, onChange, onReset, canSearc
 									options={PAY_CURRENCIES.map((code) => ({ value: code, label: code }))}
 								/>
 								<CellSwitchRow
+									variant="secondary"
 									label={<Trans>Include jobs that don't list pay</Trans>}
 									isSelected={value.noPay}
 									isDisabled={value.minPay === undefined}
 									onChange={(noPay) => onChange({ noPay })}
 								/>
 								<CellSwitchRow
+									variant="secondary"
 									label={<Trans>Offers visa sponsorship</Trans>}
 									isSelected={value.visa}
 									onChange={(visa) => onChange({ visa })}

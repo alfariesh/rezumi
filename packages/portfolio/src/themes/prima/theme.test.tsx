@@ -258,10 +258,12 @@ describe("Prima theme", () => {
 		expect(html).not.toContain("<figcaption>Certified");
 	});
 
-	it("offers a send-message button in the navigation only when there is a contact section", () => {
+	it("offers a contact button in the navigation only when there is a contact section", () => {
 		const { html, messages } = render(fullData);
+		// "Send a message" promises the form; without it the button is named for where it goes.
+		const label = fullData.contact?.form ? messages.sendMessage : messages.contact;
 		expect(html).toContain(
-			`<li class="pr-head__cta"><a class="pf-btn pf-btn--primary" href="#contact" data-pf-event="contact">${messages.sendMessage}</a></li>`,
+			`<li class="pr-head__cta"><a class="pf-btn pf-btn--primary" href="#contact" data-pf-event="contact">${label}</a></li>`,
 		);
 		const { html: without } = render({
 			...fullData,

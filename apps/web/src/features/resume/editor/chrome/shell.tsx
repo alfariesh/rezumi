@@ -2,10 +2,10 @@ import type { MobileView, PanelView } from "@/features/resume/editor/store";
 import type { IconName } from "@rezumi/ui/components/icon";
 import type { ReactNode, UIEvent } from "react";
 import { Sheet } from "@heroui-pro/react";
-import { Button, Toolbar } from "@heroui/react";
+import { Button, ButtonGroup, Toolbar } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
-import { Activity, useLayoutEffect, useRef, useState } from "react";
+import { Activity, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { Icon } from "@rezumi/ui/components/icon";
 import { IconButton } from "@rezumi/ui/components/icon-button";
 import { useBreakpoint } from "@rezumi/ui/hooks/use-breakpoint";
@@ -13,6 +13,7 @@ import { cn } from "@rezumi/utils/style";
 import { loadAssistantPanel } from "@/features/assistant/dock";
 import { BackLink, DrawerControls, useIsLandscape } from "@/features/resume/editor/chrome";
 import { PanelSection as TitledSection } from "@/features/resume/editor/chrome/panel-section";
+import { SheetLayerContext } from "@/features/resume/editor/chrome/sheet-layer";
 import { selectPanelView, useEditorStore } from "@/features/resume/editor/store";
 
 // The editor shell resumes, letters and the portfolio share: the layout for the screen, the rail down the window's
@@ -298,8 +299,8 @@ function HistoryView({ children }: { children: ReactNode }) {
  * One scroller for every mode: a mode opens at its top the first time and where it was left after that. Positions
  * are kept as the panel scrolls, since hiding the old mode's panel can clamp the scroller before a switch is seen.
  */
-function useModeScroll(mode: string) {
-	const ref = useRef<HTMLElement>(null);
+function useModeScroll<E extends HTMLElement = HTMLElement>(mode: string) {
+	const ref = useRef<E>(null);
 	const positions = useRef(new Map<string, number>());
 
 	useLayoutEffect(() => {
@@ -308,7 +309,7 @@ function useModeScroll(mode: string) {
 
 	return {
 		ref,
-		onScroll: (event: UIEvent<HTMLElement>) => positions.current.set(mode, event.currentTarget.scrollTop),
+		onScroll: (event: UIEvent<E>) => positions.current.set(mode, event.currentTarget.scrollTop),
 	};
 }
 
@@ -405,6 +406,19 @@ export function MobileEditor<M extends string>({
 	// switches starts at its own resting point; a swipe can move it to the other.
 	const [snap, setSnap] = useState<{ mode: M | View | null; point: number | string | null }>({ mode: open, point: 1 });
 	if (snap.mode !== open) setSnap({ mode: open, point: half ? HALF_SHEET : 1 });
+	// Each mode keeps its own place in the sheet's one scroller: switching from the end of Write opens Design at its top.
+	const scroll = useModeScroll<HTMLDivElement>(open ?? "closed");
+	const [layer, setLayer] = useState<HTMLElement | null>(null);
+
+	// While the dock shows, toasts rise above it so it stays visible and tappable.
+	const docked = open === null;
+	useEffect(() => {
+		if (!docked) return;
+		document.documentElement.dataset.editorDock = "";
+		return () => {
+			delete document.documentElement.dataset.editorDock;
+		};
+	}, [docked]);
 
 	return (
 		<div className="relative min-h-0">
@@ -433,19 +447,23 @@ export function MobileEditor<M extends string>({
 								<Sheet.CloseTrigger aria-label={t`Close`} className="static z-0 ms-auto" />
 							</div>
 							<Sheet.Body
+								{...scroll}
 								data-editor-panel
 								className="relative min-h-0 flex-1 overflow-y-auto p-0 pb-[env(safe-area-inset-bottom)] [overflow-anchor:none]"
 							>
-								{open === "assistant" ? (
-									<div className="h-full px-3 pb-3">{assistant}</div>
-								) : open === "history" ? (
-									<HistoryView>{history}</HistoryView>
-								) : (
-									children
-								)}
+								<SheetLayerContext value={layer}>
+									{open === "assistant" ? (
+										<div className="h-full px-3 pb-3">{assistant}</div>
+									) : open === "history" ? (
+										<HistoryView>{history}</HistoryView>
+									) : (
+										children
+									)}
+								</SheetLayerContext>
 								{/* At half height the sheet's lower part is off screen: this keeps the end of the panel scrollable into view. */}
 								{snap.point === HALF_SHEET && <div aria-hidden="true" className="h-[45svh]" />}
 							</Sheet.Body>
+							<div ref={setLayer} />
 						</Sheet.Dialog>
 					</Sheet.Content>
 				</Sheet.Backdrop>
@@ -474,23 +492,26 @@ function MobileDock<M extends string>({ items, hidden, onOpen }: DockProps<M>) {
 				hidden && "translate-y-4 opacity-0",
 			)}
 		>
-			<Toolbar
+			{/* One button group: the modes share a pill, split by hairlines, icons only (each named for screen readers). */}
+			<ButtonGroup
 				aria-label={t`Editor views`}
-				className="pointer-events-auto gap-0.5 rounded-full border border-separator bg-overlay p-1 shadow-overlay"
+				variant="tertiary"
+				className="pointer-events-auto overflow-hidden rounded-full border border-separator bg-overlay shadow-overlay"
 			>
-				{items.map((item) => (
+				{items.map((item, index) => (
 					<Button
 						key={item.mode}
-						variant="ghost"
-						className="relative h-12 w-12 min-w-0 flex-col gap-0.5 rounded-full px-0 text-xs leading-none font-medium text-muted active:scale-95"
+						isIconOnly
+						aria-label={item.label}
+						className="relative size-12 bg-transparent text-muted data-[hovered=true]:bg-default/60"
 						onPress={() => onOpen(item.mode)}
 					>
-						<Icon name={item.icon} size={20} />
-						{item.label}
-						{item.extra ? <span className="absolute end-2 top-1 flex">{item.extra}</span> : null}
+						{index > 0 && <ButtonGroup.Separator />}
+						<Icon name={item.icon} size={22} />
+						{item.extra ? <span className="absolute end-2.5 top-2.5 flex">{item.extra}</span> : null}
 					</Button>
 				))}
-			</Toolbar>
+			</ButtonGroup>
 		</div>
 	);
 }
@@ -501,10 +522,14 @@ type SheetModeSwitchProps<M extends string> = {
 	onOpen: (mode: M) => void;
 };
 
-/** The sheet's header: the modes as compact pills, the open one with its name. */
+/**
+ * The sheet's header: the modes as compact pills, the open one with its name. A flex row (HeroUI's Toolbar is a grid,
+ * whose tracks let a wide pill spill over its neighbour on a 320px phone): the icon pills keep their size and only the
+ * open one's name gives way.
+ */
 function SheetModeSwitch<M extends string>({ items, open, onOpen }: SheetModeSwitchProps<M>) {
 	return (
-		<Toolbar aria-label={t`Editor views`} className="min-w-0 gap-1">
+		<Toolbar aria-label={t`Editor views`} className="flex min-w-0 gap-0.5">
 			{items.map((item) => {
 				const active = item.mode === open;
 				return (
@@ -512,9 +537,10 @@ function SheetModeSwitch<M extends string>({ items, open, onOpen }: SheetModeSwi
 						key={item.mode}
 						size="sm"
 						variant={active ? "secondary" : "ghost"}
+						isIconOnly={!active}
 						aria-pressed={active}
 						aria-label={item.label}
-						className={cn("gap-1.5 rounded-full", !active && "text-muted")}
+						className={cn("gap-1.5 rounded-full", active ? "min-w-0 px-2.5" : "size-8 shrink-0 text-muted")}
 						onPress={() => onOpen(item.mode)}
 					>
 						<Icon name={item.icon} size={18} variant={active ? "duotone" : "stroke"} />

@@ -292,10 +292,22 @@ describe("buildPortfolioView contact and buttons", () => {
 		).toBe(true);
 	});
 
+	it("shows the website's address when its label names another site", () => {
+		const website = (label: string, url = "https://alfariesh.example.test/") => {
+			const resume = testResume();
+			resume.basics.website = { url, label };
+			return section(view({}, { resume }).sections, "contact")?.contact.website;
+		};
+		expect(website("davidkowalski.example.games")?.label).toBe("https://alfariesh.example.test/");
+		expect(website("www.alfariesh.example.test/work")?.label).toBe("www.alfariesh.example.test/work");
+		expect(website("My studio")?.label).toBe("My studio");
+		expect(website("")?.label).toBe("https://alfariesh.example.test/");
+	});
+
 	it("resolves buttons to addresses and leaves out the ones that have none", () => {
 		const buttons = [{ kind: "resume" }, { kind: "pdf", label: "CV (PDF)" }, { kind: "contact" }] as const;
 		expect(view({ hero: { buttons: [...buttons] } }).hero.buttons).toEqual([
-			{ label: "Send a message", href: "#contact", external: false, kind: "contact" },
+			{ label: "Contact", href: "#contact", external: false, kind: "contact" },
 		]);
 		expect(
 			view(
@@ -305,8 +317,12 @@ describe("buildPortfolioView contact and buttons", () => {
 		).toEqual([
 			{ label: "View resume", href: "/nadia/cv", external: false, kind: "resume" },
 			{ label: "CV (PDF)", href: "/api/resumes/nadia/cv.pdf", external: false, kind: "pdf" },
-			{ label: "Send a message", href: "#contact", external: false, kind: "contact" },
+			{ label: "Contact", href: "#contact", external: false, kind: "contact" },
 		]);
+		expect(
+			view({ hero: { buttons: [{ kind: "contact" }] }, contact: { form: true } }, { contactFormAvailable: true }).hero
+				.buttons[0]?.label,
+		).toBe("Send a message");
 		expect(view({ hero: { buttons: [{ kind: "whatsapp" }, { kind: "link" }] } }).hero.buttons).toEqual([]);
 	});
 
