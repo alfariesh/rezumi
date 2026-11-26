@@ -6,6 +6,7 @@ import type { Key, Selection } from "react-aria-components";
 import { Button, Dropdown, Label, Separator, ToggleButton, ToggleButtonGroup, Toolbar, Tooltip } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Plural, Trans } from "@lingui/react/macro";
+import { Placeholder } from "@tiptap/extensions";
 import { EditorContent, useEditor, useEditorState } from "@tiptap/react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
@@ -183,6 +184,8 @@ export type RichTextEditorProps = {
 	id?: string;
 	/** Replaces the text area's default height (88px to 360px). */
 	heightClassName?: string;
+	/** Shown in the empty text, where a label would otherwise name it. */
+	placeholder?: string | undefined;
 };
 
 /**
@@ -200,6 +203,7 @@ export function RichTextEditor({
 	className,
 	id,
 	heightClassName = "max-h-[360px] min-h-[88px]",
+	placeholder,
 	focusRequest,
 }: RichTextEditorProps & { focusRequest?: FocusRequest }) {
 	const [focused, setFocused] = useState(false);
@@ -212,8 +216,14 @@ export function RichTextEditor({
 	const readOnlyTable = useMemo(() => hasUnsupportedTableMarkup(value), [value]);
 	const editorValue = useMemo(() => (readOnlyTable ? toPreviewHtml(value) : value), [readOnlyTable, value]);
 
+	// Kept across renders: useEditor compares extensions by identity and re-applies its options when they differ.
+	const extensions = useMemo(
+		() => (placeholder ? [...richTextExtensions, Placeholder.configure({ placeholder })] : richTextExtensions),
+		[placeholder],
+	);
+
 	const editor = useEditor({
-		extensions: richTextExtensions,
+		extensions,
 		content: editorValue,
 		editable: !disabled && !readOnlyTable,
 		immediatelyRender: false,
@@ -418,7 +428,10 @@ export function RichTextEditor({
 				</p>
 			)}
 
-			<EditorContent editor={editor} />
+			<EditorContent
+				editor={editor}
+				className="[&_.is-editor-empty:first-child]:before:pointer-events-none [&_.is-editor-empty:first-child]:before:float-start [&_.is-editor-empty:first-child]:before:h-0 [&_.is-editor-empty:first-child]:before:text-(--field-placeholder) [&_.is-editor-empty:first-child]:before:content-[attr(data-placeholder)]"
+			/>
 			{editing && <AiProviderLoadState state={ai} />}
 
 			{/* Under the text, so focusing the field never moves the line you clicked. */}

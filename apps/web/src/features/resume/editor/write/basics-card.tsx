@@ -1,10 +1,14 @@
+import type { SortableTarget } from "@/components/input/sortable";
 import type { Basics, CustomField } from "@rezumi/schema/resume/data";
-import { Button, ButtonGroup, Disclosure, Input, Popover, Tooltip } from "@heroui/react";
+import { Button, Disclosure, Dropdown, Input, Label, Popover, Separator, Tooltip } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useState } from "react";
+import { getContactIcon } from "@rezumi/resume/icons";
 import { Icon } from "@rezumi/ui/components/icon";
+import { IconButton } from "@rezumi/ui/components/icon-button";
 import { generateId } from "@rezumi/utils/string";
+import { cn } from "@rezumi/utils/style";
 import { useEditorStore } from "../store";
 import { TextField, validateEmail, WebsiteField } from "./fields";
 import { PictureSettings } from "./picture-settings";
@@ -12,6 +16,7 @@ import { ProfileMarker } from "./profile-link";
 import { useWriteIconStyle, useWriteSelector, useWriteSource, useWriteUpdate } from "./source";
 import { IconPicker } from "@/components/input/icon-picker";
 import { INPUT_WITH_ICON, WithInputIcon } from "@/components/input/input-icon";
+import { SortableEdge, SortableHandle, SortableProvider, useSortableItem } from "@/components/input/sortable";
 
 type TextKey = "name" | "headline" | "email" | "phone" | "location";
 
@@ -155,6 +160,8 @@ function PhotoRow({ locked }: PhotoRowProps) {
 /**
  * Extra details (icon, an optional label, text and an optional link), as "Add field" under Website. A labelled field
  * prints as "Label: text", or as a row of the personal details table in templates that have one (Wibawa, Tenun).
+ * They sit in one card like a section's entries: rows split by hairlines, Add field as the last row. Fields reorder by
+ * their grip: drag it, or Enter on it and the arrow keys.
  */
 type CustomFieldsProps = { fields: CustomField[]; locked: boolean };
 function CustomFields({ fields, locked }: CustomFieldsProps) {
@@ -164,17 +171,34 @@ function CustomFields({ fields, locked }: CustomFieldsProps) {
 	const edit = (key: string, mutate: (list: CustomField[]) => void) =>
 		update((draft) => mutate(draft.basics.customFields), { coalesceKey: `basics.customFields.${key}` });
 
+	const move = (id: string, { index: to }: SortableTarget) =>
+		edit(`${id}.move`, (list) => {
+			const from = list.findIndex((field) => field.id === id);
+			if (from === -1 || from === to) return;
+			const [field] = list.splice(from, 1);
+			if (field) list.splice(to, 0, field);
+		});
+
 	return (
-		<div className="col-span-full grid gap-3">
-			{fields.map((field, index) => (
-				<CustomFieldRow key={field.id} field={field} index={index} locked={locked} iconStyle={iconStyle} edit={edit} />
-			))}
-			<div className="flex items-center gap-1">
+		<div className="col-span-full divide-y divide-separator rounded-xl border border-separator bg-surface">
+			<SortableProvider onMove={move}>
+				{fields.map((field, index) => (
+					<CustomFieldRow
+						key={field.id}
+						field={field}
+						index={index}
+						locked={locked}
+						iconStyle={iconStyle}
+						edit={edit}
+					/>
+				))}
+			</SortableProvider>
+			<div className="flex items-center gap-1 pe-1">
 				<Button
 					variant="ghost"
 					isDisabled={locked}
-					className="w-fit text-accent-soft-foreground"
-					onPress={() => edit("add", (list) => list.push({ id: generateId(), icon: "acorn", text: "", link: "" }))}
+					className="h-10 w-fit px-3 text-accent-soft-foreground"
+					onPress={() => edit("add", (list) => list.push({ id: generateId(), icon: "", text: "", link: "" }))}
 				>
 					<Icon name="plus" size={18} />
 					<Trans>Add field</Trans>
@@ -185,6 +209,14 @@ function CustomFields({ fields, locked }: CustomFieldsProps) {
 	);
 }
 
+/** An icon nobody picked: none yet, the old default (which the icon set no longer draws), or the one the text suggested. */
+const followsText = (field: CustomField) =>
+	!field.icon || field.icon === "acorn" || field.icon === getContactIcon(field.text);
+
+/** A bare text box in a row: no frame of its own, the light field fill (`fields-on-surface`'s) while typing in it. */
+const ROW_INPUT =
+	"h-8 min-w-0 flex-1 rounded-md bg-transparent px-1.5 text-sm outline-none placeholder:text-(--field-placeholder) focus:bg-background disabled:cursor-default";
+
 type CustomFieldRowProps = {
 	field: CustomField;
 	index: number;
@@ -194,82 +226,79 @@ type CustomFieldRowProps = {
 };
 
 /**
- * One custom field: its icon, its text, and a group of buttons (label, link, move up, remove). The label's own field
- * shows under the text only once it's asked for, or when the field already has one.
+ * One custom field, written in place: its icon, its text, the link button (accent once there's a link) and a ⋯ menu
+ * with the label and Remove. On hover the row slides over and its grip fades in, like an entry's; touch screens always
+ * show it. Until an icon is picked, the icon follows the text: a network's logo for its address, a globe for another.
+ * The label's own line shows under the text only once it's asked for, or when the field already has one.
  */
 function CustomFieldRow({ field, index, locked, iconStyle, edit }: CustomFieldRowProps) {
 	const [labelOpen, setLabelOpen] = useState(Boolean(field.label));
 	// A label that appears from elsewhere (an undo, a restore) shows its field too.
 	if (field.label && !labelOpen) setLabelOpen(true);
+	const title = field.text.trim() || t`Field ${index + 1}`;
+	const sortable = useSortableItem({ id: field.id, list: "custom-fields", index, label: title, isDisabled: locked });
+
+	const write = (key: string, mutate: (target: CustomField) => void) =>
+		edit(`${field.id}.${key}`, (list) => {
+			const target = list[index];
+			if (target) mutate(target);
+		});
 
 	// Hiding the label field drops its text, so what shows is what prints.
 	const toggleLabel = () => {
-		if (labelOpen && field.label)
-			edit(`${field.id}.label`, (list) => {
-				const target = list[index];
-				if (target) target.label = "";
-			});
+		if (labelOpen && field.label) write("label", (target) => (target.label = ""));
 		setLabelOpen(!labelOpen);
 	};
 
+	const slide =
+		!locked &&
+		"transition-[padding] duration-quick ease-out group-focus-within/field:ps-6.5 group-hover/field:ps-6.5 pointer-coarse:ps-6.5 motion-reduce:transition-none";
+
 	return (
-		<div className="grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-x-1.5 gap-y-1.5">
-			<IconPicker
-				isDisabled={locked}
-				// The same fill and radius as the text field beside it.
-				className="rounded-field shadow-field [--button-bg-hover:var(--field-hover)] [--button-bg-pressed:var(--field-hover)] [--button-bg:var(--field-background)]"
-				value={field.icon}
-				iconStyle={iconStyle}
-				popoverProps={{ modal: true }}
-				onChange={(icon) =>
-					edit(`${field.id}.icon`, (list) => {
-						const target = list[index];
-						if (target) target.icon = icon;
-					})
-				}
-			/>
-			<WithInputIcon icon="text-t">
-				<Input
-					className={INPUT_WITH_ICON}
-					fullWidth
-					variant="secondary"
+		<div {...sortable.dropTargetProps} className={cn("group/field relative", sortable.isDragging && "opacity-50")}>
+			<SortableEdge edge={sortable.edge} />
+			{!locked && (
+				<SortableHandle
+					item={sortable}
+					label={t`Reorder ${title}`}
+					iconSize={16}
+					className="absolute inset-s-1 top-0 h-10 w-6 opacity-0 transition-opacity duration-quick group-focus-within/field:opacity-100 group-hover/field:opacity-100 pointer-coarse:opacity-100"
+				/>
+			)}
+			<div className={cn("flex h-10 items-center gap-0.5 ps-1.5 pe-1", slide)}>
+				<IconPicker
+					isDisabled={locked}
+					size="sm"
+					className="size-7 min-w-0 shadow-none [--button-bg-hover:var(--field-hover)] [--button-bg-pressed:var(--field-hover)] [--button-bg:transparent]"
+					value={field.icon === "acorn" ? "" : field.icon}
+					iconStyle={iconStyle}
+					popoverProps={{ modal: true }}
+					onChange={(icon) => write("icon", (target) => (target.icon = icon))}
+				/>
+				<input
+					className={ROW_INPUT}
 					disabled={locked}
 					aria-label={t`Field ${index + 1}`}
 					placeholder={t`Text, e.g. Indonesian`}
 					value={field.text}
-					onChange={(event) =>
-						edit(`${field.id}.text`, (list) => {
-							const target = list[index];
-							if (target) target.text = event.target.value;
-						})
-					}
+					onChange={(event) => {
+						const text = event.target.value;
+						write("text", (target) => {
+							if (followsText(target)) target.icon = getContactIcon(text);
+							target.text = text;
+						});
+					}}
 				/>
-			</WithInputIcon>
-			<ButtonGroup variant="tertiary">
-				<Tooltip>
-					<Button
-						isIconOnly
-						variant="tertiary"
-						aria-label={labelOpen ? t`Remove label` : t`Add a label`}
-						aria-pressed={labelOpen}
-						isDisabled={locked}
-						className={labelOpen ? "text-accent" : "text-muted"}
-						onPress={toggleLabel}
-					>
-						<Icon name="tag" size={16} />
-					</Button>
-					<Tooltip.Content>{labelOpen ? t`Remove label` : t`Add a label`}</Tooltip.Content>
-				</Tooltip>
 				<Popover>
 					<Tooltip>
 						<Button
 							isIconOnly
-							variant="tertiary"
+							size="sm"
+							variant="ghost"
 							aria-label={field.link ? t`Edit link` : t`Add a link`}
 							isDisabled={locked}
 							className={field.link ? "text-accent" : "text-muted"}
 						>
-							<ButtonGroup.Separator />
 							<Icon name={field.link ? "link-simple-horizontal" : "link-simple-horizontal-break"} size={16} />
 						</Button>
 						<Tooltip.Content>{field.link ? t`Edit link` : t`Add a link`}</Tooltip.Content>
@@ -286,65 +315,50 @@ function CustomFieldRow({ field, index, locked, iconStyle, edit }: CustomFieldRo
 									aria-label={t`Link address`}
 									placeholder="https://"
 									value={field.link}
-									onChange={(event) =>
-										edit(`${field.id}.link`, (list) => {
-											const target = list[index];
-											if (target) target.link = event.target.value;
-										})
-									}
+									onChange={(event) => write("link", (target) => (target.link = event.target.value))}
 								/>
 							</WithInputIcon>
 						</Popover.Dialog>
 					</Popover.Content>
 				</Popover>
-				<Tooltip>
-					<Button
-						isIconOnly
-						variant="tertiary"
-						aria-label={t`Move field up`}
-						isDisabled={locked || index === 0}
-						className="text-muted"
-						onPress={() => edit(`${field.id}.move`, (list) => list.splice(index - 1, 0, ...list.splice(index, 1)))}
-					>
-						<ButtonGroup.Separator />
-						<Icon name="arrow-up" size={16} />
-					</Button>
-					<Tooltip.Content>{t`Move field up`}</Tooltip.Content>
-				</Tooltip>
-				<Tooltip>
-					<Button
-						isIconOnly
-						variant="tertiary"
-						aria-label={t`Remove field`}
-						isDisabled={locked}
-						className="text-muted"
-						onPress={() => edit(`${field.id}.remove`, (list) => list.splice(index, 1))}
-					>
-						<ButtonGroup.Separator />
-						<Icon name="x" size={16} />
-					</Button>
-					<Tooltip.Content>{t`Remove field`}</Tooltip.Content>
-				</Tooltip>
-			</ButtonGroup>
+				<Dropdown>
+					<IconButton icon="dots-three" label={t`Options for ${title}`} size="sm" isDisabled={locked} />
+					<Dropdown.Popover placement="bottom end" className="w-52">
+						<Dropdown.Menu>
+							<Dropdown.Item id="label" textValue={labelOpen ? t`Remove label` : t`Add a label`} onAction={toggleLabel}>
+								<Icon name="tag" className="text-muted" />
+								<Label>{labelOpen ? t`Remove label` : t`Add a label`}</Label>
+							</Dropdown.Item>
+							<Separator />
+							<Dropdown.Item
+								id="remove"
+								textValue={t`Remove field`}
+								variant="danger"
+								onAction={() => edit(`${field.id}.remove`, (list) => list.splice(index, 1))}
+							>
+								<Icon name="trash" />
+								<Label>{t`Remove field`}</Label>
+							</Dropdown.Item>
+						</Dropdown.Menu>
+					</Dropdown.Popover>
+				</Dropdown>
+			</div>
 			{labelOpen && (
-				<WithInputIcon icon="tag" className="col-span-2 col-start-2">
-					<Input
-						className={INPUT_WITH_ICON}
-						fullWidth
-						variant="secondary"
+				<div className={cn("-mt-1 flex h-9 items-center gap-0.5 ps-1.5 pe-1", slide)}>
+					<span className="grid size-7 shrink-0 place-items-center text-muted">
+						<Icon name="tag" size={14} />
+					</span>
+					<input
+						className={ROW_INPUT}
 						disabled={locked}
+						// oxlint-disable-next-line jsx-a11y/no-autofocus -- the line was just asked for; typing goes there.
 						autoFocus={!field.label}
 						aria-label={t`Label for field ${index + 1}`}
 						placeholder={t`Label, e.g. Languages`}
 						value={field.label ?? ""}
-						onChange={(event) =>
-							edit(`${field.id}.label`, (list) => {
-								const target = list[index];
-								if (target) target.label = event.target.value;
-							})
-						}
+						onChange={(event) => write("label", (target) => (target.label = event.target.value))}
 					/>
-				</WithInputIcon>
+				</div>
 			)}
 		</div>
 	);

@@ -8,6 +8,7 @@ import { readSingleDate } from "@rezumi/schema/resume/period";
 import { Icon } from "@rezumi/ui/components/icon";
 import { CellSwitchRow } from "@rezumi/ui/components/switch";
 import { cn } from "@rezumi/utils/style";
+import { useFieldLabelClass } from "./fields";
 
 type DateSettings = { locale: string; format?: DateFormat | undefined };
 
@@ -102,13 +103,16 @@ export function DatesField({ dates, single = false, locale, format, onChange, cl
 	const current: ResumeDates = { start: dates.start, end: dates.end, present: dates.present };
 	const reversed = !single && !dates.present && dates.start && dates.end && isBefore(dates.end, dates.start);
 	const hasError = invalid.start || invalid.end;
+	const labelClass = useFieldLabelClass();
 
 	const setInvalidFor = (part: "start" | "end") => (value: boolean) =>
 		setInvalid((state) => (state[part] === value ? state : { ...state, [part]: value }));
 
 	return (
 		<fieldset className={cn("grid min-w-0 gap-1.5", className)} aria-describedby={`${id}-note`}>
-			<legend className="mb-1.5 text-sm font-medium">{single ? <Trans>Date</Trans> : <Trans>Dates</Trans>}</legend>
+			<legend className={cn("mb-1.5 text-sm font-medium", labelClass)}>
+				{single ? <Trans>Date</Trans> : <Trans>Dates</Trans>}
+			</legend>
 
 			<div className="flex items-center gap-2">
 				<MonthYearInput

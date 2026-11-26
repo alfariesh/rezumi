@@ -22,7 +22,7 @@ import { cn } from "@rezumi/utils/style";
 import { useSheetLayer } from "../chrome/sheet-layer";
 import { useEditorStore } from "../store";
 import { EntryFields } from "./entries";
-import { useEntry, useEntryWriter } from "./fields";
+import { LabelsAsPlaceholders, useEntry, useEntryWriter } from "./fields";
 import { LazyDisclosure } from "./lazy-disclosure";
 import { ProfileMarker, SaveToProfileMenuItem, useLocalEntry } from "./profile-link";
 import { entryElementId, keepOpenedEntryInView } from "./reveal";
@@ -91,11 +91,12 @@ export function EntryCard({ section, entryId, index, count, page, locked, onMove
 		useEditorStore.setState({ selection: open ? null : { kind: "item", sectionId: section.id, itemId: entryId } });
 		if (!open) keepOpenedEntryInView(entryId);
 	};
+	// Inside the white card the fields take the light fill (`fields-on-surface`) and name themselves by placeholder.
 	const fields = (
-		<>
+		<LabelsAsPlaceholders value>
 			{hint && <p className="col-span-full text-body-xs text-muted">{i18n._(hint)}</p>}
 			<EntryFields type={section.type} entry={entry} write={write} page={page} autoFocus={autoFocus} />
-		</>
+		</LabelsAsPlaceholders>
 	);
 
 	const onTitleKeyDown = (event: KeyboardEvent<HTMLButtonElement>) => {
@@ -109,19 +110,20 @@ export function EntryCard({ section, entryId, index, count, page, locked, onMove
 			{...sortable.dropTargetProps}
 			id={entryElementId(entryId)}
 			data-entry-id={entryId}
-			className={cn(
-				"group/entry relative scroll-mt-[60px] rounded-xl border border-separator",
-				sortable.isDragging && "opacity-50",
-			)}
+			className={cn("group/entry relative scroll-mt-[60px]", sortable.isDragging && "opacity-50")}
 		>
 			<SortableEdge edge={sortable.edge} />
-			<div className="flex items-center gap-0.5 pe-1">
+			{/* The whole header drags (not the open fields, so their text stays selectable). On hover the title slides
+			    over and the grip fades in where it was, showing the row can move; the grip is also the keyboard's way to
+			    reorder. Touch screens have no hover, so there the grip always shows. */}
+			<div {...sortable.dragProps} className="flex items-center gap-0.5 pe-1">
 				{!locked && (
 					<SortableHandle
 						item={sortable}
+						dragSource={false}
 						label={t`Reorder ${title || t`Untitled`}`}
 						iconSize={16}
-						className="h-10 w-5 opacity-0 transition-opacity duration-quick group-hover/entry:opacity-100 focus-visible:opacity-100"
+						className="absolute inset-s-1 top-0 h-10 w-6 opacity-0 transition-opacity duration-quick group-hover/entry:opacity-100 focus-visible:opacity-100 pointer-coarse:opacity-100"
 					/>
 				)}
 				{/* A raw button: the ⌥↑ / ⌥↓ key handler needs the native element. */}
@@ -132,8 +134,9 @@ export function EntryCard({ section, entryId, index, count, page, locked, onMove
 					onClick={toggle}
 					onKeyDown={onTitleKeyDown}
 					className={cn(
-						"flex min-w-0 flex-1 cursor-(--cursor-interactive) items-center rounded-lg py-2.5 pe-2 text-start outline-none focus-visible:ring-2 focus-visible:ring-focus",
-						locked ? "ps-3" : "ps-0.5",
+						"flex min-w-0 flex-1 cursor-(--cursor-interactive) items-center rounded-lg py-2.5 ps-3 pe-2 text-start outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-inset",
+						!locked &&
+							"transition-[padding] duration-quick ease-out group-focus-within/entry:ps-8 group-hover/entry:ps-8 motion-reduce:transition-none pointer-coarse:ps-8",
 					)}
 				>
 					<span className="flex max-w-full items-center gap-2">
@@ -171,7 +174,7 @@ export function EntryCard({ section, entryId, index, count, page, locked, onMove
 
 			{!isPhone && (
 				<LazyDisclosure open={open}>
-					<fieldset disabled={locked} className="m-0 grid min-w-0 gap-y-3 border-0 px-3 pt-1 pb-4">
+					<fieldset disabled={locked} className="m-0 grid min-w-0 gap-y-2 border-0 px-3 pt-1 pb-3 fields-on-surface">
 						{fields}
 					</fieldset>
 				</LazyDisclosure>
@@ -242,7 +245,7 @@ function PhoneEntryScreen({ section, title, locked, onBack, onDelete, children }
 			</div>
 			<fieldset
 				disabled={locked}
-				className="m-0 grid min-w-0 flex-1 auto-rows-min gap-y-3 overflow-y-auto border-0 p-4 [&_input]:h-11"
+				className="m-0 grid min-w-0 flex-1 auto-rows-min gap-y-2.5 overflow-y-auto border-0 p-4 fields-on-surface [&_input]:h-11"
 			>
 				{children}
 			</fieldset>
