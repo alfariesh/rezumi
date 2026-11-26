@@ -26,10 +26,10 @@ it("loads the selected catalog on demand and updates text direction for Arabic",
 	expect(i18n.locale).toBe("en-US");
 	expect(mockRead.mock.calls).toEqual([[1]]);
 	await setLocalePreference("id-ID");
-	expect(i18n._("demo")).toBe("Cari");
+	expect(i18n.messages.demo).toBe("Cari");
 	expect(mockRead.mock.calls).toEqual([[1], [2]]);
 	await setLocalePreference("ar-SA");
-	expect(i18n._("demo")).toBe("بحث");
+	expect(i18n.messages.demo).toBe("بحث");
 	expect(direction).toHaveBeenLastCalledWith(true);
 	await setLocalePreference(null);
 	expect(direction).toHaveBeenLastCalledWith(false);

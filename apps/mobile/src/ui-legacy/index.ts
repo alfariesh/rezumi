@@ -1,18 +1,8 @@
-// The old "Desk & Paper" primitives, kept only for screens not rebuilt on `src/ui` yet (plans/mobile Phase 09–14).
-// New code imports `@/ui`; delete each export here once its last screen moves.
-export { Button, IconButton } from "./button";
-export { Segmented, SelectSheet, Switch, TextField } from "./fields";
-export { Icon, type IconName } from "./icon";
-export { Avatar, Banner, Card, EmptyState, ListRow, Skeleton } from "./layout";
-export { ConfirmDialog, Sheet, Toaster, showToast } from "./overlays";
-export {
-	haptics,
-	listItemMotion,
-	setHapticsEnabled,
-	useHapticsEnabled,
-	listLayout,
-	useFirstAppearance,
-	useReducedMotion,
-} from "@/ui/motion";
+// Legacy primitives still used by screens that have yet to move to src/ui.
+export { Button } from "./button";
+export { TextField } from "./fields";
+export { Banner, EmptyState } from "./layout";
+export { ConfirmDialog, Toaster } from "./overlays";
+export { useReducedMotion } from "@/ui/motion";
 export { Screen, Text } from "./text";
-export { setThemePreference, useTheme, useThemePreference, type ThemePreference } from "./theme";
+export { useTheme } from "./theme";

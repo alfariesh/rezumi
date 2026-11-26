@@ -1,29 +1,20 @@
 // The chrome every section shares (01-desain 2.1): on phones the avatar that opens the drawer at the start of the top
-// bar, Coach and Search at its end, the page title, and the one floating New button of Home and Documents. Screens not
-// rebuilt yet get the same controls through their old header (`CollectionHeader` reads `InTabs`).
+// bar, Coach and Search at its end, the page title, and the floating New button on Home and Documents.
 import { useLingui } from "@lingui/react/macro";
 import { useRouter } from "expo-router";
-import { createContext, use } from "react";
 import { DrawerButton } from "./app-drawer";
 import { useOpenCoach } from "./coach-actions";
 import { useIsTablet } from "./use-is-tablet";
 import { routes } from "@/routes";
 import { Fab, IconButton, TopBar } from "@/ui";
 
-/** True inside the section shell: the old screens' headers then add the drawer's avatar, Coach and Search. */
-export const InTabs = createContext(false);
-
-export function useInTabs() {
-	return use(InTabs);
-}
-
 /** The drawer's avatar at the start of a section's top bar on phones; tablets have the sidebar instead. */
-export function TabBarLeading() {
+function TabBarLeading() {
 	return useIsTablet("window") ? null : <DrawerButton />;
 }
 
 /** Coach and Search, at the end of a section's top bar. */
-export function TabBarActions() {
+function TabBarActions() {
 	const { t } = useLingui();
 	const router = useRouter();
 	const openCoach = useOpenCoach();
