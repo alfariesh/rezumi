@@ -5,12 +5,13 @@ import type { ComponentProps, ReactNode } from "react";
 import { Checkbox, Description, Disclosure, FieldError, Input, Label, TextField as FieldRoot } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
-import { createContext, use, useCallback, useState } from "react";
+import { useCallback, useState } from "react";
 import { findEntry } from "@rezumi/resume/write";
 import { FormControl, FormItem, FormLabel, FormMessage } from "@rezumi/ui/components/form";
 import { cn } from "@rezumi/utils/style";
 import { useWriteSelector, useWriteUpdate } from "./source";
 import { INPUT_WITH_ICON, WithInputIcon } from "@/components/input/input-icon";
+import { useFieldLabelClass } from "@/components/input/labels-as-placeholders";
 import { URLInput } from "@/components/input/url-input";
 
 /** One entry of a section, re-rendering only when that entry changes; null once it's deleted. */
@@ -80,17 +81,6 @@ type TextFieldProps = Omit<ComponentProps<"input">, "value" | "onChange"> & {
 	/** A small control at the end of the label's line, such as the Profile marker. */
 	labelAction?: ReactNode;
 };
-
-/**
- * True inside an entry's card: fields there go without a visible label, their name shown as the placeholder (and kept
- * as the accessible name), so the open entry reads as a short form inside its row.
- */
-export const LabelsAsPlaceholders = createContext(false);
-
-/** The class for a label that names its field for screen readers only, inside an entry's card. */
-export function useFieldLabelClass() {
-	return use(LabelsAsPlaceholders) ? "sr-only" : undefined;
-}
 
 /** A labelled text field. Errors appear after the first blur and say how to fix them. */
 export function TextField({

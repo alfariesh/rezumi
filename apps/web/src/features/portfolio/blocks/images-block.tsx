@@ -78,6 +78,15 @@ export function ImagesBlockEditor({ work, block, edit, onRemove }: ImagesBlockEd
 							list="images"
 							index={index}
 							name={name}
+							leading={
+								<img
+									src={portfolioImageSrc(image)}
+									alt=""
+									width={image.width}
+									height={image.height}
+									className="size-6 shrink-0 rounded-sm bg-default object-cover"
+								/>
+							}
 							onRemove={() => {
 								if (images.length === 1) {
 									onRemove();

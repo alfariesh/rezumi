@@ -88,11 +88,28 @@ describe("a draggable card", () => {
 		);
 
 		expect(screen.getByRole("button", { name: "Reorder Branding" })).toBeInTheDocument();
+		// Closed, the item is its title row; the title opens its fields.
+		expect(screen.queryByText("Fields")).toBeNull();
+		await userEvent.click(screen.getByRole("button", { name: "Branding", expanded: false }));
 		expect(screen.getByText("Fields")).toBeInTheDocument();
 		// There are no move up or down buttons: dragging is the only way to reorder.
 		expect(screen.queryByRole("button", { name: /Move .* (up|down)/ })).toBeNull();
 
 		await userEvent.click(screen.getByRole("button", { name: "Remove Branding" }));
 		expect(onRemove).toHaveBeenCalledOnce();
+	});
+
+	it("opens a new item's fields at once, and shows the list's footer as its last row", () => {
+		renderInI18n(
+			<SortableList ids={["a"]} onMove={() => undefined} footer={<button type="button">Add an item</button>}>
+				<SortableCard id="a" list="items" index={0} name="Untitled" defaultOpen onRemove={() => undefined}>
+					<p>Fields</p>
+				</SortableCard>
+			</SortableList>,
+		);
+
+		expect(screen.getByRole("button", { name: "Untitled", expanded: true })).toBeInTheDocument();
+		expect(screen.getByText("Fields")).toBeInTheDocument();
+		expect(screen.getByRole("button", { name: "Add an item" })).toBeInTheDocument();
 	});
 });

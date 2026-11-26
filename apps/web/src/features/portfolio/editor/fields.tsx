@@ -2,12 +2,13 @@ import type { HeadingHint } from "./heading-hints";
 import type { SlashItem } from "./rich-text-editor";
 import type { PortfolioAiField } from "@rezumi/schema/portfolio/ai";
 import type { IconName } from "@rezumi/ui/components/icon";
-import type { ReactNode } from "react";
-import { FieldError, Input, Label, Skeleton, TextArea, TextField } from "@heroui/react";
+import type { ReactNode, Ref } from "react";
+import { Button, FieldError, Input, Label, Skeleton, TextArea, TextField } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Suspense, useId, useState } from "react";
 import { PORTFOLIO_LIMITS } from "@rezumi/schema/portfolio/limits";
 import { isAllowedPortfolioUrl, PORTFOLIO_WEB_PROTOCOLS } from "@rezumi/schema/portfolio/links";
+import { Icon } from "@rezumi/ui/components/icon";
 import { IconButton } from "@rezumi/ui/components/icon-button";
 import { cn } from "@rezumi/utils/style";
 import { AiRewriteMenu } from "../ai/rewrite-menu";
@@ -15,6 +16,7 @@ import { useDraftText } from "../metrics/use-draft-text";
 import { ChunkBoundary, retryableLazy } from "./chunk-boundary";
 import { usePortfolioEditorStore } from "./store";
 import { INPUT_WITH_ICON, WithInputIcon } from "@/components/input/input-icon";
+import { LabelsAsPlaceholders, useFieldLabelClass } from "@/components/input/labels-as-placeholders";
 import { CellSelectField } from "@/components/input/select-field";
 import { SortableEdge, SortableHandle, SortableProvider, useSortableItem } from "@/components/input/sortable";
 import { GroupSection, useInGroupPanel } from "@/features/resume/editor/chrome/group-nav";
@@ -89,6 +91,9 @@ export function TextInput({
 	onBlur,
 	rewrite,
 }: TextInputProps) {
+	const labelClass = useFieldLabelClass();
+	// In a list's card the label is for screen readers only and the field names itself by placeholder.
+	const shown = labelClass ? label : placeholder;
 	return (
 		<TextField
 			fullWidth
@@ -101,26 +106,38 @@ export function TextInput({
 			{...(onBlur ? { onBlur } : {})}
 			className="gap-1.5"
 		>
-			{rewrite ? (
+			{rewrite && !labelClass ? (
 				<div className="flex items-center justify-between gap-2">
 					<Label>{label}</Label>
 					<AiRewriteMenu field={rewrite} value={value} onResult={onChange} />
 				</div>
 			) : (
-				<Label>{label}</Label>
+				<Label className={labelClass}>{label}</Label>
 			)}
-			{multiline ? (
-				<TextArea variant="secondary" {...(placeholder ? { placeholder } : {})} />
-			) : (
-				<WithInputIcon icon={icon}>
-					<Input
+			{/* Without a label line, AI rewriting sits in the field's top corner. */}
+			<div className="relative">
+				{multiline ? (
+					<TextArea
 						variant="secondary"
-						className={cn(icon && INPUT_WITH_ICON)}
-						{...(placeholder ? { placeholder } : {})}
-						{...(inputMode ? { inputMode } : {})}
+						className={cn(rewrite && labelClass && "pe-10")}
+						{...(shown ? { placeholder: shown } : {})}
 					/>
-				</WithInputIcon>
-			)}
+				) : (
+					<WithInputIcon icon={icon}>
+						<Input
+							variant="secondary"
+							className={cn(icon && INPUT_WITH_ICON, rewrite && labelClass && "pe-10")}
+							{...(shown ? { placeholder: shown } : {})}
+							{...(inputMode ? { inputMode } : {})}
+						/>
+					</WithInputIcon>
+				)}
+				{rewrite && labelClass && (
+					<span className="absolute end-1 top-1">
+						<AiRewriteMenu field={rewrite} value={value} onResult={onChange} />
+					</span>
+				)}
+			</div>
 			<FieldError>{errorMessage}</FieldError>
 		</TextField>
 	);
@@ -174,6 +191,7 @@ export function UrlInput({
 	const [touched, setTouched] = useState(false);
 	const allowed = (url: string) => isAllowedPortfolioUrl(url, webOnly ? PORTFOLIO_WEB_PROTOCOLS : undefined);
 	const normalized = normalizePortfolioUrl(text);
+	const labelClass = useFieldLabelClass();
 	const valid = normalized === "" || allowed(normalized);
 
 	const change = (next: string) => {
@@ -198,9 +216,14 @@ export function UrlInput({
 			}}
 			className="gap-1.5"
 		>
-			<Label>{label}</Label>
+			<Label className={labelClass}>{label}</Label>
 			<WithInputIcon icon={icon}>
-				<Input variant="secondary" dir="ltr" placeholder={placeholder ?? "https://"} className={INPUT_WITH_ICON} />
+				<Input
+					variant="secondary"
+					dir="ltr"
+					placeholder={labelClass ? label : (placeholder ?? "https://")}
+					className={INPUT_WITH_ICON}
+				/>
 			</WithInputIcon>
 			<FieldError>
 				{webOnly
@@ -253,6 +276,8 @@ export function RichTextField({
 }: RichTextFieldProps) {
 	const revision = usePortfolioEditorStore((state) => state.revision);
 	const labelId = useId();
+	// In a list's card the label is for screen readers only and the text names itself by placeholder.
+	const compact = Boolean(useFieldLabelClass());
 	// The editor keeps its own document, so text put in from outside has to start it over: Undo, Redo, a reload, an AI
 	// rewrite. `own` is the text as this editor last wrote it; data swapped in (`revision`) restarts the editor only
 	// when it holds other text here. A block added elsewhere, or AI changing another section, leaves the caret, the
@@ -281,7 +306,7 @@ export function RichTextField({
 						"absolute -end-14 top-0 z-10 opacity-0 transition-opacity duration-quick group-focus-within/text:opacity-100 group-hover/text:opacity-100 has-[[aria-expanded=true]]:opacity-100 pointer-coarse:opacity-100",
 				)}
 			>
-				<span id={labelId} className={hideLabel ? "sr-only" : "text-sm font-medium"}>
+				<span id={labelId} className={hideLabel || compact ? "sr-only" : "text-sm font-medium"}>
 					{label}
 				</span>
 				{rewrite && (
@@ -311,7 +336,7 @@ export function RichTextField({
 								value={value}
 								onChange={write}
 								maxLength={maxLength}
-								placeholder={placeholder}
+								placeholder={compact ? label : placeholder}
 								slashItems={slashItems}
 								appearance={appearance}
 								onFiles={onFiles}
@@ -357,20 +382,59 @@ type SortableListProps = {
 	ids: readonly string[];
 	/** Moves the item at `from` to `to`. */
 	onMove: (from: number, to: number) => void;
+	/** The list's last row: the ways to add an item (see {@link AddRowButton}), a note about its limit. */
+	footer?: ReactNode;
+	/** On the footer row, for `useRemovalFocus`'s fallback. */
+	footerRef?: Ref<HTMLDivElement> | undefined;
 	children: ReactNode;
 };
 
-/** A list whose cards can be dragged into a new order (each card is a {@link SortableCard}). */
-export function SortableList({ ids, onMove, children }: SortableListProps) {
+/**
+ * A list as one white card, like a resume section's entries: its items ({@link SortableCard}) split by hairlines, which
+ * drag into a new order, and the footer as the last row. Fields in it take the light fill (`fields-on-surface`) and
+ * name themselves by placeholder.
+ */
+export function SortableList({ ids, onMove, footer, footerRef, children }: SortableListProps) {
 	return (
-		<SortableProvider
-			onMove={(id, target) => {
-				const from = ids.indexOf(id);
-				if (from !== -1) onMove(from, target.index);
-			}}
+		<div className="divide-y divide-separator rounded-xl border border-separator bg-surface empty:hidden">
+			<LabelsAsPlaceholders value>
+				<SortableProvider
+					onMove={(id, target) => {
+						const from = ids.indexOf(id);
+						if (from !== -1) onMove(from, target.index);
+					}}
+				>
+					{children}
+				</SortableProvider>
+			</LabelsAsPlaceholders>
+			{footer && (
+				<div ref={footerRef} className="flex flex-wrap items-center gap-1 pe-1">
+					{footer}
+				</div>
+			)}
+		</div>
+	);
+}
+
+type AddRowButtonProps = {
+	onPress: () => void;
+	isDisabled?: boolean;
+	icon?: IconName;
+	children: ReactNode;
+};
+
+/** A way to add an item, on a {@link SortableList}'s last row: flush with the item titles above it. */
+export function AddRowButton({ onPress, isDisabled = false, icon = "plus", children }: AddRowButtonProps) {
+	return (
+		<Button
+			variant="ghost"
+			isDisabled={isDisabled}
+			className="h-10 w-fit px-3 text-accent-soft-foreground"
+			onPress={onPress}
 		>
+			<Icon name={icon} size={18} />
 			{children}
-		</SortableProvider>
+		</Button>
 	);
 }
 
@@ -380,29 +444,69 @@ type SortableCardProps = {
 	/** Names the list, so items only drop within their own. */
 	list: string;
 	index: number;
-	/** Names the item in the buttons' labels: "Reorder Branding". */
+	/** The item's title on its row, and its name in the buttons' labels: "Reorder Branding". */
 	name: string;
+	/** Opens the item's fields when it first shows: a new, still empty item. */
+	defaultOpen?: boolean;
+	/** Drawn before the title, such as a picture's thumbnail. */
+	leading?: ReactNode;
 	onRemove: () => void;
-	/** Marks the card for `useRemovalFocus`. */
+	/** Marks the item for `useRemovalFocus`. */
 	itemProps?: Record<string, string>;
 	children: ReactNode;
 };
 
-/** One item of a list as a bordered card: its fields, then a row with the drag handle and Remove. */
-export function SortableCard({ id, list, index, name, onRemove, itemProps, children }: SortableCardProps) {
+/**
+ * One item of a {@link SortableList}, like a resume entry: a title row that opens its fields, with Remove at its end.
+ * The whole title row drags (not the open fields, so their text stays selectable); on hover the title slides over and
+ * the grip fades in where it was, also the keyboard's way to reorder. Touch screens always show it.
+ */
+export function SortableCard({
+	id,
+	list,
+	index,
+	name,
+	defaultOpen = false,
+	leading,
+	onRemove,
+	itemProps,
+	children,
+}: SortableCardProps) {
 	const sortable = useSortableItem({ id, list, index, label: name });
+	const [open, setOpen] = useState(defaultOpen);
 	return (
 		<div
 			{...itemProps}
 			{...sortable.dropTargetProps}
-			className={cn("relative grid gap-3 rounded-xl border border-separator p-3", sortable.isDragging && "opacity-50")}
+			className={cn("group/item relative", sortable.isDragging && "opacity-50")}
 		>
 			<SortableEdge edge={sortable.edge} />
-			{children}
-			<div className="flex items-center justify-between">
-				<SortableHandle item={sortable} label={t`Reorder ${name}`} className="size-8" />
-				<IconButton icon="trash" size="sm" label={t`Remove ${name}`} className="text-danger" onPress={onRemove} />
+			<div {...sortable.dragProps} className="flex items-center gap-0.5 pe-1">
+				<SortableHandle
+					item={sortable}
+					dragSource={false}
+					label={t`Reorder ${name}`}
+					iconSize={16}
+					className="absolute inset-s-1 top-0 h-10 w-6 opacity-0 transition-opacity duration-quick group-hover/item:opacity-100 focus-visible:opacity-100 pointer-coarse:opacity-100"
+				/>
+				<button
+					type="button"
+					aria-expanded={open}
+					onClick={() => setOpen(!open)}
+					className="flex min-w-0 flex-1 cursor-(--cursor-interactive) items-center gap-2 rounded-lg py-2.5 ps-3 pe-2 text-start text-sm font-semibold transition-[padding] duration-quick ease-out outline-none group-focus-within/item:ps-8 group-hover/item:ps-8 focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-inset motion-reduce:transition-none pointer-coarse:ps-8"
+				>
+					{leading}
+					<span className="truncate">{name}</span>
+				</button>
+				<IconButton
+					icon="trash"
+					size="sm"
+					label={t`Remove ${name}`}
+					className="text-muted hover:bg-danger-soft hover:text-danger"
+					onPress={onRemove}
+				/>
 			</div>
+			{open && <div className="grid gap-2 px-3 pt-1 pb-3 fields-on-surface">{children}</div>}
 		</div>
 	);
 }

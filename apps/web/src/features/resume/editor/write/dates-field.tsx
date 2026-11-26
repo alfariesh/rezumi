@@ -8,7 +8,7 @@ import { readSingleDate } from "@rezumi/schema/resume/period";
 import { Icon } from "@rezumi/ui/components/icon";
 import { CellSwitchRow } from "@rezumi/ui/components/switch";
 import { cn } from "@rezumi/utils/style";
-import { useFieldLabelClass } from "./fields";
+import { useFieldLabelClass } from "@/components/input/labels-as-placeholders";
 
 type DateSettings = { locale: string; format?: DateFormat | undefined };
 

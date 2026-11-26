@@ -12,12 +12,13 @@ import { FormControl, FormItem, FormLabel } from "@rezumi/ui/components/form";
 import { IconButton } from "@rezumi/ui/components/icon-button";
 import { generateId } from "@rezumi/utils/string";
 import { DatesField } from "./dates-field";
-import { MoreOptions, TextField, useFieldLabelClass, WebsiteField } from "./fields";
+import { MoreOptions, TextField, WebsiteField } from "./fields";
 import { RichTextEditor } from "./rich-text-editor";
 import { useWriteIconStyle, useWriteSource } from "./source";
 import { ChipInput } from "@/components/input/chip-input";
 import { ColorPicker } from "@/components/input/color-picker";
 import { IconPicker } from "@/components/input/icon-picker";
+import { useFieldLabelClass } from "@/components/input/labels-as-placeholders";
 
 export type PageSettings = { locale: string; dateFormat?: DateFormat | undefined };
 

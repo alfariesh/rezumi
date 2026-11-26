@@ -28,7 +28,7 @@ import { Icon } from "@rezumi/ui/components/icon";
 import { CellSwitchRow } from "@rezumi/ui/components/switch";
 import { useRemovalFocus } from "../blocks/list-focus";
 import { ChunkBoundary, retryableLazy } from "../editor/chunk-boundary";
-import { ChoiceSelect, moveItem, SortableCard, SortableList, TextInput } from "../editor/fields";
+import { AddRowButton, ChoiceSelect, moveItem, SortableCard, SortableList, TextInput } from "../editor/fields";
 import { FindMetricsButton } from "./find-metrics";
 import { useDraftText } from "./use-draft-text";
 import { IconPicker } from "@/components/input/icon-picker";
@@ -517,7 +517,7 @@ type MetricsEditorProps = {
 	onRemoveLast?: () => void;
 };
 
-/** A list of metrics, each a draggable card with its fields and Remove, plus "Add". */
+/** A list of metrics, each a row that opens its fields, plus "Add" and "Find numbers" as the last row. */
 export function MetricsEditor({
 	metrics,
 	edit,
@@ -535,6 +535,27 @@ export function MetricsEditor({
 			<SortableList
 				ids={metrics.map((metric) => metric.id)}
 				onMove={(from, to) => edit((list) => moveItem(list, from, to), { structural: true })}
+				footerRef={fallbackRef}
+				footer={
+					metrics.length < maxItems && (
+						<>
+							<AddRowButton
+								onPress={() =>
+									edit((list) => {
+										list.push(newMetric());
+									})
+								}
+							>
+								{addLabel}
+							</AddRowButton>
+							<FindMetricsButton
+								room={maxItems - metrics.length}
+								locale={locale}
+								onAdd={(found) => edit((list) => void list.push(...found), { structural: true })}
+							/>
+						</>
+					)
+				}
 			>
 				{metrics.map((metric, index) => {
 					const name = metric.label.trim() || t`Metric ${index + 1}`;
@@ -545,6 +566,7 @@ export function MetricsEditor({
 							list="metrics"
 							index={index}
 							name={name}
+							defaultOpen={!isMetricComplete(metric)}
 							onRemove={() => {
 								if (metrics.length <= minItems) {
 									onRemoveLast?.();
@@ -584,29 +606,6 @@ export function MetricsEditor({
 					);
 				})}
 			</SortableList>
-			<div ref={fallbackRef} className="contents">
-				{metrics.length < maxItems && (
-					<div className="flex flex-wrap gap-2">
-						<Button
-							variant="secondary"
-							className="w-fit"
-							onPress={() =>
-								edit((list) => {
-									list.push(newMetric());
-								})
-							}
-						>
-							<Icon name="plus" size={18} />
-							{addLabel}
-						</Button>
-						<FindMetricsButton
-							room={maxItems - metrics.length}
-							locale={locale}
-							onAdd={(found) => edit((list) => void list.push(...found), { structural: true })}
-						/>
-					</div>
-				)}
-			</div>
 		</div>
 	);
 }

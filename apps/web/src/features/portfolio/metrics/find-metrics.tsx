@@ -10,6 +10,7 @@ import { formatMetric } from "@rezumi/portfolio/metric";
 import { Icon } from "@rezumi/ui/components/icon";
 import { generateId } from "@rezumi/utils/string";
 import { usePortfolioSource } from "../editor/context";
+import { AddRowButton } from "../editor/fields";
 import { portfolioAiErrorMessage } from "../errors";
 import { useRequestSignals } from "../images/use-request-signals";
 import { aiSourceFields, useAiSource } from "@/features/billing/ai-source";
@@ -41,10 +42,9 @@ export function FindMetricsButton({ room, locale, onAdd }: FindMetricsButtonProp
 	if (!source.data || !ai.source || room <= 0) return null;
 	return (
 		<>
-			<Button variant="secondary" className="w-fit" onPress={() => setOpen(true)}>
-				<Icon name="sparkle" size={18} />
+			<AddRowButton icon="sparkle" onPress={() => setOpen(true)}>
 				<Trans>Find numbers</Trans>
-			</Button>
+			</AddRowButton>
 			{open && (
 				<FindMetricsDialog
 					sourceKey={source.resume?.id ?? "profile"}

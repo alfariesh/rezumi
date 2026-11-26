@@ -1,18 +1,17 @@
 import type { PortfolioButton, PortfolioJobType } from "@rezumi/schema/portfolio/data";
-import { Button, Checkbox, CheckboxGroup, Label } from "@heroui/react";
+import { Checkbox, CheckboxGroup, Label } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useId } from "react";
 import { PORTFOLIO_BUTTON_KINDS, PORTFOLIO_JOB_TYPES } from "@rezumi/schema/portfolio/data";
 import { PORTFOLIO_LIMITS } from "@rezumi/schema/portfolio/limits";
-import { Icon } from "@rezumi/ui/components/icon";
 import { CellSwitchRow } from "@rezumi/ui/components/switch";
 import { ownPictureUrl } from "@rezumi/utils/own-picture";
 import { useRemovalFocus } from "../blocks/list-focus";
 import { ImageField } from "../images/image-field";
 import { MetricsEditor } from "../metrics/metric-form";
 import { pageLocaleOf, usePortfolioOwner, usePortfolioSource } from "./context";
-import { ChoiceSelect, moveItem, SortableCard, SortableList, TextInput, UrlInput } from "./fields";
+import { AddRowButton, ChoiceSelect, moveItem, SortableCard, SortableList, TextInput, UrlInput } from "./fields";
 import { removeWithUndo } from "./list-undo";
 import { useOwnOrigins } from "./pictures";
 import { setBasicsText } from "./sections";
@@ -413,6 +412,14 @@ function HeroButtons() {
 			<SortableList
 				ids={buttons.map((_, index) => String(index))}
 				onMove={(from, to) => editPortfolio((draft) => moveItem(draft.hero.buttons, from, to), { structural: true })}
+				footerRef={fallbackRef}
+				footer={
+					buttons.length < PORTFOLIO_LIMITS.heroButtons && (
+						<AddRowButton onPress={add}>
+							<Trans>Add a button</Trans>
+						</AddRowButton>
+					)
+				}
 			>
 				{buttons.map((button, index) => {
 					const name = button.label?.trim() || buttonKindLabel(button.kind);
@@ -490,14 +497,6 @@ function HeroButtons() {
 					<Trans>An Email or WhatsApp button shows that address to visitors, even if Contact hides it.</Trans>
 				</p>
 			)}
-			<div ref={fallbackRef} className="contents">
-				{buttons.length < PORTFOLIO_LIMITS.heroButtons && (
-					<Button variant="secondary" className="w-fit" onPress={add}>
-						<Icon name="plus" size={18} />
-						<Trans>Add a button</Trans>
-					</Button>
-				)}
-			</div>
 		</div>
 	);
 }

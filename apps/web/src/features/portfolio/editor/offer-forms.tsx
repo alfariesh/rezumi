@@ -6,14 +6,13 @@ import { Trans } from "@lingui/react/macro";
 import { useId, useRef, useState } from "react";
 import { getBrandIcon } from "@rezumi/resume/icons";
 import { PORTFOLIO_LIMITS } from "@rezumi/schema/portfolio/limits";
-import { Icon } from "@rezumi/ui/components/icon";
 import { CellSwitchRow } from "@rezumi/ui/components/switch";
 import { generateId } from "@rezumi/utils/string";
 import { useRemovalFocus } from "../blocks/list-focus";
 import { ImageField } from "../images/image-field";
 import { renameClient } from "./clients";
 import { usePortfolioSource } from "./context";
-import { ChoiceSelect, moveItem, SortableCard, SortableList, TextInput, UrlInput } from "./fields";
+import { AddRowButton, ChoiceSelect, moveItem, SortableCard, SortableList, TextInput, UrlInput } from "./fields";
 import { removeWithUndo } from "./list-undo";
 import { editPortfolio, usePortfolioData } from "./store";
 import { IconPicker } from "@/components/input/icon-picker";
@@ -72,6 +71,25 @@ export function ServicesForm() {
 			<SortableList
 				ids={items.map((item) => item.id)}
 				onMove={(from, to) => editPortfolio((draft) => moveItem(draft.services.items, from, to), { structural: true })}
+				footerRef={fallbackRef}
+				footer={
+					items.length < PORTFOLIO_LIMITS.services && (
+						<AddRowButton
+							onPress={() =>
+								editPortfolio((draft) => {
+									draft.services.items.push({
+										id: generateId(),
+										title: "",
+										description: "",
+										cta: { kind: contact.whatsapp.number ? "whatsapp" : "contact" },
+									});
+								})
+							}
+						>
+							<Trans>Add a service</Trans>
+						</AddRowButton>
+					)
+				}
 			>
 				{items.map((service, index) => {
 					const name = service.title.trim() || t`Untitled service`;
@@ -86,6 +104,7 @@ export function ServicesForm() {
 							list="services"
 							index={index}
 							name={name}
+							defaultOpen={!service.title.trim()}
 							itemProps={itemProps}
 							onRemove={() => {
 								removed(index);
@@ -176,27 +195,6 @@ export function ServicesForm() {
 					);
 				})}
 			</SortableList>
-			<div ref={fallbackRef} className="contents">
-				{items.length < PORTFOLIO_LIMITS.services && (
-					<Button
-						variant="secondary"
-						className="w-fit"
-						onPress={() =>
-							editPortfolio((draft) => {
-								draft.services.items.push({
-									id: generateId(),
-									title: "",
-									description: "",
-									cta: { kind: contact.whatsapp.number ? "whatsapp" : "contact" },
-								});
-							})
-						}
-					>
-						<Icon name="plus" size={18} />
-						<Trans>Add a service</Trans>
-					</Button>
-				)}
-			</div>
 		</div>
 	);
 }
@@ -217,6 +215,14 @@ export function TestimonialsForm() {
 				ids={items.map((item) => item.id)}
 				onMove={(from, to) =>
 					editPortfolio((draft) => moveItem(draft.testimonials.items, from, to), { structural: true })
+				}
+				footerRef={fallbackRef}
+				footer={
+					items.length < PORTFOLIO_LIMITS.testimonials && (
+						<AddRowButton onPress={() => setAdding(true)}>
+							<Trans>Add a testimonial</Trans>
+						</AddRowButton>
+					)
 				}
 			>
 				{items.map((item, index) => {
@@ -275,14 +281,6 @@ export function TestimonialsForm() {
 					);
 				})}
 			</SortableList>
-			<div ref={fallbackRef} className="contents">
-				{items.length < PORTFOLIO_LIMITS.testimonials && (
-					<Button variant="secondary" className="w-fit" onPress={() => setAdding(true)}>
-						<Icon name="plus" size={18} />
-						<Trans>Add a testimonial</Trans>
-					</Button>
-				)}
-			</div>
 			{adding && <AddTestimonialDialog onClose={() => setAdding(false)} />}
 		</div>
 	);
@@ -429,6 +427,36 @@ export function ClientsForm() {
 			<SortableList
 				ids={items.map((item) => item.id)}
 				onMove={(from, to) => editPortfolio((draft) => moveItem(draft.clients.items, from, to), { structural: true })}
+				footerRef={fallbackRef}
+				footer={
+					items.length < PORTFOLIO_LIMITS.clients && (
+						<>
+							<AddRowButton
+								onPress={() =>
+									editPortfolio((draft) => {
+										draft.clients.items.push({ id: generateId(), name: "" });
+									})
+								}
+							>
+								<Trans>Add a client</Trans>
+							</AddRowButton>
+							{companies.length > 0 && (
+								<AddRowButton
+									icon="briefcase"
+									onPress={() =>
+										editPortfolio((draft) => {
+											const room = PORTFOLIO_LIMITS.clients - draft.clients.items.length;
+											for (const company of companies.slice(0, room))
+												draft.clients.items.push({ id: generateId(), name: company, ...withBrand(company) });
+										})
+									}
+								>
+									<Trans>Add from Experience</Trans>
+								</AddRowButton>
+							)}
+						</>
+					)
+				}
 			>
 				{items.map((client, index) => {
 					const name = client.name.trim() || t`Untitled client`;
@@ -443,6 +471,7 @@ export function ClientsForm() {
 							list="clients"
 							index={index}
 							name={name}
+							defaultOpen={!client.name.trim()}
 							itemProps={itemProps}
 							onRemove={() => {
 								removed(index);
@@ -512,36 +541,6 @@ export function ClientsForm() {
 			<p className="px-1 text-body-xs text-muted">
 				<Trans>By adding a logo, you confirm you have the right to show it.</Trans>
 			</p>
-			<div ref={fallbackRef} className="flex flex-wrap gap-2">
-				{items.length < PORTFOLIO_LIMITS.clients && (
-					<Button
-						variant="secondary"
-						onPress={() =>
-							editPortfolio((draft) => {
-								draft.clients.items.push({ id: generateId(), name: "" });
-							})
-						}
-					>
-						<Icon name="plus" size={18} />
-						<Trans>Add a client</Trans>
-					</Button>
-				)}
-				{companies.length > 0 && items.length < PORTFOLIO_LIMITS.clients && (
-					<Button
-						variant="secondary"
-						onPress={() =>
-							editPortfolio((draft) => {
-								const room = PORTFOLIO_LIMITS.clients - draft.clients.items.length;
-								for (const company of companies.slice(0, room))
-									draft.clients.items.push({ id: generateId(), name: company, ...withBrand(company) });
-							})
-						}
-					>
-						<Icon name="briefcase" size={18} />
-						<Trans>Add from Experience</Trans>
-					</Button>
-				)}
-			</div>
 		</div>
 	);
 }
