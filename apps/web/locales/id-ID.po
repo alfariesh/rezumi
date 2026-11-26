@@ -1425,6 +1425,11 @@ msgstr "<0>Tidak ada yang perlu diperbaiki.</0> Setiap pemeriksaan lolos."
 msgid "<0>Submitted on {0}.</0> The versions you sent are kept in Saved. Edits here don't change what {1} received."
 msgstr "<0>Dikirim pada {0}.</0> Versi yang Anda kirim disimpan di Tersimpan. Perubahan di sini tidak mengubah apa yang diterima {1}."
 
+#. placeholder {0}: formatUsd(budget.maxMicro)
+#: src/features/jobs/admin/budget-card.tsx
+msgid "$0 stops paid searches: people get saved results only. The most this can be set to is {0} a day."
+msgstr "$0 menghentikan pencarian berbayar: pengguna hanya mendapat hasil simpanan. Paling tinggi {0} per hari."
+
 #: src/features/resume/editor/write/section-row.tsx
 msgid "1 column, inline"
 msgstr "1 kolom, sebaris"
@@ -1591,6 +1596,14 @@ msgstr "Rentang tanggal ditulis dalam format yang tidak dapat dibaca sebagian be
 #: src/features/resume/editor/check/issues.ts
 msgid "A date won't be read"
 msgstr "Tanggal tidak akan dibaca"
+
+#: src/features/jobs/admin/budget-card.tsx
+msgid "A day, set here"
+msgstr "Per hari, diatur di sini"
+
+#: src/features/jobs/admin/budget-card.tsx
+msgid "A day, the server default"
+msgstr "Per hari, bawaan server"
 
 #: src/dialogs/resume/template/data.ts
 msgid "A deep night sidebar where a large serif name, the portrait and the contact lines glow in light text, beside a white main column."
@@ -4121,6 +4134,7 @@ msgstr "Sertifikasi"
 msgid "Challenge, approach and stack, key decisions, outcome"
 msgstr "Tantangan, pendekatan dan teknologi, keputusan penting, hasil"
 
+#: src/features/jobs/admin/budget-card.tsx
 #: src/features/resume/editor/check/job-match.tsx
 #: src/features/resume/editor/check/writing-tab.tsx
 #: src/features/settings/account/security.tsx
@@ -4165,6 +4179,10 @@ msgstr "Teks perubahan"
 #: src/features/portfolio/location/location-fields.tsx
 msgid "Change the city"
 msgstr "Ganti kota"
+
+#: src/features/jobs/admin/budget-card.tsx
+msgid "Change the daily budget"
+msgstr "Ubah anggaran harian"
 
 #: src/features/applications/components/detail/next-step-card.tsx
 msgid "Change the follow-up…"
@@ -6365,6 +6383,14 @@ msgstr "Ceko"
 #: src/features/career/today.tsx
 msgid "Daily at {clock} · next {next}"
 msgstr "Setiap hari pukul {clock} · berikutnya {next}"
+
+#: src/features/jobs/admin/budget-card.tsx
+msgid "Daily budget"
+msgstr "Anggaran harian"
+
+#: src/features/jobs/admin/budget-card.tsx
+msgid "Daily budget set."
+msgstr "Anggaran harian disimpan."
 
 #: src/features/portfolio/statistics/portfolio-statistics.tsx
 msgid "Daily numbers"
@@ -16767,6 +16793,10 @@ msgstr "Serbia"
 msgid "Serper (web search)"
 msgstr "Serper (web search)"
 
+#: src/features/jobs/admin/budget-card.tsx
+msgid "Server default"
+msgstr "Bawaan server"
+
 #: src/features/portfolio/editor/offer-forms.tsx
 msgid "Service"
 msgstr "Layanan"
@@ -16791,6 +16821,17 @@ msgstr "Tetapkan tindak lanjut…"
 msgid "Set a password"
 msgstr "Tetapkan kata sandi"
 
+#: src/features/jobs/admin/budget-card.tsx
+msgid "Set budget"
+msgstr "Simpan anggaran"
+
+#. placeholder {0}: budget.updatedBy
+#. placeholder {1}: i18n.date(budget.updatedAt, { dateStyle: "medium", timeStyle: "short" })
+#. placeholder {2}: budget.reason
+#: src/features/jobs/admin/budget-card.tsx
+msgid "Set by {0} on {1}: “{2}”"
+msgstr "Diatur oleh {0} pada {1}: “{2}”"
+
 #. placeholder {0}: formatShort(searchOverride.expiresAt)
 #: src/features/billing/admin/customer.tsx
 msgid "set by hand until {0}"
@@ -16807,6 +16848,12 @@ msgstr "Atur pencarian lowongan per hari"
 #: src/features/billing/admin/customer.tsx
 msgid "Set limit"
 msgstr "Atur batas"
+
+#. placeholder {0}: i18n.date(budget.updatedAt, { dateStyle: "medium", timeStyle: "short" })
+#. placeholder {1}: budget.reason
+#: src/features/jobs/admin/budget-card.tsx
+msgid "Set on {0}: “{1}”"
+msgstr "Diatur pada {0}: “{1}”"
 
 #: src/features/portfolio/editor/password-group.tsx
 #: src/features/resume/builder/password-dialog.tsx
@@ -17506,6 +17553,7 @@ msgstr "Kecepatan dihitung dari panggilan yang sampai ke penyedia; 95% di antara
 msgid "Spell the month, as in \"Mar 2022\"."
 msgstr "Eja nama bulannya, seperti pada \"Mar 2022\"."
 
+#: src/features/jobs/admin/budget-card.tsx
 #: src/features/jobs/admin/costs-page.tsx
 msgid "Spent today"
 msgstr "Terpakai hari ini"
@@ -18553,6 +18601,11 @@ msgstr "Lencana tetap tampil pada paketmu"
 msgid "The brief"
 msgstr "Brief"
 
+#. placeholder {0}: formatUsd(budget.defaultMicro)
+#: src/features/jobs/admin/budget-card.tsx
+msgid "The budget set here is removed; the server default of {0} a day applies again."
+msgstr "Anggaran yang diatur di sini dihapus; bawaan server {0} per hari berlaku lagi."
+
 #: src/features/jobs/admin/costs-page.tsx
 msgid "The call statistics couldn't be read. Try Refresh in a moment."
 msgstr "Statistik panggilan tidak bisa dibaca. Coba Refresh sebentar lagi."
@@ -19060,6 +19113,10 @@ msgstr "Server tidak bisa membaca gambar ini. Coba file JPG, PNG, atau WebP lain
 #: src/features/portfolio/editor/save-problem.ts
 msgid "The server couldn't save your changes. Saving tries again by itself."
 msgstr "Server tidak bisa menyimpan perubahan Anda. Penyimpanan dicoba lagi otomatis."
+
+#: src/features/jobs/admin/budget-card.tsx
+msgid "The server default applies again."
+msgstr "Bawaan server berlaku lagi."
 
 #. Story outline heading
 #: src/features/portfolio/blocks/story-templates.ts
@@ -20635,6 +20692,10 @@ msgstr "Mengunggah…"
 msgid "URL"
 msgstr "URL"
 
+#: src/features/jobs/admin/budget-card.tsx
+msgid "US dollars a day (0–{maxUsd})"
+msgstr "Dolar AS per hari (0–{maxUsd})"
+
 #: src/features/portfolio/statistics/portfolio-statistics.tsx
 msgid "Use {device}"
 msgstr "Pakai {device}"
@@ -20724,6 +20785,7 @@ msgstr "Gunakan maksimal 64 karakter."
 msgid "Use between 6 and 64 characters."
 msgstr "Gunakan antara 6 hingga 64 karakter."
 
+#: src/features/jobs/admin/budget-card.tsx
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Use default"
 msgstr "Gunakan default"
@@ -20776,9 +20838,17 @@ msgstr "Pakai versi Profil"
 msgid "Use sample"
 msgstr "Gunakan contoh"
 
+#: src/features/jobs/admin/budget-card.tsx
+msgid "Use server default"
+msgstr "Pakai bawaan server"
+
 #: src/features/portfolio/blocks/link-block.tsx
 msgid "Use the page's picture?"
 msgstr "Pakai gambar dari halaman itu?"
+
+#: src/features/jobs/admin/budget-card.tsx
+msgid "Use the server default"
+msgstr "Pakai bawaan server"
 
 #: src/features/resume/editor/check/issues.ts
 msgid "Use the standard heading"
@@ -21484,6 +21554,10 @@ msgstr "Seperti apa keberhasilan, tantangan mana yang paling penting, dan langka
 #: src/features/resume/editor/check/check-panel.tsx
 msgid "What the file-level check found in the PDF you'd send. It ran in this tab; nothing was uploaded."
 msgstr "Pemeriksaan tingkat file apa yang ditemukan di PDF yang Anda kirim. Itu berjalan di tab ini; tidak ada yang diunggah."
+
+#: src/features/jobs/admin/budget-card.tsx
+msgid "What the job providers may cost in a UTC day. Past it, people get saved results only until midnight UTC. A change applies within a minute, without a deploy."
+msgstr "Biaya penyedia lowongan yang boleh terpakai dalam satu hari UTC. Setelah habis, pengguna hanya mendapat hasil simpanan sampai tengah malam UTC. Perubahan berlaku dalam satu menit, tanpa deploy."
 
 #: src/features/jobs/listing-sheet.tsx
 msgid "What they ask for"

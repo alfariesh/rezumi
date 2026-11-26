@@ -33,6 +33,7 @@ const databaseUrl = process.env.INTEGRATIONS_TEST_DATABASE_URL;
 describe.skipIf(!databaseUrl)("job search service", () => {
 	let service: typeof import("./service");
 	let counters: typeof import("./counters");
+	let budget: typeof import("./budget");
 	let pool: Pool;
 	let admin: Pool;
 	const schemaName = `jobs_search_test_${randomUUID().replaceAll("-", "")}`;
@@ -88,6 +89,7 @@ describe.skipIf(!databaseUrl)("job search service", () => {
 			);
 		service = await import("./service");
 		counters = await import("./counters");
+		budget = await import("./budget");
 	}, 60_000);
 
 	afterAll(async () => {
@@ -100,8 +102,9 @@ describe.skipIf(!databaseUrl)("job search service", () => {
 		clock = new Date("2026-11-20T10:00:00Z");
 		Object.assign(fixture.env, { BILLING_MODE: "off", JOB_SEARCH_DAILY_BUDGET_USD: 1, FLAG_DISABLE_JOB_SEARCH: false });
 		await pool.query(
-			"DELETE FROM job_search_cache; DELETE FROM job_listing_hidden; DELETE FROM job_listing; DELETE FROM job_search_recent;",
+			"DELETE FROM job_search_cache; DELETE FROM job_listing_hidden; DELETE FROM job_listing; DELETE FROM job_search_recent; DELETE FROM job_search_setting;",
 		);
+		budget.forgetBudgetSetting();
 	});
 
 	it("asks the providers once, then answers the same search from the cache for free", async () => {
@@ -300,6 +303,40 @@ describe.skipIf(!databaseUrl)("job search service", () => {
 		expect((await jobs.status("bob")).cacheOnly).toBe(true);
 	});
 
+	it("uses the budget set on the dashboard at once, and the server default again once it's removed", async () => {
+		await pool.query("DELETE FROM billing_audit_log WHERE action LIKE 'jobs.budget.%'");
+		const { jobs } = setup([listings("hirebase", 10), listings("hirebase", 10, 11)]);
+		await jobs.search("alice", request({ query: "sales" }));
+		// The search cost 10,000 millionths of a dollar; a budget below that stops new searches.
+		const set = await budget.setJobSearchBudget({ usd: 0.005, reason: "trying a lower budget", actorUserId: "alice" });
+		expect(set).toMatchObject({
+			budgetMicro: 5000,
+			source: "setting",
+			defaultMicro: 1_000_000,
+			maxMicro: 50_000_000,
+			reason: "trying a lower budget",
+			updatedBy: "alice",
+		});
+		await expect(jobs.search("bob", request({ query: "marketing" }))).rejects.toMatchObject({ code: "budget" });
+		expect((await jobs.status("bob")).cacheOnly).toBe(true);
+
+		const back = await budget.setJobSearchBudget({ usd: null, reason: "back to normal", actorUserId: "alice" });
+		expect(back).toMatchObject({ budgetMicro: 1_000_000, source: "default", reason: null, updatedBy: null });
+		expect((await jobs.search("bob", request({ query: "marketing" }))).fromCache).toBe(false);
+
+		const { rows } = await pool.query<{ action: string; reason: string; details: unknown }>(
+			"SELECT action, reason, details FROM billing_audit_log WHERE action LIKE 'jobs.budget.%' ORDER BY created_at",
+		);
+		expect(rows).toEqual([
+			{
+				action: "jobs.budget.set",
+				reason: "trying a lower budget",
+				details: { fromMicro: 1_000_000, toMicro: 5000 },
+			},
+			{ action: "jobs.budget.cleared", reason: "back to normal", details: { fromMicro: 5000, toMicro: 1_000_000 } },
+		]);
+	});
+
 	it("emails the owner once when spending passes 80% of the day's budget", async () => {
 		await pool.query("DELETE FROM billing_notification");
 		// One search costs 10,000 millionths of a dollar: the first crosses 80% of $0.012, the second adds to it.
@@ -329,6 +366,7 @@ describe.skipIf(!databaseUrl)("job search service", () => {
 			today: { day: "2026-11-20", budgetMicro: 1_000_000, available: false, switchedOff: false },
 			treg: { status: "unavailable" },
 			events: { status: "not-configured" },
+			budget: { budgetMicro: 1_000_000, source: "default" },
 			store: { openListings: 10, closedListings: 0, cachePages: 1, freshCachePages: 1 },
 		});
 	});

@@ -9,6 +9,7 @@ import { Trans } from "@lingui/react/macro";
 import { keepPreviousData, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { Icon } from "@rezumi/ui/components/icon";
+import { BudgetCard } from "./budget-card";
 import {
 	cacheShare,
 	dailyCostSeries,
@@ -459,6 +460,7 @@ export function JobCostsPage() {
 				<>
 					<AttentionCard report={report.data} />
 					<KpiRow report={report.data} />
+					<BudgetCard budget={report.data.budget} spentMicro={report.data.today.spentMicro} />
 					<div className="grid grid-cols-1 gap-3 lg:grid-cols-2">
 						<DailyCostCard events={report.data.events} days={report.data.days} now={report.data.generatedAt} />
 						<LedgerCard treg={report.data.treg} days={report.data.days} />

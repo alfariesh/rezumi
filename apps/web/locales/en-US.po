@@ -1420,6 +1420,11 @@ msgstr "<0>Nothing to fix.</0> Every check passes."
 msgid "<0>Submitted on {0}.</0> The versions you sent are kept in Saved. Edits here don't change what {1} received."
 msgstr "<0>Submitted on {0}.</0> The versions you sent are kept in Saved. Edits here don't change what {1} received."
 
+#. placeholder {0}: formatUsd(budget.maxMicro)
+#: src/features/jobs/admin/budget-card.tsx
+msgid "$0 stops paid searches: people get saved results only. The most this can be set to is {0} a day."
+msgstr "$0 stops paid searches: people get saved results only. The most this can be set to is {0} a day."
+
 #: src/features/resume/editor/write/section-row.tsx
 msgid "1 column, inline"
 msgstr "1 column, inline"
@@ -1586,6 +1591,14 @@ msgstr "A date range is written in a form most software cannot read."
 #: src/features/resume/editor/check/issues.ts
 msgid "A date won't be read"
 msgstr "A date won't be read"
+
+#: src/features/jobs/admin/budget-card.tsx
+msgid "A day, set here"
+msgstr "A day, set here"
+
+#: src/features/jobs/admin/budget-card.tsx
+msgid "A day, the server default"
+msgstr "A day, the server default"
 
 #: src/dialogs/resume/template/data.ts
 msgid "A deep night sidebar where a large serif name, the portrait and the contact lines glow in light text, beside a white main column."
@@ -4116,6 +4129,7 @@ msgstr "Certifications"
 msgid "Challenge, approach and stack, key decisions, outcome"
 msgstr "Challenge, approach and stack, key decisions, outcome"
 
+#: src/features/jobs/admin/budget-card.tsx
 #: src/features/resume/editor/check/job-match.tsx
 #: src/features/resume/editor/check/writing-tab.tsx
 #: src/features/settings/account/security.tsx
@@ -4160,6 +4174,10 @@ msgstr "Change text"
 #: src/features/portfolio/location/location-fields.tsx
 msgid "Change the city"
 msgstr "Change the city"
+
+#: src/features/jobs/admin/budget-card.tsx
+msgid "Change the daily budget"
+msgstr "Change the daily budget"
 
 #: src/features/applications/components/detail/next-step-card.tsx
 msgid "Change the follow-up…"
@@ -6360,6 +6378,14 @@ msgstr "Czech"
 #: src/features/career/today.tsx
 msgid "Daily at {clock} · next {next}"
 msgstr "Daily at {clock} · next {next}"
+
+#: src/features/jobs/admin/budget-card.tsx
+msgid "Daily budget"
+msgstr "Daily budget"
+
+#: src/features/jobs/admin/budget-card.tsx
+msgid "Daily budget set."
+msgstr "Daily budget set."
 
 #: src/features/portfolio/statistics/portfolio-statistics.tsx
 msgid "Daily numbers"
@@ -16762,6 +16788,10 @@ msgstr "Serbian"
 msgid "Serper (web search)"
 msgstr "Serper (web search)"
 
+#: src/features/jobs/admin/budget-card.tsx
+msgid "Server default"
+msgstr "Server default"
+
 #: src/features/portfolio/editor/offer-forms.tsx
 msgid "Service"
 msgstr "Service"
@@ -16786,6 +16816,17 @@ msgstr "Set a follow-up…"
 msgid "Set a password"
 msgstr "Set a password"
 
+#: src/features/jobs/admin/budget-card.tsx
+msgid "Set budget"
+msgstr "Set budget"
+
+#. placeholder {0}: budget.updatedBy
+#. placeholder {1}: i18n.date(budget.updatedAt, { dateStyle: "medium", timeStyle: "short" })
+#. placeholder {2}: budget.reason
+#: src/features/jobs/admin/budget-card.tsx
+msgid "Set by {0} on {1}: “{2}”"
+msgstr "Set by {0} on {1}: “{2}”"
+
 #. placeholder {0}: formatShort(searchOverride.expiresAt)
 #: src/features/billing/admin/customer.tsx
 msgid "set by hand until {0}"
@@ -16802,6 +16843,12 @@ msgstr "Set job searches a day"
 #: src/features/billing/admin/customer.tsx
 msgid "Set limit"
 msgstr "Set limit"
+
+#. placeholder {0}: i18n.date(budget.updatedAt, { dateStyle: "medium", timeStyle: "short" })
+#. placeholder {1}: budget.reason
+#: src/features/jobs/admin/budget-card.tsx
+msgid "Set on {0}: “{1}”"
+msgstr "Set on {0}: “{1}”"
 
 #: src/features/portfolio/editor/password-group.tsx
 #: src/features/resume/builder/password-dialog.tsx
@@ -17501,6 +17548,7 @@ msgstr "Speed is for calls that reached the provider; 95% of them were at least 
 msgid "Spell the month, as in \"Mar 2022\"."
 msgstr "Spell the month, as in \"Mar 2022\"."
 
+#: src/features/jobs/admin/budget-card.tsx
 #: src/features/jobs/admin/costs-page.tsx
 msgid "Spent today"
 msgstr "Spent today"
@@ -18548,6 +18596,11 @@ msgstr "The badge stays on your plan"
 msgid "The brief"
 msgstr "The brief"
 
+#. placeholder {0}: formatUsd(budget.defaultMicro)
+#: src/features/jobs/admin/budget-card.tsx
+msgid "The budget set here is removed; the server default of {0} a day applies again."
+msgstr "The budget set here is removed; the server default of {0} a day applies again."
+
 #: src/features/jobs/admin/costs-page.tsx
 msgid "The call statistics couldn't be read. Try Refresh in a moment."
 msgstr "The call statistics couldn't be read. Try Refresh in a moment."
@@ -19055,6 +19108,10 @@ msgstr "The server couldn't read this picture. Try another JPG, PNG or WebP file
 #: src/features/portfolio/editor/save-problem.ts
 msgid "The server couldn't save your changes. Saving tries again by itself."
 msgstr "The server couldn't save your changes. Saving tries again by itself."
+
+#: src/features/jobs/admin/budget-card.tsx
+msgid "The server default applies again."
+msgstr "The server default applies again."
 
 #. Story outline heading
 #: src/features/portfolio/blocks/story-templates.ts
@@ -20630,6 +20687,10 @@ msgstr "Uploading…"
 msgid "URL"
 msgstr "URL"
 
+#: src/features/jobs/admin/budget-card.tsx
+msgid "US dollars a day (0–{maxUsd})"
+msgstr "US dollars a day (0–{maxUsd})"
+
 #: src/features/portfolio/statistics/portfolio-statistics.tsx
 msgid "Use {device}"
 msgstr "Use {device}"
@@ -20719,6 +20780,7 @@ msgstr "Use at most 64 characters."
 msgid "Use between 6 and 64 characters."
 msgstr "Use between 6 and 64 characters."
 
+#: src/features/jobs/admin/budget-card.tsx
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Use default"
 msgstr "Use default"
@@ -20771,9 +20833,17 @@ msgstr "Use Profile's"
 msgid "Use sample"
 msgstr "Use sample"
 
+#: src/features/jobs/admin/budget-card.tsx
+msgid "Use server default"
+msgstr "Use server default"
+
 #: src/features/portfolio/blocks/link-block.tsx
 msgid "Use the page's picture?"
 msgstr "Use the page's picture?"
+
+#: src/features/jobs/admin/budget-card.tsx
+msgid "Use the server default"
+msgstr "Use the server default"
 
 #: src/features/resume/editor/check/issues.ts
 msgid "Use the standard heading"
@@ -21479,6 +21549,10 @@ msgstr "What success looks like, which challenge matters most, and the next step
 #: src/features/resume/editor/check/check-panel.tsx
 msgid "What the file-level check found in the PDF you'd send. It ran in this tab; nothing was uploaded."
 msgstr "What the file-level check found in the PDF you'd send. It ran in this tab; nothing was uploaded."
+
+#: src/features/jobs/admin/budget-card.tsx
+msgid "What the job providers may cost in a UTC day. Past it, people get saved results only until midnight UTC. A change applies within a minute, without a deploy."
+msgstr "What the job providers may cost in a UTC day. Past it, people get saved results only until midnight UTC. A change applies within a minute, without a deploy."
 
 #: src/features/jobs/listing-sheet.tsx
 msgid "What they ask for"

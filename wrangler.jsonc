@@ -80,8 +80,9 @@
 		// Rezumi AI (Anthropic) through the "rezumi" Cloudflare AI Gateway, for cost and error analytics. Not secret; kept
 		// here because a deploy replaces dashboard variables. The gateway requires AI_GATEWAY_TOKEN (a Worker secret).
 		"AI_BASE_URL": "https://gateway.ai.cloudflare.com/v1/8be116534f7237b451f28adec91fbbbd/rezumi/anthropic/v1",
-		// What job search and assistant web search together may spend on treg per UTC day, in US dollars (K7). treg's own
-		// daily spend cap, set in its dashboard, applies on top.
+		// What job search and assistant web search together may spend on treg per UTC day, in US dollars (K7), until an
+		// administrator sets another amount on the job search cost dashboard (no deploy needed). treg's own daily spend
+		// cap, set in its dashboard, applies on top.
 		"JOB_SEARCH_DAILY_BUDGET_USD": "5",
 	},
 	"send_email": [{ "name": "EMAIL" }],

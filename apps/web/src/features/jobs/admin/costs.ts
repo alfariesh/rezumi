@@ -120,3 +120,9 @@ export function pageCost(
 		shownShare: search.paidListings ? Math.min(1, search.shownListings / search.paidListings) : null,
 	};
 }
+
+/** Dollars typed by the admin ("5", "2.50", "2,5"); null until it reads as an amount with at most two decimals. */
+export function typedUsd(text: string): number | null {
+	const value = text.trim().replace(",", ".");
+	return /^\d{1,6}(\.\d{1,2})?$/.test(value) ? Number(value) : null;
+}

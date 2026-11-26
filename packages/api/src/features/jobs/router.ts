@@ -15,6 +15,7 @@ import { aiRequestRateLimit } from "../../middleware/rate-limit";
 import { adminProcedure } from "../auth/admin-session";
 import { aiSourceInput } from "../billing/ai-source";
 import { JOB_COST_DAYS, jobCostReport, jobCostReportSchema } from "./admin";
+import { JOB_SEARCH_BUDGET_MAX_USD, setJobSearchBudget } from "./budget";
 import { jobSearchDefaults } from "./defaults";
 import { checkListingFit, readListingFit } from "./fit";
 import { forgetRecentSearches } from "./recent";
@@ -264,5 +265,17 @@ export const jobsRouter = {
 			.input(z.object({ days: z.union(JOB_COST_DAYS.map((days) => z.literal(days))).default(7) }))
 			.output(jobCostReportSchema)
 			.handler(({ input }) => jobCostReport({ days: input.days })),
+
+		/** Sets the providers' daily budget without a deploy, or (`usd: null`) goes back to the server's default. */
+		setBudget: adminProcedure
+			.route({ tags: ["Internal"], method: "PUT", path: "/jobs/admin/budget", operationId: "setJobSearchBudget" })
+			.input(
+				z.object({
+					usd: z.number().min(0).max(JOB_SEARCH_BUDGET_MAX_USD).nullable(),
+					reason: z.string().trim().min(3).max(500),
+				}),
+			)
+			.output(jobCostReportSchema.shape.budget)
+			.handler(({ context, input }) => setJobSearchBudget({ ...input, actorUserId: context.user.id })),
 	},
 };

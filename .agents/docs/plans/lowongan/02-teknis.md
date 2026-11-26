@@ -473,3 +473,13 @@ Yang diubah:
 - `JOBSPIPE_PRICE_USD` = 0.00196 (batas biaya per panggilan ikut turun).
 
 Belum dikerjakan (lihat `backlog-lanjutan.md` → "Penghematan lanjutan 2026-11-26"): cari dulu di `job_listing` sendiri, sinonim, kuota per paket, ukuran notifikasi (masih 20 per cek).
+
+## 23. Anggaran harian diatur dari dasbor (2026-11-26, pemilik)
+
+Pemilik ingin mengubah anggaran harian tanpa deploy. Sebelumnya hanya `JOB_SEARCH_DAILY_BUDGET_USD` di `wrangler.jsonc`; mengubahnya di dasbor Cloudflare juga tidak cukup karena deploy berikutnya menimpanya lagi.
+
+- Tabel `job_search_setting` (kunci `daily_budget`, nilai dalam sepersejuta dolar, alasan, siapa, kapan). Tanpa baris: `JOB_SEARCH_DAILY_BUDGET_USD` (bawaan). Hak `rezumi_app` lewat default privileges, tanpa grant tambahan.
+- `jobs/budget.ts`: `dailyBudgetMicro()` (dipakai `budgetLeft`, `recordSpend`, dasbor) membaca setelan, disimpan satu menit per Worker, jadi perubahan sampai ke semua Worker dalam satu menit. Bila database gagal dibaca, nilai terakhir tetap dipakai, atau bawaan bila belum pernah terbaca.
+- oRPC admin `jobs.admin.setBudget` (`PUT /jobs/admin/budget`): `usd` 0–50 (batas `JOB_SEARCH_BUDGET_MAX_USD` di kode, supaya salah ketik tidak menghabiskan saldo treg), atau `null` untuk kembali ke bawaan; alasan wajib. Dicatat di `billing_audit_log` (`jobs.budget.set` / `jobs.budget.cleared`, `fromMicro`/`toMicro`). $0 menghentikan pencarian berbayar (hanya hasil simpanan).
+- Dasbor biaya (Settings → Job search costs): kartu **Daily budget** dengan anggaran yang berlaku, terpakai hari ini, bawaan server, siapa/kapan/alasan, tombol **Change** dan **Use server default**. Dicek di browser lokal: ubah ke $7,50 lalu kembali ke bawaan, dua baris audit tercatat.
+- Batas belanja di treg sendiri tetap disarankan sebagai pengaman kedua.

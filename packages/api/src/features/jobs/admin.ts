@@ -5,7 +5,8 @@ import z from "zod";
 import { db } from "@rezumi/db/client";
 import * as schema from "@rezumi/db/schema";
 import { env } from "@rezumi/env/server";
-import { dailyBudgetMicro, spentToday } from "./allowance";
+import { spentToday } from "./allowance";
+import { readJobSearchBudget } from "./budget";
 import { jobCounters } from "./counters";
 import { jobEventSql } from "./events";
 import { isTregConfigured } from "./treg";
@@ -59,6 +60,16 @@ export const jobCostReportSchema = z.object({
 		available: z.boolean(),
 		/** `FLAG_DISABLE_JOB_SEARCH`: only saved results are given. */
 		switchedOff: z.boolean(),
+	}),
+	/** The daily budget as set on this dashboard (`budget.ts`), or the server's default. */
+	budget: z.object({
+		budgetMicro: z.number(),
+		source: z.enum(["setting", "default"]),
+		defaultMicro: z.number(),
+		maxMicro: z.number(),
+		reason: z.string().nullable(),
+		updatedAt: z.date().nullable(),
+		updatedBy: z.string().nullable(),
 	}),
 	treg: z.discriminatedUnion("status", [
 		z.object({
@@ -286,13 +297,14 @@ export async function jobCostReport(
 ): Promise<JobCostReport> {
 	const now = input.now ?? new Date();
 	const sql = "sql" in dependencies ? dependencies.sql : jobEventSql();
-	const [spentMicro, treg, events, store] = await Promise.all([
+	const [spentMicro, treg, events, store, budget] = await Promise.all([
 		spentToday(jobCounters, now).catch(() => 0),
 		(dependencies.treg ?? readTregAccount)(input.days),
 		readEvents(sql, reportStart(now, input.days)),
 		readStore(now),
+		readJobSearchBudget(),
 	]);
-	const budgetMicro = dailyBudgetMicro();
+	const { budgetMicro } = budget;
 	return {
 		days: input.days,
 		generatedAt: now,
@@ -304,6 +316,7 @@ export async function jobCostReport(
 			available: isTregConfigured(),
 			switchedOff: env.FLAG_DISABLE_JOB_SEARCH,
 		},
+		budget,
 		treg: typeof treg === "string" ? { status: treg } : { status: "ok", ...treg },
 		events,
 		store,

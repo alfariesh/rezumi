@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vite-plus/test";
-import { cacheShare, dailyCostSeries, formatUsd, pageCost } from "./costs";
+import { cacheShare, dailyCostSeries, formatUsd, pageCost, typedUsd } from "./costs";
 
 describe("job cost dashboard helpers", () => {
 	it("gives every day of the period a bar, with each provider's dollars", () => {
@@ -45,5 +45,21 @@ describe("pageCost", () => {
 			shownShare: null,
 		});
 		expect(pageCost({ pages: 0, pageCostMicro: 0, paidListings: 0, shownListings: 0 })).toBeNull();
+	});
+});
+
+describe("typedUsd", () => {
+	it("reads whole dollars and cents, with a dot or a comma", () => {
+		expect(typedUsd("5")).toBe(5);
+		expect(typedUsd(" 2.50 ")).toBe(2.5);
+		expect(typedUsd("2,5")).toBe(2.5);
+		expect(typedUsd("0")).toBe(0);
+	});
+
+	it("refuses anything else", () => {
+		expect(typedUsd("")).toBeNull();
+		expect(typedUsd("$5")).toBeNull();
+		expect(typedUsd("1.234")).toBeNull();
+		expect(typedUsd("-1")).toBeNull();
 	});
 });
