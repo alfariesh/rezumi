@@ -1,11 +1,13 @@
 import type { Transaction } from "../billing/account";
 import type { DbOrTx } from "@rezumi/db/client";
 import type { ProfileData, ProfilePart } from "@rezumi/schema/profile/data";
+import type { WorkDraft } from "@rezumi/schema/profile/website-import";
 import type { ResumeData } from "@rezumi/schema/resume/data";
 import { ORPCError } from "@orpc/client";
 import { and, eq, isNull } from "drizzle-orm";
 import { db } from "@rezumi/db/client";
 import * as schema from "@rezumi/db/schema";
+import { isSameWork, projectFromDraft } from "@rezumi/portfolio/site-import";
 import {
 	completeProfile,
 	followProfile,
@@ -203,6 +205,33 @@ export const profileService = {
 	/** Fills what the Profile still lacks (blank basics, photo, summary, empty sections) from one resume. */
 	fillFromResume: (userId: string, input: { resumeId: string }) =>
 		save(userId, async (current) => completeProfile(current.data, await activeResumeData(db, userId, input.resumeId))),
+
+	/**
+	 * The Profile's project for each work a website import saves (`.agents/docs/plans/impor-website` D3), by draft ID:
+	 * one already there that names the same work (same link or name), or a new one added at the end, so the resumes
+	 * that follow the Profile get it too.
+	 */
+	projectsForDrafts: async (userId: string, drafts: readonly WorkDraft[]): Promise<Map<string, string>> => {
+		const ids = new Map<string, string>();
+		await save(userId, (current) => {
+			ids.clear();
+			const projects = [...current.data.sections.projects];
+			let added = false;
+			for (const draft of drafts) {
+				const match = projects.find((project) => isSameWork(project, draft));
+				if (match) {
+					ids.set(draft.id, match.id);
+					continue;
+				}
+				const project = projectFromDraft(draft);
+				projects.push(project);
+				ids.set(draft.id, project.id);
+				added = true;
+			}
+			return added ? { ...current.data, sections: { ...current.data.sections, projects } } : null;
+		});
+		return ids;
+	},
 
 	/**
 	 * As `fillFromResume`, for data already at hand (an import). Best effort by design: the caller's own work must

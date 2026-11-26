@@ -1,3 +1,4 @@
+import { eventIterator } from "@orpc/server";
 import z from "zod";
 import { portfolioDataSchema, writablePortfolioDataSchema } from "@rezumi/schema/portfolio/data";
 import { portfolioEditsInputSchema } from "@rezumi/schema/portfolio/edits";
@@ -11,6 +12,7 @@ import {
 } from "@rezumi/schema/portfolio/statistics";
 import { portfolioThemeSchema } from "@rezumi/schema/portfolio/themes";
 import { VIDEO_PROVIDERS } from "@rezumi/schema/portfolio/video";
+import { siteWorksEventSchema, WEBSITE_IMPORT_MAX_WORKS } from "@rezumi/schema/profile/website-import";
 import { protectedProcedure } from "../../context";
 import {
 	portfolioFileDeleteRateLimit,
@@ -25,6 +27,7 @@ import { portfolioAiRouter } from "./ai/router";
 import { portfolioErrorMap, portfolioErrors } from "./errors";
 import { previewPortfolio } from "./preview";
 import { portfolioService } from "./service";
+import { importSiteWorks } from "./site-import";
 
 // Kept out of the public API and its OpenAPI spec until portfolios launch (portfolio plan Phase 12).
 const route = { tags: ["Internal"] };
@@ -675,6 +678,39 @@ export const portfolioRouter = {
 		.errors(portfolioErrorMap("PORTFOLIO_DISABLED", "NOT_FOUND", "PORTFOLIO_SUSPENDED"))
 		.output(z.void())
 		.handler(({ context }) => portfolioService.delete(context.user.id)),
+
+	importSiteWorks: protectedProcedure
+		.route({
+			...route,
+			method: "POST",
+			path: "/portfolio/works/import-site",
+			operationId: "importPortfolioSiteWorks",
+			summary: "Add works from a website import",
+			description:
+				"Saves the chosen works of a finished website import (`profile.sources.websiteImport`) to the portfolio, streaming its progress: each gets a Profile project, the portfolio is made unpublished if the account has none, and the works' pictures are copied to the portfolio's storage (counted toward its quota). Works the portfolio already has are skipped.",
+		})
+		.use(portfolioMutationRateLimit)
+		.input(
+			z.object({
+				runId: z.string().trim().min(1).max(64).describe("The website import, from its result."),
+				workIds: z
+					.array(z.string().min(1).max(64))
+					.min(1)
+					.max(WEBSITE_IMPORT_MAX_WORKS)
+					.describe("The import's works to save, by their ID in the result."),
+			}),
+		)
+		.errors(
+			portfolioErrorMap(
+				"PORTFOLIO_DISABLED",
+				"NOT_FOUND",
+				"PORTFOLIO_IMPORT_GONE",
+				"PORTFOLIO_WORKS_LIMIT",
+				"PORTFOLIO_VERSION_CONFLICT",
+			),
+		)
+		.output(eventIterator(siteWorksEventSchema))
+		.handler(({ context, input, signal }) => importSiteWorks(context.user.id, input, signal)),
 
 	importWorks: protectedProcedure
 		.route({
