@@ -96,3 +96,26 @@ export const websiteImportEventSchema = z.discriminatedUnion("type", [
 ]);
 
 export type WebsiteImportEvent = z.infer<typeof websiteImportEventSchema>;
+
+/**
+ * Saving an import's chosen works (`portfolio.importSiteWorks`): its pictures are copied one by one, then the works
+ * are saved. `done` says what happened:
+ * - `added`: works saved; `alreadyThere`: chosen works the portfolio already had (a site imported twice).
+ * - `picturesSkipped`: pictures that couldn't be read or stored; `storageFull`: the portfolio's storage ran out, so
+ *   the rest were left out (the works are saved without them).
+ * - `created`: the import made the portfolio (unpublished, with the Profile as its source).
+ */
+export const siteWorksEventSchema = z.discriminatedUnion("type", [
+	z.object({ type: z.literal("saving") }),
+	z.object({ type: z.literal("picture"), done: z.number().int().min(0), total: z.number().int().min(0) }),
+	z.object({
+		type: z.literal("done"),
+		added: z.number().int().min(0),
+		alreadyThere: z.number().int().min(0),
+		picturesSkipped: z.number().int().min(0),
+		storageFull: z.boolean(),
+		created: z.boolean(),
+	}),
+]);
+
+export type SiteWorksEvent = z.infer<typeof siteWorksEventSchema>;
