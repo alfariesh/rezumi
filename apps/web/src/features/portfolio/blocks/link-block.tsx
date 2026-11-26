@@ -6,6 +6,7 @@ import { Button, Spinner } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useRef, useState } from "react";
+import { linkBlockFromUnfurl, siteOf } from "@rezumi/portfolio/editing";
 import { parseEmbedUrl } from "@rezumi/schema/portfolio/embed";
 import { PORTFOLIO_LIMITS } from "@rezumi/schema/portfolio/limits";
 import { Icon } from "@rezumi/ui/components/icon";
@@ -14,7 +15,7 @@ import { cancelPortfolioTask, clearPortfolioTaskErrors, runPortfolioTask, usePor
 import { ImageField } from "../images/image-field";
 import { discardUploadedImages, isAbort } from "../images/upload";
 import { embedBlockFrom, embedFromUrl, importEmbedThumbnail } from "../media/embeds";
-import { linkBlockFromUnfurl, siteOf, useLinkSuggestions } from "../media/link-blocks";
+import { useLinkSuggestions } from "../media/link-blocks";
 import { importRemotePicture, remotePictureErrorMessage, unfurlErrorMessage, unfurlLink } from "../media/remote";
 import { currentBlock, ErrorNote } from "./add-media-block";
 import { EmbedInstead } from "./embed-block";

@@ -3,12 +3,12 @@ import type { PortfolioBlockOf } from "@rezumi/schema/portfolio/blocks";
 import type { EmbedProvider, ParsedEmbed } from "@rezumi/schema/portfolio/embed";
 import type { PortfolioImage } from "@rezumi/schema/portfolio/files";
 import { t } from "@lingui/core/macro";
+import { clip } from "@rezumi/portfolio/editing";
 import { EMBED_PROVIDER_NAMES, parseEmbedUrl } from "@rezumi/schema/portfolio/embed";
 import { PORTFOLIO_LIMITS } from "@rezumi/schema/portfolio/limits";
 import { generateId } from "@rezumi/utils/string";
 import { portfolioErrorCode } from "../errors";
 import { isAbort } from "../images/upload";
-import { clip } from "./link-blocks";
 import { importRemotePicture, unfurlLink } from "./remote";
 
 /** An Embed block for a parsed link, before anything was read about it. */

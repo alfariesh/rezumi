@@ -3,7 +3,7 @@ import type { PortfolioImage } from "@rezumi/schema/portfolio/files";
 import { PORTFOLIO_SLUG_PATTERN, uniquePortfolioSlug } from "@rezumi/schema/portfolio/data";
 import { PORTFOLIO_LIMITS } from "@rezumi/schema/portfolio/limits";
 import { generateId } from "@rezumi/utils/string";
-import { newImagesBlock } from "../blocks/blocks";
+import { newImagesBlock } from "./blocks";
 
 function slugsExcept(data: Pick<PortfolioData, "works">, workId?: string): Set<string> {
 	return new Set(data.works.items.filter((work) => work.id !== workId).map((work) => work.slug));

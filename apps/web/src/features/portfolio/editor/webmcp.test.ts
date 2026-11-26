@@ -24,7 +24,7 @@ vi.mock("@/features/billing/plan", () => ({
 	getPlanName: (id: string) => (id === "free" ? "Free" : "Plus"),
 }));
 
-const { assignChanged } = await import("./assign");
+const { assignChanged } = await import("@rezumi/portfolio/editing");
 const { usePortfolioEditorStore } = await import("./store");
 const { createPortfolioTools, portfolioEditPlan, usePortfolioWebMcpTools } = await import("./webmcp");
 

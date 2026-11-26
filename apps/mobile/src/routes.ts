@@ -22,7 +22,7 @@ export type AppTab = "home" | "documents" | "applications" | "portfolio" | "prof
 /** The Profile's sections, in the order of its tab row. */
 export const PROFILE_TABS = ["details", "career", "facts", "stories", "preferences"] as const;
 export type ProfileTab = (typeof PROFILE_TABS)[number];
-export type PortfolioPane = "create" | "publish" | "card" | "statistics" | "messages" | "preview";
+export type PortfolioPane = "edit" | "create" | "publish" | "card" | "statistics" | "messages" | "preview";
 export type ApplicationTab = WorkspaceTab;
 /** The Applications tab's views; List is the tab's index. Jobs searches current listings (Phase 09). */
 export type ApplicationsView = "list" | "board" | "calendar" | "insights" | "jobs" | "offers";

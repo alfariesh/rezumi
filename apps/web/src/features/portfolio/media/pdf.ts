@@ -4,6 +4,7 @@ import type { PDFDocumentProxy } from "pdfjs-dist/legacy/build/pdf.mjs";
 import { i18n } from "@lingui/core";
 import { t } from "@lingui/core/macro";
 import { ORPCError } from "@orpc/client";
+import { titleFromFileName } from "@rezumi/portfolio/editing";
 import { PORTFOLIO_LIMITS, PORTFOLIO_UPLOAD } from "@rezumi/schema/portfolio/limits";
 import { generateId } from "@rezumi/utils/string";
 import { portfolioErrorMessage } from "../errors";
@@ -16,7 +17,6 @@ import {
 	uploadPortfolioImage,
 } from "../images/upload";
 import { refreshPortfolioUsage } from "../works/storage-meter";
-import { titleFromFileName } from "../works/works";
 import { openPlanDialogForError } from "@/features/billing/plan-dialog";
 import { client } from "@/libs/orpc/client";
 

@@ -1,8 +1,8 @@
 import type { PortfolioWork } from "@rezumi/schema/portfolio/data";
 import type { MetricFormat, PortfolioMetric } from "@rezumi/schema/portfolio/metric";
-import { westernDigits } from "@rezumi/portfolio/metric";
 import { PORTFOLIO_LIMITS } from "@rezumi/schema/portfolio/limits";
 import { generateId } from "@rezumi/utils/string";
+import { westernDigits } from "../metric";
 
 /** The editor's format choices: currency is two choices (rupiah, dollar), the rest map one to one. */
 export const METRIC_FORMAT_CHOICES = [
@@ -45,8 +45,7 @@ const LATIN_DIGITS = { numberingSystem: "latn" } as const;
 /** Whether the language writes a decimal comma ("2,8"), as Indonesian does. */
 export function usesDecimalComma(locale: string): boolean {
 	try {
-		const parts = new Intl.NumberFormat(locale, LATIN_DIGITS).formatToParts(1.5);
-		return parts.find((part) => part.type === "decimal")?.value === ",";
+		return new Intl.NumberFormat(locale, LATIN_DIGITS).format(1.5).includes(",");
 	} catch {
 		return false;
 	}

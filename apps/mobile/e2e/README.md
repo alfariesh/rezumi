@@ -40,3 +40,13 @@ Start a local Rezumi server with `FLAG_ALLOW_UNSAFE_AI_BASE_URL=true` and an enc
 maestro test apps/mobile/e2e/coach.yaml
 maestro test -e RESUME_ID="$RESUME_ID" apps/mobile/e2e/assistant-proposals.yaml
 ```
+
+## Portfolio editor
+
+Use English UI and an unpublished portfolio on an isolated, disposable account. For the editor flow, put a fictional picture in the device gallery and supply its visible picker label as `PHOTO_LABEL`. Verify camera denial and gallery cancellation separately. For the rewrite flow, configure an AI stub that returns a deterministic shorter greeting and supply the consent action's label as `AI_CONSENT_BUTTON`.
+
+- `portfolio-editor.yaml` adds a work, cover, text and metric, then previews and publishes.
+- `portfolio-design.yaml` changes a Lugas portfolio to Prima and replays the intro in Preview.
+- `portfolio-rewrite.yaml` rewrites the greeting and undoes the edit.
+
+The flows require device verification. Check phone and tablet layouts, Indonesian and English, and dark and light mode in the device pass.

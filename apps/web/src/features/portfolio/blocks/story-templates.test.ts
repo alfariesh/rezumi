@@ -2,9 +2,9 @@ import type { MessageDescriptor } from "@lingui/core";
 import type { PortfolioWork } from "@rezumi/schema/portfolio/data";
 import { describe, expect, it } from "vite-plus/test";
 import { produce } from "immer";
+import { newTextBlock } from "@rezumi/portfolio/editing";
 import { parseWritablePortfolioData } from "@rezumi/schema/portfolio/data";
 import { PORTFOLIO_LIMITS } from "@rezumi/schema/portfolio/limits";
-import { newTextBlock } from "./blocks";
 import {
 	addStoryTemplate,
 	normalizeHeading,

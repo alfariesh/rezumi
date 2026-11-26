@@ -2394,6 +2394,12 @@ importers:
 
   packages/portfolio:
     dependencies:
+      '@orpc/client':
+        specifier: 'catalog:'
+        version: 1.16.1
+      '@rezumi/ai':
+        specifier: workspace:*
+        version: link:../ai
       '@rezumi/fonts':
         specifier: workspace:*
         version: link:../fonts
@@ -2403,6 +2409,12 @@ importers:
       '@rezumi/utils':
         specifier: workspace:*
         version: link:../utils
+      es-toolkit:
+        specifier: 'catalog:'
+        version: 1.53.0
+      immer:
+        specifier: ^11.2.9
+        version: 11.2.9
       react:
         specifier: 'catalog:'
         version: 19.3.1
@@ -2412,6 +2424,9 @@ importers:
       sanitize-html:
         specifier: ^2.18.1
         version: 2.18.1
+      zustand:
+        specifier: ^5.0.16
+        version: 5.0.16(@types/react@19.3.0)(immer@11.2.9)(react@19.3.1)(use-sync-external-store@1.7.0(react@19.3.1))
     devDependencies:
       '@rezumi/config':
         specifier: workspace:*

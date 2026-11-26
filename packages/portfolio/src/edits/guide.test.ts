@@ -5,8 +5,8 @@ import { portfolioEditSchema } from "@rezumi/schema/portfolio/edits";
 import { METRIC_FORMATS } from "@rezumi/schema/portfolio/metric";
 import { PORTFOLIO_ACCENT_IDS, PORTFOLIO_HERO_EFFECTS, PORTFOLIO_THEMES } from "@rezumi/schema/portfolio/themes";
 import { fullPortfolioData } from "../fixtures.test-helpers";
-import { applyPortfolioEdits } from "./apply";
 import { PORTFOLIO_EDIT_GUIDE } from "./guide";
+import { applyPortfolioEdits } from "./index";
 
 const examples = [...PORTFOLIO_EDIT_GUIDE.matchAll(/```json\n(.+)\n```/g)].map(
 	(match) => JSON.parse(match[1] as string) as unknown[],

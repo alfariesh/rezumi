@@ -3,7 +3,7 @@ import type { PortfolioWork } from "@rezumi/schema/portfolio/data";
 import type { PortfolioImage } from "@rezumi/schema/portfolio/files";
 import { PORTFOLIO_LIMITS } from "@rezumi/schema/portfolio/limits";
 import { generateId } from "@rezumi/utils/string";
-import { dropMissingHighlight, newMetric } from "../metrics/metrics";
+import { dropMissingHighlight, newMetric } from "./metrics";
 
 export function newTextBlock(html = ""): PortfolioBlockOf<"text"> {
 	return { id: generateId(), type: "text", html };

@@ -2,11 +2,11 @@ import type { PortfolioBlockOf } from "@rezumi/schema/portfolio/blocks";
 import type { PortfolioImage } from "@rezumi/schema/portfolio/files";
 import { t } from "@lingui/core/macro";
 import { ORPCError } from "@orpc/client";
+import { videoBlockFromUnfurl } from "@rezumi/portfolio/editing";
 import { parseVideoUrl, youtubeThumbnailUrl } from "@rezumi/schema/portfolio/video";
 import { generateId } from "@rezumi/utils/string";
 import { portfolioErrorCode, portfolioErrorMessage } from "../errors";
 import { imageUploadErrorMessage, isAbort, stopIfAborted, uploadPortfolioImage } from "../images/upload";
-import { videoBlockFromUnfurl } from "./link-blocks";
 import { client } from "@/libs/orpc/client";
 
 /**

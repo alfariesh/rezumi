@@ -91,6 +91,8 @@ for (const request of [
 	() => client.applications.ai.autofill({ jobDescription: "fictional" }),
 	() => streamClient.coverLetters.draft({ id: "fictional" }),
 	() => client.portfolio.ai.draft({ note: "fictional portfolio" }),
+	() => client.portfolio.ai.rewrite({ field: "greeting", text: "fictional portfolio", instruction: "shorter" }),
+	() => client.portfolio.ai.findMetrics({}),
 	() => client.career.generate({ applicationId: "fictional", task: { task: "fit" } }),
 	() => streamClient.agent.messages.send({ threadId: "fictional", message: { id: "m", role: "user", parts: [] } }),
 	() =>
@@ -158,5 +160,5 @@ await client.ai.reportContent({ source: "other", reason: "other", content: "fict
 assert.equal(dialog, null, "a safety report must not require AI-provider consent");
 assert.deepEqual(sent(), ["/api/rpc/ai/reportContent"]);
 console.log(
-	"PASS: eleven AI entry points blocked before consent and on decline; acceptance, identity change, cancellation, and reporting exercised through real API client.",
+	"PASS: thirteen AI entry points blocked before consent and on decline; acceptance, identity change, cancellation, and reporting exercised through real API client.",
 );

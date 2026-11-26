@@ -2,9 +2,7 @@ import type { PortfolioData } from "@rezumi/schema/portfolio/data";
 import { beforeEach, describe, expect, it, vi } from "vite-plus/test";
 import { i18n } from "@lingui/core";
 import { ORPCError } from "@orpc/client";
-import { parsePortfolioData, writablePortfolioDataSchema } from "@rezumi/schema/portfolio/data";
-import { PORTFOLIO_LIMITS } from "@rezumi/schema/portfolio/limits";
-import { newWork, titleFromFileName } from "../works/works";
+import { newWork, titleFromFileName } from "@rezumi/portfolio/editing";
 import {
 	clip,
 	linkBlockFromUnfurl,
@@ -15,7 +13,9 @@ import {
 	videoAddress,
 	videoBlockFromUnfurl,
 	workFromLink,
-} from "./link-blocks";
+} from "@rezumi/portfolio/editing";
+import { parsePortfolioData, writablePortfolioDataSchema } from "@rezumi/schema/portfolio/data";
+import { PORTFOLIO_LIMITS } from "@rezumi/schema/portfolio/limits";
 import { formatFileSize, looksLikePdf, pdfErrorMessage } from "./pdf";
 import { unfurlErrorMessage, videoBlockFromUrl, videoThumbnailCandidates } from "./remote";
 

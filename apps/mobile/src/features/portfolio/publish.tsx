@@ -47,7 +47,7 @@ export function PortfolioPublishScreen() {
 
 type PublishSettingsProps = { portfolio: Portfolio; refresh: () => Promise<unknown> };
 
-function PublishSettings({ portfolio, refresh }: PublishSettingsProps) {
+export function PublishSettings({ portfolio, refresh }: PublishSettingsProps) {
 	const { t } = useLingui();
 	const online = useOnline();
 	const router = useRouter();

@@ -45,6 +45,11 @@ export type ChatViewProps = {
 	onSwitchModel?: () => void;
 	/** After each reply, for example to refresh the Profile. */
 	onFinish?: () => void;
+	/** A document other than a resume or letter may have its own versioned save. */
+	flushDocument?: (() => Promise<boolean>) | undefined;
+	/** Document-specific tool results, alongside the shared conversation controls. */
+	renderEffects?: ((message: UIMessage, threadId: string) => ReactNode) | undefined;
+	onMessages?: ((messages: readonly UIMessage[], initial: readonly UIMessage[], threadId: string) => void) | undefined;
 };
 
 type Prompt = { threadId: string; text: string; attachments: ChatAttachment[] };

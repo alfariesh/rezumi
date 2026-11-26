@@ -1,6 +1,6 @@
 import type { SlashItem } from "../editor/rich-text-editor";
-import type { BlockPlace } from "./blocks";
 import type { StoryTemplateId } from "./story-templates";
+import type { BlockPlace } from "@rezumi/portfolio/editing";
 import type { PortfolioBlock, PortfolioBlockOf, PortfolioBlockType } from "@rezumi/schema/portfolio/blocks";
 import type { PortfolioWork } from "@rezumi/schema/portfolio/data";
 import type { IconName } from "@rezumi/ui/components/icon";
@@ -10,6 +10,17 @@ import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Trans } from "@lingui/react/macro";
 import { useMemo, useRef } from "react";
+import { dropMissingHighlight } from "@rezumi/portfolio/editing";
+import {
+	blockPlace,
+	blockRoom,
+	insertBlocksAt,
+	newImagesBlock,
+	newMetricsBlock,
+	newTextBlock,
+	removeBlock,
+	restoreBlock,
+} from "@rezumi/portfolio/editing";
 import { PORTFOLIO_BLOCK_TYPES } from "@rezumi/schema/portfolio/blocks";
 import { PORTFOLIO_LIMITS } from "@rezumi/schema/portfolio/limits";
 import { Icon } from "@rezumi/ui/components/icon";
@@ -23,19 +34,8 @@ import { leftOutMessage, UploadStatus, useFilePicker, useImageUploads } from "..
 import { discardUnplacedImages } from "../images/upload";
 import { pdfLimitText } from "../media/pdf";
 import { MetricsEditor } from "../metrics/metric-form";
-import { dropMissingHighlight } from "../metrics/metrics";
 import { focusTextBlock } from "../works/doc-focus";
 import { pdfFiles, useAddMediaBlock } from "./add-media-block";
-import {
-	blockPlace,
-	blockRoom,
-	insertBlocksAt,
-	newImagesBlock,
-	newMetricsBlock,
-	newTextBlock,
-	removeBlock,
-	restoreBlock,
-} from "./blocks";
 import { EmbedBlockEditor } from "./embed-block";
 import { ImagesBlockEditor } from "./images-block";
 import { LinkBlockEditor } from "./link-block";

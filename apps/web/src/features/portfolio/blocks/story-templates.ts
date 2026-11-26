@@ -3,7 +3,7 @@ import type { PortfolioBlock } from "@rezumi/schema/portfolio/blocks";
 import type { PortfolioWork } from "@rezumi/schema/portfolio/data";
 import type { IconName } from "@rezumi/ui/components/icon";
 import { msg } from "@lingui/core/macro";
-import { insertBlocks, newMetricsBlock, newTextBlock } from "./blocks";
+import { insertBlocks, newMetricsBlock, newTextBlock } from "@rezumi/portfolio/editing";
 
 /**
  * Outlines to start a work's story from, one per kind of work: headed text blocks to write under, and a Metrics block

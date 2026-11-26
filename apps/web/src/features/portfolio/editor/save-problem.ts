@@ -1,4 +1,4 @@
-import type { PortfolioDataPath, PortfolioRetryReason, PortfolioSaveProblem } from "./save-failure";
+import type { PortfolioDataPath, PortfolioRetryReason, PortfolioSaveProblem } from "@rezumi/portfolio/save-failure";
 import type { PortfolioViewMessages } from "@rezumi/portfolio/view";
 import type { PortfolioData } from "@rezumi/schema/portfolio/data";
 import type { PortfolioSectionKey } from "@rezumi/schema/portfolio/sections";
