@@ -39,14 +39,29 @@ export const filterPickerOptions = (options: readonly PickerOption[], query: str
 export function PickerSheet(props: PickerSheetProps) {
 	const { isOpen, onOpenChange, title, closeLabel, searchLabel, emptyLabel, options, value, onPick } = props;
 	const [query, setQuery] = useState("");
+	// A virtualized list needs a bounded height: tracking the detent gives the sheet's viewport one (an unbounded
+	// viewport lays the list out at zero height on Android).
+	const [detent, setDetent] = useState(0);
 	const shown = filterPickerOptions(options, query);
 	const close = (open: boolean) => {
-		if (!open) setQuery("");
+		if (!open) {
+			setQuery("");
+			setDetent(0);
+		}
 		onOpenChange(open);
 	};
 
 	return (
-		<Sheet isOpen={isOpen} onOpenChange={close} title={title} closeLabel={closeLabel} detents={[0.7, 1]} scroll={false}>
+		<Sheet
+			isOpen={isOpen}
+			onOpenChange={close}
+			title={title}
+			closeLabel={closeLabel}
+			detents={[0.7, 1]}
+			detent={detent}
+			onDetentChange={setDetent}
+			scroll={false}
+		>
 			<SearchField value={query} onChange={setQuery}>
 				<SearchField.Group>
 					<SearchField.SearchIcon />

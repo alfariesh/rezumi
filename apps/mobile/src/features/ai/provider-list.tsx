@@ -65,7 +65,7 @@ export function ProviderList() {
 			{!managed && (
 				<Button variant="secondary" onPress={() => setAdding(true)}>
 					<Icon name="plus" />
-					{t`Add AI provider`}
+					<Button.Label>{t`Add AI provider`}</Button.Label>
 				</Button>
 			)}
 			<AIProviderSetupSheet open={adding} onClose={() => setAdding(false)} />

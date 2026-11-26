@@ -37,6 +37,7 @@ export function CoachSheet({ application, tab, isOpen, onOpenChange }: CoachShee
 			title={t`Coach`}
 			closeLabel={t`Close`}
 			detents={[0.9]}
+			detent={0}
 			scroll={false}
 			padded={false}
 		>
