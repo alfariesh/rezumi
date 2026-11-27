@@ -47,6 +47,7 @@ function portfolioMessagesByCode(data: ErrorData): Record<string, string> {
 	return {
 		PORTFOLIO_DISABLED: t`Portfolios aren't available for your account right now.`,
 		PORTFOLIO_EXISTS: t`You already have a portfolio. Open it from Portfolio in the menu.`,
+		PORTFOLIO_IMPORT_GONE: t`This website import isn't kept anymore. Import your website again to add its works.`,
 		NOT_FOUND: t`This portfolio doesn't exist anymore. It may have been deleted in another tab.`,
 		// "unreadable": the resume's stored data can't be read; otherwise it's missing or in Trash.
 		PORTFOLIO_SOURCE_INVALID:

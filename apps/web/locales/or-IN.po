@@ -120,6 +120,16 @@ msgstr ""
 msgid "{0, plural, =0 {Add work} one {Add # work} other {Add # works}}"
 msgstr ""
 
+#. placeholder {0}: siteWorks.count
+#: src/features/portfolio/works/add-work/from-site.tsx
+msgid "{0, plural, =0 {Add works} one {Add # work} other {Add # works}}"
+msgstr ""
+
+#. placeholder {0}: done.added
+#: src/features/profile/fill.tsx
+msgid "{0, plural, =0 {Added to your Profile. Your portfolio already had these works.} one {Added to your Profile, and # work to your portfolio.} other {Added to your Profile, and # works to your portfolio.}}"
+msgstr ""
+
 #. placeholder {0}: results.length
 #: src/features/portfolio/location/location-fields.tsx
 msgid "{0, plural, =0 {No cities found} one {# city found} other {# cities found}}"
@@ -247,6 +257,11 @@ msgstr ""
 msgid "{0, plural, one {# paid payment, after refunds} other {# paid payments, after refunds}}"
 msgstr ""
 
+#. placeholder {0}: done.picturesSkipped
+#: src/features/profile/sources/use-site-works.ts
+msgid "{0, plural, one {# picture couldn't be copied. The works were saved without it.} other {# pictures couldn't be copied. The works were saved without them.}}"
+msgstr ""
+
 #. placeholder {0}: proposals.length
 #: src/features/assistant/conversation.tsx
 #: src/features/resume/editor/proposals/proposal-list.tsx
@@ -286,14 +301,34 @@ msgstr "{0, plural, one {# ମନୋନୀତ |} other {# ମନୋନୀତ |}}
 msgid "{0, plural, one {# story} other {# stories}}"
 msgstr "{0, plural, one {#ଟି କାହାଣୀ} other {#ଟି କାହାଣୀ}}"
 
+#. placeholder {0}: done.added
+#: src/features/onboarding/onboarding-page.tsx
+msgid "{0, plural, one {# work from your site is in your portfolio.} other {# works from your site are in your portfolio.}}"
+msgstr ""
+
 #. placeholder {0}: work.tags.length - 3
 #: src/features/portfolio/works/work-document.tsx
 msgid "{0, plural, one {+# tag} other {+# tags}}"
 msgstr ""
 
+#. placeholder {0}: siteWorks.count
+#: src/features/profile/fill.tsx
+msgid "{0, plural, one {Add, with # work} other {Add, with # works}}"
+msgstr ""
+
 #. placeholder {0}: remembered.ids.length
 #: src/features/career/coach-chat.tsx
 msgid "{0, plural, one {Added # fact to your Profile.} other {Added # facts to your Profile.}}"
+msgstr ""
+
+#. placeholder {0}: done.added
+#: src/features/portfolio/works/add-work/from-site.tsx
+msgid "{0, plural, one {Added # work from your site.} other {Added # works from your site.}}"
+msgstr ""
+
+#. placeholder {0}: result.works.length
+#: src/features/profile/sources/source-progress.tsx
+msgid "{0, plural, one {And # work for your portfolio} other {And # works for your portfolio}}"
 msgstr ""
 
 #. placeholder {0}: step.days
@@ -320,6 +355,11 @@ msgstr "{0, plural, one {#ଟି ଆବେଦନ ଡିଲିଟ୍ କରନ୍
 #: src/features/applications/next-step.ts
 msgid "{0, plural, one {For # day} other {For # days}}"
 msgstr "{0, plural, one {# ଦିନ ପାଇଁ |} other {# ଦିନ ପାଇଁ |}}"
+
+#. placeholder {0}: progress.pages
+#: src/features/profile/sources/messages.ts
+msgid "{0, plural, one {Found # page about your work} other {Found # pages about your work}}"
+msgstr ""
 
 #. placeholder {0}: parsed.requirements.length
 #: src/features/applications/components/add-application-dialog.tsx
@@ -998,6 +1038,8 @@ msgid "{kept, plural, one {# entry ticked} other {# entries ticked}}"
 msgstr ""
 
 #. placeholder {0}: keys.length
+#. placeholder {0}: works.length
+#: src/features/profile/sources/site-works-review.tsx
 #: src/features/profile/sources/source-review.tsx
 msgid "{kept} of {0}"
 msgstr ""
@@ -1212,6 +1254,10 @@ msgstr "{totalRules} ଯାଞ୍ଚର {passedRules} ପାସ୍ |"
 msgid "{pendingOnPage, plural, one {# proposed edit on this page · nothing changes until you accept} other {# proposed edits on this page · nothing changes until you accept}}"
 msgstr "{pendingOnPage, plural, one {# ଏହି ପୃଷ୍ଠାରେ ସମ୍ପାଦନା ପ୍ରସ୍ତାବିତ · ଆପଣ ଗ୍ରହଣ ନକରିବା ପର୍ଯ୍ୟନ୍ତ କିଛି ପରିବର୍ତ୍ତନ ହୁଏ ନାହିଁ |} other {# ଏହି ପୃଷ୍ଠାରେ ପ୍ରସ୍ତାବିତ ସମ୍ପାଦନା · ଆପଣ ଗ୍ରହଣ ନକରିବା ପର୍ଯ୍ୟନ୍ତ କିଛି ପରିବର୍ତ୍ତନ ହୁଏ ନାହିଁ |}}"
 
+#: src/features/profile/sources/site-works-review.tsx
+msgid "{pictures, plural, =0 {No pictures} one {# picture} other {# pictures}}"
+msgstr ""
+
 #: src/features/portfolio/editor/publish-panel.tsx
 msgid "{placeholders, plural, one {# place written in [brackets] will show on your page as it is.} other {# places written in [brackets] will show on your page as they are.}}"
 msgstr ""
@@ -1243,6 +1289,10 @@ msgstr ""
 #. placeholder {1}: formatDate(payment.periodEnd)
 #: src/features/billing/payment-return.tsx
 msgid "{plan} starts on {0}, after your current plan, and runs until {1}."
+msgstr ""
+
+#: src/features/profile/sources/site-works-review.tsx
+msgid "{planLimit, plural, one {Your plan holds # work in the portfolio. Upgrade to add them all.} other {Your plan holds # works in the portfolio. Upgrade to add them all.}}"
 msgstr ""
 
 #: src/features/billing/pending-payment.tsx
@@ -2583,6 +2633,10 @@ msgstr ""
 msgid "Add your first work"
 msgstr ""
 
+#: src/features/profile/sources/messages.ts
+msgid "Add your LinkedIn profile in the LinkedIn field instead."
+msgstr ""
+
 #: src/features/portfolio/editor/page-check.tsx
 #: src/features/resume/editor/check/issues.ts
 msgid "Add your name"
@@ -2941,6 +2995,10 @@ msgstr "ପୃଷ୍ଠାରେ ଏହାକୁ ଖୋଜିବା ପାଇଁ
 #. Call-to-action link from registration page to login page
 #: src/features/auth/pages/register.tsx
 msgid "Already have an account? <0>Sign in now <1/></0>"
+msgstr ""
+
+#: src/features/profile/sources/site-works-review.tsx
+msgid "Already in your portfolio"
 msgstr ""
 
 #: src/features/portfolio/works/add-work/from-resume.tsx
@@ -3724,6 +3782,10 @@ msgstr "ଦାଖଲ କରିବା ପୂର୍ବରୁ"
 
 #: src/features/portfolio/metrics/metric-preview.tsx
 msgid "Before: {before}"
+msgstr ""
+
+#: src/features/profile/sources/messages.ts
+msgid "Behance and Dribbble can't be read yet. Use your own site's address, or add works later in your portfolio."
 msgstr ""
 
 #: src/features/portfolio/works/add-work/add-work-dialog.tsx
@@ -4978,6 +5040,10 @@ msgstr "ସମୟ, ଲିଙ୍କ୍ ଓ କାହାକୁ ଭେଟିବେ 
 msgid "Confirm this is your own profile."
 msgstr ""
 
+#: src/features/portfolio/works/add-work/from-site.tsx
+msgid "Confirm this is your own site."
+msgstr ""
+
 #: src/features/assistant/provider-setup.tsx
 #: src/features/resume/share/custom-domain-field.tsx
 #: src/features/settings/account/security.tsx
@@ -5302,6 +5368,12 @@ msgstr ""
 #: src/features/assistant/conversation.tsx
 msgid "Copy transcript"
 msgstr "ଟ୍ରାନ୍ସକ୍ରିପ୍ଟ କପି କରନ୍ତୁ |"
+
+#. placeholder {0}: progress.done
+#. placeholder {1}: progress.total
+#: src/features/profile/sources/use-site-works.ts
+msgid "Copying pictures {0} of {1}…"
+msgstr ""
 
 #: src/features/portfolio/blocks/add-media-block.tsx
 msgid "Copying the picture…"
@@ -5868,12 +5940,24 @@ msgstr "ଆପଣଙ୍କ ପରିବର୍ତ୍ତନଗୁଡ଼ିକ ସ�
 msgid "Couldn't save your preferences. Try again."
 msgstr "ଆପଣଙ୍କ ପସନ୍ଦଗୁଡ଼ିକ ସେଭ୍ କରିହେଲା ନାହିଁ। ପୁଣି ଚେଷ୍ଟା କରନ୍ତୁ।"
 
+#: src/features/profile/fill.tsx
+msgid "Couldn't save your Profile, so the works weren't added. Try again."
+msgstr ""
+
 #: src/features/onboarding/onboarding-page.tsx
 msgid "Couldn't save your Profile, so this would open again. Try again."
 msgstr ""
 
 #: src/features/onboarding/onboarding-page.tsx
 msgid "Couldn't save your Profile. Try again."
+msgstr ""
+
+#: src/features/profile/sources/use-site-works.ts
+msgid "Couldn't save your works. Check your connection, then try again from your portfolio."
+msgstr ""
+
+#: src/features/profile/sources/use-site-works.ts
+msgid "Couldn't save your works. Try again from your portfolio."
 msgstr ""
 
 #: src/features/settings/account/profile.tsx
@@ -8197,6 +8281,10 @@ msgstr ""
 msgid "Find jobs that fit"
 msgstr ""
 
+#: src/features/portfolio/works/add-work/from-site.tsx
+msgid "Find my works"
+msgstr ""
+
 #: src/features/portfolio/metrics/find-metrics.tsx
 msgid "Find numbers"
 msgstr ""
@@ -8572,6 +8660,16 @@ msgstr ""
 
 #: src/features/homepage/hero.tsx
 msgid "Free plan, no card needed. PDF downloads without a watermark."
+msgstr ""
+
+#: src/features/billing/ai-source-menu.tsx
+msgid "free this time"
+msgstr ""
+
+#. placeholder {0}: creditCount(creditCost(action))
+#. placeholder {1}: creditCount(balance)
+#: src/features/billing/ai-source-menu.tsx
+msgid "Free this time, then {0} · {1} left"
 msgstr ""
 
 #. A recent job search that opens again today without counting
@@ -9140,6 +9238,11 @@ msgstr "ପୃଷ୍ଠାରୁ {title} ଲୁଚାନ୍ତୁ |"
 msgid "Hide contact details"
 msgstr "ଯୋଗାଯୋଗ ବିବରଣୀ ଲୁଚାନ୍ତୁ"
 
+#. placeholder {0}: work.title
+#: src/features/profile/sources/site-works-review.tsx
+msgid "Hide details of {0}"
+msgstr ""
+
 #: src/features/resume/editor/write/entry-card.tsx
 msgid "Hide from page"
 msgstr "ପୃଷ୍ଠାରୁ ଲୁଚାନ୍ତୁ |"
@@ -9488,6 +9591,11 @@ msgstr "CSV ରୁ ଆମଦାନି କରନ୍ତୁ |"
 msgid "Import from CSV…"
 msgstr "CSV ରୁ ଆମଦାନି…"
 
+#: src/features/portfolio/works/add-work/add-work-dialog.tsx
+#: src/features/portfolio/works/works-panel.tsx
+msgid "Import from your website"
+msgstr ""
+
 #: src/features/documents/new-document-dialog.tsx
 msgid "Import or create a resume"
 msgstr "ଏକ ରେଜୁମ୍ ଆମଦାନୀ କରନ୍ତୁ କିମ୍ବା ସୃଷ୍ଟି କରନ୍ତୁ |"
@@ -9536,6 +9644,10 @@ msgstr "ଆମଦାନି"
 #: src/features/ats-checker/checker.tsx
 msgid "Importing it into your new resume…"
 msgstr "ଏହାକୁ ତୁମର ନୂତନ ରେଜୁମ୍ ରେ ଆମଦାନି…"
+
+#: src/features/profile/sources/source-fields.tsx
+msgid "Importing your own site reads up to eleven of its pages. Their text goes to the AI; the pictures of the works you keep are copied to your portfolio's storage."
+msgstr ""
 
 #: src/features/resume/editor/write/rich-text-editor-field.tsx
 msgid "Improve"
@@ -12272,6 +12384,14 @@ msgstr ""
 msgid "No work-experience section was found."
 msgstr "କୌଣସି କାର୍ଯ୍ୟ-ଅଭିଜ୍ଞତା ବିଭାଗ ମିଳିଲା ନାହିଁ।"
 
+#: src/features/profile/sources/messages.ts
+msgid "No works were found on this site."
+msgstr ""
+
+#: src/features/portfolio/works/add-work/from-site.tsx
+msgid "No works were found on this site. Add them one by one, or try another address."
+msgstr ""
+
 #: src/features/portfolio/works/work-canvas.tsx
 #: src/features/portfolio/works/works-panel.tsx
 msgid "No works yet"
@@ -13761,11 +13881,16 @@ msgstr ""
 
 #: src/features/portfolio/assistant/labels.ts
 #: src/features/portfolio/blocks/block-list.tsx
+#: src/features/profile/sources/site-works-review.tsx
 msgid "Pictures"
 msgstr ""
 
 #: src/features/portfolio/works/storage-meter.tsx
 msgid "Pictures and PDFs"
+msgstr ""
+
+#: src/features/profile/sources/site-works-review.tsx
+msgid "Pictures are copied to your portfolio's storage and count toward its space."
 msgstr ""
 
 #: src/features/applications/components/insights-view.tsx
@@ -14707,6 +14832,10 @@ msgid "Read the resume"
 msgstr "ରେଜ୍ୟୁମେ ପଢ଼ାଗଲା"
 
 #: src/features/profile/sources/source-fields.tsx
+msgid "Read with AI: your home page and up to ten pages about your work."
+msgstr ""
+
+#: src/features/profile/sources/source-fields.tsx
 msgid "Read with AI. Only what's on the page comes in."
 msgstr ""
 
@@ -14813,9 +14942,19 @@ msgstr "ଆପଣ ସେୟାର୍ କରିଥିବା ଜିନିଷ ପ�
 msgid "Reading Word files needs an AI provider. Set one up in Settings, or import a PDF or JSON file instead."
 msgstr "Word ଫାଇଲଗୁଡ଼ିକୁ ପ A ିବା ପାଇଁ ଏକ AI ପ୍ରଦାନକାରୀ ଆବଶ୍ୟକ କରନ୍ତି | ସେଟିଂସମୂହରେ ଗୋଟିଏ ସେଟ୍ ଅପ୍ କରନ୍ତୁ, କିମ୍ବା ଏହା ବଦଳରେ ଏକ PDF କିମ୍ବା JSON ଫାଇଲ ଆମଦାନୀ କରନ୍ତୁ |"
 
+#. placeholder {0}: progress.done
+#. placeholder {1}: progress.total
+#: src/features/profile/sources/messages.ts
+msgid "Reading work {0} of {1}…"
+msgstr ""
+
 #: src/features/career/shared.tsx
 msgid "Reading your answer"
 msgstr "ଆପଣଙ୍କ ଉତ୍ତର ପଢ଼ୁଛି"
+
+#: src/features/profile/sources/messages.ts
+msgid "Reading your details…"
+msgstr ""
 
 #: src/features/career/shared.tsx
 msgid "Reading your notes"
@@ -14831,6 +14970,10 @@ msgstr ""
 
 #: src/features/portfolio/metrics/find-metrics.tsx
 msgid "Reading your resume…"
+msgstr ""
+
+#: src/features/profile/sources/messages.ts
+msgid "Reading your site…"
 msgstr ""
 
 #: src/features/profile/fill.tsx
@@ -16220,6 +16363,10 @@ msgstr ""
 msgid "Save to Profile"
 msgstr ""
 
+#: src/features/onboarding/onboarding-page.tsx
+msgid "Save to Profile and portfolio"
+msgstr ""
+
 #: src/features/resume/editor/check/job-match.tsx
 msgid "Save to the application"
 msgstr "ଚାକିରି ଆବେଦନକୁ ସଞ୍ଚୟ କରନ୍ତୁ |"
@@ -16345,6 +16492,10 @@ msgstr ""
 #: src/features/resume/builder/draft.ts
 msgid "Saving is taking longer than expected. Your changes are still open."
 msgstr "ସଞ୍ଚୟ ଆଶା କରାଯାଉଥିବା ସମୟଠାରୁ ଅଧିକ ସମୟ ନେଉଛି | ତୁମର ପରିବର୍ତ୍ତନ ଏପର୍ଯ୍ୟନ୍ତ ଖୋଲା ଅଛି |"
+
+#: src/features/profile/sources/use-site-works.ts
+msgid "Saving your works…"
+msgstr ""
 
 #: src/features/career/knowledge/preferences.tsx
 #: src/features/profile/details-page.tsx
@@ -16612,6 +16763,14 @@ msgstr ""
 
 #: src/features/portfolio/statistics/parts.tsx
 msgid "See what's included"
+msgstr ""
+
+#: src/features/onboarding/onboarding-page.tsx
+msgid "See your portfolio"
+msgstr ""
+
+#: src/features/onboarding/onboarding-page.tsx
+msgid "See your portfolio (not published)"
 msgstr ""
 
 #: src/features/applications/components/list-view.tsx
@@ -17055,6 +17214,11 @@ msgstr "ପୁନର୍ବାର ଦେଖାନ୍ତୁ |"
 msgid "Show all types"
 msgstr "ସମସ୍ତ ପ୍ରକାର ଦେଖାନ୍ତୁ"
 
+#. placeholder {0}: work.title
+#: src/features/profile/sources/site-works-review.tsx
+msgid "Show details of {0}"
+msgstr ""
+
 #: src/features/resume/share/custom-domain-field.tsx
 msgid "Show DNS records"
 msgstr "DNS ରେକର୍ଡଗୁଡ଼ିକ ଦେଖାନ୍ତୁ"
@@ -17445,6 +17609,10 @@ msgstr "କିଛି ଚାକିରି ବିବରଣୀ ପଢ଼ିହେଲ
 #: src/features/ats-checker/messages.ts
 msgid "Some lines are stored out of reading order."
 msgstr "କିଛି ଧାଡ଼ି ପଠନ କ୍ରମ ବାହାରେ ସଂରକ୍ଷିତ ଅଛି।"
+
+#: src/features/profile/sources/messages.ts
+msgid "Some pages about your work couldn't be read. The others came in."
+msgstr ""
 
 #: src/features/portfolio/editor/publish-panel.tsx
 msgid "Some parts are still to fill in"
@@ -18886,6 +19054,10 @@ msgstr "ପୃଷ୍ଠାର PDF ପ read ିହେଲା ନାହିଁ | ଏ
 msgid "The pages are pictures, with no text behind them."
 msgstr "ପୃଷ୍ଠାଗୁଡ଼ିକ ଛବି, ପଛରେ କୌଣସି ଟେକ୍ସଟ୍ ନାହିଁ।"
 
+#: src/features/portfolio/works/add-work/from-site.tsx
+msgid "The pages' text goes to the AI. Pictures of the works you add are copied to your portfolio's storage."
+msgstr ""
+
 #: src/features/billing/purchase-dialog.tsx
 msgid "The payment for this change didn't go through. Update your payment method in billing and try again."
 msgstr ""
@@ -19466,6 +19638,14 @@ msgstr "ଏହା ଏକ XFA ଫର୍ମ, ତେଣୁ ଅଧିକାଂଶ �
 msgid "This is my own profile"
 msgstr ""
 
+#: src/features/portfolio/works/add-work/from-site.tsx
+msgid "This is my own site"
+msgstr ""
+
+#: src/features/profile/sources/source-fields.tsx
+msgid "This is my own site. Bring my works into my portfolio too."
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "This is not a common resume page size."
 msgstr "ଏହା ଏକ ସାଧାରଣ ରେଜ୍ୟୁମେ ପୃଷ୍ଠା ଆକାର ନୁହେଁ।"
@@ -19760,6 +19940,10 @@ msgstr "ଆପଣଙ୍କ ସମୟ ଅଞ୍ଚଳରେ ଏହି ସମୟ �
 
 #: src/features/portfolio/ai/draft-form.tsx
 msgid "This usually takes less than a minute."
+msgstr ""
+
+#: src/features/portfolio/errors.ts
+msgid "This website import isn't kept anymore. Import your website again to add its works."
 msgstr ""
 
 #: src/features/career/workspace/debrief.tsx
@@ -20625,6 +20809,10 @@ msgstr ""
 msgid "Updating your resume..."
 msgstr "ଆପଣଙ୍କ ରେଜ୍ୟୁମେ ଅଦ୍ୟତନ ହେଉଛି..."
 
+#: src/features/profile/sources/site-works-review.tsx
+msgid "Upgrade"
+msgstr ""
+
 #: src/features/billing/purchase-dialog.tsx
 msgid "Upgrade now"
 msgstr ""
@@ -21311,6 +21499,10 @@ msgstr ""
 msgid "We read the page and save the posting for Check, the assistant and your letter."
 msgstr "ଆମେ ପୃଷ୍ଠାଟି ପଢ଼ୁ ଏବଂ ଚେକ୍, ସହାୟକ ଓ ଆପଣଙ୍କ ଚିଠି ପାଇଁ ଚାକିରି ବିଜ୍ଞାପନ ସେଭ୍ କରୁ।"
 
+#: src/features/portfolio/works/add-work/from-site.tsx
+msgid "We read your home page and up to ten pages about your work, then show what we found. Nothing is added until you choose."
+msgstr ""
+
 #: src/features/settings/account/profile.tsx
 msgid "We sent a confirmation link to {email}. Open it to finish the change."
 msgstr "ଆମେ {email} କୁ ଏକ ନିଶ୍ଚିତକରଣ ଲିଙ୍କ୍ ପଠାଇଲୁ | ପରିବର୍ତ୍ତନ ଶେଷ କରିବାକୁ ଏହାକୁ ଖୋଲ |"
@@ -21384,6 +21576,10 @@ msgstr ""
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Website"
 msgstr "ୱେବସାଇଟ୍"
+
+#: src/features/billing/credits.ts
+msgid "Website imported into your Profile and portfolio"
+msgstr ""
 
 #: src/features/billing/credits.ts
 msgid "Website read into your Profile"
@@ -21867,8 +22063,24 @@ msgstr ""
 msgid "Works"
 msgstr ""
 
+#: src/features/profile/sources/site-works-review.tsx
+msgid "Works are added to your portfolio. It isn't published, so nobody sees them yet."
+msgstr ""
+
+#: src/features/profile/sources/site-works-review.tsx
+msgid "Works are added to your published portfolio and show on it right away."
+msgstr ""
+
 #: src/features/portfolio/editor/page-check.tsx
 msgid "Works are what most visitors come to see."
+msgstr ""
+
+#: src/features/profile/sources/site-works-review.tsx
+msgid "Works from your site"
+msgstr ""
+
+#: src/features/profile/sources/site-works-review.tsx
+msgid "Works go into a new portfolio that isn't published. You decide when to publish it."
 msgstr ""
 
 #: src/features/portfolio/ai/draft-dialog.tsx
@@ -22021,6 +22233,10 @@ msgstr "ଲେଖା ସାହାଯ୍ୟ, ଅନୁକୂଳିତ ପରା�
 msgid "Writing or content"
 msgstr ""
 
+#: src/features/profile/sources/messages.ts
+msgid "Writing up your works…"
+msgstr ""
+
 #: src/features/portfolio/ai/draft-form.tsx
 msgid "Writing your draft…"
 msgstr ""
@@ -22156,6 +22372,10 @@ msgstr ""
 msgid "You canceled the sign-in before it finished. Try again when you're ready."
 msgstr "ସାଇନ୍ ଇନ୍ ସମ୍ପୂର୍ଣ୍ଣ ହେବା ପୂର୍ବରୁ ଆପଣ ବାତିଲ୍ କଲେ। ପ୍ରସ୍ତୁତ ହେଲେ ପୁଣି ଚେଷ୍ଟା କରନ୍ତୁ।"
 
+#: src/features/profile/sources/source-fields.tsx
+msgid "You check every work before it's saved."
+msgstr ""
+
 #: src/features/documents/new-document-dialog.tsx
 msgid "You don't have a resume to copy yet. Import or create a resume first, then return to copy it for this job."
 msgstr "ଏପର୍ଯ୍ୟନ୍ତ କପି କରିବାକୁ ଆପଣଙ୍କର ରେଜୁମ୍ ନାହିଁ | ପ୍ରଥମେ ଏକ ରେଜୁମ୍ ଆମଦାନୀ କରନ୍ତୁ କିମ୍ବା ସୃଷ୍ଟି କରନ୍ତୁ, ତାପରେ ଏହି କାର୍ଯ୍ୟ ପାଇଁ ଏହାକୁ କପି କରିବାକୁ ଫେରନ୍ତୁ |"
@@ -22226,6 +22446,10 @@ msgstr "ଆପଣ ଏକ ଅତିଥି ଆକାଉଣ୍ଟ ବ୍ୟବହ�
 
 #: src/features/portfolio/ai/apply.ts
 msgid "You've changed things since. Use Undo at the top of the editor."
+msgstr ""
+
+#: src/features/profile/sources/messages.ts
+msgid "You've imported as many websites as you can today. Try again tomorrow."
 msgstr ""
 
 #: src/features/jobs/jobs-page.tsx
@@ -22458,6 +22682,15 @@ msgstr ""
 msgid "Your file"
 msgstr "ତୁମର ଫାଇଲ୍ |"
 
+#: src/features/portfolio/works/add-work/from-site.tsx
+#: src/features/profile/sources/source-progress.tsx
+msgid "Your first website import is free."
+msgstr ""
+
+#: src/features/profile/sources/source-fields.tsx
+msgid "Your first website import is free. You check every work before it's saved."
+msgstr ""
+
 #: src/features/jobs/listing-fit.tsx
 msgid "Your fit"
 msgstr ""
@@ -22504,6 +22737,10 @@ msgstr ""
 
 #: src/features/portfolio/works/add-work/from-resume.tsx
 msgid "Your latest changes aren't saved yet, so the projects weren't added. Once they're saved, try again."
+msgstr ""
+
+#: src/features/portfolio/works/add-work/from-site.tsx
+msgid "Your latest changes aren't saved yet, so the works weren't added. Once they're saved, try again."
 msgstr ""
 
 #: src/features/portfolio/ai/draft-dialog.tsx
@@ -22649,6 +22886,10 @@ msgstr ""
 msgid "Your own fonts aren't in your plan. Fonts already added keep working on the page."
 msgstr ""
 
+#: src/features/portfolio/works/add-work/add-work-dialog.tsx
+msgid "Your own site's works at once, with their story, numbers and pictures."
+msgstr ""
+
 #: src/features/billing/plan.ts
 msgid "Your page keeps its address on Rezumi."
 msgstr ""
@@ -22717,6 +22958,10 @@ msgstr ""
 
 #: src/features/portfolio/portfolio-page.tsx
 msgid "Your portfolio"
+msgstr ""
+
+#: src/features/portfolio/works/add-work/from-site.tsx
+msgid "Your portfolio already has these works."
 msgstr ""
 
 #: src/features/homepage/closing.tsx
@@ -22803,6 +23048,10 @@ msgstr ""
 
 #: src/features/billing/plan.ts
 msgid "Your portfolio's storage is full"
+msgstr ""
+
+#: src/features/profile/sources/use-site-works.ts
+msgid "Your portfolio's storage is full, so some works were saved without their pictures."
 msgstr ""
 
 #: src/features/portfolio/errors.ts
@@ -22916,6 +23165,10 @@ msgstr ""
 msgid "Your selected font can't display some characters. They show as “?”. In Design, choose a font that has them."
 msgstr "ଆପଣ ଚୟନ କରିଥିବା ଫଣ୍ଟ କିଛି ଅକ୍ଷର ଦେଖାଇପାରିବ ନାହିଁ। ଏଗୁଡ଼ିକ “?” ଭାବେ ଦେଖାଯାଏ। ଡିଜାଇନ୍ ଟ୍ୟାବରେ, ଏଗୁଡ଼ିକ ଥିବା ଏକ ଫଣ୍ଟ ବାଛନ୍ତୁ।"
 
+#: src/features/profile/sources/messages.ts
+msgid "Your site has more works than one import brings. Add the rest in your portfolio."
+msgstr ""
+
 #: src/features/portfolio/editor/publish-panel.tsx
 msgid "Your source resume is in Trash"
 msgstr ""
@@ -22964,6 +23217,7 @@ msgstr "ଆପଣଙ୍କ ଦୁଇ ମିନିଟ୍‌ର ପରିଚୟ"
 msgid "Your web page is live"
 msgstr "ଆପଣଙ୍କ ୱେବ୍ ପୃଷ୍ଠା ଲାଇଭ୍ ଅଛି"
 
+#: src/features/portfolio/works/add-work/from-site.tsx
 #: src/features/profile/sources/messages.ts
 msgid "Your website"
 msgstr ""

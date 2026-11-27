@@ -22,6 +22,7 @@ import {
 	sourceErrorCode,
 	sourceFindings,
 	websiteAddress,
+	websitePlatform,
 	withKeptPhoto,
 } from "./profile-sources";
 
@@ -82,13 +83,34 @@ describe("reading what was entered", () => {
 				linkedinOwn: true,
 				github: "@Dewi-Dev",
 				website: "dewi.design",
+				websiteOwn: false,
 			},
 			everything,
 		);
 		expect(problems).toEqual({});
 		expect(requests.map((request) => request.id)).toEqual(["file", "linkedin", "github", "website"]);
 		expect(requests[2]).toMatchObject({ username: "Dewi-Dev", key: "dewi-dev" });
-		expect(requests[3]).toMatchObject({ url: "https://dewi.design/" });
+		expect(requests[3]).toMatchObject({ url: "https://dewi.design/", own: false });
+	});
+
+	it("imports an own website's works only where portfolios are open, as another run than reading the page", () => {
+		const inputs = { ...emptySourceInputs(), website: "dewi.design", websiteOwn: true };
+		expect(readSourceInputs(inputs, everything).requests).toEqual([
+			{ id: "website", key: "https://dewi.design/", url: "https://dewi.design/", own: false },
+		]);
+		expect(readSourceInputs(inputs, { ...everything, websiteImport: true }).requests).toEqual([
+			{ id: "website", key: "https://dewi.design/#own", url: "https://dewi.design/", own: true },
+		]);
+	});
+
+	it("points LinkedIn, Behance and Dribbble addresses away from the website field", () => {
+		const read = (website: string) => readSourceInputs({ ...emptySourceInputs(), website }, everything);
+		expect(read("www.linkedin.com/in/dewi").problems).toEqual({ website: "linkedin-site" });
+		expect(read("behance.net/dewi").problems).toEqual({ website: "platform-site" });
+		expect(read("https://dribbble.com/dewi").requests).toEqual([]);
+		expect(read("notbehance.net").problems).toEqual({});
+		expect(websitePlatform("https://dewi.dribbble.com/")).toBe("dribbble");
+		expect(websitePlatform("not a url")).toBeNull();
 	});
 
 	it("holds LinkedIn back until the person says the profile is theirs", () => {
@@ -128,7 +150,7 @@ describe("reading what was entered", () => {
 
 describe("running sources", () => {
 	const github = { id: "github", key: "dewi-dev", username: "dewi-dev" } as const;
-	const website = { id: "website", key: "https://dewi.design/", url: "https://dewi.design/" } as const;
+	const website = { id: "website", key: "https://dewi.design/", url: "https://dewi.design/", own: false } as const;
 
 	it("starts new, changed and failed sources and leaves running or found ones alone", () => {
 		const runs: SourceRuns = {
@@ -290,6 +312,7 @@ describe("app files and errors", () => {
 		const problems = { linkedin: "unconfirmed", github: "invalid" } as const;
 		expect(clearEditedProblems(problems, { linkedinOwn: true })).toEqual({ github: "invalid" });
 		expect(clearEditedProblems(problems, { website: "x" })).toEqual(problems);
+		expect(clearEditedProblems({ website: "platform-site" }, { websiteOwn: true })).toEqual({});
 	});
 });
 

@@ -10,15 +10,16 @@ This covers rezumi.app and apps connected to it. Other servers have their own op
 
 ## Data, purposes and legal bases
 
-| Data                                                                                                                                       | Purpose                                               | Basis                                                                   |
-| ------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------- | ----------------------------------------------------------------------- |
-| Name, email, username, optional photo, verification status                                                                                 | Accounts, profiles and service delivery               | Contract                                                                |
-| Password hash, sessions/tokens, IP/user agent, verification, 2FA/passkeys, social login identifiers/tokens                                 | Authentication and abuse prevention                   | Contract and security legitimate interests balanced against user rights |
-| Resumes, letters, uploads, versions, private notes, applications, contacts/interviews, knowledge, offers, career schedules                 | Storage, sync, exports and requested features         | Contract; user choices to publish/connect                               |
-| Order number, Dodo or SumoPod payment/subscription ids, amount, currency, method/status/time, access periods, refunds, credit usage ledger | Payment verification, access, disputes and accounting | Contract and legal obligations                                          |
-| Document/text, job context, prompts, AI results and action costs                                                                           | Requested AI operations                               | User request/contract and consent where required                        |
-| Session/preference cookies, device storage, security logs, resume view/download counts                                                     | Functionality, security, resume statistics            | Contract and proportionate legitimate interests                         |
-| Submitted complaints, refund requests (including the bank or e-wallet account for a QRIS refund) and content reports                       | Support, refunds, moderation, rights                  | Contract, legal obligations and security legitimate interests           |
+| Data                                                                                                                                             | Purpose                                                          | Basis                                                                   |
+| ------------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------- | ----------------------------------------------------------------------- |
+| Name, email, username, optional photo, verification status                                                                                       | Accounts, profiles and service delivery                          | Contract                                                                |
+| Password hash, sessions/tokens, IP/user agent, verification, 2FA/passkeys, social login identifiers/tokens                                       | Authentication and abuse prevention                              | Contract and security legitimate interests balanced against user rights |
+| Resumes, letters, uploads, versions, private notes, applications, contacts/interviews, knowledge, offers, career schedules                       | Storage, sync, exports and requested features                    | Contract; user choices to publish/connect                               |
+| Order number, Dodo or SumoPod payment/subscription ids, amount, currency, method/status/time, access periods, refunds, credit usage ledger       | Payment verification, access, disputes and accounting            | Contract and legal obligations                                          |
+| Document/text, job context, prompts, AI results and action costs                                                                                 | Requested AI operations                                          | User request/contract and consent where required                        |
+| A GitHub username or personal website address you enter, what is read from it, and the pictures of works you choose to add from your own website | Filling your Profile and portfolio when you ask, for your review | User request/contract                                                   |
+| Session/preference cookies, device storage, security logs, resume view/download counts                                                           | Functionality, security, resume statistics                       | Contract and proportionate legitimate interests                         |
+| Submitted complaints, refund requests (including the bank or e-wallet account for a QRIS refund) and content reports                             | Support, refunds, moderation, rights                             | Contract, legal obligations and security legitimate interests           |
 
 Avoid unnecessary identity numbers, health data, children's data and sensitive information in documents/prompts.
 Only provide others' data with a lawful basis. We do not sell data or use resumes for advertising.
@@ -53,6 +54,20 @@ blog use Google Analytics to count visits; security logs and resume statistics s
   Rezumi AI will identify provider/model before use; launch provider: **Anthropic (Claude Haiku 5.5, United States)**. Anthropic deletes inputs and outputs within **30 days**, except content flagged under its usage policy (up to 2 years) or where the law requires otherwise, and does not use them to train models.
   Spending credits does not authorize model training. Provider retention/training terms must be disclosed before activation;
   Rezumi AI must remain disabled until complete. Saved API keys are encrypted and not exposed to other users.
+- **Profile sources, only when you ask:** when you set up or fill your Profile, you can add a GitHub username or a personal
+  website. Nothing is read until you select Continue, and nothing goes into your Profile or portfolio until you check it
+  and save.
+  - **GitHub (GitHub, Inc., United States):** Rezumi reads the public profile and public repositories of the username you
+    enter, through GitHub's API. If you signed in with GitHub, Rezumi uses that sign-in to make the request.
+  - **Personal websites:** the page is fetched from its own server (or, when it needs JavaScript, through Cloudflare's
+    browser rendering) and read by the AI provider you chose (see AI providers). If you confirm the site is your own,
+    Rezumi also reads up to ten of its pages about your work (eleven pages in all) to suggest portfolio works. What was
+    found is kept for 24 hours so you can review it, then deleted; Rezumi keeps only a record that the import ran (the
+    site's address, when, how many pages and works, and whether it was your free one). Nothing is added until you choose
+    the works. The pictures of the works you add are copied to your portfolio's storage at Rezumi and count toward its
+    storage limit; Rezumi does not show them from your site.
+  - Only what you keep at review is saved. A photo you keep is copied into your account's private uploads; the original
+    stays where it was.
 - **Transactional email:** email address and necessary account/receipt details; production provider: **Cloudflare Email**; retention follows Cloudflare's terms.
 - **Social login and connected apps:** login providers receive authentication requests. Authorized OAuth/API/MCP apps may read/change
   profile, resumes, letters, applications, history/statistics and career data within granted scopes. Revoke access in connected apps/API key settings.
@@ -167,7 +182,7 @@ including affected data, timing/circumstances and response measures; public noti
 
 Cloudflare, Neon, email and AI providers may process data outside Indonesia. Before transfer, assess equivalent protection;
 otherwise ensure adequate binding safeguards, and if those conditions cannot be met obtain consent as required by law.
-Processing locations: Singapore (Neon), the United States (Dodo Payments, Anthropic), India (Dodo Payments) and Cloudflare's global network. Transfers follow the data processing agreement with each provider.
+Processing locations: Singapore (Neon), the United States (Dodo Payments, Anthropic, and GitHub when you add a GitHub username), India (Dodo Payments) and Cloudflare's global network. Transfers follow the data processing agreement with each provider.
 
 ## Children and changes
 

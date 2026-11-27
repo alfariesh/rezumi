@@ -17,6 +17,8 @@ export const REZUMI_AI_TEXT =
 type AiSourceMenuProps = {
 	/** The kind of work the action next to it is, for its cost on Rezumi AI. */
 	action: CreditAction;
+	/** This run costs nothing on Rezumi AI (an account's first website import). */
+	free?: boolean;
 	className?: string;
 };
 
@@ -24,10 +26,10 @@ type AiSourceMenuProps = {
  * Says which AI the action next to it runs on and, on Rezumi AI, what it costs, before the user runs it; it also
  * switches between Rezumi AI and the user's own connection. Shows nothing while the account doesn't choose.
  */
-export function AiSourceMenu({ action, className }: AiSourceMenuProps) {
+export function AiSourceMenu({ action, free = false, className }: AiSourceMenuProps) {
 	const { choice, source, balance, own } = useAiSource();
 	if (!choice) return null;
-	const cost = creditCount(creditCost(action));
+	const cost = free ? t`free this time` : creditCount(creditCost(action));
 
 	return (
 		<Dropdown>
@@ -65,9 +67,15 @@ export function AiSourceMenu({ action, className }: AiSourceMenuProps) {
 						<span className="grid min-w-0 flex-1">
 							<Label className={REZUMI_AI_TEXT}>Rezumi AI</Label>
 							<Description>
-								<Trans>
-									{cost} each time · {creditCount(balance)} left
-								</Trans>
+								{free ? (
+									<Trans>
+										Free this time, then {creditCount(creditCost(action))} · {creditCount(balance)} left
+									</Trans>
+								) : (
+									<Trans>
+										{cost} each time · {creditCount(balance)} left
+									</Trans>
+								)}
 							</Description>
 						</span>
 						<Dropdown.ItemIndicator />

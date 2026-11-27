@@ -1,6 +1,8 @@
+import type { SiteImportProgress } from "./site-import";
 import type { PhotoSource, SourceId, SourceInputProblem } from "@rezumi/resume/profile-sources";
+import type { WebsiteImportNote } from "@rezumi/schema/profile/website-import";
 import type { IconName } from "@rezumi/ui/components/icon";
-import { t } from "@lingui/core/macro";
+import { plural, t } from "@lingui/core/macro";
 import { ORPCError } from "@orpc/client";
 import { getOrpcErrorMessage } from "@/libs/error-message";
 
@@ -33,6 +35,9 @@ export function photoSourceLabel(source: PhotoSource): string {
 /** What's wrong with a field before anything runs, with the way to fix it. */
 export function inputProblemMessage(id: Exclude<SourceId, "file">, problem: SourceInputProblem): string {
 	if (problem === "unconfirmed") return t`Confirm this is your own profile.`;
+	if (problem === "linkedin-site") return t`Add your LinkedIn profile in the LinkedIn field instead.`;
+	if (problem === "platform-site")
+		return t`Behance and Dribbble can't be read yet. Use your own site's address, or add works later in your portfolio.`;
 	switch (id) {
 		case "linkedin":
 			return t`Paste your profile link, like linkedin.com/in/your-name.`;
@@ -62,9 +67,10 @@ export function sourceErrorMessage(id: SourceId, error: unknown): string {
 		case "SOURCE_INVALID":
 			return inputProblemMessage(id === "file" ? "website" : id, "invalid");
 		case "SOURCE_LIMIT":
-			return id === "linkedin"
-				? t`You've used today's LinkedIn imports. Try again tomorrow, or add your LinkedIn export.`
-				: t`You've used this as often as you can today. Try again tomorrow.`;
+			if (id === "linkedin")
+				return t`You've used today's LinkedIn imports. Try again tomorrow, or add your LinkedIn export.`;
+			if (id === "website") return t`You've imported as many websites as you can today. Try again tomorrow.`;
+			return t`You've used this as often as you can today. Try again tomorrow.`;
 		case "SOURCE_FAILED":
 			return t`${sourceLabel(id)} didn't answer in time. Try again in a moment.`;
 		case "INSUFFICIENT_CREDITS":
@@ -100,4 +106,29 @@ export function sourceNoteMessage(note: string): string | null {
 		default:
 			return null;
 	}
+}
+
+/** A website import's notes about its works (`WEBSITE_IMPORT_NOTES`); `truncated` is the website source's own note. */
+export function siteImportNoteMessage(note: WebsiteImportNote): string | null {
+	switch (note) {
+		case "pages-failed":
+			return t`Some pages about your work couldn't be read. The others came in.`;
+		case "more-works":
+			return t`Your site has more works than one import brings. Add the rest in your portfolio.`;
+		case "no-works":
+			return t`No works were found on this site.`;
+		case "truncated":
+			return sourceNoteMessage("truncated");
+	}
+}
+
+/** Where a website import is: reading the site, the pages about work it found, each page, then writing the works. */
+export function siteImportStepLabel(progress: SiteImportProgress | null): string {
+	if (!progress || progress.type === "reading") return t`Reading your site…`;
+	if (progress.type === "found")
+		return progress.pages === 0
+			? t`Reading your details…`
+			: plural(progress.pages, { one: "Found # page about your work", other: "Found # pages about your work" });
+	if (progress.type === "page") return t`Reading work ${progress.done} of ${progress.total}…`;
+	return t`Writing up your works…`;
 }

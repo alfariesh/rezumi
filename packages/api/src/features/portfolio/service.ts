@@ -577,6 +577,29 @@ export const portfolioService = {
 		);
 	},
 
+	/**
+	 * Saves works built on the server (a website import, `site-import.ts`): `build` gets the saved data under the
+	 * portfolio's lock and returns the whole new list of works, or null to change nothing. Checked and saved like
+	 * `importWorks`, at the version it read under the lock, so an editor open elsewhere sees a conflict, not a loss.
+	 */
+	saveBuiltWorks: async (
+		userId: string,
+		build: (current: PortfolioData) => PortfolioData["works"]["items"] | null,
+	): Promise<PortfolioDto> => {
+		await requireEnabled(userId);
+		return db.transaction(async (tx) => {
+			const locked = await lockPortfolio(tx, userId);
+			if (!locked) throw portfolioErrors.notFound();
+			return saveVersionedData(tx, userId, locked.updatedAt, async () => {
+				const current = parsePortfolioData(await readStoredData(tx, userId));
+				const works = build(current);
+				if (!works) return null;
+				if (works.length > PORTFOLIO_LIMITS.works) throw portfolioErrors.worksLimit();
+				return prepareData(userId, parseBuiltData({ ...current, works: { items: works } }));
+			});
+		});
+	},
+
 	setPublic: async (userId: string, input: { isPublic: boolean }): Promise<PortfolioDto> => {
 		const account = await requireEnabled(userId);
 		if (input.isPublic && !account.emailVerified) throw portfolioErrors.emailNotVerified();

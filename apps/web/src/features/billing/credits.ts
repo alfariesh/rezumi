@@ -34,6 +34,8 @@ export function getCreditActionName(action: string) {
 			return t`Numbers found for your portfolio`;
 		case "profile-website":
 			return t`Website read into your Profile`;
+		case "profile-website-import":
+			return t`Website imported into your Profile and portfolio`;
 		case "admin-adjustment":
 			return t`Correction by Rezumi`;
 		default:

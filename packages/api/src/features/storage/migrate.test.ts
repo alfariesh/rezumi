@@ -192,7 +192,7 @@ describe("processImageForUpload", () => {
 		configureImageProcessor(processor);
 		try {
 			await expect(processImageForUpload(new File([png], "a.png"))).resolves.toEqual(resized);
-			expect(processor).toHaveBeenCalledWith(png);
+			expect(processor).toHaveBeenCalledWith(png, { side: 800, quality: 80 });
 
 			await expect(
 				processImageForUpload(new File([new TextEncoder().encode("<svg/>")], "a.png")),

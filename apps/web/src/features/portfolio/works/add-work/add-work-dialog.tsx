@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import { Modal } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
+import { useQuery } from "@tanstack/react-query";
 import { useId, useState } from "react";
 import { newWork } from "@rezumi/portfolio/editing";
 import { Icon } from "@rezumi/ui/components/icon";
@@ -12,8 +13,16 @@ import { focusWorkTitle } from "../doc-focus";
 import { FromLink } from "./from-link";
 import { FromPictures } from "./from-pictures";
 import { FromResume } from "./from-resume";
+import { FromSite } from "./from-site";
+import { orpc } from "@/libs/orpc/client";
 
-type Way = "empty" | "resume" | "pictures" | "link";
+export type AddWorkWay = "empty" | "resume" | "pictures" | "link" | "site";
+
+/** Whether this account's server imports websites (and the account may: it isn't a guest). */
+export function useCanImportSite() {
+	const { data } = useQuery(orpc.profile.sources.status.queryOptions());
+	return Boolean(data?.website && data.websiteImportFree !== undefined);
+}
 
 type WayCardProps = {
 	icon: Parameters<typeof Icon>[0]["name"];
@@ -40,14 +49,19 @@ function WayCard({ icon, title, text, onPress }: WayCardProps) {
 	);
 }
 
-type AddWorkDialogProps = { onClose: () => void };
+type AddWorkDialogProps = {
+	onClose: () => void;
+	/** Opens straight on one way (the empty list's "Import from your website"). */
+	initialWay?: AddWorkWay | null;
+};
 
-/** "Add work": empty, from resume projects, from pictures, or from a pasted link. */
-export function AddWorkDialog({ onClose }: AddWorkDialogProps) {
+/** "Add work": empty, from resume projects, from pictures, from a pasted link, or from the person's own website. */
+export function AddWorkDialog({ onClose, initialWay = null }: AddWorkDialogProps) {
 	const id = useId();
 	const data = usePortfolioData();
 	const openWork = usePortfolioEditorUi((state) => state.openWork);
-	const [way, setWay] = useState<Way | null>(null);
+	const [way, setWay] = useState<AddWorkWay | null>(initialWay);
+	const canImportSite = useCanImportSite();
 	const fromProfile = usePortfolioSource().from === "profile";
 	// A step in the middle of an upload or import: closing would cut it short, so only its own buttons end it.
 	const [busy, setBusy] = useState(false);
@@ -88,6 +102,8 @@ export function AddWorkDialog({ onClose }: AddWorkDialogProps) {
 								<Trans>Add work from pictures</Trans>
 							) : way === "link" ? (
 								<Trans>Add work from a link</Trans>
+							) : way === "site" ? (
+								<Trans>Import from your website</Trans>
 							) : (
 								<Trans>Add work</Trans>
 							)}
@@ -99,6 +115,8 @@ export function AddWorkDialog({ onClose }: AddWorkDialogProps) {
 						<FromPictures onBack={() => setWay(null)} onClose={onClose} onBusy={setBusy} />
 					) : way === "link" ? (
 						<FromLink onBack={() => setWay(null)} onClose={onClose} onBusy={setBusy} />
+					) : way === "site" ? (
+						<FromSite onBack={() => setWay(null)} onClose={onClose} onBusy={setBusy} />
 					) : (
 						<Modal.Body className="grid gap-2">
 							<WayCard
@@ -131,6 +149,14 @@ export function AddWorkDialog({ onClose }: AddWorkDialogProps) {
 								text={<Trans>Behance, Dribbble, GitHub, YouTube or any site fills in the card.</Trans>}
 								onPress={() => setWay("link")}
 							/>
+							{canImportSite && (
+								<WayCard
+									icon="globe"
+									title={<Trans>Import from your website</Trans>}
+									text={<Trans>Your own site's works at once, with their story, numbers and pictures.</Trans>}
+									onPress={() => setWay("site")}
+								/>
+							)}
 						</Modal.Body>
 					)}
 				</Modal.Dialog>

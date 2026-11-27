@@ -120,6 +120,16 @@ msgstr "(pembayaran ini)"
 msgid "{0, plural, =0 {Add work} one {Add # work} other {Add # works}}"
 msgstr "{0, plural, =0 {Tambahkan karya} other {Tambahkan # karya}}"
 
+#. placeholder {0}: siteWorks.count
+#: src/features/portfolio/works/add-work/from-site.tsx
+msgid "{0, plural, =0 {Add works} one {Add # work} other {Add # works}}"
+msgstr "{0, plural, =0 {Tambahkan karya} one {Tambahkan # karya} other {Tambahkan # karya}}"
+
+#. placeholder {0}: done.added
+#: src/features/profile/fill.tsx
+msgid "{0, plural, =0 {Added to your Profile. Your portfolio already had these works.} one {Added to your Profile, and # work to your portfolio.} other {Added to your Profile, and # works to your portfolio.}}"
+msgstr "{0, plural, =0 {Ditambahkan ke Profil Anda. Portfolio Anda sudah punya karya-karya ini.} one {Ditambahkan ke Profil Anda, dan # karya ke portfolio Anda.} other {Ditambahkan ke Profil Anda, dan # karya ke portfolio Anda.}}"
+
 #. placeholder {0}: results.length
 #: src/features/portfolio/location/location-fields.tsx
 msgid "{0, plural, =0 {No cities found} one {# city found} other {# cities found}}"
@@ -247,6 +257,11 @@ msgstr "{0, plural, other {# halaman}}"
 msgid "{0, plural, one {# paid payment, after refunds} other {# paid payments, after refunds}}"
 msgstr "{0, plural, one {# pembayaran lunas, setelah refund} other {# pembayaran lunas, setelah refund}}"
 
+#. placeholder {0}: done.picturesSkipped
+#: src/features/profile/sources/use-site-works.ts
+msgid "{0, plural, one {# picture couldn't be copied. The works were saved without it.} other {# pictures couldn't be copied. The works were saved without them.}}"
+msgstr "{0, plural, one {# gambar tidak bisa disalin. Karya disimpan tanpa gambar itu.} other {# gambar tidak bisa disalin. Karya disimpan tanpa gambar-gambar itu.}}"
+
 #. placeholder {0}: proposals.length
 #: src/features/assistant/conversation.tsx
 #: src/features/resume/editor/proposals/proposal-list.tsx
@@ -286,15 +301,35 @@ msgstr "{0, plural, one {# dipilih} other {# dipilih}}"
 msgid "{0, plural, one {# story} other {# stories}}"
 msgstr "{0, plural, other {# cerita}}"
 
+#. placeholder {0}: done.added
+#: src/features/onboarding/onboarding-page.tsx
+msgid "{0, plural, one {# work from your site is in your portfolio.} other {# works from your site are in your portfolio.}}"
+msgstr "{0, plural, one {# karya dari situs Anda sudah ada di portfolio Anda.} other {# karya dari situs Anda sudah ada di portfolio Anda.}}"
+
 #. placeholder {0}: work.tags.length - 3
 #: src/features/portfolio/works/work-document.tsx
 msgid "{0, plural, one {+# tag} other {+# tags}}"
 msgstr "{0, plural, other {+# tag}}"
 
+#. placeholder {0}: siteWorks.count
+#: src/features/profile/fill.tsx
+msgid "{0, plural, one {Add, with # work} other {Add, with # works}}"
+msgstr "{0, plural, one {Tambahkan, dengan # karya} other {Tambahkan, dengan # karya}}"
+
 #. placeholder {0}: remembered.ids.length
 #: src/features/career/coach-chat.tsx
 msgid "{0, plural, one {Added # fact to your Profile.} other {Added # facts to your Profile.}}"
 msgstr "{0, plural, other {# fakta ditambahkan ke Profil Anda.}}"
+
+#. placeholder {0}: done.added
+#: src/features/portfolio/works/add-work/from-site.tsx
+msgid "{0, plural, one {Added # work from your site.} other {Added # works from your site.}}"
+msgstr "{0, plural, one {# karya dari situs Anda ditambahkan.} other {# karya dari situs Anda ditambahkan.}}"
+
+#. placeholder {0}: result.works.length
+#: src/features/profile/sources/source-progress.tsx
+msgid "{0, plural, one {And # work for your portfolio} other {And # works for your portfolio}}"
+msgstr "{0, plural, one {Dan # karya untuk portfolio Anda} other {Dan # karya untuk portfolio Anda}}"
 
 #. placeholder {0}: step.days
 #: src/features/applications/next-step.ts
@@ -320,6 +355,11 @@ msgstr "{0, plural, one {Hapus # lamaran} other {Hapus # lamaran}}"
 #: src/features/applications/next-step.ts
 msgid "{0, plural, one {For # day} other {For # days}}"
 msgstr "{0, plural, one {Untuk hari #} other {Selama # hari}}"
+
+#. placeholder {0}: progress.pages
+#: src/features/profile/sources/messages.ts
+msgid "{0, plural, one {Found # page about your work} other {Found # pages about your work}}"
+msgstr "{0, plural, one {Menemukan # halaman karya} other {Menemukan # halaman karya}}"
 
 #. placeholder {0}: parsed.requirements.length
 #: src/features/applications/components/add-application-dialog.tsx
@@ -998,6 +1038,8 @@ msgid "{kept, plural, one {# entry ticked} other {# entries ticked}}"
 msgstr "{kept, plural, one {# entri dicentang} other {# entri dicentang}}"
 
 #. placeholder {0}: keys.length
+#. placeholder {0}: works.length
+#: src/features/profile/sources/site-works-review.tsx
 #: src/features/profile/sources/source-review.tsx
 msgid "{kept} of {0}"
 msgstr "{kept} dari {0}"
@@ -1212,6 +1254,10 @@ msgstr "{passedRules} dari {totalRules} lulus cek."
 msgid "{pendingOnPage, plural, one {# proposed edit on this page · nothing changes until you accept} other {# proposed edits on this page · nothing changes until you accept}}"
 msgstr "{pendingOnPage, plural, one {# usulan edit di halaman ini · tidak ada perubahan sampai Anda menerimanya} other {# usulan pengeditan pada halaman ini · tidak ada perubahan sampai Anda menerimanya}}"
 
+#: src/features/profile/sources/site-works-review.tsx
+msgid "{pictures, plural, =0 {No pictures} one {# picture} other {# pictures}}"
+msgstr "{pictures, plural, =0 {Tanpa gambar} one {# gambar} other {# gambar}}"
+
 #: src/features/portfolio/editor/publish-panel.tsx
 msgid "{placeholders, plural, one {# place written in [brackets] will show on your page as it is.} other {# places written in [brackets] will show on your page as they are.}}"
 msgstr "{placeholders, plural, other {# bagian bertanda [kurung siku] akan tampil di halaman Anda apa adanya.}}"
@@ -1244,6 +1290,10 @@ msgstr "{plan} gratis sampai {0}. Setelah itu kartumu ditagih {price} ditambah p
 #: src/features/billing/payment-return.tsx
 msgid "{plan} starts on {0}, after your current plan, and runs until {1}."
 msgstr "{plan} mulai {0}, setelah paketmu yang sekarang, dan berlaku sampai {1}."
+
+#: src/features/profile/sources/site-works-review.tsx
+msgid "{planLimit, plural, one {Your plan holds # work in the portfolio. Upgrade to add them all.} other {Your plan holds # works in the portfolio. Upgrade to add them all.}}"
+msgstr "{planLimit, plural, one {Paket Anda memuat # karya di portfolio. Upgrade untuk menambahkan semuanya.} other {Paket Anda memuat # karya di portfolio. Upgrade untuk menambahkan semuanya.}}"
 
 #: src/features/billing/pending-payment.tsx
 msgid "{price}, open until {deadline}."
@@ -2583,6 +2633,10 @@ msgstr ""
 msgid "Add your first work"
 msgstr "Tambahkan karya pertama Anda"
 
+#: src/features/profile/sources/messages.ts
+msgid "Add your LinkedIn profile in the LinkedIn field instead."
+msgstr "Tambahkan profil LinkedIn Anda di kolom LinkedIn saja."
+
 #: src/features/portfolio/editor/page-check.tsx
 #: src/features/resume/editor/check/issues.ts
 msgid "Add your name"
@@ -2942,6 +2996,10 @@ msgstr "Sudah tercakup · pilih satu untuk menemukannya di halaman"
 #: src/features/auth/pages/register.tsx
 msgid "Already have an account? <0>Sign in now <1/></0>"
 msgstr ""
+
+#: src/features/profile/sources/site-works-review.tsx
+msgid "Already in your portfolio"
+msgstr "Sudah ada di portfolio Anda"
 
 #: src/features/portfolio/works/add-work/from-resume.tsx
 msgid "Already in your work"
@@ -3725,6 +3783,10 @@ msgstr "Sebelum Anda mengirim"
 #: src/features/portfolio/metrics/metric-preview.tsx
 msgid "Before: {before}"
 msgstr "Sebelum: {before}"
+
+#: src/features/profile/sources/messages.ts
+msgid "Behance and Dribbble can't be read yet. Use your own site's address, or add works later in your portfolio."
+msgstr "Behance dan Dribbble belum bisa dibaca. Pakai alamat situs pribadi Anda, atau tambahkan karya nanti di portfolio Anda."
 
 #: src/features/portfolio/works/add-work/add-work-dialog.tsx
 msgid "Behance, Dribbble, GitHub, YouTube or any site fills in the card."
@@ -4978,6 +5040,10 @@ msgstr "Konfirmasi waktu, tautan, dan siapa yang akan Anda temui. Lihat sekilas 
 msgid "Confirm this is your own profile."
 msgstr "Pastikan ini profil Anda sendiri."
 
+#: src/features/portfolio/works/add-work/from-site.tsx
+msgid "Confirm this is your own site."
+msgstr "Pastikan ini situs Anda sendiri."
+
 #: src/features/assistant/provider-setup.tsx
 #: src/features/resume/share/custom-domain-field.tsx
 #: src/features/settings/account/security.tsx
@@ -5302,6 +5368,12 @@ msgstr "Salin gambar mini"
 #: src/features/assistant/conversation.tsx
 msgid "Copy transcript"
 msgstr "Salin transkrip"
+
+#. placeholder {0}: progress.done
+#. placeholder {1}: progress.total
+#: src/features/profile/sources/use-site-works.ts
+msgid "Copying pictures {0} of {1}…"
+msgstr "Menyalin gambar {0} dari {1}…"
 
 #: src/features/portfolio/blocks/add-media-block.tsx
 msgid "Copying the picture…"
@@ -5868,6 +5940,10 @@ msgstr "Tidak dapat menyimpan perubahan Anda. Coba lagi."
 msgid "Couldn't save your preferences. Try again."
 msgstr "Tidak dapat menyimpan preferensi Anda. Coba lagi."
 
+#: src/features/profile/fill.tsx
+msgid "Couldn't save your Profile, so the works weren't added. Try again."
+msgstr "Profil Anda tidak bisa disimpan, jadi karya belum ditambahkan. Coba lagi."
+
 #: src/features/onboarding/onboarding-page.tsx
 msgid "Couldn't save your Profile, so this would open again. Try again."
 msgstr "Profil Anda tidak bisa disimpan, jadi halaman ini akan muncul lagi. Coba lagi."
@@ -5875,6 +5951,14 @@ msgstr "Profil Anda tidak bisa disimpan, jadi halaman ini akan muncul lagi. Coba
 #: src/features/onboarding/onboarding-page.tsx
 msgid "Couldn't save your Profile. Try again."
 msgstr "Profil Anda tidak bisa disimpan. Coba lagi."
+
+#: src/features/profile/sources/use-site-works.ts
+msgid "Couldn't save your works. Check your connection, then try again from your portfolio."
+msgstr "Karya Anda tidak bisa disimpan. Periksa koneksi Anda, lalu coba lagi dari portfolio Anda."
+
+#: src/features/profile/sources/use-site-works.ts
+msgid "Couldn't save your works. Try again from your portfolio."
+msgstr "Karya Anda tidak bisa disimpan. Coba lagi dari portfolio Anda."
 
 #: src/features/settings/account/profile.tsx
 msgid "Couldn't save. Try again."
@@ -8197,6 +8281,10 @@ msgstr "Cari lowongan"
 msgid "Find jobs that fit"
 msgstr "Temukan lowongan yang cocok"
 
+#: src/features/portfolio/works/add-work/from-site.tsx
+msgid "Find my works"
+msgstr "Cari karya saya"
+
 #: src/features/portfolio/metrics/find-metrics.tsx
 msgid "Find numbers"
 msgstr "Temukan angka"
@@ -8573,6 +8661,16 @@ msgstr "Gratis di semua paket. Plugin membaca halaman loker hanya saat kamu memi
 #: src/features/homepage/hero.tsx
 msgid "Free plan, no card needed. PDF downloads without a watermark."
 msgstr "Paket gratis, tanpa kartu. Unduh PDF tanpa watermark."
+
+#: src/features/billing/ai-source-menu.tsx
+msgid "free this time"
+msgstr "gratis kali ini"
+
+#. placeholder {0}: creditCount(creditCost(action))
+#. placeholder {1}: creditCount(balance)
+#: src/features/billing/ai-source-menu.tsx
+msgid "Free this time, then {0} · {1} left"
+msgstr "Gratis kali ini, lalu {0} · sisa {1}"
 
 #. A recent job search that opens again today without counting
 #: src/features/jobs/recent-searches.tsx
@@ -9140,6 +9238,11 @@ msgstr "Sembunyikan {title} dari halaman"
 msgid "Hide contact details"
 msgstr "Sembunyikan detail kontak"
 
+#. placeholder {0}: work.title
+#: src/features/profile/sources/site-works-review.tsx
+msgid "Hide details of {0}"
+msgstr "Sembunyikan detail {0}"
+
 #: src/features/resume/editor/write/entry-card.tsx
 msgid "Hide from page"
 msgstr "Sembunyikan dari halaman"
@@ -9487,6 +9590,11 @@ msgstr "Impor dari CSV"
 msgid "Import from CSV…"
 msgstr "Impor dari CSV…"
 
+#: src/features/portfolio/works/add-work/add-work-dialog.tsx
+#: src/features/portfolio/works/works-panel.tsx
+msgid "Import from your website"
+msgstr "Impor dari website"
+
 #: src/features/documents/new-document-dialog.tsx
 msgid "Import or create a resume"
 msgstr "Impor atau buat resume"
@@ -9535,6 +9643,10 @@ msgstr "Pengimporan"
 #: src/features/ats-checker/checker.tsx
 msgid "Importing it into your new resume…"
 msgstr "Mengimpornya ke resume baru Anda…"
+
+#: src/features/profile/sources/source-fields.tsx
+msgid "Importing your own site reads up to eleven of its pages. Their text goes to the AI; the pictures of the works you keep are copied to your portfolio's storage."
+msgstr "Mengimpor situs Anda sendiri membaca sampai sebelas halamannya. Teksnya dikirim ke AI; gambar karya yang Anda simpan disalin ke penyimpanan portfolio Anda."
 
 #: src/features/resume/editor/write/rich-text-editor-field.tsx
 msgid "Improve"
@@ -12271,6 +12383,14 @@ msgstr "Belum ada karya yang dibuka."
 msgid "No work-experience section was found."
 msgstr "Tidak ditemukan bagian pengalaman kerja."
 
+#: src/features/profile/sources/messages.ts
+msgid "No works were found on this site."
+msgstr "Tidak ada karya yang ditemukan di situs ini."
+
+#: src/features/portfolio/works/add-work/from-site.tsx
+msgid "No works were found on this site. Add them one by one, or try another address."
+msgstr "Tidak ada karya yang ditemukan di situs ini. Tambahkan satu per satu, atau coba alamat lain."
+
 #: src/features/portfolio/works/work-canvas.tsx
 #: src/features/portfolio/works/works-panel.tsx
 msgid "No works yet"
@@ -13759,12 +13879,17 @@ msgstr "Penampil gambar"
 
 #: src/features/portfolio/assistant/labels.ts
 #: src/features/portfolio/blocks/block-list.tsx
+#: src/features/profile/sources/site-works-review.tsx
 msgid "Pictures"
 msgstr "Gambar"
 
 #: src/features/portfolio/works/storage-meter.tsx
 msgid "Pictures and PDFs"
 msgstr "Gambar dan PDF"
+
+#: src/features/profile/sources/site-works-review.tsx
+msgid "Pictures are copied to your portfolio's storage and count toward its space."
+msgstr "Gambar disalin ke penyimpanan portfolio Anda dan dihitung ke kuotanya."
 
 #: src/features/applications/components/insights-view.tsx
 msgid "Pipeline flow"
@@ -14705,6 +14830,10 @@ msgid "Read the resume"
 msgstr "Membaca resume"
 
 #: src/features/profile/sources/source-fields.tsx
+msgid "Read with AI: your home page and up to ten pages about your work."
+msgstr "Dibaca dengan AI: beranda dan sampai sepuluh halaman karya Anda."
+
+#: src/features/profile/sources/source-fields.tsx
 msgid "Read with AI. Only what's on the page comes in."
 msgstr "Dibaca dengan AI. Hanya yang ada di halaman itu yang masuk."
 
@@ -14811,9 +14940,19 @@ msgstr "Membaca yang Anda bagikan"
 msgid "Reading Word files needs an AI provider. Set one up in Settings, or import a PDF or JSON file instead."
 msgstr "Membaca file Word memerlukan penyedia AI. Siapkan satu di Pengaturan, atau impor file PDF atau JSON."
 
+#. placeholder {0}: progress.done
+#. placeholder {1}: progress.total
+#: src/features/profile/sources/messages.ts
+msgid "Reading work {0} of {1}…"
+msgstr "Membaca karya {0} dari {1}…"
+
 #: src/features/career/shared.tsx
 msgid "Reading your answer"
 msgstr "Membaca jawaban Anda"
+
+#: src/features/profile/sources/messages.ts
+msgid "Reading your details…"
+msgstr "Membaca data diri Anda…"
 
 #: src/features/career/shared.tsx
 msgid "Reading your notes"
@@ -14830,6 +14969,10 @@ msgstr "Membaca Profil Anda…"
 #: src/features/portfolio/metrics/find-metrics.tsx
 msgid "Reading your resume…"
 msgstr "Membaca CV Anda…"
+
+#: src/features/profile/sources/messages.ts
+msgid "Reading your site…"
+msgstr "Membaca situs Anda…"
 
 #: src/features/profile/fill.tsx
 #: src/features/profile/sources/source-progress.tsx
@@ -16218,6 +16361,10 @@ msgstr "Simpan ke Profil saya"
 msgid "Save to Profile"
 msgstr "Simpan ke Profil"
 
+#: src/features/onboarding/onboarding-page.tsx
+msgid "Save to Profile and portfolio"
+msgstr "Simpan ke Profil & portfolio"
+
 #: src/features/resume/editor/check/job-match.tsx
 msgid "Save to the application"
 msgstr "Simpan ke lamaran pekerjaan"
@@ -16343,6 +16490,10 @@ msgstr "Menyimpan dari LinkedIn, Indeed, JobStreet, atau Glints?"
 #: src/features/resume/builder/draft.ts
 msgid "Saving is taking longer than expected. Your changes are still open."
 msgstr "Penghematan membutuhkan waktu lebih lama dari yang diperkirakan. Perubahan Anda masih terbuka."
+
+#: src/features/profile/sources/use-site-works.ts
+msgid "Saving your works…"
+msgstr "Menyimpan karya Anda…"
 
 #: src/features/career/knowledge/preferences.tsx
 #: src/features/profile/details-page.tsx
@@ -16611,6 +16762,14 @@ msgstr "Lihat apa yang dibaca software ATS"
 #: src/features/portfolio/statistics/parts.tsx
 msgid "See what's included"
 msgstr "Lihat yang Anda dapatkan"
+
+#: src/features/onboarding/onboarding-page.tsx
+msgid "See your portfolio"
+msgstr "Lihat portfolio Anda"
+
+#: src/features/onboarding/onboarding-page.tsx
+msgid "See your portfolio (not published)"
+msgstr "Lihat portfolio Anda (belum tayang)"
 
 #: src/features/applications/components/list-view.tsx
 #: src/features/documents/document-actions.tsx
@@ -17053,6 +17212,11 @@ msgstr "Tunjukkan lagi"
 msgid "Show all types"
 msgstr "Tampilkan semua jenis"
 
+#. placeholder {0}: work.title
+#: src/features/profile/sources/site-works-review.tsx
+msgid "Show details of {0}"
+msgstr "Tampilkan detail {0}"
+
 #: src/features/resume/share/custom-domain-field.tsx
 msgid "Show DNS records"
 msgstr "Tampilkan record DNS"
@@ -17443,6 +17607,10 @@ msgstr "Beberapa detail pekerjaan tidak dapat dibaca. Isi posisi dan perusahaan,
 #: src/features/ats-checker/messages.ts
 msgid "Some lines are stored out of reading order."
 msgstr "Beberapa baris disimpan tidak sesuai urutan baca."
+
+#: src/features/profile/sources/messages.ts
+msgid "Some pages about your work couldn't be read. The others came in."
+msgstr "Beberapa halaman karya tidak bisa dibaca. Yang lain tetap masuk."
 
 #: src/features/portfolio/editor/publish-panel.tsx
 msgid "Some parts are still to fill in"
@@ -18884,6 +19052,10 @@ msgstr "PDF halaman tidak dapat dibaca. Edit apa pun untuk merendernya lagi."
 msgid "The pages are pictures, with no text behind them."
 msgstr "Halaman-halaman berupa gambar, tanpa teks di baliknya."
 
+#: src/features/portfolio/works/add-work/from-site.tsx
+msgid "The pages' text goes to the AI. Pictures of the works you add are copied to your portfolio's storage."
+msgstr "Teks halamannya dikirim ke AI. Gambar karya yang Anda tambahkan disalin ke penyimpanan portfolio Anda."
+
 #: src/features/billing/purchase-dialog.tsx
 msgid "The payment for this change didn't go through. Update your payment method in billing and try again."
 msgstr "Pembayaran untuk perubahan ini gagal. Perbarui metode pembayaran di halaman tagihan, lalu coba lagi."
@@ -19464,6 +19636,14 @@ msgstr "Ini adalah formulir XFA, sehingga sebagian besar perangkat lunak hanya m
 msgid "This is my own profile"
 msgstr "Ini profil saya sendiri"
 
+#: src/features/portfolio/works/add-work/from-site.tsx
+msgid "This is my own site"
+msgstr "Ini situs saya sendiri"
+
+#: src/features/profile/sources/source-fields.tsx
+msgid "This is my own site. Bring my works into my portfolio too."
+msgstr "Ini situs saya sendiri. Impor juga karya saya ke portfolio."
+
 #: src/features/ats-checker/messages.ts
 msgid "This is not a common resume page size."
 msgstr "Ini bukan ukuran halaman resume yang umum."
@@ -19759,6 +19939,10 @@ msgstr "Waktu ini tidak ada di zona waktu Anda. Pilih waktu lain."
 #: src/features/portfolio/ai/draft-form.tsx
 msgid "This usually takes less than a minute."
 msgstr "Biasanya kurang dari satu menit."
+
+#: src/features/portfolio/errors.ts
+msgid "This website import isn't kept anymore. Import your website again to add its works."
+msgstr "Hasil impor website ini sudah tidak disimpan. Impor website Anda lagi untuk menambahkan karyanya."
 
 #: src/features/career/workspace/debrief.tsx
 msgid "This week: make your evidence easier to follow"
@@ -20622,6 +20806,10 @@ msgstr "Diperbarui dari Profil Anda."
 msgid "Updating your resume..."
 msgstr "Memperbarui resume Anda..."
 
+#: src/features/profile/sources/site-works-review.tsx
+msgid "Upgrade"
+msgstr "Upgrade"
+
 #: src/features/billing/purchase-dialog.tsx
 msgid "Upgrade now"
 msgstr "Upgrade sekarang"
@@ -21308,6 +21496,10 @@ msgstr "Kami hanya membaca yang Anda tambahkan di sini, setelah Anda lanjut. Tid
 msgid "We read the page and save the posting for Check, the assistant and your letter."
 msgstr "Kami membaca halaman dan menyimpan lowongan pekerjaan untuk Check, asisten dan surat Anda."
 
+#: src/features/portfolio/works/add-work/from-site.tsx
+msgid "We read your home page and up to ten pages about your work, then show what we found. Nothing is added until you choose."
+msgstr "Kami membaca beranda dan sampai sepuluh halaman karya Anda, lalu menampilkan yang ditemukan. Tidak ada yang ditambahkan sebelum Anda memilih."
+
 #: src/features/settings/account/profile.tsx
 msgid "We sent a confirmation link to {email}. Open it to finish the change."
 msgstr "Kami mengirimkan link konfirmasi ke {email}. Buka untuk menyelesaikan perubahan."
@@ -21381,6 +21573,10 @@ msgstr "Webhook dengan tanda tangan salah"
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Website"
 msgstr "Situs web"
+
+#: src/features/billing/credits.ts
+msgid "Website imported into your Profile and portfolio"
+msgstr "Website diimpor ke Profil dan portfolio Anda"
 
 #: src/features/billing/credits.ts
 msgid "Website read into your Profile"
@@ -21864,9 +22060,25 @@ msgstr "Karya: {0}"
 msgid "Works"
 msgstr "Karya"
 
+#: src/features/profile/sources/site-works-review.tsx
+msgid "Works are added to your portfolio. It isn't published, so nobody sees them yet."
+msgstr "Karya ditambahkan ke portfolio Anda. Portfolio belum tayang, jadi belum ada yang melihatnya."
+
+#: src/features/profile/sources/site-works-review.tsx
+msgid "Works are added to your published portfolio and show on it right away."
+msgstr "Karya ditambahkan ke portfolio Anda yang sudah tayang dan langsung terlihat di sana."
+
 #: src/features/portfolio/editor/page-check.tsx
 msgid "Works are what most visitors come to see."
 msgstr "Karya adalah hal yang paling dicari pengunjung."
+
+#: src/features/profile/sources/site-works-review.tsx
+msgid "Works from your site"
+msgstr "Karya dari situs Anda"
+
+#: src/features/profile/sources/site-works-review.tsx
+msgid "Works go into a new portfolio that isn't published. You decide when to publish it."
+msgstr "Karya disimpan ke portfolio baru yang belum tayang. Anda yang memutuskan kapan mempublikasikannya."
 
 #: src/features/portfolio/ai/draft-dialog.tsx
 msgid "Works to write (up to {PORTFOLIO_AI_DRAFT_WORKS})"
@@ -22018,6 +22230,10 @@ msgstr "Bantuan menulis, saran yang disesuaikan, dan asisten. Penyedia default d
 msgid "Writing or content"
 msgstr "Tulisan atau konten"
 
+#: src/features/profile/sources/messages.ts
+msgid "Writing up your works…"
+msgstr "Menyusun karya Anda…"
+
 #: src/features/portfolio/ai/draft-form.tsx
 msgid "Writing your draft…"
 msgstr "Menulis draf Anda…"
@@ -22153,6 +22369,10 @@ msgstr "Kamu tetap bisa menyimpan lowongan dari link, teks yang ditempel, atau b
 msgid "You canceled the sign-in before it finished. Try again when you're ready."
 msgstr "Anda membatalkan proses masuk sebelum selesai. Coba lagi saat Anda siap."
 
+#: src/features/profile/sources/source-fields.tsx
+msgid "You check every work before it's saved."
+msgstr "Anda memeriksa setiap karya sebelum disimpan."
+
 #: src/features/documents/new-document-dialog.tsx
 msgid "You don't have a resume to copy yet. Import or create a resume first, then return to copy it for this job."
 msgstr "Anda belum memiliki resume untuk disalin. Impor atau buat resume terlebih dahulu, lalu kembali untuk menyalinnya untuk pekerjaan ini."
@@ -22224,6 +22444,10 @@ msgstr "Anda menggunakan akun tamu"
 #: src/features/portfolio/ai/apply.ts
 msgid "You've changed things since. Use Undo at the top of the editor."
 msgstr "Sudah ada perubahan sejak itu. Pakai Urungkan di bagian atas editor."
+
+#: src/features/profile/sources/messages.ts
+msgid "You've imported as many websites as you can today. Try again tomorrow."
+msgstr "Anda sudah mencapai batas impor website hari ini. Coba lagi besok."
 
 #: src/features/jobs/jobs-page.tsx
 msgid "You've reached today's search limit. Results you already opened stay available. Try again tomorrow."
@@ -22455,6 +22679,15 @@ msgstr ""
 msgid "Your file"
 msgstr "berkas Anda"
 
+#: src/features/portfolio/works/add-work/from-site.tsx
+#: src/features/profile/sources/source-progress.tsx
+msgid "Your first website import is free."
+msgstr "Impor website pertama Anda gratis."
+
+#: src/features/profile/sources/source-fields.tsx
+msgid "Your first website import is free. You check every work before it's saved."
+msgstr "Impor website pertama Anda gratis. Anda memeriksa setiap karya sebelum disimpan."
+
 #: src/features/jobs/listing-fit.tsx
 msgid "Your fit"
 msgstr "Kecocokan Anda"
@@ -22502,6 +22735,10 @@ msgstr "Pembayaran terakhirmu gagal. Perbarui dulu metode pembayaran di halaman 
 #: src/features/portfolio/works/add-work/from-resume.tsx
 msgid "Your latest changes aren't saved yet, so the projects weren't added. Once they're saved, try again."
 msgstr "Perubahan terakhir Anda belum tersimpan, jadi proyek belum ditambahkan. Setelah tersimpan, coba lagi."
+
+#: src/features/portfolio/works/add-work/from-site.tsx
+msgid "Your latest changes aren't saved yet, so the works weren't added. Once they're saved, try again."
+msgstr "Perubahan terakhir Anda belum tersimpan, jadi karya belum ditambahkan. Setelah tersimpan, coba lagi."
 
 #: src/features/portfolio/ai/draft-dialog.tsx
 msgid "Your latest changes aren't saved yet. Wait for them to save, then try again."
@@ -22646,6 +22883,10 @@ msgstr "Font sendiri tidak termasuk dalam paketmu, jadi dokumen hasil impor mema
 msgid "Your own fonts aren't in your plan. Fonts already added keep working on the page."
 msgstr "Font sendiri tidak termasuk dalam paketmu. Font yang sudah ditambahkan tetap tampil di halaman."
 
+#: src/features/portfolio/works/add-work/add-work-dialog.tsx
+msgid "Your own site's works at once, with their story, numbers and pictures."
+msgstr "Semua karya dari situs Anda sekaligus, dengan cerita, angka, dan gambarnya."
+
 #: src/features/billing/plan.ts
 msgid "Your page keeps its address on Rezumi."
 msgstr "Halamanmu tetap memakai alamatnya di Rezumi."
@@ -22715,6 +22956,10 @@ msgstr "Paketmu menyimpan hingga {megabytes} MB gambar dan PDF. File yang sudah 
 #: src/features/portfolio/portfolio-page.tsx
 msgid "Your portfolio"
 msgstr "Portofolio Anda"
+
+#: src/features/portfolio/works/add-work/from-site.tsx
+msgid "Your portfolio already has these works."
+msgstr "Portfolio Anda sudah punya karya-karya ini."
 
 #: src/features/homepage/closing.tsx
 msgid "Your portfolio and resume are a few minutes away."
@@ -22801,6 +23046,10 @@ msgstr "Portofolio Anda diturunkan, jadi tidak bisa diterbitkan atau dihapus. Ki
 #: src/features/billing/plan.ts
 msgid "Your portfolio's storage is full"
 msgstr "Penyimpanan portofolio Anda penuh"
+
+#: src/features/profile/sources/use-site-works.ts
+msgid "Your portfolio's storage is full, so some works were saved without their pictures."
+msgstr "Penyimpanan portfolio Anda penuh, jadi sebagian karya disimpan tanpa gambar."
 
 #: src/features/portfolio/errors.ts
 msgid "Your portfolio's storage is full. Remove pictures or PDFs you don't need, then try again."
@@ -22913,6 +23162,10 @@ msgstr "Loker, catatan, dan pengingat yang kamu simpan masih ada di akun Rezumi.
 msgid "Your selected font can't display some characters. They show as “?”. In Design, choose a font that has them."
 msgstr "Font yang Anda pilih tidak dapat menampilkan beberapa karakter. Karakter tersebut ditampilkan sebagai “?”. Di Desain, pilih font yang memilikinya."
 
+#: src/features/profile/sources/messages.ts
+msgid "Your site has more works than one import brings. Add the rest in your portfolio."
+msgstr "Situs Anda punya lebih banyak karya daripada yang bisa dibawa satu impor. Tambahkan sisanya di portfolio Anda."
+
 #: src/features/portfolio/editor/publish-panel.tsx
 msgid "Your source resume is in Trash"
 msgstr "CV sumber Anda ada di Sampah"
@@ -22961,6 +23214,7 @@ msgstr "Perkenalan dua menit Anda"
 msgid "Your web page is live"
 msgstr "Halaman web Anda sudah tayang"
 
+#: src/features/portfolio/works/add-work/from-site.tsx
 #: src/features/profile/sources/messages.ts
 msgid "Your website"
 msgstr "Situs Anda"

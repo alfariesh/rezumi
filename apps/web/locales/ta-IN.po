@@ -120,6 +120,16 @@ msgstr ""
 msgid "{0, plural, =0 {Add work} one {Add # work} other {Add # works}}"
 msgstr ""
 
+#. placeholder {0}: siteWorks.count
+#: src/features/portfolio/works/add-work/from-site.tsx
+msgid "{0, plural, =0 {Add works} one {Add # work} other {Add # works}}"
+msgstr ""
+
+#. placeholder {0}: done.added
+#: src/features/profile/fill.tsx
+msgid "{0, plural, =0 {Added to your Profile. Your portfolio already had these works.} one {Added to your Profile, and # work to your portfolio.} other {Added to your Profile, and # works to your portfolio.}}"
+msgstr ""
+
 #. placeholder {0}: results.length
 #: src/features/portfolio/location/location-fields.tsx
 msgid "{0, plural, =0 {No cities found} one {# city found} other {# cities found}}"
@@ -247,6 +257,11 @@ msgstr ""
 msgid "{0, plural, one {# paid payment, after refunds} other {# paid payments, after refunds}}"
 msgstr ""
 
+#. placeholder {0}: done.picturesSkipped
+#: src/features/profile/sources/use-site-works.ts
+msgid "{0, plural, one {# picture couldn't be copied. The works were saved without it.} other {# pictures couldn't be copied. The works were saved without them.}}"
+msgstr ""
+
 #. placeholder {0}: proposals.length
 #: src/features/assistant/conversation.tsx
 #: src/features/resume/editor/proposals/proposal-list.tsx
@@ -286,14 +301,34 @@ msgstr "{0, plural, one {# தேர்ந்தெடுக்கப்பட�
 msgid "{0, plural, one {# story} other {# stories}}"
 msgstr "{0, plural, one {# கதை} other {# கதைகள்}}"
 
+#. placeholder {0}: done.added
+#: src/features/onboarding/onboarding-page.tsx
+msgid "{0, plural, one {# work from your site is in your portfolio.} other {# works from your site are in your portfolio.}}"
+msgstr ""
+
 #. placeholder {0}: work.tags.length - 3
 #: src/features/portfolio/works/work-document.tsx
 msgid "{0, plural, one {+# tag} other {+# tags}}"
 msgstr ""
 
+#. placeholder {0}: siteWorks.count
+#: src/features/profile/fill.tsx
+msgid "{0, plural, one {Add, with # work} other {Add, with # works}}"
+msgstr ""
+
 #. placeholder {0}: remembered.ids.length
 #: src/features/career/coach-chat.tsx
 msgid "{0, plural, one {Added # fact to your Profile.} other {Added # facts to your Profile.}}"
+msgstr ""
+
+#. placeholder {0}: done.added
+#: src/features/portfolio/works/add-work/from-site.tsx
+msgid "{0, plural, one {Added # work from your site.} other {Added # works from your site.}}"
+msgstr ""
+
+#. placeholder {0}: result.works.length
+#: src/features/profile/sources/source-progress.tsx
+msgid "{0, plural, one {And # work for your portfolio} other {And # works for your portfolio}}"
 msgstr ""
 
 #. placeholder {0}: step.days
@@ -320,6 +355,11 @@ msgstr "{0, plural, one {# விண்ணப்பத்தை நீக்க�
 #: src/features/applications/next-step.ts
 msgid "{0, plural, one {For # day} other {For # days}}"
 msgstr "{0, plural, one {# நாளுக்கு} other {# நாட்களுக்கு}}"
+
+#. placeholder {0}: progress.pages
+#: src/features/profile/sources/messages.ts
+msgid "{0, plural, one {Found # page about your work} other {Found # pages about your work}}"
+msgstr ""
 
 #. placeholder {0}: parsed.requirements.length
 #: src/features/applications/components/add-application-dialog.tsx
@@ -998,6 +1038,8 @@ msgid "{kept, plural, one {# entry ticked} other {# entries ticked}}"
 msgstr ""
 
 #. placeholder {0}: keys.length
+#. placeholder {0}: works.length
+#: src/features/profile/sources/site-works-review.tsx
 #: src/features/profile/sources/source-review.tsx
 msgid "{kept} of {0}"
 msgstr ""
@@ -1212,6 +1254,10 @@ msgstr "{passedRules} of {totalRules} காசோலைகள் பாஸ்."
 msgid "{pendingOnPage, plural, one {# proposed edit on this page · nothing changes until you accept} other {# proposed edits on this page · nothing changes until you accept}}"
 msgstr "{pendingOnPage, plural, one {# இந்தப் பக்கத்தில் திருத்த முன்மொழிந்தது · நீங்கள் ஏற்கும் வரை எதுவும் மாறாது} other {இந்தப் பக்கத்தில் # முன்மொழியப்பட்ட திருத்தங்கள் · நீங்கள் ஏற்கும் வரை எதுவும் மாறாது}}"
 
+#: src/features/profile/sources/site-works-review.tsx
+msgid "{pictures, plural, =0 {No pictures} one {# picture} other {# pictures}}"
+msgstr ""
+
 #: src/features/portfolio/editor/publish-panel.tsx
 msgid "{placeholders, plural, one {# place written in [brackets] will show on your page as it is.} other {# places written in [brackets] will show on your page as they are.}}"
 msgstr ""
@@ -1243,6 +1289,10 @@ msgstr ""
 #. placeholder {1}: formatDate(payment.periodEnd)
 #: src/features/billing/payment-return.tsx
 msgid "{plan} starts on {0}, after your current plan, and runs until {1}."
+msgstr ""
+
+#: src/features/profile/sources/site-works-review.tsx
+msgid "{planLimit, plural, one {Your plan holds # work in the portfolio. Upgrade to add them all.} other {Your plan holds # works in the portfolio. Upgrade to add them all.}}"
 msgstr ""
 
 #: src/features/billing/pending-payment.tsx
@@ -2583,6 +2633,10 @@ msgstr ""
 msgid "Add your first work"
 msgstr ""
 
+#: src/features/profile/sources/messages.ts
+msgid "Add your LinkedIn profile in the LinkedIn field instead."
+msgstr ""
+
 #: src/features/portfolio/editor/page-check.tsx
 #: src/features/resume/editor/check/issues.ts
 msgid "Add your name"
@@ -2941,6 +2995,10 @@ msgstr "ஏற்கனவே உள்ளது · பக்கத்தில�
 #. Call-to-action link from registration page to login page
 #: src/features/auth/pages/register.tsx
 msgid "Already have an account? <0>Sign in now <1/></0>"
+msgstr ""
+
+#: src/features/profile/sources/site-works-review.tsx
+msgid "Already in your portfolio"
 msgstr ""
 
 #: src/features/portfolio/works/add-work/from-resume.tsx
@@ -3724,6 +3782,10 @@ msgstr "சமர்ப்பிக்கும் முன்"
 
 #: src/features/portfolio/metrics/metric-preview.tsx
 msgid "Before: {before}"
+msgstr ""
+
+#: src/features/profile/sources/messages.ts
+msgid "Behance and Dribbble can't be read yet. Use your own site's address, or add works later in your portfolio."
 msgstr ""
 
 #: src/features/portfolio/works/add-work/add-work-dialog.tsx
@@ -4978,6 +5040,10 @@ msgstr "நேரம், இணைப்பு, நீங்கள் சந்�
 msgid "Confirm this is your own profile."
 msgstr ""
 
+#: src/features/portfolio/works/add-work/from-site.tsx
+msgid "Confirm this is your own site."
+msgstr ""
+
 #: src/features/assistant/provider-setup.tsx
 #: src/features/resume/share/custom-domain-field.tsx
 #: src/features/settings/account/security.tsx
@@ -5302,6 +5368,12 @@ msgstr ""
 #: src/features/assistant/conversation.tsx
 msgid "Copy transcript"
 msgstr "டிரான்ஸ்கிரிப்டை நகலெடுக்கவும்"
+
+#. placeholder {0}: progress.done
+#. placeholder {1}: progress.total
+#: src/features/profile/sources/use-site-works.ts
+msgid "Copying pictures {0} of {1}…"
+msgstr ""
 
 #: src/features/portfolio/blocks/add-media-block.tsx
 msgid "Copying the picture…"
@@ -5868,12 +5940,24 @@ msgstr "உங்கள் மாற்றங்களைச் சேமிக�
 msgid "Couldn't save your preferences. Try again."
 msgstr "உங்கள் விருப்பங்களைச் சேமிக்க முடியவில்லை. மீண்டும் முயற்சிக்கவும்."
 
+#: src/features/profile/fill.tsx
+msgid "Couldn't save your Profile, so the works weren't added. Try again."
+msgstr ""
+
 #: src/features/onboarding/onboarding-page.tsx
 msgid "Couldn't save your Profile, so this would open again. Try again."
 msgstr ""
 
 #: src/features/onboarding/onboarding-page.tsx
 msgid "Couldn't save your Profile. Try again."
+msgstr ""
+
+#: src/features/profile/sources/use-site-works.ts
+msgid "Couldn't save your works. Check your connection, then try again from your portfolio."
+msgstr ""
+
+#: src/features/profile/sources/use-site-works.ts
+msgid "Couldn't save your works. Try again from your portfolio."
 msgstr ""
 
 #: src/features/settings/account/profile.tsx
@@ -8197,6 +8281,10 @@ msgstr ""
 msgid "Find jobs that fit"
 msgstr ""
 
+#: src/features/portfolio/works/add-work/from-site.tsx
+msgid "Find my works"
+msgstr ""
+
 #: src/features/portfolio/metrics/find-metrics.tsx
 msgid "Find numbers"
 msgstr ""
@@ -8572,6 +8660,16 @@ msgstr ""
 
 #: src/features/homepage/hero.tsx
 msgid "Free plan, no card needed. PDF downloads without a watermark."
+msgstr ""
+
+#: src/features/billing/ai-source-menu.tsx
+msgid "free this time"
+msgstr ""
+
+#. placeholder {0}: creditCount(creditCost(action))
+#. placeholder {1}: creditCount(balance)
+#: src/features/billing/ai-source-menu.tsx
+msgid "Free this time, then {0} · {1} left"
 msgstr ""
 
 #. A recent job search that opens again today without counting
@@ -9140,6 +9238,11 @@ msgstr "பக்கத்திலிருந்து {title} ஐ மறை"
 msgid "Hide contact details"
 msgstr "தொடர்பு விவரங்களை மறை"
 
+#. placeholder {0}: work.title
+#: src/features/profile/sources/site-works-review.tsx
+msgid "Hide details of {0}"
+msgstr ""
+
 #: src/features/resume/editor/write/entry-card.tsx
 msgid "Hide from page"
 msgstr "பக்கத்திலிருந்து மறை"
@@ -9487,6 +9590,11 @@ msgstr "CSV இலிருந்து இறக்குமதி செய்
 msgid "Import from CSV…"
 msgstr "CSV இலிருந்து இறக்குமதி செய்…"
 
+#: src/features/portfolio/works/add-work/add-work-dialog.tsx
+#: src/features/portfolio/works/works-panel.tsx
+msgid "Import from your website"
+msgstr ""
+
 #: src/features/documents/new-document-dialog.tsx
 msgid "Import or create a resume"
 msgstr "ரெஸ்யூமை இறக்குமதி செய்யவும் அல்லது உருவாக்கவும்"
@@ -9535,6 +9643,10 @@ msgstr "இறக்குமதி செய்கிறது"
 #: src/features/ats-checker/checker.tsx
 msgid "Importing it into your new resume…"
 msgstr "உங்கள் புதிய ரெஸ்யூமில் அதை இறக்குமதி செய்கிறது…"
+
+#: src/features/profile/sources/source-fields.tsx
+msgid "Importing your own site reads up to eleven of its pages. Their text goes to the AI; the pictures of the works you keep are copied to your portfolio's storage."
+msgstr ""
 
 #: src/features/resume/editor/write/rich-text-editor-field.tsx
 msgid "Improve"
@@ -12271,6 +12383,14 @@ msgstr ""
 msgid "No work-experience section was found."
 msgstr "பணி அனுபவப் பிரிவு எதுவும் காணப்படவில்லை."
 
+#: src/features/profile/sources/messages.ts
+msgid "No works were found on this site."
+msgstr ""
+
+#: src/features/portfolio/works/add-work/from-site.tsx
+msgid "No works were found on this site. Add them one by one, or try another address."
+msgstr ""
+
 #: src/features/portfolio/works/work-canvas.tsx
 #: src/features/portfolio/works/works-panel.tsx
 msgid "No works yet"
@@ -13759,11 +13879,16 @@ msgstr ""
 
 #: src/features/portfolio/assistant/labels.ts
 #: src/features/portfolio/blocks/block-list.tsx
+#: src/features/profile/sources/site-works-review.tsx
 msgid "Pictures"
 msgstr ""
 
 #: src/features/portfolio/works/storage-meter.tsx
 msgid "Pictures and PDFs"
+msgstr ""
+
+#: src/features/profile/sources/site-works-review.tsx
+msgid "Pictures are copied to your portfolio's storage and count toward its space."
 msgstr ""
 
 #: src/features/applications/components/insights-view.tsx
@@ -14705,6 +14830,10 @@ msgid "Read the resume"
 msgstr "ரெஸ்யூமைப் படித்தது"
 
 #: src/features/profile/sources/source-fields.tsx
+msgid "Read with AI: your home page and up to ten pages about your work."
+msgstr ""
+
+#: src/features/profile/sources/source-fields.tsx
 msgid "Read with AI. Only what's on the page comes in."
 msgstr ""
 
@@ -14811,9 +14940,19 @@ msgstr "நீங்கள் பகிர்ந்ததைப் படிக�
 msgid "Reading Word files needs an AI provider. Set one up in Settings, or import a PDF or JSON file instead."
 msgstr "Word கோப்புகளைப் படிக்க AI வழங்குநர் தேவை. அமைப்புகளில் ஒன்றை அமைக்கவும் அல்லது அதற்குப் பதிலாக PDF அல்லது JSON கோப்பை இறக்குமதி செய்யவும்."
 
+#. placeholder {0}: progress.done
+#. placeholder {1}: progress.total
+#: src/features/profile/sources/messages.ts
+msgid "Reading work {0} of {1}…"
+msgstr ""
+
 #: src/features/career/shared.tsx
 msgid "Reading your answer"
 msgstr "உங்கள் பதிலைப் படிக்கிறது"
+
+#: src/features/profile/sources/messages.ts
+msgid "Reading your details…"
+msgstr ""
 
 #: src/features/career/shared.tsx
 msgid "Reading your notes"
@@ -14829,6 +14968,10 @@ msgstr ""
 
 #: src/features/portfolio/metrics/find-metrics.tsx
 msgid "Reading your resume…"
+msgstr ""
+
+#: src/features/profile/sources/messages.ts
+msgid "Reading your site…"
 msgstr ""
 
 #: src/features/profile/fill.tsx
@@ -16218,6 +16361,10 @@ msgstr ""
 msgid "Save to Profile"
 msgstr ""
 
+#: src/features/onboarding/onboarding-page.tsx
+msgid "Save to Profile and portfolio"
+msgstr ""
+
 #: src/features/resume/editor/check/job-match.tsx
 msgid "Save to the application"
 msgstr "வேலை விண்ணப்பத்தில் சேமிக்கவும்"
@@ -16343,6 +16490,10 @@ msgstr ""
 #: src/features/resume/builder/draft.ts
 msgid "Saving is taking longer than expected. Your changes are still open."
 msgstr "சேமிப்பு எதிர்பார்த்ததை விட அதிக நேரம் எடுகிறது. உங்கள் மாற்றங்கள் இன்னும் திறந்தே உள்ளன."
+
+#: src/features/profile/sources/use-site-works.ts
+msgid "Saving your works…"
+msgstr ""
 
 #: src/features/career/knowledge/preferences.tsx
 #: src/features/profile/details-page.tsx
@@ -16610,6 +16761,14 @@ msgstr ""
 
 #: src/features/portfolio/statistics/parts.tsx
 msgid "See what's included"
+msgstr ""
+
+#: src/features/onboarding/onboarding-page.tsx
+msgid "See your portfolio"
+msgstr ""
+
+#: src/features/onboarding/onboarding-page.tsx
+msgid "See your portfolio (not published)"
 msgstr ""
 
 #: src/features/applications/components/list-view.tsx
@@ -17053,6 +17212,11 @@ msgstr "மீண்டும் காட்டு"
 msgid "Show all types"
 msgstr "எல்லா வகைகளையும் காட்டு"
 
+#. placeholder {0}: work.title
+#: src/features/profile/sources/site-works-review.tsx
+msgid "Show details of {0}"
+msgstr ""
+
 #: src/features/resume/share/custom-domain-field.tsx
 msgid "Show DNS records"
 msgstr "DNS பதிவுகளைக் காட்டு"
@@ -17443,6 +17607,10 @@ msgstr "சில வேலை விவரங்களைப் படிக்
 #: src/features/ats-checker/messages.ts
 msgid "Some lines are stored out of reading order."
 msgstr "சில வரிகள் படிக்கும் வரிசைக்கு மாறாக சேமிக்கப்பட்டுள்ளன."
+
+#: src/features/profile/sources/messages.ts
+msgid "Some pages about your work couldn't be read. The others came in."
+msgstr ""
 
 #: src/features/portfolio/editor/publish-panel.tsx
 msgid "Some parts are still to fill in"
@@ -18884,6 +19052,10 @@ msgstr "பக்கத்தின் PDF ஐப் படிக்க மு�
 msgid "The pages are pictures, with no text behind them."
 msgstr "பக்கங்கள் படங்கள், அவற்றுக்குப் பின்னால் எந்த உரையும் இல்லை."
 
+#: src/features/portfolio/works/add-work/from-site.tsx
+msgid "The pages' text goes to the AI. Pictures of the works you add are copied to your portfolio's storage."
+msgstr ""
+
 #: src/features/billing/purchase-dialog.tsx
 msgid "The payment for this change didn't go through. Update your payment method in billing and try again."
 msgstr ""
@@ -19464,6 +19636,14 @@ msgstr "இது ஒரு XFA படிவம், எனவே பெரும
 msgid "This is my own profile"
 msgstr ""
 
+#: src/features/portfolio/works/add-work/from-site.tsx
+msgid "This is my own site"
+msgstr ""
+
+#: src/features/profile/sources/source-fields.tsx
+msgid "This is my own site. Bring my works into my portfolio too."
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "This is not a common resume page size."
 msgstr "இது ஒரு பொதுவான ரெஸ்யூம் பக்க அளவு அல்ல."
@@ -19758,6 +19938,10 @@ msgstr "உங்கள் நேர மண்டலத்தில் இந்
 
 #: src/features/portfolio/ai/draft-form.tsx
 msgid "This usually takes less than a minute."
+msgstr ""
+
+#: src/features/portfolio/errors.ts
+msgid "This website import isn't kept anymore. Import your website again to add its works."
 msgstr ""
 
 #: src/features/career/workspace/debrief.tsx
@@ -20622,6 +20806,10 @@ msgstr ""
 msgid "Updating your resume..."
 msgstr "உங்கள் ரெஸ்யூமியை புதுப்பித்து கொண்டிருக்கிறது..."
 
+#: src/features/profile/sources/site-works-review.tsx
+msgid "Upgrade"
+msgstr ""
+
 #: src/features/billing/purchase-dialog.tsx
 msgid "Upgrade now"
 msgstr ""
@@ -21308,6 +21496,10 @@ msgstr ""
 msgid "We read the page and save the posting for Check, the assistant and your letter."
 msgstr "நாங்கள் பக்கத்தைப் படித்து, சரிபார்ப்பு, உதவியாளர் மற்றும் உங்கள் கடிதத்திற்காக வேலை இடுகையைச் சேமிக்கிறோம்."
 
+#: src/features/portfolio/works/add-work/from-site.tsx
+msgid "We read your home page and up to ten pages about your work, then show what we found. Nothing is added until you choose."
+msgstr ""
+
 #: src/features/settings/account/profile.tsx
 msgid "We sent a confirmation link to {email}. Open it to finish the change."
 msgstr "{email} க்கு உறுதிப்படுத்தல் இணைப்பை அனுப்பியுள்ளோம். மாற்றத்தை முடிக்க அதைத் திறக்கவும்."
@@ -21381,6 +21573,10 @@ msgstr ""
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Website"
 msgstr "இணையதளம்"
+
+#: src/features/billing/credits.ts
+msgid "Website imported into your Profile and portfolio"
+msgstr ""
 
 #: src/features/billing/credits.ts
 msgid "Website read into your Profile"
@@ -21864,8 +22060,24 @@ msgstr ""
 msgid "Works"
 msgstr ""
 
+#: src/features/profile/sources/site-works-review.tsx
+msgid "Works are added to your portfolio. It isn't published, so nobody sees them yet."
+msgstr ""
+
+#: src/features/profile/sources/site-works-review.tsx
+msgid "Works are added to your published portfolio and show on it right away."
+msgstr ""
+
 #: src/features/portfolio/editor/page-check.tsx
 msgid "Works are what most visitors come to see."
+msgstr ""
+
+#: src/features/profile/sources/site-works-review.tsx
+msgid "Works from your site"
+msgstr ""
+
+#: src/features/profile/sources/site-works-review.tsx
+msgid "Works go into a new portfolio that isn't published. You decide when to publish it."
 msgstr ""
 
 #: src/features/portfolio/ai/draft-dialog.tsx
@@ -22018,6 +22230,10 @@ msgstr "எழுத்து உதவி, ஏற்ப மாற்றிய �
 msgid "Writing or content"
 msgstr ""
 
+#: src/features/profile/sources/messages.ts
+msgid "Writing up your works…"
+msgstr ""
+
 #: src/features/portfolio/ai/draft-form.tsx
 msgid "Writing your draft…"
 msgstr ""
@@ -22153,6 +22369,10 @@ msgstr ""
 msgid "You canceled the sign-in before it finished. Try again when you're ready."
 msgstr "உள்நுழைவு முடிவதற்கு முன்பே அதை ரத்து செய்தீர்கள். நீங்கள் தயாரானதும் மீண்டும் முயற்சிக்கவும்."
 
+#: src/features/profile/sources/source-fields.tsx
+msgid "You check every work before it's saved."
+msgstr ""
+
 #: src/features/documents/new-document-dialog.tsx
 msgid "You don't have a resume to copy yet. Import or create a resume first, then return to copy it for this job."
 msgstr "நகலெடுக்க உங்களிடம் இன்னும் ரெஸ்யூம் இல்லை. முதலில் ஒரு ரெஸ்யூமை இறக்குமதி செய்யவும் அல்லது உருவாக்கவும், பிறகு இந்த வேலைக்காக அதை நகலெடுக்க திரும்பவும்."
@@ -22223,6 +22443,10 @@ msgstr "நீங்கள் விருந்தினர் கணக்க�
 
 #: src/features/portfolio/ai/apply.ts
 msgid "You've changed things since. Use Undo at the top of the editor."
+msgstr ""
+
+#: src/features/profile/sources/messages.ts
+msgid "You've imported as many websites as you can today. Try again tomorrow."
 msgstr ""
 
 #: src/features/jobs/jobs-page.tsx
@@ -22455,6 +22679,15 @@ msgstr ""
 msgid "Your file"
 msgstr "உங்கள் கோப்பு"
 
+#: src/features/portfolio/works/add-work/from-site.tsx
+#: src/features/profile/sources/source-progress.tsx
+msgid "Your first website import is free."
+msgstr ""
+
+#: src/features/profile/sources/source-fields.tsx
+msgid "Your first website import is free. You check every work before it's saved."
+msgstr ""
+
 #: src/features/jobs/listing-fit.tsx
 msgid "Your fit"
 msgstr ""
@@ -22501,6 +22734,10 @@ msgstr ""
 
 #: src/features/portfolio/works/add-work/from-resume.tsx
 msgid "Your latest changes aren't saved yet, so the projects weren't added. Once they're saved, try again."
+msgstr ""
+
+#: src/features/portfolio/works/add-work/from-site.tsx
+msgid "Your latest changes aren't saved yet, so the works weren't added. Once they're saved, try again."
 msgstr ""
 
 #: src/features/portfolio/ai/draft-dialog.tsx
@@ -22646,6 +22883,10 @@ msgstr ""
 msgid "Your own fonts aren't in your plan. Fonts already added keep working on the page."
 msgstr ""
 
+#: src/features/portfolio/works/add-work/add-work-dialog.tsx
+msgid "Your own site's works at once, with their story, numbers and pictures."
+msgstr ""
+
 #: src/features/billing/plan.ts
 msgid "Your page keeps its address on Rezumi."
 msgstr ""
@@ -22714,6 +22955,10 @@ msgstr ""
 
 #: src/features/portfolio/portfolio-page.tsx
 msgid "Your portfolio"
+msgstr ""
+
+#: src/features/portfolio/works/add-work/from-site.tsx
+msgid "Your portfolio already has these works."
 msgstr ""
 
 #: src/features/homepage/closing.tsx
@@ -22800,6 +23045,10 @@ msgstr ""
 
 #: src/features/billing/plan.ts
 msgid "Your portfolio's storage is full"
+msgstr ""
+
+#: src/features/profile/sources/use-site-works.ts
+msgid "Your portfolio's storage is full, so some works were saved without their pictures."
 msgstr ""
 
 #: src/features/portfolio/errors.ts
@@ -22913,6 +23162,10 @@ msgstr ""
 msgid "Your selected font can't display some characters. They show as “?”. In Design, choose a font that has them."
 msgstr "நீங்கள் தேர்ந்தெடுத்த எழுத்துருவால் சில எழுத்துகளைக் காட்ட முடியாது. அவை “?” ஆகத் தோன்றும். வடிவமைப்பு பிரிவில், அவற்றைக் கொண்ட எழுத்துருவைத் தேர்ந்தெடுக்கவும்."
 
+#: src/features/profile/sources/messages.ts
+msgid "Your site has more works than one import brings. Add the rest in your portfolio."
+msgstr ""
+
 #: src/features/portfolio/editor/publish-panel.tsx
 msgid "Your source resume is in Trash"
 msgstr ""
@@ -22961,6 +23214,7 @@ msgstr "உங்கள் இரண்டு நிமிட அறிமுக
 msgid "Your web page is live"
 msgstr "உங்கள் வலைப்பக்கம் நேரலையில் உள்ளது"
 
+#: src/features/portfolio/works/add-work/from-site.tsx
 #: src/features/profile/sources/messages.ts
 msgid "Your website"
 msgstr ""
