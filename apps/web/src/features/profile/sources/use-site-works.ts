@@ -67,7 +67,7 @@ export function useSiteWorks(
 }
 
 /** What didn't fully come along when works were saved, or null when everything did. */
-export function siteWorksNote(done: SiteWorksDone): string | null {
+function siteWorksNote(done: SiteWorksDone): string | null {
 	if (done.storageFull) return t`Your portfolio's storage is full, so some works were saved without their pictures.`;
 	if (done.picturesSkipped > 0)
 		return plural(done.picturesSkipped, {

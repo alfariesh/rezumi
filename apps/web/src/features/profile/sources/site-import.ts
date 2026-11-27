@@ -5,7 +5,6 @@ import type {
 	WorkDraft,
 } from "@rezumi/schema/profile/website-import";
 import type { ProjectItem } from "@rezumi/schema/resume/data";
-import { ORPCError } from "@orpc/client";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { importedDrafts, initialDraftChoice, toggleDraft } from "@rezumi/portfolio/site-import";
@@ -101,8 +100,6 @@ export async function saveSiteWorks(
 	}
 	throw new TypeError("Saving the works ended early.");
 }
-
-export const isImportGone = (error: unknown) => error instanceof ORPCError && error.code === "PORTFOLIO_IMPORT_GONE";
 
 /**
  * Whether portfolios are open to the account, how many more works it may hold and which drafts it already has, for
