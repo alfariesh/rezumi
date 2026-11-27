@@ -1,6 +1,8 @@
 # Draf teks privasi: impor website (Phase 03)
 
-Ditulis 2026-11-27 untuk disetujui pemilik. **Belum dipasang**: `docs/legal/*` tidak diubah di Phase 03.
+Ditulis 2026-11-27, **disetujui pemilik dan dipasang 2026-11-27** di `docs/legal/privacy-policy.mdx` dan `kebijakan-privasi.mdx` (baris tabel data, poin "Sumber Profil" di Penerima, GitHub di lokasi pemrosesan). Bagian GitHub dan foto diambil dari draf sumber Profil 2026-11-13. **LinkedIn (treg/Apify) belum dipasang**: draf lama masih punya `[periksa]` (badan hukum Apify, lama simpan run) dan belum menyebut treg yang sekarang dipakai lebih dulu. Tanggal berlaku kebijakan tidak diubah.
+
+Catatan di bawah ini adalah teks usulan aslinya.
 
 Kenapa belum dipasang:
 

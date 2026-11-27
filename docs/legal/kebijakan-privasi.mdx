@@ -10,15 +10,16 @@ Kebijakan ini untuk layanan resmi rezumi.app dan app yang terhubung ke sana. Kon
 
 ## Data, tujuan, dan dasar pemrosesan
 
-| Data                                                                                                                                            | Tujuan                                                       | Dasar pemrosesan                                                           |
-| ----------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------ | -------------------------------------------------------------------------- |
-| Nama, email, username, foto opsional, status verifikasi                                                                                         | Akun, profil dan pemberian layanan                           | Pelaksanaan perjanjian                                                     |
-| Hash password, sesi/token, IP/user agent, verifikasi, 2FA dan passkey; identitas/token login sosial                                             | Autentikasi dan pencegahan penyalahgunaan                    | Perjanjian dan kepentingan sah keamanan yang dinilai terhadap hak pengguna |
-| CV, surat, unggahan, riwayat versi, catatan privat, lamaran, kontak/interview, knowledge, offer dan jadwal karier                               | Penyimpanan, sinkronisasi, ekspor dan fitur yang diminta     | Pelaksanaan perjanjian; pilihan publikasi/koneksi oleh pengguna            |
-| Nomor pesanan, id pembayaran/langganan Dodo atau SumoPod, nilai, mata uang, metode/status/waktu, periode akses, refund, ledger pemakaian kredit | Verifikasi pembayaran, akses, penanganan sengketa, pembukuan | Perjanjian dan kewajiban hukum                                             |
-| Teks/dokumen, konteks lowongan, prompt, hasil AI dan catatan biaya tindakan                                                                     | Menjalankan tindakan AI yang dipilih                         | Permintaan pengguna/perjanjian dan persetujuan bila diwajibkan             |
-| Cookie sesi/preferensi, penyimpanan perangkat, log keamanan dan hitungan tayangan/unduhan CV                                                    | Fungsi app, keamanan dan statistik CV                        | Perjanjian dan kepentingan sah yang proporsional                           |
-| Pengaduan, permintaan refund (termasuk rekening atau e-wallet tujuan refund QRIS) dan laporan konten yang dikirim                               | Dukungan, refund, moderasi, pelaksanaan hak                  | Perjanjian, kewajiban hukum dan kepentingan sah keamanan                   |
+| Data                                                                                                                                                           | Tujuan                                                                     | Dasar pemrosesan                                                           |
+| -------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------- | -------------------------------------------------------------------------- |
+| Nama, email, username, foto opsional, status verifikasi                                                                                                        | Akun, profil dan pemberian layanan                                         | Pelaksanaan perjanjian                                                     |
+| Hash password, sesi/token, IP/user agent, verifikasi, 2FA dan passkey; identitas/token login sosial                                                            | Autentikasi dan pencegahan penyalahgunaan                                  | Perjanjian dan kepentingan sah keamanan yang dinilai terhadap hak pengguna |
+| CV, surat, unggahan, riwayat versi, catatan privat, lamaran, kontak/interview, knowledge, offer dan jadwal karier                                              | Penyimpanan, sinkronisasi, ekspor dan fitur yang diminta                   | Pelaksanaan perjanjian; pilihan publikasi/koneksi oleh pengguna            |
+| Nomor pesanan, id pembayaran/langganan Dodo atau SumoPod, nilai, mata uang, metode/status/waktu, periode akses, refund, ledger pemakaian kredit                | Verifikasi pembayaran, akses, penanganan sengketa, pembukuan               | Perjanjian dan kewajiban hukum                                             |
+| Teks/dokumen, konteks lowongan, prompt, hasil AI dan catatan biaya tindakan                                                                                    | Menjalankan tindakan AI yang dipilih                                       | Permintaan pengguna/perjanjian dan persetujuan bila diwajibkan             |
+| Username GitHub atau alamat situs pribadi yang Anda isi, isi yang dibaca dari sana, dan gambar karya yang Anda pilih untuk ditambahkan dari situs Anda sendiri | Mengisi Profil dan portfolio Anda atas permintaan Anda, untuk Anda periksa | Permintaan pengguna/kontrak                                                |
+| Cookie sesi/preferensi, penyimpanan perangkat, log keamanan dan hitungan tayangan/unduhan CV                                                                   | Fungsi app, keamanan dan statistik CV                                      | Perjanjian dan kepentingan sah yang proporsional                           |
+| Pengaduan, permintaan refund (termasuk rekening atau e-wallet tujuan refund QRIS) dan laporan konten yang dikirim                                              | Dukungan, refund, moderasi, pelaksanaan hak                                | Perjanjian, kewajiban hukum dan kepentingan sah keamanan                   |
 
 Jangan memasukkan NIK, data kesehatan, data anak atau informasi sensitif yang tidak diperlukan dalam CV/prompt.
 Data pihak lain hanya boleh dimasukkan dengan dasar yang sah. Kami tidak menjual data atau memakai CV untuk iklan.
@@ -54,6 +55,20 @@ Analytics untuk menghitung kunjungan; log keamanan dan statistik CV tetap dipros
   Rezumi AI akan menunjukkan provider/model sebelum digunakan; provider peluncuran: **Anthropic (Claude Haiku 5.5, Amerika Serikat)**. Anthropic menghapus masukan dan hasil dalam **30 hari**, kecuali konten yang ditandai melanggar kebijakan penggunaannya (hingga 2 tahun) atau bila hukum mewajibkan, dan tidak memakainya untuk melatih model.
   Pemakaian kredit tidak berarti izin memakai data untuk melatih model. Ketentuan retensi/pelatihan provider harus disampaikan sebelum aktivasi;
   jangan aktifkan Rezumi AI sebelum informasi tersebut lengkap. API key tersimpan dienkripsi, bukan ditampilkan ke pengguna lain.
+- **Sumber Profil, hanya bila Anda minta:** saat menyiapkan atau mengisi Profil, Anda bisa menambahkan username GitHub atau
+  situs pribadi. Tidak ada yang dibaca sebelum Anda menekan Lanjutkan, dan tidak ada yang masuk ke Profil atau portfolio
+  sebelum Anda memeriksa dan menyimpannya.
+  - **GitHub (GitHub, Inc., Amerika Serikat):** Rezumi membaca profil publik dan repositori publik dari username yang Anda
+    isi, lewat API GitHub. Bila Anda login dengan GitHub, Rezumi memakai login itu untuk permintaannya.
+  - **Situs pribadi:** halaman diambil dari servernya sendiri (atau, bila butuh JavaScript, lewat layanan browser Cloudflare)
+    lalu dibaca oleh penyedia AI yang Anda pilih (lihat Penyedia AI). Bila Anda menyatakan situs itu milik Anda sendiri,
+    Rezumi juga membaca sampai sepuluh halaman karya di situs itu (total sebelas halaman) untuk mengusulkan karya portfolio.
+    Hasilnya disimpan 24 jam supaya bisa Anda periksa, lalu dihapus; Rezumi hanya menyimpan catatan bahwa impor itu berjalan
+    (alamat situs, kapan, berapa halaman dan karya, dan apakah itu impor gratis Anda). Tidak ada yang ditambahkan sebelum
+    Anda memilih karyanya. Gambar karya yang Anda tambahkan disalin ke penyimpanan portfolio Anda di Rezumi dan dihitung ke
+    kuota penyimpanannya; Rezumi tidak menampilkannya dari situs Anda.
+  - Hanya yang Anda pertahankan saat memeriksa yang disimpan. Foto yang Anda pilih disalin ke unggahan pribadi akun Anda;
+    aslinya tetap di tempatnya.
 - **Email transaksional:** alamat email, informasi akun atau rincian bukti bayar yang diperlukan; provider produksi: **Cloudflare Email**; retensi mengikuti ketentuan Cloudflare.
 - **Login sosial dan aplikasi terhubung:** provider login menerima permintaan autentikasi. Aplikasi OAuth/API/MCP yang diizinkan dapat membaca/mengubah
   profil, CV, surat, lamaran, riwayat/statistik dan data karier sesuai scope. Cabut izin lewat pengaturan aplikasi terhubung/API key.
@@ -175,7 +190,7 @@ paling lambat **3 × 24 jam** sesuai UU PDP, memuat data terdampak, waktu/cara k
 
 Cloudflare, Neon, email dan provider AI dapat memproses data di luar Indonesia. Sebelum transfer kami menilai tingkat pelindungan negara penerima;
 bila tidak setara, memastikan pelindungan memadai dan mengikat; bila syarat itu tidak terpenuhi, meminta persetujuan sesuai hukum.
-Lokasi pemrosesan: Singapura (Neon), Amerika Serikat (Dodo Payments, Anthropic), India (Dodo Payments) dan jaringan global Cloudflare. Transfer mengikuti perjanjian pemrosesan data dengan masing-masing penyedia.
+Lokasi pemrosesan: Singapura (Neon), Amerika Serikat (Dodo Payments, Anthropic, dan GitHub bila Anda menambahkan username GitHub), India (Dodo Payments) dan jaringan global Cloudflare. Transfer mengikuti perjanjian pemrosesan data dengan masing-masing penyedia.
 
 ## Anak dan perubahan
 
