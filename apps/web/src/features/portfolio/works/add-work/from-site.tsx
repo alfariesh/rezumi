@@ -4,7 +4,7 @@ import type { WebsiteImportResult } from "@rezumi/schema/profile/website-import"
 import { Button, Checkbox, FieldError, Input, Label, Modal, Spinner, TextField } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Plural, Trans } from "@lingui/react/macro";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useId, useRef, useState } from "react";
 import { websiteAddress, websitePlatform } from "@rezumi/resume/profile-sources";
 import { toast } from "@rezumi/ui/components/toast";
@@ -43,6 +43,7 @@ function addressProblem(text: string): string | null {
 export function FromSite({ onBack, onClose, onBusy }: StepProps) {
 	const id = useId();
 	const ai = useAiSource();
+	const queryClient = useQueryClient();
 	const status = useQuery(orpc.profile.sources.status.queryOptions());
 	const profile = useQuery(profileQueryOptions());
 	const openWork = usePortfolioEditorUi((state) => state.openWork);
@@ -73,6 +74,8 @@ export function FromSite({ onBack, onClose, onBusy }: StepProps) {
 		try {
 			const found = await importSite(url, aiSourceFields(ai), setProgress, current.signal);
 			if (controller.current === current) setResult(found);
+			// The account's free import may be used now: its price reads again.
+			void queryClient.invalidateQueries({ queryKey: orpc.profile.sources.status.queryKey() });
 		} catch (failure) {
 			if (current.signal.aborted) return;
 			if (!openPlanDialogForError(failure)) openCreditsDialogForError(failure);

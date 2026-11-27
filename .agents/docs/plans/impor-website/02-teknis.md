@@ -211,4 +211,11 @@ Total biaya AI sesi ini ±$0,04 (termasuk percobaan gagal dan satu uji pemilih h
 
 - **Ditemukan dan diperbaiki: situs Notion tidak bisa dibaca.** Pembaca bawaan mendapat HTML kosong (Notion digambar JavaScript), lalu Browser Run menunggu jaringan diam (`networkidle2`) yang tidak pernah terjadi di Notion: 422 setelah ±32 detik, melewati batas 30 detik. `readBrowserPage` sekarang punya cara tunggu `loaded` (DOM siap + jeda 5 detik, ±7–9 detik per halaman). Impor website langsung memakai `loaded`; pembacaan lain (lowongan) tetap `settled` dan baru mengulang dengan `loaded` bila `settled` habis waktu (422). Jeda 3 detik kadang belum cukup untuk galeri Notion (satu impor mendapat 0 halaman karya), jadi 5 detik.
 - **Bukan bug:** teks pengisi template (lorem ipsum, kalimat korporat acak) sering ditolak AI. Situs pengguna sungguhan tidak terdampak.
-- Tidak ada perubahan prompt atau filter gambar: penemuan halaman, ringkasan, dan gambar di situs Webflow sudah sesuai.
+- **Ditemukan dan diperbaiki: sampul hilang di situs pemilik.** Halaman karya alfariesh.ai.id hanya punya gambar pratinjau (`og:image`); di Phase 01 AI memakainya sebagai sampul, di uji produksi tidak (4 karya tanpa gambar). `extractWorks` sekarang memakai gambar pratinjau halaman sebagai sampul bila AI tidak memilih sampul (kecuali situs satu halaman, yang pratinjaunya milik seluruh situs). Uji ulang: 4 dari 4 karya bersampul ($0,0099).
+- **Ditemukan dan diperbaiki: label "gratis kali ini" basi** setelah impor gratis terpakai. Status sumber dibaca ulang setelah setiap impor (onboarding, Isi Profil, editor portfolio).
+- Tidak ada perubahan prompt; penemuan halaman dan ringkasan di situs Webflow sudah sesuai.
+
+### Uji produksi (2026-11-27, Chrome pemilik)
+
+- Editor portfolio → Tambah work → Impor dari website, alfariesh.ai.id, Rezumi AI. Sebelum: `websiteImportFree: true`, saldo 2 kredit (kurang dari 5, jadi impor hanya bisa lewat jatah gratis). Hasil: 4 karya dalam ±55 detik; sesudah: saldo tetap 2, `websiteImportFree: false`, tidak ada baris baru di riwayat kredit. Karya **tidak** disimpan (portfolio pemilik sudah tayang); dialog ditutup. Pilihan AI browser pemilik dikembalikan ke koneksi AI miliknya.
+- Biaya operator untuk impor gratis itu ±$0,01 (tercatat di baris `website_import`).

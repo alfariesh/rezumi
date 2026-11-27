@@ -4,6 +4,7 @@ import { describe, expect, it } from "vite-plus/test";
 import { MockLanguageModelV4 } from "ai/test";
 import { workDraftSchema } from "@rezumi/schema/profile/website-import";
 import { extractWorks, pickWorkPages, WORK_PAGE_CHARS } from "./ai";
+import { SHARE_IMAGE_CONTEXT } from "./document";
 
 /** A model that answers `text` and remembers what it was asked. */
 function modelAnswering(text: string) {
@@ -139,6 +140,22 @@ describe("extractWorks", () => {
 			embeds: ["https://www.youtube.com/watch?v=dQw4w9WgXcQ"],
 		});
 		expect(workDraftSchema.parse(draft)).toEqual(draft);
+	});
+
+	it("falls back to the page's preview picture when the model picks no cover", async () => {
+		const work = { page: 1, title: "Kopi checkout", cover: null, gallery: [] };
+		const preview = {
+			url: "https://dewi.design/og/kopi.png",
+			alt: "",
+			width: null,
+			height: null,
+			context: SHARE_IMAGE_CONTEXT,
+		};
+		const page = { ...workPage("/work/kopi"), document: documentWith({ images: [preview] }) };
+		const [draft] = await extractWorks(modelAnswering(answer([work])).model, { pages: [page], onHome: false });
+		expect(draft?.cover).toEqual({ url: "https://dewi.design/og/kopi.png", alt: "", width: null, height: null });
+		const [onHome] = await extractWorks(modelAnswering(answer([work])).model, { pages: [page], onHome: true });
+		expect(onHome?.cover).toBeNull();
 	});
 
 	it("drops drafts without a title or a known page, and keeps one draft per page", async () => {
