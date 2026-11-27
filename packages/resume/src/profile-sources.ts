@@ -27,6 +27,8 @@ export type SourceInputs<F extends SourceFile = SourceFile> = {
 	linkedinOwn: boolean;
 	github: string;
 	website: string;
+	/** "This is my own site": its works come in too, as portfolio drafts (`websiteImport`); without it, Profile only. */
+	websiteOwn?: boolean;
 };
 
 export const emptySourceInputs = <F extends SourceFile = SourceFile>(github = ""): SourceInputs<F> => ({
@@ -35,19 +37,40 @@ export const emptySourceInputs = <F extends SourceFile = SourceFile>(github = ""
 	linkedinOwn: false,
 	github,
 	website: "",
+	websiteOwn: false,
 });
 
-/** The sources this account and server offer (`profile.sources.status`); a file is always offered. */
-export type SourceAvailability = { linkedin: boolean; github: boolean; website: boolean };
+/**
+ * The sources this account and server offer (`profile.sources.status`); a file is always offered. `websiteImport`:
+ * whether a website the person owns can bring its works too (portfolios are open to the account).
+ */
+export type SourceAvailability = { linkedin: boolean; github: boolean; website: boolean; websiteImport?: boolean };
 
 export type SourceRequest<F extends SourceFile = SourceFile> =
 	| { id: "file"; key: string; file: F }
 	| { id: "linkedin"; key: string; url: string }
 	| { id: "github"; key: string; username: string }
-	| { id: "website"; key: string; url: string };
+	| { id: "website"; key: string; url: string; own: boolean };
 
-/** Why a filled-in source can't run as entered. */
-export type SourceInputProblem = "invalid" | "unconfirmed";
+/**
+ * Why a filled-in source can't run as entered. For a website: `linkedin-site` is a LinkedIn address (it belongs in the
+ * LinkedIn field), `platform-site` a Behance or Dribbble one (those block reading for now).
+ */
+export type SourceInputProblem = "invalid" | "unconfirmed" | "linkedin-site" | "platform-site";
+
+/** A website address that is one of the platforms the website reader can't use, or null. */
+export function websitePlatform(url: string): "linkedin" | "behance" | "dribbble" | null {
+	let host: string;
+	try {
+		host = new URL(url).hostname.toLowerCase();
+	} catch {
+		return null;
+	}
+	if (/(?:^|\.)linkedin\.com$/.test(host)) return "linkedin";
+	if (/(?:^|\.)behance\.net$/.test(host)) return "behance";
+	if (/(?:^|\.)dribbble\.com$/.test(host)) return "dribbble";
+	return null;
+}
 
 /** A personal website's address from what was typed (`yourname.com`, with or without https://), or null. */
 export function websiteAddress(input: string): string | null {
@@ -90,8 +113,12 @@ export function readSourceInputs<F extends SourceFile>(inputs: SourceInputs<F>, 
 
 	if (availability.website && inputs.website.trim()) {
 		const url = websiteAddress(inputs.website);
-		if (url) requests.push({ id: "website", key: url, url });
-		else problems.website = "invalid";
+		const platform = url ? websitePlatform(url) : null;
+		const own = Boolean(availability.websiteImport && inputs.websiteOwn);
+		if (!url) problems.website = "invalid";
+		else if (platform) problems.website = platform === "linkedin" ? "linkedin-site" : "platform-site";
+		// Importing the site is another run than reading its page: ticking the box reads it again.
+		else requests.push({ id: "website", key: own ? `${url}#own` : url, url, own });
 	}
 
 	return { requests, problems };
@@ -277,7 +304,7 @@ export function clearEditedProblems(
 	const next = { ...problems };
 	if ("linkedin" in patch || "linkedinOwn" in patch) delete next.linkedin;
 	if ("github" in patch) delete next.github;
-	if ("website" in patch) delete next.website;
+	if ("website" in patch || "websiteOwn" in patch) delete next.website;
 	return next;
 }
 

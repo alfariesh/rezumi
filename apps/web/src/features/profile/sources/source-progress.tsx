@@ -1,17 +1,27 @@
+import type { SiteImportState } from "./use-source-runs";
 import type { SourceId, SourceRun, SourceRuns } from "@rezumi/resume/profile-sources";
 import { Button, Spinner } from "@heroui/react";
 import { t } from "@lingui/core/macro";
-import { Trans } from "@lingui/react/macro";
+import { Plural, Trans } from "@lingui/react/macro";
 import { canRetrySource, SOURCE_IDS, sourceFindings } from "@rezumi/resume/profile-sources";
 import { Icon } from "@rezumi/ui/components/icon";
 import { cn } from "@rezumi/utils/style";
-import { SOURCE_ICONS, sourceErrorMessage, sourceLabel, sourceNoteMessage } from "./messages";
+import {
+	siteImportNoteMessage,
+	siteImportStepLabel,
+	SOURCE_ICONS,
+	sourceErrorMessage,
+	sourceLabel,
+	sourceNoteMessage,
+} from "./messages";
 import { RowIcon } from "@/components/layout/icon-row";
 import { ENTER_CLASS, POP_CLASS, stagger } from "@/libs/motion";
 import { getSectionTitle } from "@/libs/resume/section";
 
 type SourceProgressProps = {
 	runs: SourceRuns;
+	/** The website's import, when the website is the person's own: its steps, then the works it found. */
+	site?: SiteImportState | null;
 	onRetry: (id: SourceId) => void;
 	className?: string;
 };
@@ -20,7 +30,7 @@ type SourceProgressProps = {
  * Each source on its own line while it's read: a spinner, then what it found, or why it failed with Retry when trying
  * again can help. One source failing never holds up the others.
  */
-export function SourceProgress({ runs, onRetry, className }: SourceProgressProps) {
+export function SourceProgress({ runs, site = null, onRetry, className }: SourceProgressProps) {
 	const shown = SOURCE_IDS.flatMap((id) => {
 		const run = runs[id];
 		return run ? [{ id, run }] : [];
@@ -39,7 +49,7 @@ export function SourceProgress({ runs, onRetry, className }: SourceProgressProps
 							{sourceLabel(id)}
 							<RunIcon run={run} />
 						</span>
-						<RunStatus id={id} run={run} />
+						<RunStatus id={id} run={run} site={id === "website" ? site : null} />
 					</div>
 					{run.status === "failed" && canRetrySource(run.error) && (
 						<Button size="sm" variant="secondary" className={cn(ENTER_CLASS, "shrink-0")} onPress={() => onRetry(id)}>
@@ -61,10 +71,17 @@ function RunIcon({ run }: RunProps) {
 	return <Icon key="failed" name="warning-circle" size={18} className={cn(POP_CLASS, "text-danger")} />;
 }
 
-type RunStatusProps = { id: SourceId; run: SourceRun };
+type RunStatusProps = { id: SourceId; run: SourceRun; site: SiteImportState | null };
 
 /** The line under a source's name. Polite, so a screen reader hears each source finish without being interrupted. */
-function RunStatus({ id, run }: RunStatusProps) {
+function RunStatus({ id, run, site }: RunStatusProps) {
+	if (run.status === "loading" && site)
+		return (
+			<p role="status" className="text-body-sm text-muted">
+				{siteImportStepLabel(site.progress)}
+			</p>
+		);
+
 	if (run.status === "loading")
 		return (
 			<p role="status" className="text-body-sm text-muted">
@@ -85,10 +102,30 @@ function RunStatus({ id, run }: RunStatusProps) {
 			</p>
 		);
 
-	const notes = run.result.notes.flatMap((note) => sourceNoteMessage(note) ?? []);
+	const result = site?.result;
+	const notes = [
+		...new Set([
+			...run.result.notes.flatMap((note) => sourceNoteMessage(note) ?? []),
+			...(result?.notes.flatMap((note) => siteImportNoteMessage(note) ?? []) ?? []),
+		]),
+	];
 	return (
 		<div role="status" className="grid gap-0.5">
 			<p className="text-body-sm text-muted">{describeFindings(run.result.data)}</p>
+			{result && result.works.length > 0 && (
+				<p className="text-body-sm text-muted">
+					<Plural
+						value={result.works.length}
+						one="And # work for your portfolio"
+						other="And # works for your portfolio"
+					/>
+				</p>
+			)}
+			{result?.free && (
+				<p className="text-body-xs text-muted">
+					<Trans>Your first website import is free.</Trans>
+				</p>
+			)}
 			{notes.map((note) => (
 				<p key={note} className="text-body-xs text-muted">
 					{note}

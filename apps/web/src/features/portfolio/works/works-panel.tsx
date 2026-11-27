@@ -1,3 +1,4 @@
+import type { AddWorkWay } from "./add-work/add-work-dialog";
 import type { PortfolioWork } from "@rezumi/schema/portfolio/data";
 import type { ReactNode } from "react";
 import { Button, Chip } from "@heroui/react";
@@ -17,7 +18,7 @@ import { moveItem } from "../editor/fields";
 import { editPortfolio, usePortfolioData, usePortfolioEditorStore } from "../editor/store";
 import { usePortfolioEditorUi } from "../editor/ui";
 import { portfolioImageSrc } from "../images/image-field";
-import { AddWorkDialog } from "./add-work/add-work-dialog";
+import { AddWorkDialog, useCanImportSite } from "./add-work/add-work-dialog";
 import { usePortfolioLimits } from "./limits";
 import { StorageMeter } from "./storage-meter";
 import { WorkDocument } from "./work-document";
@@ -78,17 +79,19 @@ function WorksList() {
 	const openWorkId = usePortfolioEditorUi((state) => state.openWorkId);
 	const confirm = useConfirm();
 	const { itemProps, fallbackRef, removed } = useRemovalFocus();
-	const [adding, setAdding] = useState(false);
+	// The dialog, and the way it opens on (null: the choices).
+	const [adding, setAdding] = useState<{ way: AddWorkWay | null } | null>(null);
+	const canImportSite = useCanImportSite();
 	const items = works.items;
 	const plan = usePlan();
 	const full = workRoom({ works }, limits.works) === 0;
 	// Full because of the plan, not the technical limit: the button explains the plan instead of doing nothing.
 	const planFull = full && Boolean(plan?.enabled) && limits.works < PORTFOLIO_LIMITS.works;
 
-	const add = () =>
+	const add = (way: AddWorkWay | null = null) =>
 		full && planFull
 			? openPlanDialog({ kind: "limit", limit: "portfolioWorks", max: limits.works, used: items.length })
-			: setAdding(true);
+			: setAdding({ way });
 
 	const remove = async (id: string, title: string) => {
 		const confirmed = await confirm(t`Delete “${title}”?`, {
@@ -150,7 +153,7 @@ function WorksList() {
 						<Trans>No works yet</Trans>
 					)}
 				</span>
-				<Button size="sm" variant="secondary" isDisabled={full && !planFull} onPress={add}>
+				<Button size="sm" variant="secondary" isDisabled={full && !planFull} onPress={() => add()}>
 					<Icon name="plus" size={16} />
 					<Trans>Add work</Trans>
 				</Button>
@@ -159,19 +162,27 @@ function WorksList() {
 			<StorageMeter />
 
 			{items.length === 0 && (
-				<button
-					type="button"
-					onClick={add}
-					className="grid cursor-(--cursor-interactive) justify-items-center gap-2 rounded-2xl border border-dashed border-separator px-4 py-8 text-center outline-none hover:bg-default focus-visible:ring-2 focus-visible:ring-focus"
-				>
-					<Icon name="squares-four" size={24} className="text-muted" />
-					<span className="text-sm font-medium">
-						<Trans>Add your first work</Trans>
-					</span>
-					<span className="text-xs text-muted">
-						<Trans>Start empty, or from resume projects, pictures or a link.</Trans>
-					</span>
-				</button>
+				<div className="grid gap-2">
+					<button
+						type="button"
+						onClick={() => add()}
+						className="grid cursor-(--cursor-interactive) justify-items-center gap-2 rounded-2xl border border-dashed border-separator px-4 py-8 text-center outline-none hover:bg-default focus-visible:ring-2 focus-visible:ring-focus"
+					>
+						<Icon name="squares-four" size={24} className="text-muted" />
+						<span className="text-sm font-medium">
+							<Trans>Add your first work</Trans>
+						</span>
+						<span className="text-xs text-muted">
+							<Trans>Start empty, or from resume projects, pictures or a link.</Trans>
+						</span>
+					</button>
+					{canImportSite && (
+						<Button variant="tertiary" size="sm" className="justify-self-center" onPress={() => add("site")}>
+							<Icon name="globe" size={16} />
+							<Trans>Import from your website</Trans>
+						</Button>
+					)}
+				</div>
 			)}
 
 			<SortableProvider
@@ -228,7 +239,7 @@ function WorksList() {
 				</ul>
 			</SortableProvider>
 
-			{adding && <AddWorkDialog onClose={() => setAdding(false)} />}
+			{adding && <AddWorkDialog initialWay={adding.way} onClose={() => setAdding(null)} />}
 		</>
 	);
 }

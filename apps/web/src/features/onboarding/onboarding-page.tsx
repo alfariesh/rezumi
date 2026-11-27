@@ -1,4 +1,5 @@
 import type { ProfileDto } from "@/features/profile/queries";
+import type { SiteWorksDone } from "@/features/profile/sources/site-import";
 import type { AuthSession } from "@rezumi/auth/types";
 import type { OnboardingStep } from "@rezumi/career/onboarding";
 import type { SourceAvailability } from "@rezumi/resume/profile-sources";
@@ -8,13 +9,13 @@ import type { SourcesStatus } from "@rezumi/schema/profile/sources";
 import type { Template } from "@rezumi/schema/templates";
 import type { ReactNode } from "react";
 import { Stepper } from "@heroui-pro/react";
-import { Button, Card, Separator, Skeleton, Typography } from "@heroui/react";
+import { Button, Card, Separator, Skeleton, Typography, buttonVariants } from "@heroui/react";
 import { i18n } from "@lingui/core";
 import { t } from "@lingui/core/macro";
 import { Plural, Trans } from "@lingui/react/macro";
 import { ORPCError } from "@orpc/client";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { useNavigate } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useId, useRef, useState } from "react";
 import { answersOf, nextStep, ONBOARDING_STEPS, previousStep, sameAnswers, skipSaves } from "@rezumi/career/onboarding";
 import { countReviewEntries, SOURCE_IDS } from "@rezumi/resume/profile-sources";
@@ -32,9 +33,11 @@ import { CareerLoadError } from "@/features/career/load-state";
 import { useNewDocumentsStore } from "@/features/documents/new-documents";
 import { profileQueryOptions, storeSavedProfile } from "@/features/profile/queries";
 import { sourceLabel } from "@/features/profile/sources/messages";
+import { SiteWorksReview } from "@/features/profile/sources/site-works-review";
 import { focusFirstProblem, SourceFields, SourcesNote } from "@/features/profile/sources/source-fields";
 import { SourceProgress } from "@/features/profile/sources/source-progress";
 import { SourceReview } from "@/features/profile/sources/source-review";
+import { siteWorksProgressLabel, useSiteWorks } from "@/features/profile/sources/use-site-works";
 import { finishReview, useSourcesFlow } from "@/features/profile/sources/use-sources-flow";
 import { UserAvatar } from "@/features/user/avatar";
 import { toastError } from "@/libs/error-message";
@@ -107,10 +110,15 @@ function Onboarding({ profile, preferences, status }: OnboardingProps) {
 	const [template, setTemplate] = useState<Template>(defaultTemplate);
 	const [busy, setBusy] = useState<"skip" | "save" | "create" | null>(null);
 	const copiedPhotos = useRef(new Map<string, string>());
+	// What saving the site's works did, for the last step's way to the portfolio.
+	const [worksSaved, setWorksSaved] = useState<SiteWorksDone | null>(null);
+	const portfolio = useQuery(orpc.portfolio.status.queryOptions());
 	const availability: SourceAvailability = {
 		linkedin: status.linkedin,
 		github: status.github,
 		website: status.website,
+		// An own site's works need portfolios open to the account, and a server that imports sites.
+		websiteImport: status.website && status.websiteImportFree !== undefined && portfolio.data?.enabled === true,
 	};
 	const flow = useSourcesFlow({
 		base: base.data,
@@ -120,6 +128,7 @@ function Onboarding({ profile, preferences, status }: OnboardingProps) {
 	});
 
 	const version = saved ? saved.updatedAt : base.updatedAt;
+	const siteWorks = useSiteWorks(flow.site?.result ?? null, (saved?.data ?? base.data).sections.projects);
 
 	/** Saves the answers when they changed; a failure only says so, since both are optional. */
 	const saveAnswers = () => {
@@ -196,10 +205,20 @@ function Onboarding({ profile, preferences, status }: OnboardingProps) {
 		setBusy("save");
 		const { data, photoFailed } = await finishReview(flow, copiedPhotos.current);
 		const ok = await saveProfile(data);
-		setBusy(null);
-		if (!ok) return;
+		if (!ok) {
+			setBusy(null);
+			return;
+		}
 		if (photoFailed)
 			toast.add({ type: "warning", description: t`Couldn't copy the photo. You can add one later in your Profile.` });
+		// Then the site's works: saving them adds their Profile projects too, so the Profile is read again after.
+		if (siteWorks.count > 0) {
+			const done = await siteWorks.save();
+			if (done) setWorksSaved(done);
+			const fresh = await queryClient.fetchQuery({ ...profileQueryOptions(), staleTime: 0 }).catch(() => null);
+			if (fresh) setSaved({ data: fresh.data, updatedAt: fresh.updatedAt });
+		}
+		setBusy(null);
 		setStep("resume");
 	};
 
@@ -286,6 +305,7 @@ function Onboarding({ profile, preferences, status }: OnboardingProps) {
 							availability={availability}
 							problems={flow.problems}
 							accountGithub={status.account.githubUsername}
+							websiteImportFree={status.websiteImportFree}
 						/>
 					</Card>
 					<SourcesNote availability={availability} />
@@ -316,7 +336,7 @@ function Onboarding({ profile, preferences, status }: OnboardingProps) {
 				>
 					{Object.keys(flow.runs).length > 0 && (
 						<Card className="p-4 sm:p-6">
-							<SourceProgress runs={flow.runs} onRetry={flow.retry} />
+							<SourceProgress runs={flow.runs} site={flow.site} onRetry={flow.retry} />
 						</Card>
 					)}
 					<Card className="p-4 sm:p-6">
@@ -326,7 +346,8 @@ function Onboarding({ profile, preferences, status }: OnboardingProps) {
 			);
 
 		case "review": {
-			const found = flow.groups.length > 0 || flow.photos.length > 0;
+			const profileFound = flow.groups.length > 0 || flow.photos.length > 0;
+			const found = profileFound || siteWorks.works.length > 0;
 			const kept = countReviewEntries(flow.groups, flow.excluded);
 			const settled = SOURCE_IDS.every((id) => flow.runs[id]?.status !== "loading");
 			const allDone = SOURCE_IDS.every((id) => !flow.runs[id] || flow.runs[id]?.status === "done");
@@ -346,9 +367,15 @@ function Onboarding({ profile, preferences, status }: OnboardingProps) {
 								onPress={() => void saveReview()}
 								className="min-w-0"
 							>
-								{!settled ? (
+								{siteWorks.progress ? (
+									<span className="truncate">{siteWorksProgressLabel(siteWorks.progress)}</span>
+								) : !settled ? (
 									<span className="truncate">
 										<Trans>Waiting for {formatList(i18n.locale, waitingFor)}…</Trans>
+									</span>
+								) : siteWorks.count > 0 ? (
+									<span className="truncate">
+										<Trans>Save to Profile and portfolio</Trans>
 									</span>
 								) : found && (kept > 0 || flow.photo) ? (
 									<Trans>Save to my Profile</Trans>
@@ -359,26 +386,43 @@ function Onboarding({ profile, preferences, status }: OnboardingProps) {
 						</>
 					}
 				>
-					{!allDone && (
+					{(!allDone || flow.site?.result) && (
 						<Card className="p-4 sm:p-6">
-							<SourceProgress runs={flow.runs} onRetry={flow.retry} />
+							<SourceProgress runs={flow.runs} site={flow.site} onRetry={flow.retry} />
 						</Card>
 					)}
 					{found ? (
 						<Card className="gap-4 p-2 sm:p-4">
-							<p role="status" className="px-2 pt-2 text-sm font-medium sm:px-0 sm:pt-0">
-								<Plural value={kept} one="# entry ticked" other="# entries ticked" />
-							</p>
-							<SourceReview
-								merged={flow.merged}
-								groups={flow.groups}
-								excluded={flow.excluded}
-								onExcludedChange={flow.setExcluded}
-								photos={flow.photos}
-								photo={flow.photo}
-								onPhotoChange={flow.setPhoto}
-								name={base.data.basics.name || status.account.name}
-							/>
+							{profileFound && (
+								<>
+									<p role="status" className="px-2 pt-2 text-sm font-medium sm:px-0 sm:pt-0">
+										<Plural value={kept} one="# entry ticked" other="# entries ticked" />
+									</p>
+									<SourceReview
+										merged={flow.merged}
+										groups={flow.groups}
+										excluded={flow.excluded}
+										onExcludedChange={flow.setExcluded}
+										photos={flow.photos}
+										photo={flow.photo}
+										onPhotoChange={flow.setPhoto}
+										name={base.data.basics.name || status.account.name}
+									/>
+								</>
+							)}
+							{siteWorks.works.length > 0 && (
+								<SiteWorksReview
+									works={siteWorks.works}
+									chosen={siteWorks.chosen}
+									onToggle={siteWorks.toggle}
+									imported={siteWorks.room.imported}
+									room={siteWorks.room.room}
+									planLimit={siteWorks.room.planLimited ? siteWorks.room.max : null}
+									hasPortfolio={siteWorks.room.hasPortfolio}
+									published={siteWorks.room.published}
+									index={flow.groups.length + 1}
+								/>
+							)}
 						</Card>
 					) : (
 						settled && <NothingFound />
@@ -404,6 +448,7 @@ function Onboarding({ profile, preferences, status }: OnboardingProps) {
 						</>
 					}
 				>
+					{worksSaved && worksSaved.added > 0 && <WorksSavedNote done={worksSaved} />}
 					<Card className="p-4 sm:p-6">
 						<TemplateChoice profile={saved?.data ?? base.data} value={template} onChange={setTemplate} />
 					</Card>
@@ -545,6 +590,30 @@ function AccountSummary({ account }: AccountSummaryProps) {
 				</div>
 			</div>
 		</div>
+	);
+}
+
+type WorksSavedNoteProps = { done: SiteWorksDone };
+
+/** The site's works went into the portfolio: how many, and the way there (it isn't published, unless it was). */
+function WorksSavedNote({ done }: WorksSavedNoteProps) {
+	return (
+		<Card className="flex-row flex-wrap items-center gap-3 p-4">
+			<span className="grid size-10 shrink-0 place-items-center rounded-xl bg-default text-muted">
+				<Icon name="squares-four" size={20} />
+			</span>
+			<p className="min-w-0 flex-1 text-body-sm">
+				<Plural
+					value={done.added}
+					one="# work from your site is in your portfolio."
+					other="# works from your site are in your portfolio."
+				/>
+			</p>
+			<Link to="/dashboard/portfolio" target="_blank" className={buttonVariants({ size: "sm", variant: "secondary" })}>
+				{done.created ? <Trans>See your portfolio (not published)</Trans> : <Trans>See your portfolio</Trans>}
+				<Icon name="arrow-square-out" size={16} />
+			</Link>
+		</Card>
 	);
 }
 

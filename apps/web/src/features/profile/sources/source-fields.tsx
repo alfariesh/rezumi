@@ -27,6 +27,8 @@ type SourceFieldsProps = {
 	accountGithub?: string | null;
 	/** Field ids, so a caller can move focus to the first one with a problem. */
 	idPrefix: string;
+	/** Whether the account's next website import is its free first one (`profile.sources.status`). */
+	websiteImportFree?: boolean | undefined;
 };
 
 /**
@@ -34,7 +36,8 @@ type SourceFieldsProps = {
  * none. Used by onboarding and by the Profile's empty state, so both offer the same sources the same way.
  */
 export function SourceFields(props: SourceFieldsProps) {
-	const { inputs, onChange, availability, problems, accountGithub = null, idPrefix } = props;
+	const { inputs, onChange, availability, problems, accountGithub = null, idPrefix, websiteImportFree = false } = props;
+	const importing = Boolean(availability.websiteImport && inputs.websiteOwn);
 	const githubFromAccount = Boolean(accountGithub) && inputs.github.trim() === accountGithub;
 
 	return (
@@ -89,22 +92,56 @@ export function SourceFields(props: SourceFieldsProps) {
 			)}
 
 			{availability.website && (
-				<SourceTextField
-					id={`${idPrefix}-website`}
-					icon="globe"
-					label={t`Personal website`}
-					placeholder="yourname.com"
-					value={inputs.website}
-					onChange={(website) => onChange({ website })}
-					error={problems.website ? inputProblemMessage("website", problems.website) : undefined}
-					description={
-						<span className="flex flex-wrap items-center gap-x-1">
-							<Trans>Read with AI. Only what's on the page comes in.</Trans>
-							<AiSourceMenu action="profile-website" className="-my-1" />
-						</span>
-					}
-					type="url"
-				/>
+				<div className="grid gap-3">
+					<SourceTextField
+						id={`${idPrefix}-website`}
+						icon="globe"
+						label={t`Personal website`}
+						placeholder="yourname.com"
+						value={inputs.website}
+						onChange={(website) => onChange({ website })}
+						error={problems.website ? inputProblemMessage("website", problems.website) : undefined}
+						description={
+							<span className="flex flex-wrap items-center gap-x-1">
+								{importing ? (
+									<Trans>Read with AI: your home page and up to ten pages about your work.</Trans>
+								) : (
+									<Trans>Read with AI. Only what's on the page comes in.</Trans>
+								)}
+								<AiSourceMenu
+									action={importing ? "profile-website-import" : "profile-website"}
+									free={importing && websiteImportFree}
+									className="-my-1"
+								/>
+							</span>
+						}
+						type="url"
+					/>
+					{availability.websiteImport && inputs.website.trim() && (
+						<Checkbox
+							id={`${idPrefix}-website-own`}
+							isSelected={inputs.websiteOwn === true}
+							onChange={(websiteOwn) => onChange({ websiteOwn })}
+							className={cn(ENTER_CLASS, "items-start")}
+						>
+							<Checkbox.Content className="items-start">
+								<Checkbox.Control className="mt-0.5">
+									<Checkbox.Indicator />
+								</Checkbox.Control>
+								<span className="grid gap-0.5">
+									<Trans>This is my own site. Bring my works into my portfolio too.</Trans>
+									<span className="text-body-xs text-muted">
+										{websiteImportFree ? (
+											<Trans>Your first website import is free. You check every work before it's saved.</Trans>
+										) : (
+											<Trans>You check every work before it's saved.</Trans>
+										)}
+									</span>
+								</span>
+							</Checkbox.Content>
+						</Checkbox>
+					)}
+				</div>
 			)}
 		</div>
 	);
@@ -126,23 +163,33 @@ type SourcesNoteProps = { availability: SourceAvailability; className?: string }
 /** Who reads what, and when: only on the person's request, and nothing is saved before they check it. */
 export function SourcesNote({ availability, className }: SourcesNoteProps) {
 	return (
-		<p className={cn("text-body-xs text-muted", className)}>
-			{availability.linkedin ? (
-				<Trans>
-					We only read what you add here, once you continue: LinkedIn profiles through treg or Apify, GitHub accounts
-					through GitHub, websites with AI. Nothing goes into your Profile until you check it.
-				</Trans>
-			) : availability.website ? (
-				<Trans>
-					We only read what you add here, once you continue: GitHub accounts through GitHub, websites with AI. Nothing
-					goes into your Profile until you check it.
-				</Trans>
-			) : (
-				<Trans>
-					We only read what you add here, once you continue. Nothing goes into your Profile until you check it.
-				</Trans>
+		<div className={cn("grid gap-1 text-body-xs text-muted", className)}>
+			<p>
+				{availability.linkedin ? (
+					<Trans>
+						We only read what you add here, once you continue: LinkedIn profiles through treg or Apify, GitHub accounts
+						through GitHub, websites with AI. Nothing goes into your Profile until you check it.
+					</Trans>
+				) : availability.website ? (
+					<Trans>
+						We only read what you add here, once you continue: GitHub accounts through GitHub, websites with AI. Nothing
+						goes into your Profile until you check it.
+					</Trans>
+				) : (
+					<Trans>
+						We only read what you add here, once you continue. Nothing goes into your Profile until you check it.
+					</Trans>
+				)}
+			</p>
+			{availability.websiteImport && (
+				<p>
+					<Trans>
+						Importing your own site reads up to eleven of its pages. Their text goes to the AI; the pictures of the
+						works you keep are copied to your portfolio's storage.
+					</Trans>
+				</p>
 			)}
-		</p>
+		</div>
 	);
 }
 

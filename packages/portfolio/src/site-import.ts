@@ -243,3 +243,46 @@ export function hasWork(
 			(projectId !== undefined && work.fromResumeItemId === projectId) || (title !== "" && plain(work.title) === title),
 	);
 }
+
+/**
+ * The drafts the portfolio already has, by ID, for the review to mark and leave unticked: copied from the Profile
+ * project the draft matches (by link or name, `isSameWork`), or with the same title. The server asks the same before
+ * saving (`hasWork`), so a draft marked here is skipped there too.
+ */
+export function importedDrafts(
+	drafts: readonly WorkDraft[],
+	works: readonly Pick<PortfolioWork, "title" | "fromResumeItemId">[],
+	projects: readonly Pick<ProjectItem, "id" | "name" | "website">[],
+): Set<string> {
+	return new Set(
+		drafts
+			.filter((draft) => hasWork(works, draft, projects.find((project) => isSameWork(project, draft))?.id))
+			.map((draft) => draft.id),
+	);
+}
+
+/**
+ * The drafts ticked when the review opens: every one the portfolio doesn't have yet, in the site's order, as many as
+ * it has room for (`room`: works the plan still allows; `Infinity` without a limit).
+ */
+export function initialDraftChoice(drafts: readonly WorkDraft[], imported: ReadonlySet<string>, room: number) {
+	return new Set(
+		drafts
+			.filter((draft) => !imported.has(draft.id))
+			.slice(0, Math.max(0, room))
+			.map((draft) => draft.id),
+	);
+}
+
+/** Ticks or unticks one draft. Past the room, ticking does nothing; one the portfolio has can't be ticked. */
+export function toggleDraft(
+	chosen: ReadonlySet<string>,
+	id: string,
+	selected: boolean,
+	options: { imported: ReadonlySet<string>; room: number },
+): Set<string> {
+	const next = new Set(chosen);
+	if (!selected) next.delete(id);
+	else if (!options.imported.has(id) && next.size < options.room) next.add(id);
+	return next;
+}

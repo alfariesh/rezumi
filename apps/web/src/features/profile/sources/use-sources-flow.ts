@@ -54,6 +54,8 @@ export function useSourcesFlow({ base, availability, accountImage, github = "" }
 		inputs,
 		problems,
 		runs: sources.runs,
+		/** The website's import (own site): its steps, then its result with the work drafts. */
+		site: sources.site,
 		fetching: isFetching(sources.runs),
 		merged,
 		groups,

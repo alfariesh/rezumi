@@ -3,7 +3,17 @@ import type { WorkDraft } from "@rezumi/schema/profile/website-import";
 import { describe, expect, it } from "vite-plus/test";
 import { parseWritablePortfolioData } from "@rezumi/schema/portfolio/data";
 import { createDefaultPortfolioData } from "@rezumi/schema/portfolio/default";
-import { hasWork, isSameWork, metricFromText, projectFromDraft, storyHtml, workFromDraft } from "./site-import";
+import {
+	hasWork,
+	importedDrafts,
+	initialDraftChoice,
+	isSameWork,
+	metricFromText,
+	projectFromDraft,
+	storyHtml,
+	toggleDraft,
+	workFromDraft,
+} from "./site-import";
 
 const draft = (extra: Partial<WorkDraft> = {}): WorkDraft => ({
 	id: "w1",
@@ -172,5 +182,39 @@ describe("hasWork", () => {
 		expect(hasWork([{ title: "Other", fromResumeItemId: "p1" }], draft(), "p1")).toBe(true);
 		expect(hasWork([{ title: "KOPI checkout" }], draft())).toBe(true);
 		expect(hasWork([{ title: "Bank app", fromResumeItemId: "p2" }], draft(), "p1")).toBe(false);
+	});
+});
+
+describe("reviewing drafts", () => {
+	const drafts = [
+		draft({ id: "a", title: "Kopi checkout" }),
+		draft({ id: "b", title: "Pasar app", sourceUrl: "https://dewi.design/work/pasar", primaryLink: null }),
+		draft({ id: "c", title: "Rekanesia", sourceUrl: "https://dewi.design/work/rekanesia", primaryLink: null }),
+	];
+
+	it("marks drafts the portfolio has, by its Profile project or its title", () => {
+		const projects = [
+			{ id: "p1", name: "Rekanesia: one product, many brands", website: { url: "", label: "", inlineLink: false } },
+		];
+		const works = [
+			{ title: "Something else", fromResumeItemId: "p1" },
+			{ title: "pasar APP", fromResumeItemId: undefined },
+		];
+		expect([...importedDrafts(drafts, works, projects)]).toEqual(["b", "c"]);
+		expect(importedDrafts(drafts, [], projects).size).toBe(0);
+	});
+
+	it("ticks the new drafts at first, as many as there's room for", () => {
+		expect([...initialDraftChoice(drafts, new Set(["b"]), Infinity)]).toEqual(["a", "c"]);
+		expect([...initialDraftChoice(drafts, new Set(), 2)]).toEqual(["a", "b"]);
+		expect(initialDraftChoice(drafts, new Set(), -1).size).toBe(0);
+	});
+
+	it("won't tick past the room or a draft the portfolio has", () => {
+		const options = { imported: new Set(["c"]), room: 1 };
+		expect([...toggleDraft(new Set(["a"]), "b", true, options)]).toEqual(["a"]);
+		expect([...toggleDraft(new Set(), "c", true, options)]).toEqual([]);
+		expect([...toggleDraft(new Set(["a"]), "a", false, options)]).toEqual([]);
+		expect([...toggleDraft(new Set(), "b", true, options)]).toEqual(["b"]);
 	});
 });

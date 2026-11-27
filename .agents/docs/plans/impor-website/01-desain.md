@@ -39,3 +39,12 @@ Untuk pemilik dan agent. Teks UI di bawah adalah arah, bukan teks final; teks fi
 ## Cek tampilan
 
 Desktop dan ponsel, terang dan gelap, Inggris dan Indonesia. Warna lewat token, bukan warna tetap (aturan pemilik).
+
+## Hasil Phase 03 (2026-11-27)
+
+- Centang di bawah kolom Website: "Ini situs saya sendiri. Impor juga karya saya ke portfolio." Label AI di kolom berubah jadi "Rezumi AI · gratis kali ini" untuk impor gratis, atau "5 kredit".
+- Progres: "Membaca situs Anda…", "Menemukan 8 halaman karya", "Membaca karya 3 dari 8…", "Menyusun karya Anda…"; selesai: temuan Profil + "Dan 8 karya untuk portfolio Anda".
+- Review "Karya dari situs Anda": kartu dengan sampul, judul, peran · tahun, ringkasan satu baris, jumlah gambar; panah membuka ringkasan lengkap, tag, deretan gambar, dan link halaman asli (baca saja). Kotak Upgrade muncul bila karya baru lebih banyak dari sisa kuota.
+- Tombol simpan onboarding: "Simpan ke Profil & portfolio" (dipendekkan supaya muat di ponsel), lalu "Menyalin gambar 12 dari 30…". Langkah CV menampilkan "6 karya dari situs Anda sudah ada di portfolio Anda" + "Lihat portfolio Anda (belum tayang)".
+- Editor portfolio: kartu "Impor dari website" di dialog Tambah work, dan tombol yang sama di bawah "Add your first work" saat daftar kosong.
+- Sapaan Indonesia mengikuti aplikasi: "Anda", bukan "kamu".

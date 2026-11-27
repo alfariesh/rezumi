@@ -11,9 +11,11 @@ import { Icon } from "@rezumi/ui/components/icon";
 import { toast } from "@rezumi/ui/components/toast";
 import { useBreakpoint } from "@rezumi/ui/hooks/use-breakpoint";
 import { storeSavedProfile } from "./queries";
+import { SiteWorksReview } from "./sources/site-works-review";
 import { focusFirstProblem, SourceFields, SourcesNote } from "./sources/source-fields";
 import { SourceProgress } from "./sources/source-progress";
 import { SourceReview } from "./sources/source-review";
+import { siteWorksProgressLabel, useSiteWorks } from "./sources/use-site-works";
 import { finishReview, useSourcesFlow } from "./sources/use-sources-flow";
 import { saveProfileNow, useProfileDraftStore } from "./store";
 import { CareerLoadError } from "@/features/career/load-state";
@@ -122,7 +124,13 @@ function SourcesSteps({ status, base, onDone }: SourcesStepsProps) {
 	const [saving, setSaving] = useState(false);
 	const [copiedPhotos] = useState(() => new Map<string, string>());
 	const descriptionId = useId();
-	const availability = { linkedin: status.linkedin, github: status.github, website: status.website };
+	const portfolio = useQuery(orpc.portfolio.status.queryOptions());
+	const availability = {
+		linkedin: status.linkedin,
+		github: status.github,
+		website: status.website,
+		websiteImport: status.website && status.websiteImportFree !== undefined && portfolio.data?.enabled === true,
+	};
 	const flow = useSourcesFlow({
 		base,
 		availability,
@@ -131,7 +139,9 @@ function SourcesSteps({ status, base, onDone }: SourcesStepsProps) {
 	});
 	const fetching = isFetching(flow.runs);
 	const kept = countReviewEntries(flow.groups, flow.excluded);
-	const found = flow.groups.length > 0 || flow.photos.length > 0;
+	const siteWorks = useSiteWorks(flow.site?.result ?? null, base.sections.projects);
+	const profileFound = flow.groups.length > 0 || flow.photos.length > 0;
+	const found = profileFound || siteWorks.works.length > 0;
 
 	const start = () => {
 		const problems = flow.start();
@@ -146,8 +156,10 @@ function SourcesSteps({ status, base, onDone }: SourcesStepsProps) {
 		setSaving(true);
 		const { data: reviewed, photoFailed } = await finishReview(flow, copiedPhotos);
 		const { data, update } = useProfileDraftStore.getState();
-		setSaving(false);
-		if (!data) return;
+		if (!data) {
+			setSaving(false);
+			return;
+		}
 		// An ordinary edit of the Profile: it saves like typing, and Undo takes it back.
 		const filled = resumeDataFromProfile(reviewed, data);
 		update(
@@ -159,6 +171,35 @@ function SourcesSteps({ status, base, onDone }: SourcesStepsProps) {
 			},
 			{ newStep: true },
 		);
+		if (siteWorks.count > 0) {
+			// The works go through the server, which adds their Profile projects to the saved Profile: what's added here
+			// is saved first, and the Profile page reloads the result (so this can't be undone in one step).
+			if (!(await saveProfileNow())) {
+				setSaving(false);
+				toast.add({
+					type: "error",
+					description: t`Couldn't save your Profile, so the works weren't added. Try again.`,
+				});
+				return;
+			}
+			const done = await siteWorks.save();
+			setSaving(false);
+			// Saving the works says itself why it failed; what went into the Profile stays.
+			if (!done) return;
+			onDone();
+			toast.add({
+				description: (
+					<Plural
+						value={done.added}
+						_0="Added to your Profile. Your portfolio already had these works."
+						one="Added to your Profile, and # work to your portfolio."
+						other="Added to your Profile, and # works to your portfolio."
+					/>
+				),
+			});
+			return;
+		}
+		setSaving(false);
 		onDone();
 		toast.add({
 			description: photoFailed
@@ -187,6 +228,7 @@ function SourcesSteps({ status, base, onDone }: SourcesStepsProps) {
 						availability={availability}
 						problems={flow.problems}
 						accountGithub={status.account.githubUsername}
+						websiteImportFree={status.websiteImportFree}
 					/>
 					<SourcesNote availability={availability} />
 				</Modal.Body>
@@ -212,19 +254,34 @@ function SourcesSteps({ status, base, onDone }: SourcesStepsProps) {
 				</p>
 			</Modal.Header>
 			<Modal.Body className="grid gap-4 py-1">
-				<SourceProgress runs={flow.runs} onRetry={flow.retry} />
+				<SourceProgress runs={flow.runs} site={flow.site} onRetry={flow.retry} />
 				{found && (
-					<div className={ENTER_CLASS}>
-						<SourceReview
-							merged={flow.merged}
-							groups={flow.groups}
-							excluded={flow.excluded}
-							onExcludedChange={flow.setExcluded}
-							photos={flow.photos}
-							photo={flow.photo}
-							onPhotoChange={flow.setPhoto}
-							name={base.basics.name || status.account.name}
-						/>
+					<div className={`${ENTER_CLASS} grid gap-3`}>
+						{profileFound && (
+							<SourceReview
+								merged={flow.merged}
+								groups={flow.groups}
+								excluded={flow.excluded}
+								onExcludedChange={flow.setExcluded}
+								photos={flow.photos}
+								photo={flow.photo}
+								onPhotoChange={flow.setPhoto}
+								name={base.basics.name || status.account.name}
+							/>
+						)}
+						{siteWorks.works.length > 0 && (
+							<SiteWorksReview
+								works={siteWorks.works}
+								chosen={siteWorks.chosen}
+								onToggle={siteWorks.toggle}
+								imported={siteWorks.room.imported}
+								room={siteWorks.room.room}
+								planLimit={siteWorks.room.planLimited ? siteWorks.room.max : null}
+								hasPortfolio={siteWorks.room.hasPortfolio}
+								published={siteWorks.room.published}
+								index={flow.groups.length + 1}
+							/>
+						)}
 					</div>
 				)}
 				{!found && !fetching && (
@@ -238,12 +295,16 @@ function SourcesSteps({ status, base, onDone }: SourcesStepsProps) {
 					<Trans>Back</Trans>
 				</Button>
 				<Button
-					isDisabled={fetching || !found || (kept === 0 && !flow.photo)}
+					isDisabled={fetching || !found || (kept === 0 && !flow.photo && siteWorks.count === 0)}
 					isPending={saving}
 					onPress={() => void add()}
 				>
-					{fetching ? (
+					{siteWorks.progress ? (
+						siteWorksProgressLabel(siteWorks.progress)
+					) : fetching ? (
 						<Trans>Reading…</Trans>
+					) : siteWorks.count > 0 ? (
+						<Plural value={siteWorks.count} one="Add, with # work" other="Add, with # works" />
 					) : (
 						<Plural value={kept} _0="Add the photo" one="Add # entry" other="Add # entries" />
 					)}
