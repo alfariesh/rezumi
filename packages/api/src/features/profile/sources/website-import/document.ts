@@ -10,6 +10,9 @@ import { parseVideoUrl } from "@rezumi/schema/portfolio/video";
  * result. Nothing here is fetched; pictures are only addresses until a work is saved.
  */
 
+/** The context given to a page's preview picture (`og:image`), which the works reader may fall back to as a cover. */
+export const SHARE_IMAGE_CONTEXT = "The page's preview picture";
+
 export type SiteLink = { url: string; text: string };
 
 type SiteImage = {
@@ -211,7 +214,7 @@ export function readSiteDocument(html: string, pageUrl: string): SiteDocument {
 		.querySelectorAll('meta[property="og:image"], meta[property="og:image:url"], meta[name="twitter:image"]')
 		.map((meta) => meta.getAttribute("content"))
 		.find(Boolean);
-	addImage(shareImage, { alt: "", width: null, height: null, context: "The page's preview picture" });
+	addImage(shareImage, { alt: "", width: null, height: null, context: SHARE_IMAGE_CONTEXT });
 	for (const picture of root.querySelectorAll("img, picture source")) {
 		const isSource = picture.tagName === "SOURCE";
 		const src =

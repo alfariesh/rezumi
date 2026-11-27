@@ -3,6 +3,7 @@ import type { SourceId, SourceRequest, SourceRuns } from "@rezumi/resume/profile
 import type { SourceResult } from "@rezumi/schema/profile/sources";
 import type { WebsiteImportResult } from "@rezumi/schema/profile/website-import";
 import { t } from "@lingui/core/macro";
+import { useQueryClient } from "@tanstack/react-query";
 import { useEffect, useRef, useState } from "react";
 import { profileFromResume } from "@rezumi/resume/profile";
 import { createSourceRunner } from "@rezumi/resume/profile-sources";
@@ -12,7 +13,7 @@ import { openCreditsDialogForError } from "@/features/billing/ai-source-menu";
 import { openPlanDialogForError } from "@/features/billing/plan-dialog";
 import { detectImportKind, ImportError } from "@/features/resume/import/read-file";
 import { requireImportKind, useReadResumeFile } from "@/features/resume/import/use-read-resume-file";
-import { client } from "@/libs/orpc/client";
+import { client, orpc } from "@/libs/orpc/client";
 
 /** The website import of the latest run: its progress while it runs, then its result (the work drafts). */
 export type SiteImportState = { key: string; progress: SiteImportProgress | null; result: WebsiteImportResult | null };
@@ -26,6 +27,7 @@ export type SiteImportState = { key: string; progress: SiteImportProgress | null
 export function useSourceRuns() {
 	const readFile = useReadResumeFile();
 	const ai = useAiSource();
+	const queryClient = useQueryClient();
 	const [runs, setRuns] = useState<SourceRuns>({});
 	const [site, setSite] = useState<SiteImportState | null>(null);
 	const siteRun = useRef<{ key: string; controller: AbortController } | null>(null);
@@ -54,6 +56,8 @@ export function useSourceRuns() {
 			current.controller.signal,
 		);
 		update({ key, progress: null, result });
+		// The account's free import may be used now: its price elsewhere reads again.
+		void queryClient.invalidateQueries({ queryKey: orpc.profile.sources.status.queryKey() });
 		return result.profile;
 	};
 

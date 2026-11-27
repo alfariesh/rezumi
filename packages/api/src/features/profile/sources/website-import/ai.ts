@@ -8,6 +8,7 @@ import { PORTFOLIO_LIMITS } from "@rezumi/schema/portfolio/limits";
 import { WEBSITE_IMPORT_MAX_GALLERY, WEBSITE_IMPORT_MAX_WORKS } from "@rezumi/schema/profile/website-import";
 import { dataBlock } from "../../../ai/data-block";
 import { generateJson } from "../../../ai/generate-json";
+import { SHARE_IMAGE_CONTEXT } from "./document";
 
 /**
  * The two AI steps of a website import (`02-teknis.md` section 4), besides the Profile read the website source already
@@ -176,7 +177,10 @@ export async function extractWorks(
 		const { images, external, embeds } = page.document;
 		const pictureLimit = Math.min(images.length, PICTURES_PER_PAGE);
 		const linkLimit = Math.min(external.length, LINKS_PER_PAGE);
-		const cover = pick(images, work.cover, pictureLimit);
+		// Without a picture of its own, a work's page still has its preview picture: a fair cover, unless the page is a
+		// one-page portfolio whose preview belongs to the whole site.
+		const preview = input.onHome ? undefined : images.find((picture) => picture.context === SHARE_IMAGE_CONTEXT);
+		const cover = pick(images, work.cover, pictureLimit) ?? preview ?? null;
 		const gallery = [...new Set(work.gallery)]
 			.map((number) => pick(images, number, pictureLimit))
 			.filter((image) => image !== null && image.url !== cover?.url)

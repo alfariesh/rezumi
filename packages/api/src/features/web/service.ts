@@ -103,7 +103,7 @@ async function readThroughBrowser(url: URL, context: WebContext, signal: AbortSi
 	const started = Date.now();
 	let browserMs = 0;
 	try {
-		const page = await readBrowserPage(url, signal);
+		const page = await readBrowserPage(url, signal, context.allowance === "import" ? "loaded" : "settled");
 		browserMs = page.browserMs;
 		if (page.html.length > MAX_PAGE_BYTES) throw new WebError("too-large");
 		const content = pageContent(htmlToText(page.html));

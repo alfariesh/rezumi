@@ -141,6 +141,29 @@ describe("reading a page", () => {
 		);
 	});
 
+	it("opens a page that never goes quiet again, reading it once its HTML is in", async () => {
+		fixtures.directHtml = SPA_SHELL;
+		answer = (call) =>
+			(call.body.gotoOptions as { waitUntil?: string }).waitUntil === "networkidle2"
+				? new Response("{}", { status: 422, headers: { "x-browser-ms-used": "9000" } })
+				: json({ success: true, result: RENDERED }, { headers: { "x-browser-ms-used": "3500" } });
+		const page = await readPage(PAGE, { userId: "user" });
+		expect(page).toMatchObject({ method: "browser" });
+		expect(calls.map((call) => call.body.gotoOptions)).toEqual([
+			expect.objectContaining({ waitUntil: "networkidle2" }),
+			expect.objectContaining({ waitUntil: "domcontentloaded" }),
+		]);
+		expect(calls[1]?.body).toMatchObject({ waitForTimeout: 5000 });
+		expect(fixtures.events).toHaveBeenCalledWith(expect.objectContaining({ kind: "browser", ms: 12_500 }));
+	});
+
+	it("reads a website import's pages once their HTML is in, without waiting for a quiet network", async () => {
+		fixtures.directHtml = SPA_SHELL;
+		await readPage(PAGE, { userId: "user", allowance: "import" });
+		expect(calls).toHaveLength(1);
+		expect(calls[0]?.body).toMatchObject({ gotoOptions: { waitUntil: "domcontentloaded" }, waitForTimeout: 5000 });
+	});
+
 	it.each<[string, { html?: string; status?: number }, string]>([
 		["a bot check", { html: "<p>Just a moment. Verify you are human.</p>" }, "challenge"],
 		["a refusal of plain requests", { status: 403 }, "unreachable"],

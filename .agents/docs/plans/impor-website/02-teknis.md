@@ -193,3 +193,29 @@ Skrip: `pnpm website:probe <alamat> --yes [--out file.json]` (`tooling/website-i
 - **Simpan:** onboarding menyimpan Profil dulu, lalu `importSiteWorks`, lalu membaca ulang Profil (proyek baru dari server) supaya langkah CV memakai versi terbaru. Isi Profil: edit Profil disimpan dulu (`saveProfileNow`), lalu karya; halaman Profil memuat versi baru sendiri, jadi Undo satu langkah tidak tersedia untuk isi yang datang bersama karya (toast tanpa Undo). Editor portfolio: `flush`, simpan, lalu `portfolio.get` → `applyServerEdit` (Undo mengembalikan ke sebelum impor).
 - **Teks privasi:** disetujui pemilik dan dipasang 2026-11-27 (lihat `draf-privasi.md`): sumber Profil GitHub dan situs pribadi termasuk impor website. LinkedIn (treg/Apify) masih menunggu jawaban `[periksa]` draf profil.
 - **Tes:** tidak ada spec Playwright. Pembaca website hanya menerima alamat publik (cek per redirect), jadi situs tiruan lokal ditolak; tes onboarding ujung-ke-ujung butuh stub di server. Logika input dan review dites di paket (`profile-sources.test.ts`, `site-import.test.ts`); alur layar dicek di server dev dengan hasil impor dari Phase 01 yang disalin ke akun uji (tanpa biaya AI).
+
+## 14. Hasil Phase 04 (2026-11-27)
+
+Uji nyata dengan `pnpm website:probe` (Claude Haiku 5.5, Browser Run). Situs Phase 01 (alfariesh.ai.id, dua template Framer) tidak diulang.
+
+| Situs                                          | Total | Halaman | Karya ditemukan / sebenarnya        | Biaya AI | Catatan                                                                                            |
+| ---------------------------------------------- | ----- | ------- | ----------------------------------- | -------- | -------------------------------------------------------------------------------------------------- |
+| kaeli-flouix.webflow.io (Webflow)              | 52 s  | 6       | 5 / 5                               | $0,0090  | Sampul + 4 gambar tiap karya, ringkasan sesuai halaman, tanpa angka (halaman memang tidak memuat). |
+| adept-portfolio.webflow.io (Webflow)           | 8 s   | 1       | —                                   | ±$0,002  | Beranda template ini halaman pemilih layout, bukan portfolio: ditolak dengan benar.                |
+| adept-portfolio.webflow.io/home-work-list      | 21 s  | 6       | 0 / 5                               | $0,0043  | Halaman proyek berisi teks pengisi template; AI menolak membuat karya dari teks palsu. Wajar.      |
+| dune-template.webflow.io (Webflow)             | 41 s  | 6       | 3 / 5                               | $0,0074  | Isi lorem ipsum; tiga dijadikan karya, dua dilewati.                                               |
+| notion.notion.site/Designer-Portfolio (Notion) | 44 s  | 5       | 1 / 4 (3 lainnya masih teks contoh) | $0,0050  | Setelah perbaikan di bawah. Sebelumnya gagal total.                                                |
+| semigrown.notion.site/UX-Portfolio (Notion)    | 23 s  | 1       | 0 (situs tanpa halaman karya)       | $0,0030  | Data diri terbaca; semua link keluar ke LinkedIn/YouTube.                                          |
+
+Total biaya AI sesi ini ±$0,04 (termasuk percobaan gagal dan satu uji pemilih halaman). Browser Run: sekitar 25 render, hanya untuk Notion.
+
+- **Ditemukan dan diperbaiki: situs Notion tidak bisa dibaca.** Pembaca bawaan mendapat HTML kosong (Notion digambar JavaScript), lalu Browser Run menunggu jaringan diam (`networkidle2`) yang tidak pernah terjadi di Notion: 422 setelah ±32 detik, melewati batas 30 detik. `readBrowserPage` sekarang punya cara tunggu `loaded` (DOM siap + jeda 5 detik, ±7–9 detik per halaman). Impor website langsung memakai `loaded`; pembacaan lain (lowongan) tetap `settled` dan baru mengulang dengan `loaded` bila `settled` habis waktu (422). Jeda 3 detik kadang belum cukup untuk galeri Notion (satu impor mendapat 0 halaman karya), jadi 5 detik.
+- **Bukan bug:** teks pengisi template (lorem ipsum, kalimat korporat acak) sering ditolak AI. Situs pengguna sungguhan tidak terdampak.
+- **Ditemukan dan diperbaiki: sampul hilang di situs pemilik.** Halaman karya alfariesh.ai.id hanya punya gambar pratinjau (`og:image`); di Phase 01 AI memakainya sebagai sampul, di uji produksi tidak (4 karya tanpa gambar). `extractWorks` sekarang memakai gambar pratinjau halaman sebagai sampul bila AI tidak memilih sampul (kecuali situs satu halaman, yang pratinjaunya milik seluruh situs). Uji ulang: 4 dari 4 karya bersampul ($0,0099).
+- **Ditemukan dan diperbaiki: label "gratis kali ini" basi** setelah impor gratis terpakai. Status sumber dibaca ulang setelah setiap impor (onboarding, Isi Profil, editor portfolio).
+- Tidak ada perubahan prompt; penemuan halaman dan ringkasan di situs Webflow sudah sesuai.
+
+### Uji produksi (2026-11-27, Chrome pemilik)
+
+- Editor portfolio → Tambah work → Impor dari website, alfariesh.ai.id, Rezumi AI. Sebelum: `websiteImportFree: true`, saldo 2 kredit (kurang dari 5, jadi impor hanya bisa lewat jatah gratis). Hasil: 4 karya dalam ±55 detik; sesudah: saldo tetap 2, `websiteImportFree: false`, tidak ada baris baru di riwayat kredit. Karya **tidak** disimpan (portfolio pemilik sudah tayang); dialog ditutup. Pilihan AI browser pemilik dikembalikan ke koneksi AI miliknya.
+- Biaya operator untuk impor gratis itu ±$0,01 (tercatat di baris `website_import`).
