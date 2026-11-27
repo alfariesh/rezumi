@@ -17,6 +17,10 @@ export const PORTFOLIO_ERRORS = {
 	PORTFOLIO_DISABLED: { status: 403, message: "Portfolios aren't available for this account yet." },
 	PORTFOLIO_EXISTS: { status: 409, message: "This account already has a portfolio." },
 	NOT_FOUND: { status: 404, message: "This account has no portfolio yet." },
+	PORTFOLIO_IMPORT_GONE: {
+		status: 404,
+		message: "That website import is no longer kept, or isn't this account's. Import the website again.",
+	},
 	PORTFOLIO_SOURCE_INVALID: {
 		status: 400,
 		message: "Choose one of your resumes that isn't in Trash.",
@@ -126,6 +130,7 @@ export const portfolioErrors = {
 	disabled: () => refusal("PORTFOLIO_DISABLED"),
 	exists: () => refusal("PORTFOLIO_EXISTS"),
 	notFound: () => refusal("NOT_FOUND"),
+	importGone: () => refusal("PORTFOLIO_IMPORT_GONE"),
 	workNotFound: () => refusal("PORTFOLIO_WORK_NOT_FOUND"),
 	sourceInvalid: (reason: "unavailable" | "unreadable" = "unavailable", cause?: unknown) =>
 		refusal("PORTFOLIO_SOURCE_INVALID", {

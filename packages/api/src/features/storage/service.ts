@@ -118,25 +118,34 @@ const SHARP_INPUT_FORMATS = new Set(["jpeg", "png", "webp", "gif"]);
 
 const invalidImage = () => new ORPCError("BAD_REQUEST", { message: "Pictures must be PNG, JPEG, WebP or GIF images." });
 
+/** How large a resized picture may be: its longest side in pixels, and its JPEG quality. */
+export type PictureSize = { side: number; quality: number };
+
+/** Uploaded photos and resume pictures: at most 800×800, JPEG at quality 80. */
+const UPLOAD_SIZE: PictureSize = { side: 800, quality: 80 };
+
 /**
  * Resizes an upload where sharp can't run (Cloudflare Workers, through the Images binding). It answers `null` when it
  * can't, and the upload then keeps the original picture, as with FLAG_DISABLE_IMAGE_PROCESSING alone.
  */
-export type ImageProcessor = (data: Uint8Array) => Promise<ProcessedImage | null>;
+export type ImageProcessor = (data: Uint8Array, size?: PictureSize) => Promise<ProcessedImage | null>;
 
 let imageProcessor: ImageProcessor | undefined;
+
+/** Whether this server can shrink a picture: sharp on Node, or a configured processor (Images) on Workers. */
+export const canResizePictures = () => Boolean(imageProcessor) || !env.FLAG_DISABLE_IMAGE_PROCESSING;
 
 export function configureImageProcessor(processor: ImageProcessor | undefined): void {
 	imageProcessor = processor;
 }
 
-export async function processImageForUpload(file: File): Promise<ProcessedImage> {
+export async function processImageForUpload(file: File, size: PictureSize = UPLOAD_SIZE): Promise<ProcessedImage> {
 	const data = new Uint8Array(await file.arrayBuffer());
 	const contentType = detectImageType(data);
 	if (!contentType) throw invalidImage();
 
 	if (imageProcessor) {
-		const processed = await imageProcessor(data).catch((error: unknown) => {
+		const processed = await imageProcessor(data, size).catch((error: unknown) => {
 			console.error("[storage] Picture processing failed; the original is kept.", error);
 			return null;
 		});
@@ -163,8 +172,8 @@ export async function processImageForUpload(file: File): Promise<ProcessedImage>
 	if (!format || !SHARP_INPUT_FORMATS.has(format)) throw invalidImage();
 
 	const processedBuffer = await image
-		.resize(800, 800, { fit: "inside", withoutEnlargement: true })
-		.jpeg({ quality: 80 })
+		.resize(size.side, size.side, { fit: "inside", withoutEnlargement: true })
+		.jpeg({ quality: size.quality })
 		.toBuffer()
 		.catch(() => {
 			throw invalidImage();
